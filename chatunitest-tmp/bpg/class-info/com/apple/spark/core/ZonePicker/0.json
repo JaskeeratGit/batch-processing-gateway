@@ -1,0 +1,20 @@
+{
+  "className": "ZonePicker",
+  "methodName": "update",
+  "brief": "void update(List<String> allowedAvailabilityZones);",
+  "methodSignature": "update(List)",
+  "sourceCode": "void update(List<String> allowedAvailabilityZones);",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "List<String>"
+  ],
+  "dependentMethods": {},
+  "full_method_info": "void update(List<String> allowedAvailabilityZones);",
+  "method_comment": "",
+  "method_annotation": ""
+}

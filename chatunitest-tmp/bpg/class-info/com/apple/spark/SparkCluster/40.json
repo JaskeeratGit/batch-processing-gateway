@@ -1,0 +1,18 @@
+{
+  "className": "SparkCluster",
+  "methodName": "getExecutor",
+  "brief": "public ExecutorSpec getExecutor(){}",
+  "methodSignature": "getExecutor()",
+  "sourceCode": "public ExecutorSpec getExecutor() {\n      return executor;\n    }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public ExecutorSpec getExecutor() {\n    return executor;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

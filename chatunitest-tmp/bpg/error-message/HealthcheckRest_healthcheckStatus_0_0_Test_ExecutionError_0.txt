@@ -1,0 +1,117 @@
+package com.apple.spark.rest;
+
+import com.apple.spark.AppConfig;
+import com.apple.spark.api.HealthcheckResponse;
+import com.apple.spark.security.User;
+import com.apple.spark.util.CounterMetricContainer;
+import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.List;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import static com.apple.spark.core.Constants.HEALTH_CHECK_API;
+import io.dropwizard.auth.Auth;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import javax.annotation.security.PermitAll;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class HealthcheckRest_healthcheckStatus_0_0_Test {
+
+    private AppConfig appConfig;
+
+    private SimpleMeterRegistry meterRegistry;
+
+    private HealthcheckRest healthcheckRest;
+
+    private SpyCounterMetricContainer spyCounter;
+
+    // A small spy to capture increment calls
+    private static class SpyCounterMetricContainer extends CounterMetricContainer {
+
+        private volatile String lastMetricName;
+
+        private volatile List<Tag> lastTags;
+
+        public SpyCounterMetricContainer(SimpleMeterRegistry registry) {
+            super(registry);
+        }
+
+        @Override
+        public void increment(String metricName, Tag... tags) {
+            this.lastMetricName = metricName;
+            this.lastTags = Arrays.asList(tags);
+            super.increment(metricName, tags);
+        }
+
+        public String getLastMetricName() {
+            return lastMetricName;
+        }
+
+        public List<Tag> getLastTags() {
+            return lastTags;
+        }
+    }
+
+    @BeforeEach
+    public void setUp() throws Exception {
+        appConfig = new AppConfig();
+        meterRegistry = new SimpleMeterRegistry();
+        // construct object under test
+        healthcheckRest = new HealthcheckRest(appConfig, meterRegistry);
+        // create spy and inject into private field 'requestCounters'
+        spyCounter = new SpyCounterMetricContainer(meterRegistry);
+        Field f = HealthcheckRest.class.getDeclaredField("requestCounters");
+        f.setAccessible(true);
+        f.set(healthcheckRest, spyCounter);
+    }
+
+    @Test
+    public void testHealthcheckStatus_returnsOKAndIncrementsCounter() {
+        User user = new User("alice");
+        HealthcheckResponse resp = healthcheckRest.healthcheckStatus(user);
+        assertNotNull(resp, "Response should not be null");
+        assertEquals("OK", resp.getStatus(), "Healthcheck status should be OK");
+        // verify counter increment invoked
+        String metricName = spyCounter.getLastMetricName();
+        List<Tag> tags = spyCounter.getLastTags();
+        assertNotNull(metricName, "Metric name passed to increment should not be null");
+        assertNotNull(tags, "Tags passed to increment should not be null");
+        // verify tags include name=healthcheck and user=alice
+        boolean hasNameHealthcheck = tags.stream().anyMatch(t -> "name".equals(t.getKey()) && "healthcheck".equals(t.getValue()));
+        boolean hasUserAlice = tags.stream().anyMatch(t -> "user".equals(t.getKey()) && "alice".equals(t.getValue()));
+        assertTrue(hasNameHealthcheck, "Tags should include name=healthcheck");
+        assertTrue(hasUserAlice, "Tags should include user=alice");
+    }
+
+    @Test
+    public void testHealthcheckStatus_withDifferentUser_incrementsWithCorrectUserTag() {
+        User user = new User("bob");
+        HealthcheckResponse resp = healthcheckRest.healthcheckStatus(user);
+        assertNotNull(resp);
+        assertEquals("OK", resp.getStatus());
+        List<Tag> tags = spyCounter.getLastTags();
+        assertNotNull(tags);
+        boolean hasUserBob = tags.stream().anyMatch(t -> "user".equals(t.getKey()) && "bob".equals(t.getValue()));
+        assertTrue(hasUserBob, "Tags should include user=bob");
+    }
+}
+
+--------------------------------------------
+Error in testHealthcheckStatus_withDifferentUser_incrementsWithCorrectUserTag(): line 76 : java.lang.IllegalStateException: Default registry name has not been set.
+Error in testHealthcheckStatus_returnsOKAndIncrementsCounter(): line 76 : java.lang.IllegalStateException: Default registry name has not been set.

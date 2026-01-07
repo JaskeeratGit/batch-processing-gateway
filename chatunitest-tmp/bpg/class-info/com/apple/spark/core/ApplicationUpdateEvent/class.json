@@ -1,0 +1,66 @@
+{
+  "fullClassName": "com.apple.spark.core.ApplicationUpdateEvent",
+  "className": "ApplicationUpdateEvent",
+  "index": 87,
+  "modifier": "[public ]",
+  "extend": "[]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.core",
+  "packageDeclaration": "package com.apple.spark.core;",
+  "classSignature": "public class ApplicationUpdateEvent",
+  "hasConstructor": true,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import com.apple.spark.AppConfig;",
+    "import com.apple.spark.operator.SparkApplication;"
+  ],
+  "fields": [
+    "private final SparkApplication prevCRDState;",
+    "private final SparkApplication newCRDState;",
+    "private final RunningApplicationMonitor runningApplicationMonitor;",
+    "private final AppConfig.SparkCluster sparkCluster;"
+  ],
+  "superClasses": [],
+  "implementedTypes": [],
+  "methodSigs": {
+    "getPrevCRDState()": "0",
+    "getNewCRDState()": "1",
+    "getSparkCluster()": "2",
+    "getRunningApplicationMonitor()": "3",
+    "ApplicationUpdateEvent(AppConfig.SparkCluster, SparkApplication, SparkApplication, RunningApplicationMonitor)": "4"
+  },
+  "methodsBrief": [
+    "public SparkApplication getPrevCRDState(){}",
+    "public SparkApplication getNewCRDState(){}",
+    "public AppConfig.SparkCluster getSparkCluster(){}",
+    "public RunningApplicationMonitor getRunningApplicationMonitor(){}",
+    "public ApplicationUpdateEvent(\n      AppConfig.SparkCluster sparkCluster,\n      SparkApplication prevCRDState,\n      SparkApplication newCRDState,\n      RunningApplicationMonitor runningApplicationMonitor){}"
+  ],
+  "constructorSigs": [
+    "ApplicationUpdateEvent(AppConfig.SparkCluster, SparkApplication, SparkApplication, RunningApplicationMonitor)"
+  ],
+  "constructorBrief": [
+    "public ApplicationUpdateEvent(\n      AppConfig.SparkCluster sparkCluster,\n      SparkApplication prevCRDState,\n      SparkApplication newCRDState,\n      RunningApplicationMonitor runningApplicationMonitor){}"
+  ],
+  "getterSetterSigs": [
+    "getPrevCRDState()",
+    "getNewCRDState()",
+    "getSparkCluster()",
+    "getRunningApplicationMonitor()"
+  ],
+  "getterSetterBrief": [
+    "public SparkApplication getPrevCRDState(){}",
+    "public SparkApplication getNewCRDState(){}",
+    "public AppConfig.SparkCluster getSparkCluster(){}",
+    "public RunningApplicationMonitor getRunningApplicationMonitor(){}"
+  ],
+  "constructorDeps": {
+    "com.apple.spark.operator.SparkApplication": [],
+    "com.apple.spark.core.RunningApplicationMonitor": []
+  },
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.core;\n\nimport com.apple.spark.AppConfig;\nimport com.apple.spark.operator.SparkApplication;\n\n/**\n * The event generated whenever there's CRD update from an application.\n */\npublic class ApplicationUpdateEvent {\n\n    private final SparkApplication prevCRDState;\n\n    private final SparkApplication newCRDState;\n\n    // The runningApplicationMonitor instance corresponding to the specific Spark cluster\n    private final RunningApplicationMonitor runningApplicationMonitor;\n\n    // The Spark cluster the CRD update came from\n    private final AppConfig.SparkCluster sparkCluster;\n\n    public ApplicationUpdateEvent(AppConfig.SparkCluster sparkCluster, SparkApplication prevCRDState, SparkApplication newCRDState, RunningApplicationMonitor runningApplicationMonitor) {\n        this.prevCRDState = prevCRDState;\n        this.newCRDState = newCRDState;\n        this.sparkCluster = sparkCluster;\n        this.runningApplicationMonitor = runningApplicationMonitor;\n    }\n\n    public SparkApplication getPrevCRDState() {\n        return prevCRDState;\n    }\n\n    public SparkApplication getNewCRDState() {\n        return newCRDState;\n    }\n\n    public AppConfig.SparkCluster getSparkCluster() {\n        return sparkCluster;\n    }\n\n    public RunningApplicationMonitor getRunningApplicationMonitor() {\n        return runningApplicationMonitor;\n    }\n}\n",
+  "classDeclarationCode": "/**\n * The event generated whenever there's CRD update from an application.\n */\npublic class ApplicationUpdateEvent {\n\n    private final SparkApplication prevCRDState;\n\n    private final SparkApplication newCRDState;\n\n    // The runningApplicationMonitor instance corresponding to the specific Spark cluster\n    private final RunningApplicationMonitor runningApplicationMonitor;\n\n    // The Spark cluster the CRD update came from\n    private final AppConfig.SparkCluster sparkCluster;\n\n    public ApplicationUpdateEvent(AppConfig.SparkCluster sparkCluster, SparkApplication prevCRDState, SparkApplication newCRDState, RunningApplicationMonitor runningApplicationMonitor) {\n        this.prevCRDState = prevCRDState;\n        this.newCRDState = newCRDState;\n        this.sparkCluster = sparkCluster;\n        this.runningApplicationMonitor = runningApplicationMonitor;\n    }\n\n    public SparkApplication getPrevCRDState() {\n        return prevCRDState;\n    }\n\n    public SparkApplication getNewCRDState() {\n        return newCRDState;\n    }\n\n    public AppConfig.SparkCluster getSparkCluster() {\n        return sparkCluster;\n    }\n\n    public RunningApplicationMonitor getRunningApplicationMonitor() {\n        return runningApplicationMonitor;\n    }\n}",
+  "subClasses": []
+}

@@ -1,0 +1,38 @@
+{
+  "method0": {
+    "methodName": "record",
+    "signature": "record(Runnable, String, Tag[])",
+    "className": "TimerMetricContainer",
+    "packageName": "com.apple.spark.util"
+  },
+  "method1": {
+    "methodName": "record",
+    "signature": "record(Runnable, String, Collection)",
+    "className": "TimerMetricContainer",
+    "packageName": "com.apple.spark.util"
+  },
+  "method2": {
+    "methodName": "record",
+    "signature": "record(Supplier, String, Tag[])",
+    "className": "TimerMetricContainer",
+    "packageName": "com.apple.spark.util"
+  },
+  "method3": {
+    "methodName": "record",
+    "signature": "record(Supplier, String, Collection)",
+    "className": "TimerMetricContainer",
+    "packageName": "com.apple.spark.util"
+  },
+  "method4": {
+    "methodName": "getTimer",
+    "signature": "getTimer(String, Collection)",
+    "className": "TimerMetricContainer",
+    "packageName": "com.apple.spark.util"
+  },
+  "method5": {
+    "methodName": "TimerMetricContainer",
+    "signature": "TimerMetricContainer(MeterRegistry)",
+    "className": "TimerMetricContainer",
+    "packageName": "com.apple.spark.util"
+  }
+}

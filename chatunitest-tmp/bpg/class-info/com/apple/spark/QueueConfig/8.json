@@ -1,0 +1,30 @@
+{
+  "className": "QueueConfig",
+  "methodName": "containUser",
+  "brief": "public boolean containUser(String user){}",
+  "methodSignature": "containUser(String)",
+  "sourceCode": "public boolean containUser(String user) {\n      return users != null && users.stream().anyMatch(u -> u.equalsIgnoreCase(user));\n    }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "equalsIgnoreCase(String)"
+    ],
+    "java.util.stream.Stream": [
+      "anyMatch(Predicate<? super T>)"
+    ],
+    "java.util.Collection": [
+      "stream()"
+    ]
+  },
+  "full_method_info": "public boolean containUser(String user) {\n    return users != null && users.stream().anyMatch(u -> u.equalsIgnoreCase(user));\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

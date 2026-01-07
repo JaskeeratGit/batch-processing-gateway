@@ -1,0 +1,18 @@
+{
+  "className": "QueueConfig",
+  "methodName": "getZonePickerName",
+  "brief": "public String getZonePickerName(){}",
+  "methodSignature": "getZonePickerName()",
+  "sourceCode": "public String getZonePickerName() {\n      return zonePickerName;\n    }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public String getZonePickerName() {\n    return zonePickerName;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

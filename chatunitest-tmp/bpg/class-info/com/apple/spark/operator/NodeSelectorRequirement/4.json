@@ -1,0 +1,18 @@
+{
+  "className": "NodeSelectorRequirement",
+  "methodName": "getValues",
+  "brief": "public String[] getValues(){}",
+  "methodSignature": "getValues()",
+  "sourceCode": "public String[] getValues() {\n    return values;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public String[] getValues() {\n    return values;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

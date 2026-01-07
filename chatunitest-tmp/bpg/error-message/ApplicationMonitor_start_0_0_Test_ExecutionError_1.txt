@@ -1,0 +1,148 @@
+package com.apple.spark.core;
+
+import com.apple.spark.AppConfig;
+import io.micrometer.core.instrument.MeterRegistry;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+import java.util.concurrent.TimeUnit;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import com.apple.spark.operator.DriverSpec;
+import com.apple.spark.operator.ExecutorSpec;
+import com.apple.spark.operator.SparkApplication;
+import com.apple.spark.operator.SparkApplicationSpec;
+import com.apple.spark.util.CounterMetricContainer;
+import com.apple.spark.util.DateTimeUtils;
+import com.apple.spark.util.GaugeMetricContainer;
+import com.apple.spark.util.KubernetesClusterAndNamespace;
+import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
+import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
+import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
+import io.fabric8.kubernetes.internal.KubernetesDeserializer;
+import io.micrometer.core.instrument.Tag;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.atomic.AtomicLong;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static com.apple.spark.core.Constants.*;
+
+public class ApplicationMonitor_start_0_0_Test {
+
+    private ApplicationMonitor applicationMonitor;
+
+    private Timer createdTimer;
+
+    @AfterEach
+    void tearDown() throws Exception {
+        // try to cancel timer if created by reflective start invocation
+        if (createdTimer != null) {
+            createdTimer.cancel();
+            // give timer threads a moment to terminate
+            Thread.sleep(50);
+            createdTimer = null;
+        }
+        // allow daemon thread started by start() to settle; it's a daemon so test JVM will exit anyway
+        if (applicationMonitor != null) {
+            // nothing to stop - the thread loops forever but is daemon
+            applicationMonitor = null;
+        }
+    }
+
+    @Test
+    void start_withNoClusters_startsDaemonThreadAndRegistersDeserializer() throws Exception {
+        // Arrange: mock AppConfig to return null for spark clusters
+        AppConfig mockConfig = Mockito.mock(AppConfig.class);
+        Mockito.when(mockConfig.getSparkClusters()).thenReturn(null);
+        MeterRegistry mockRegistry = Mockito.mock(MeterRegistry.class);
+        // Act
+        applicationMonitor = new ApplicationMonitor(mockConfig, mockRegistry);
+        applicationMonitor.start();
+        // allow a short moment for the daemon thread to be created and started
+        TimeUnit.MILLISECONDS.sleep(200);
+        // Assert: a thread with the ApplicationMonitor simple class name exists and is daemon
+        String expectedThreadName = applicationMonitor.getClass().getSimpleName();
+        boolean found = Thread.getAllStackTraces().keySet().stream().anyMatch(t -> expectedThreadName.equals(t.getName()) && t.isDaemon() && t.isAlive());
+        assertTrue(found, "Expected a daemon thread named " + expectedThreadName + " to be running");
+    }
+
+    @Test
+    void reflectiveInvoke_privateStart_withSparkCluster_doesNotThrowAndInitializesInternalLists() throws Exception {
+        // Arrange: mock AppConfig and a SparkCluster
+        AppConfig mockConfig = Mockito.mock(AppConfig.class);
+        MeterRegistry mockRegistry = Mockito.mock(MeterRegistry.class);
+        // Create instance under test
+        applicationMonitor = new ApplicationMonitor(mockConfig, mockRegistry);
+        // Create a mock SparkCluster instance and set required behaviors
+        AppConfig.SparkCluster mockSparkCluster = Mockito.mock(AppConfig.SparkCluster.class);
+        Mockito.when(mockSparkCluster.getWeight()).thenReturn(1);
+        Mockito.when(mockSparkCluster.getMasterUrl()).thenReturn("https://unused");
+        Mockito.when(mockSparkCluster.getSparkApplicationNamespace()).thenReturn("default");
+        // other getters may be called by the private start; provide defaults
+        Mockito.when(mockSparkCluster.getEksCluster()).thenReturn("eks");
+        Mockito.when(mockSparkCluster.getSparkApplicationNamespace()).thenReturn("default");
+        // Prepare a Timer to pass in; remember to cancel in tearDown
+        Timer timer = new Timer(true);
+        createdTimer = timer;
+        // Use reflection to find and invoke the private start(AppConfig.SparkCluster, Timer) method
+        Method privateStart;
+        try {
+            privateStart = ApplicationMonitor.class.getDeclaredMethod("start", AppConfig.SparkCluster.class, Timer.class);
+            // If the compiler infers wrong (because of missing name), attempt by name-search
+        } catch (NoSuchMethodException e) {
+            // try locating by name "start" with two params (first is nested type)
+            Method found = null;
+            for (Method m : ApplicationMonitor.class.getDeclaredMethods()) {
+                if ("start".equals(m.getName()) && m.getParameterCount() == 2) {
+                    found = m;
+                    break;
+                }
+            }
+            if (found == null) {
+                throw e;
+            }
+            privateStart = found;
+        }
+        privateStart.setAccessible(true);
+        // Act: invoke the private start method reflectively
+        privateStart.invoke(applicationMonitor, mockSparkCluster, timer);
+        // Allow small time for any scheduling to occur
+        TimeUnit.MILLISECONDS.sleep(200);
+        // Assert: internal lists 'clients' and 'informerFactories' exist and are non-null
+        Field clientsField = ApplicationMonitor.class.getDeclaredField("clients");
+        clientsField.setAccessible(true);
+        Object clientsObj = clientsField.get(applicationMonitor);
+        assertNotNull(clientsObj, "clients list should not be null");
+        assertTrue(clientsObj instanceof List, "clients should be a List");
+        Field factoriesField = ApplicationMonitor.class.getDeclaredField("informerFactories");
+        factoriesField.setAccessible(true);
+        Object factoriesObj = factoriesField.get(applicationMonitor);
+        assertNotNull(factoriesObj, "informerFactories list should not be null");
+        assertTrue(factoriesObj instanceof List, "informerFactories should be a List");
+        // Optionally assert they are empty or have entries; at minimum ensure we can access them reflectively
+        @SuppressWarnings("unchecked")
+        List<Object> clientsList = (List<Object>) clientsObj;
+        @SuppressWarnings("unchecked")
+        List<Object> factoriesList = (List<Object>) factoriesObj;
+        // They should be non-null lists; depending on environment they may be empty or populated.
+        assertNotNull(clientsList);
+        assertNotNull(factoriesList);
+    }
+}
+
+--------------------------------------------
+Error in reflectiveInvoke_privateStart_withSparkCluster_doesNotThrowAndInitializesInternalLists(): line 85 : java.lang.IllegalStateException: Could not initialize plugin: interface org.mockito.plugins.MockMaker (alternate: null)
+Error in start_withNoClusters_startsDaemonThreadAndRegistersDeserializer(): line 68 : java.lang.IllegalStateException: Could not initialize plugin: interface org.mockito.plugins.MockMaker (alternate: null)

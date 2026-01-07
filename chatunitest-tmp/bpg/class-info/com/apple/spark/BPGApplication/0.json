@@ -1,0 +1,33 @@
+{
+  "className": "BPGApplication",
+  "methodName": "main",
+  "brief": "public static void main(final String[] args) throws Exception{}",
+  "methodSignature": "main(String[])",
+  "sourceCode": "public static void main(final String[] args) throws Exception {\n    logger.info(\n        \"Starting server, version: {}, revision: {}\", BuildInfo.Version, BuildInfo.Revision);\n\n    String value = System.getProperty(MONITOR_APPLICATION_SYSTEM_PROPERTY_NAME);\n    boolean monitorApplication = value != null && value.equalsIgnoreCase(\"true\");\n\n    new BPGApplication(monitorApplication).run(args);\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String[]"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "equalsIgnoreCase(String)"
+    ],
+    "org.slf4j.Logger": [
+      "info(String, Object, Object)"
+    ],
+    "java.lang.System": [
+      "getProperty(String)"
+    ],
+    "io.dropwizard.Application": [
+      "run(String[])"
+    ]
+  },
+  "full_method_info": "public static void main(final String[] args) throws Exception {\n    logger.info(\"Starting server, version: {}, revision: {}\", BuildInfo.Version, BuildInfo.Revision);\n    String value = System.getProperty(MONITOR_APPLICATION_SYSTEM_PROPERTY_NAME);\n    boolean monitorApplication = value != null && value.equalsIgnoreCase(\"true\");\n    new BPGApplication(monitorApplication).run(args);\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

@@ -1,0 +1,42 @@
+{
+  "className": "RunningApplicationMonitor",
+  "methodName": "getMaxRunningMillis",
+  "brief": "public static long getMaxRunningMillis(SparkApplication sparkApplication){}",
+  "methodSignature": "getMaxRunningMillis(SparkApplication)",
+  "sourceCode": "public static long getMaxRunningMillis(SparkApplication sparkApplication) {\n    if (sparkApplication.getMetadata() == null\n        || sparkApplication.getMetadata().getLabels() == null) {\n      return Constants.DEFAULT_MAX_RUNNING_MILLIS;\n    }\n    String labelValue =\n        sparkApplication.getMetadata().getLabels().get(Constants.MAX_RUNNING_MILLIS_LABEL);\n    if (labelValue == null || labelValue.isEmpty()) {\n      return Constants.DEFAULT_MAX_RUNNING_MILLIS;\n    }\n    try {\n      return Long.parseLong(labelValue);\n    } catch (Throwable ex) {\n      logger.warn(\n          String.format(\n              \"Failed to parse value %s for label %s on %s\",\n              labelValue,\n              Constants.MAX_RUNNING_MILLIS_LABEL,\n              sparkApplication.getMetadata().getName()),\n          ex);\n      return Constants.DEFAULT_MAX_RUNNING_MILLIS;\n    }\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "SparkApplication"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.operator.SparkApplication": [],
+    "io.fabric8.kubernetes.client.CustomResource": [
+      "getMetadata()"
+    ],
+    "io.fabric8.kubernetes.api.model.ObjectMeta": [
+      "getLabels()",
+      "getName()"
+    ],
+    "java.util.Map": [
+      "get(Object)"
+    ],
+    "java.lang.String": [
+      "isEmpty()",
+      "format(String, Object[])"
+    ],
+    "java.lang.Long": [
+      "parseLong(String)"
+    ],
+    "org.slf4j.Logger": [
+      "warn(String, Throwable)"
+    ]
+  },
+  "full_method_info": "public static long getMaxRunningMillis(SparkApplication sparkApplication) {\n    if (sparkApplication.getMetadata() == null || sparkApplication.getMetadata().getLabels() == null) {\n        return Constants.DEFAULT_MAX_RUNNING_MILLIS;\n    }\n    String labelValue = sparkApplication.getMetadata().getLabels().get(Constants.MAX_RUNNING_MILLIS_LABEL);\n    if (labelValue == null || labelValue.isEmpty()) {\n        return Constants.DEFAULT_MAX_RUNNING_MILLIS;\n    }\n    try {\n        return Long.parseLong(labelValue);\n    } catch (Throwable ex) {\n        logger.warn(String.format(\"Failed to parse value %s for label %s on %s\", labelValue, Constants.MAX_RUNNING_MILLIS_LABEL, sparkApplication.getMetadata().getName()), ex);\n        return Constants.DEFAULT_MAX_RUNNING_MILLIS;\n    }\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

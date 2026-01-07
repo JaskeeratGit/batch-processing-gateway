@@ -1,0 +1,145 @@
+package com.apple.spark.core;
+
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.logging.LoggingMeterRegistry;
+import io.micrometer.statsd.StatsdMeterRegistry;
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import io.micrometer.core.instrument.Clock;
+import io.micrometer.statsd.StatsdConfig;
+import io.micrometer.statsd.StatsdFlavor;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/*
+  Unit tests for BPGStatsdConfig.createMeterRegistry()
+  - Ensures both branches (StatsdMeterRegistry when enabled, LoggingMeterRegistry when disabled)
+  - Uses reflection to mutate environment variables to control enabled() behavior
+*/
+public class BPGStatsdConfig_createMeterRegistry_0_0_Test {
+
+    private static final String STATSD_SERVER_IP_ENV_NAME = "STATSD_SERVER_IP";
+
+    private static final String STATSD_SERVER_PORT_ENV_NAME = "STATSD_SERVER_PORT";
+
+    private final Map<String, String> originalEnv = new HashMap<>();
+
+    @BeforeEach
+    public void saveEnv() throws Exception {
+        // Save any existing values so we can restore later
+        Map<String, String> env = System.getenv();
+        if (env.containsKey(STATSD_SERVER_IP_ENV_NAME)) {
+            originalEnv.put(STATSD_SERVER_IP_ENV_NAME, env.get(STATSD_SERVER_IP_ENV_NAME));
+        }
+        if (env.containsKey(STATSD_SERVER_PORT_ENV_NAME)) {
+            originalEnv.put(STATSD_SERVER_PORT_ENV_NAME, env.get(STATSD_SERVER_PORT_ENV_NAME));
+        }
+        // Ensure a clean starting point: remove both keys
+        modifyEnvMap(map -> {
+            map.remove(STATSD_SERVER_IP_ENV_NAME);
+            map.remove(STATSD_SERVER_PORT_ENV_NAME);
+        });
+    }
+
+    @AfterEach
+    public void restoreEnv() throws Exception {
+        // Restore original values (remove if were absent originally)
+        modifyEnvMap(map -> {
+            map.remove(STATSD_SERVER_IP_ENV_NAME);
+            map.remove(STATSD_SERVER_PORT_ENV_NAME);
+            map.putAll(originalEnv);
+        });
+    }
+
+    @Test
+    public void testCreateMeterRegistry_whenEnabled_returnsStatsdMeterRegistry() throws Exception {
+        // Set environment so enabled() returns true (non-empty host and port > 0)
+        setEnv(STATSD_SERVER_IP_ENV_NAME, "127.0.0.1");
+        setEnv(STATSD_SERVER_PORT_ENV_NAME, "8125");
+        MeterRegistry registry = BPGStatsdConfig.createMeterRegistry();
+        try {
+            assertNotNull(registry, "Registry should not be null");
+            assertTrue(registry instanceof StatsdMeterRegistry, "Expected a StatsdMeterRegistry when enabled() is true");
+        } finally {
+            closeIfCloseable(registry);
+        }
+    }
+
+    @Test
+    public void testCreateMeterRegistry_whenDisabled_returnsLoggingMeterRegistry() throws Exception {
+        // Ensure no environment variables -> enabled() should be false
+        modifyEnvMap(map -> {
+            map.remove(STATSD_SERVER_IP_ENV_NAME);
+            map.remove(STATSD_SERVER_PORT_ENV_NAME);
+        });
+        MeterRegistry registry = BPGStatsdConfig.createMeterRegistry();
+        try {
+            assertNotNull(registry, "Registry should not be null");
+            assertTrue(registry instanceof LoggingMeterRegistry, "Expected a LoggingMeterRegistry when enabled() is false");
+        } finally {
+            closeIfCloseable(registry);
+        }
+    }
+
+    // Helper: set a single env var
+    private static void setEnv(String key, String value) throws Exception {
+        modifyEnvMap(map -> map.put(key, value));
+    }
+
+    // Helper: reflectively modify the mutable env map held by the JVM
+    // The updater receives the mutable map and can change it
+    private static void modifyEnvMap(java.util.function.Consumer<Map<String, String>> updater) throws Exception {
+        try {
+            // For Oracle/OpenJDK
+            Class<?> pe = Class.forName("java.lang.ProcessEnvironment");
+            Field theEnvironmentField = pe.getDeclaredField("theEnvironment");
+            theEnvironmentField.setAccessible(true);
+            @SuppressWarnings("unchecked")
+            Map<String, String> env = (Map<String, String>) theEnvironmentField.get(null);
+            updater.accept(env);
+            Field theCaseInsensitiveEnvironmentField = pe.getDeclaredField("theCaseInsensitiveEnvironment");
+            theCaseInsensitiveEnvironmentField.setAccessible(true);
+            @SuppressWarnings("unchecked")
+            Map<String, String> cienv = (Map<String, String>) theCaseInsensitiveEnvironmentField.get(null);
+            updater.accept(cienv);
+        } catch (NoSuchFieldException nsfe) {
+            // For other JVMs, the unmodifiable map returned by System.getenv() has a mutable delegate field "m"
+            @SuppressWarnings("unchecked")
+            Map<String, String> env = System.getenv();
+            Class<?> cl = env.getClass();
+            Field m = cl.getDeclaredField("m");
+            m.setAccessible(true);
+            @SuppressWarnings("unchecked")
+            Map<String, String> map = (Map<String, String>) m.get(env);
+            updater.accept(map);
+        }
+    }
+
+    // Close registry if it has a close() method to avoid resource leakage
+    private static void closeIfCloseable(MeterRegistry registry) {
+        if (registry == null)
+            return;
+        try {
+            // MeterRegistry has a close() default method in some versions; invoke reflectively if present
+            registry.getClass().getMethod("close").invoke(registry);
+        } catch (NoSuchMethodException ignored) {
+            // nothing to do
+        } catch (Exception ignored) {
+            // ignore any exceptions during close in tests
+        }
+    }
+}
+
+--------------------------------------------
+Error in testCreateMeterRegistry_whenEnabled_returnsStatsdMeterRegistry(): line 104 : java.lang.reflect.InaccessibleObjectException: Unable to make field private static final java.util.HashMap java.lang.ProcessEnvironment.theEnvironment accessible: module java.base does not "opens java.lang" to unnamed module @289329af
+Error in testCreateMeterRegistry_whenEnabled_returnsStatsdMeterRegistry(): line 46 : java.lang.reflect.InaccessibleObjectException: Unable to make field private static final java.util.HashMap java.lang.ProcessEnvironment.theEnvironment accessible: module java.base does not "opens java.lang" to unnamed module @289329af
+Error in testCreateMeterRegistry_whenDisabled_returnsLoggingMeterRegistry(): line 104 : java.lang.reflect.InaccessibleObjectException: Unable to make field private static final java.util.HashMap java.lang.ProcessEnvironment.theEnvironment accessible: module java.base does not "opens java.lang" to unnamed module @289329af
+Error in testCreateMeterRegistry_whenDisabled_returnsLoggingMeterRegistry(): line 46 : java.lang.reflect.InaccessibleObjectException: Unable to make field private static final java.util.HashMap java.lang.ProcessEnvironment.theEnvironment accessible: module java.base does not "opens java.lang" to unnamed module @289329af

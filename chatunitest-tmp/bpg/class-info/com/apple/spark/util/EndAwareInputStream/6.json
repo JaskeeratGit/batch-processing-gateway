@@ -1,0 +1,24 @@
+{
+  "className": "EndAwareInputStream",
+  "methodName": "mark",
+  "brief": "@Override\n  public void mark(int readlimit){}",
+  "methodSignature": "mark(int)",
+  "sourceCode": "@Override\n  public void mark(int readlimit) {\n    inputStream.mark(readlimit);\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "int"
+  ],
+  "dependentMethods": {
+    "java.io.InputStream": [
+      "mark(int)"
+    ]
+  },
+  "full_method_info": "@Override\npublic void mark(int readlimit) {\n    inputStream.mark(readlimit);\n}",
+  "method_comment": "",
+  "method_annotation": "@Override\n"
+}

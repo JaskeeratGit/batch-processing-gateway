@@ -1,0 +1,18 @@
+{
+  "className": "QueueConfig",
+  "methodName": "getDriverNodeLabelValues",
+  "brief": "public List<String> getDriverNodeLabelValues(){}",
+  "methodSignature": "getDriverNodeLabelValues()",
+  "sourceCode": "public List<String> getDriverNodeLabelValues() {\n      return driverNodeLabelValues;\n    }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public List<String> getDriverNodeLabelValues() {\n    return driverNodeLabelValues;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

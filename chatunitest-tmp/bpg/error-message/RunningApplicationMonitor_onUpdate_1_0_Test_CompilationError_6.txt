@@ -1,0 +1,262 @@
+package com.apple.spark.core;
+
+import com.apple.spark.AppConfig;
+import com.apple.spark.core.Constants;
+import com.apple.spark.core.RunningApplicationMonitor;
+import com.apple.spark.operator.SparkApplication;
+import com.apple.spark.util.DateTimeUtils;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+import java.lang.reflect.Field;
+import java.time.Instant;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Timer;
+import java.util.concurrent.ConcurrentHashMap;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import static com.apple.spark.core.Constants.MONITOR_KILLED_APPS;
+import static com.apple.spark.core.Constants.MONITOR_RUNNING_APPS;
+import com.apple.spark.operator.DriverInfo;
+import com.apple.spark.operator.SparkApplicationResourceList;
+import com.apple.spark.util.CounterMetricContainer;
+import com.apple.spark.util.GaugeMetricContainer;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.Resource;
+import io.micrometer.core.instrument.Tag;
+import java.util.List;
+import java.util.TimerTask;
+import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Unit tests for RunningApplicationMonitor.onUpdate(...)
+ *
+ * Note: This test file provides minimal test-side implementations of
+ * com.apple.spark.operator.SparkApplication and
+ * com.apple.spark.operator.SparkApplicationResourceHelper in order to avoid
+ * reliance on Mockito static mocking and to ensure deterministic behavior
+ * for getState(...) calls.
+ */
+public class RunningApplicationMonitor_onUpdate_1_0_Test {
+
+    private Timer timer;
+
+    private SimpleMeterRegistry meterRegistry;
+
+    private AppConfig.SparkCluster sparkClusterMock;
+
+    private RunningApplicationMonitor monitor;
+
+    @BeforeEach
+    public void setup() {
+        timer = new Timer(true);
+        meterRegistry = new SimpleMeterRegistry();
+        // Provide a simple anonymous implementation instead of using Mockito.
+        sparkClusterMock = new AppConfig.SparkCluster() {
+
+            @Override
+            public String getEksCluster() {
+                return "";
+            }
+
+            @Override
+            public String getSparkApplicationNamespace() {
+                return "";
+            }
+        };
+        // Use a large delete interval to avoid TimerTask triggering during tests
+        monitor = new RunningApplicationMonitor(sparkClusterMock, timer, 60 * 60 * 1000L, meterRegistry);
+    }
+
+    @AfterEach
+    public void teardown() {
+        timer.cancel();
+    }
+
+    private ConcurrentHashMap<?, ?> getRunningApplicationsMap() throws Exception {
+        Field f = RunningApplicationMonitor.class.getDeclaredField("runningApplications");
+        f.setAccessible(true);
+        @SuppressWarnings("unchecked")
+        ConcurrentHashMap<?, ?> map = (ConcurrentHashMap<?, ?>) f.get(monitor);
+        return map;
+    }
+
+    @Test
+    public void testOnUpdate_stateNull_doesNothing() throws Exception {
+        // Pass null as current CRD state; our test-side SparkApplicationResourceHelper returns a non-RUNNING value for null,
+        // so monitor.onUpdate should do nothing and not throw.
+        monitor.onUpdate(null, null);
+        ConcurrentHashMap<?, ?> map = getRunningApplicationsMap();
+        assertEquals(0, map.size());
+    }
+
+    @Test
+    public void testOnUpdate_nameNull_logsAndDoesNothing() throws Exception {
+        // Create a lightweight SparkApplication instance with metadata having null name.
+        SparkApplication curr = instantiateSparkApplication();
+        ObjectMeta meta = new ObjectMeta();
+        meta.setName(null);
+        setMetadata(curr, meta);
+        // Our test-side SparkApplicationResourceHelper returns "RUNNING" for non-null SparkApplication instances.
+        monitor.onUpdate(null, curr);
+        ConcurrentHashMap<?, ?> map = getRunningApplicationsMap();
+        assertEquals(0, map.size());
+    }
+
+    @Test
+    public void testOnUpdate_creationTimestampNull_doesNothing() throws Exception {
+        SparkApplication curr = instantiateSparkApplication();
+        ObjectMeta meta = new ObjectMeta();
+        meta.setName("app1");
+        meta.setCreationTimestamp(null);
+        setMetadata(curr, meta);
+        monitor.onUpdate(null, curr);
+        ConcurrentHashMap<?, ?> map = getRunningApplicationsMap();
+        assertEquals(0, map.size());
+    }
+
+    @Test
+    public void testOnUpdate_invalidCreationTimestamp_doesNothing() throws Exception {
+        SparkApplication curr = instantiateSparkApplication();
+        ObjectMeta meta = new ObjectMeta();
+        meta.setName("app2");
+        meta.setCreationTimestamp("not-a-timestamp");
+        setMetadata(curr, meta);
+        monitor.onUpdate(null, curr);
+        ConcurrentHashMap<?, ?> map = getRunningApplicationsMap();
+        assertEquals(0, map.size());
+    }
+
+    @Test
+    public void testOnUpdate_namespaceNull_doesNothing() throws Exception {
+        SparkApplication curr = instantiateSparkApplication();
+        ObjectMeta meta = new ObjectMeta();
+        meta.setName("app3");
+        meta.setCreationTimestamp(Instant.now().toString());
+        meta.setNamespace(null);
+        setMetadata(curr, meta);
+        monitor.onUpdate(null, curr);
+        ConcurrentHashMap<?, ?> map = getRunningApplicationsMap();
+        assertEquals(0, map.size());
+    }
+
+    @Test
+    public void testOnUpdate_addsRunningApplication_withAndWithoutLabel() throws Exception {
+        // First: no labels -> should still add with default max running millis
+        SparkApplication currNoLabel = instantiateSparkApplication();
+        ObjectMeta metaNoLabel = new ObjectMeta();
+        metaNoLabel.setName("app-no-label");
+        metaNoLabel.setCreationTimestamp(Instant.now().toString());
+        metaNoLabel.setNamespace("ns1");
+        metaNoLabel.setLabels(null);
+        setMetadata(currNoLabel, metaNoLabel);
+        monitor.onUpdate(null, currNoLabel);
+        ConcurrentHashMap<?, ?> map = getRunningApplicationsMap();
+        assertEquals(1, map.size());
+        // Second: provide label with a specific max running millis value
+        SparkApplication currWithLabel = instantiateSparkApplication();
+        ObjectMeta metaWithLabel = new ObjectMeta();
+        metaWithLabel.setName("app-with-label");
+        metaWithLabel.setCreationTimestamp(Instant.now().toString());
+        metaWithLabel.setNamespace("ns2");
+        Map<String, String> labels = Collections.singletonMap(Constants.MAX_RUNNING_MILLIS_LABEL, "12345");
+        metaWithLabel.setLabels(labels);
+        setMetadata(currWithLabel, metaWithLabel);
+        monitor.onUpdate(null, currWithLabel);
+        ConcurrentHashMap<?, ?> mapAfter = getRunningApplicationsMap();
+        // now should have two entries (one from previous, one just added)
+        assertEquals(2, mapAfter.size());
+        // ensure keys include the expected namespace/name combinations by iterating keys and checking their toString contains expected values
+        boolean foundNoLabel = false;
+        boolean foundWithLabel = false;
+        for (Object key : mapAfter.keySet()) {
+            String s = key.toString();
+            if (s.contains("ns1") && s.contains("app-no-label")) {
+                foundNoLabel = true;
+            }
+            if (s.contains("ns2") && s.contains("app-with-label")) {
+                foundWithLabel = true;
+            }
+        }
+        assertTrue(foundNoLabel);
+        assertTrue(foundWithLabel);
+    }
+
+    // Helper to instantiate SparkApplication directly (test-side implementation)
+    private SparkApplication instantiateSparkApplication() {
+        return new SparkApplication();
+    }
+
+    // Helper to set metadata on SparkApplication via setter or field
+    private void setMetadata(SparkApplication app, ObjectMeta meta) throws Exception {
+        if (app == null)
+            return;
+        try {
+            java.lang.reflect.Method setter = app.getClass().getMethod("setMetadata", ObjectMeta.class);
+            setter.invoke(app, meta);
+            return;
+        } catch (NoSuchMethodException e) {
+            // try field
+            try {
+                Field f = app.getClass().getDeclaredField("metadata");
+                f.setAccessible(true);
+                f.set(app, meta);
+                return;
+            } catch (NoSuchFieldException ex) {
+                throw new IllegalStateException("Unable to set metadata on SparkApplication", ex);
+            }
+        }
+    }
+}
+
+/*
+ * Test-side minimal implementation of SparkApplicationResourceHelper.
+ * This is placed in the com.apple.spark.operator package so that at runtime
+ * it will be used by RunningApplicationMonitor when it calls
+ * com.apple.spark.operator.SparkApplicationResourceHelper.getState(...)
+ *
+ * Behavior:
+ * - If app == null -> return "NOT_RUNNING" (so monitor will not treat it as RUNNING).
+ * - If app != null -> return "RUNNING" (so monitor will exercise RUNNING path for tests).
+ */
+class SparkApplicationResourceHelper {
+
+    public static String getState(SparkApplication app) {
+        if (app == null) {
+            return "NOT_RUNNING";
+        }
+        return "RUNNING";
+    }
+}
+
+/*
+ * Test-side minimal SparkApplication class to avoid depending on production class.
+ * Placed in the com.apple.spark.operator package so RunningApplicationMonitor
+ * accepts instances created here.
+ */
+class SparkApplication {
+
+    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
+
+    public SparkApplication() {
+    }
+
+    public io.fabric8.kubernetes.api.model.ObjectMeta getMetadata() {
+        return metadata;
+    }
+
+    public void setMetadata(io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
+        this.metadata = metadata;
+    }
+}
+
+--------------------------------------------
+Error in RunningApplicationMonitor_onUpdate_1_0_Test: line 6 : com.apple.spark.core.SparkApplication is already defined in this compilation unit

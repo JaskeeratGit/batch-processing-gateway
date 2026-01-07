@@ -1,0 +1,18 @@
+{
+  "className": "SubmitApplicationRequest",
+  "methodName": "getMainClass",
+  "brief": "public String getMainClass(){}",
+  "methodSignature": "getMainClass()",
+  "sourceCode": "public String getMainClass() {\n    return mainClass;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public String getMainClass() {\n    return mainClass;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

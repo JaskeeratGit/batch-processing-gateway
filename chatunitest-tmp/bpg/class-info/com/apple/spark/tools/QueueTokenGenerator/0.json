@@ -1,0 +1,38 @@
+{
+  "className": "QueueTokenGenerator",
+  "methodName": "main",
+  "brief": "public static void main(String[] args){}",
+  "methodSignature": "main(String[])",
+  "sourceCode": "public static void main(String[] args) {\n    String secret = null;\n    String subject = \"queueToken\";\n    String queue = null;\n\n    for (int i = 0; i < args.length; ) {\n      String argName = args[i++];\n      if (argName.equalsIgnoreCase(\"-secret\")) {\n        secret = args[i++];\n      } else if (argName.equalsIgnoreCase(\"-subject\")) {\n        subject = args[i++];\n      } else if (argName.equalsIgnoreCase(\"-queue\")) {\n        queue = args[i++];\n      } else {\n        System.err.println(String.format(\"Unsupported argument: %s\", argName));\n        printArgumentExample();\n        System.exit(-1);\n      }\n    }\n\n    if (secret == null || secret.isEmpty()) {\n      System.err.println(String.format(\"Argument missing: -secret\"));\n      printArgumentExample();\n      System.exit(-1);\n    }\n\n    if (subject == null || subject.isEmpty()) {\n      System.err.println(String.format(\"Argument missing: -subject\"));\n      printArgumentExample();\n      System.exit(-1);\n    }\n\n    if (queue == null || queue.isEmpty()) {\n      System.err.println(String.format(\"Argument missing: -queue\"));\n      printArgumentExample();\n      System.exit(-1);\n    }\n\n    String token =\n        JwtUtils.createToken(\n            secret,\n            QueueTokenVerifier.ISSUER_ADMIN,\n            subject,\n            QueueTokenVerifier.CLAIM_ALLOWED_QUEUES,\n            new String[] {queue});\n    System.out.println(token);\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String[]"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "isEmpty()",
+      "format(String, Object[])",
+      "equalsIgnoreCase(String)"
+    ],
+    "java.io.PrintStream": [
+      "println(String)"
+    ],
+    "com.apple.spark.tools.QueueTokenGenerator": [
+      "printArgumentExample()"
+    ],
+    "java.lang.System": [
+      "exit(int)"
+    ],
+    "com.apple.spark.util.JwtUtils": [
+      "createToken(String, String, String, String, String[])"
+    ]
+  },
+  "full_method_info": "public static void main(String[] args) {\n    String secret = null;\n    String subject = \"queueToken\";\n    String queue = null;\n    for (int i = 0; i < args.length; ) {\n        String argName = args[i++];\n        if (argName.equalsIgnoreCase(\"-secret\")) {\n            secret = args[i++];\n        } else if (argName.equalsIgnoreCase(\"-subject\")) {\n            subject = args[i++];\n        } else if (argName.equalsIgnoreCase(\"-queue\")) {\n            queue = args[i++];\n        } else {\n            System.err.println(String.format(\"Unsupported argument: %s\", argName));\n            printArgumentExample();\n            System.exit(-1);\n        }\n    }\n    if (secret == null || secret.isEmpty()) {\n        System.err.println(String.format(\"Argument missing: -secret\"));\n        printArgumentExample();\n        System.exit(-1);\n    }\n    if (subject == null || subject.isEmpty()) {\n        System.err.println(String.format(\"Argument missing: -subject\"));\n        printArgumentExample();\n        System.exit(-1);\n    }\n    if (queue == null || queue.isEmpty()) {\n        System.err.println(String.format(\"Argument missing: -queue\"));\n        printArgumentExample();\n        System.exit(-1);\n    }\n    String token = JwtUtils.createToken(secret, QueueTokenVerifier.ISSUER_ADMIN, subject, QueueTokenVerifier.CLAIM_ALLOWED_QUEUES, new String[] { queue });\n    System.out.println(token);\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

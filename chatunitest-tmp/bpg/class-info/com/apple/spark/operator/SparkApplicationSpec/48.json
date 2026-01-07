@@ -1,0 +1,18 @@
+{
+  "className": "SparkApplicationSpec",
+  "methodName": "getSparkUIOptions",
+  "brief": "public SparkUIConfiguration getSparkUIOptions(){}",
+  "methodSignature": "getSparkUIOptions()",
+  "sourceCode": "public SparkUIConfiguration getSparkUIOptions() {\n    return sparkUIOptions;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public SparkUIConfiguration getSparkUIOptions() {\n    return sparkUIOptions;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

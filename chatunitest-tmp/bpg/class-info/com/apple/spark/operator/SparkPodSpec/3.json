@@ -1,0 +1,18 @@
+{
+  "className": "SparkPodSpec",
+  "methodName": "getCoreLimit",
+  "brief": "public String getCoreLimit(){}",
+  "methodSignature": "getCoreLimit()",
+  "sourceCode": "public String getCoreLimit() {\n    return coreLimit;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public String getCoreLimit() {\n    return coreLimit;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

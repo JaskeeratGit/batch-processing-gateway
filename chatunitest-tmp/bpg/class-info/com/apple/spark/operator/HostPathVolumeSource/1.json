@@ -1,0 +1,22 @@
+{
+  "className": "HostPathVolumeSource",
+  "methodName": "setPath",
+  "brief": "public void setPath(String path){}",
+  "methodSignature": "setPath(String)",
+  "sourceCode": "public void setPath(String path) {\n    this.path = path;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": []
+  },
+  "full_method_info": "public void setPath(String path) {\n    this.path = path;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

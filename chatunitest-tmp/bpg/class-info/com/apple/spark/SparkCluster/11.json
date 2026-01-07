@@ -1,0 +1,22 @@
+{
+  "className": "SparkCluster",
+  "methodName": "setUserName",
+  "brief": "public void setUserName(String userName){}",
+  "methodSignature": "setUserName(String)",
+  "sourceCode": "public void setUserName(String userName) {\n      this.userName = userName;\n    }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": []
+  },
+  "full_method_info": "public void setUserName(String userName) {\n    this.userName = userName;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

@@ -1,0 +1,18 @@
+{
+  "className": "SparkApplicationSpec",
+  "methodName": "getSparkConfigMap",
+  "brief": "public String getSparkConfigMap(){}",
+  "methodSignature": "getSparkConfigMap()",
+  "sourceCode": "public String getSparkConfigMap() {\n    return sparkConfigMap;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public String getSparkConfigMap() {\n    return sparkConfigMap;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

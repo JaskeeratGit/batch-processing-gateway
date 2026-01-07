@@ -1,0 +1,22 @@
+{
+  "className": "AppConfig",
+  "methodName": "setQueueTokenSOPS",
+  "brief": "public void setQueueTokenSOPS(QueueTokenConfig queueTokenSOPS){}",
+  "methodSignature": "setQueueTokenSOPS(QueueTokenConfig)",
+  "sourceCode": "public void setQueueTokenSOPS(QueueTokenConfig queueTokenSOPS) {\n    this.queueTokenSOPS = queueTokenSOPS;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "QueueTokenConfig"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.AppConfig.QueueTokenConfig": []
+  },
+  "full_method_info": "public void setQueueTokenSOPS(QueueTokenConfig queueTokenSOPS) {\n    this.queueTokenSOPS = queueTokenSOPS;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

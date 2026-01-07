@@ -1,0 +1,60 @@
+{
+  "className": "KubernetesHelper",
+  "methodName": "getK8sConfig",
+  "brief": "private static Config getK8sConfig(AppConfig.SparkCluster sparkCluster){}",
+  "methodSignature": "getK8sConfig(AppConfig.SparkCluster)",
+  "sourceCode": "private static Config getK8sConfig(AppConfig.SparkCluster sparkCluster) {\n    Long timeoutMillis = sparkCluster.getTimeoutMillis();\n    if (timeoutMillis == null) {\n      timeoutMillis = DEFAULT_TIMEOUT_MILLIS;\n    }\n    String userToken = sparkCluster.getUserTokenSOPSDecoded();\n    String caCertData = sparkCluster.getCaCertDataSOPSDecoded();\n    ConfigBuilder configBuilder =\n        new ConfigBuilder()\n            .withApiVersion(\"v1\")\n            .withMasterUrl(sparkCluster.getMasterUrl())\n            .withUsername(sparkCluster.getUserName())\n            .withOauthToken(userToken)\n            .withCaCertData(caCertData)\n            .withNamespace(sparkCluster.getSparkApplicationNamespace())\n            .withConnectionTimeout(timeoutMillis.intValue())\n            .withRequestTimeout(timeoutMillis.intValue())\n            .withWebsocketTimeout(timeoutMillis)\n            .withUserAgent(Constants.KUBERNETES_USER_AGENT);\n    if (sparkCluster.getHttpProxy() != null && !sparkCluster.getHttpProxy().isEmpty()) {\n      configBuilder = configBuilder.withHttpProxy(sparkCluster.getHttpProxy());\n    }\n    if (sparkCluster.getHttpsProxy() != null && !sparkCluster.getHttpsProxy().isEmpty()) {\n      configBuilder = configBuilder.withHttpsProxy(sparkCluster.getHttpsProxy());\n    }\n    Config config = configBuilder.build();\n    logger.debug(String.format(\"Spark cluster userName %s\", sparkCluster.getUserName()));\n    logger.debug(\n        String.format(\"Spark cluster userToken first 10 char %s\", userToken.substring(0, 10)));\n    logger.debug(String.format(\"Spark cluster userToken length %s\", userToken.length()));\n    logger.debug(String.format(\"Spark cluster caCertData length %s\", caCertData.length()));\n    return config;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "AppConfig.SparkCluster"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.AppConfig.SparkCluster": [
+      "getUserTokenSOPSDecoded()",
+      "getHttpsProxy()",
+      "getMasterUrl()",
+      "getCaCertDataSOPSDecoded()",
+      "getHttpProxy()",
+      "getTimeoutMillis()",
+      "getUserName()",
+      "getSparkApplicationNamespace()"
+    ],
+    "io.fabric8.kubernetes.client.ConfigFluentImpl": [
+      "withHttpProxy(String)",
+      "withNamespace(String)",
+      "withRequestTimeout(int)",
+      "withCaCertData(String)",
+      "withOauthToken(String)",
+      "withUserAgent(String)",
+      "withMasterUrl(String)",
+      "withConnectionTimeout(int)",
+      "withWebsocketTimeout(long)",
+      "withUsername(String)",
+      "withApiVersion(String)",
+      "withHttpsProxy(String)"
+    ],
+    "java.lang.Long": [
+      "intValue()"
+    ],
+    "java.lang.String": [
+      "isEmpty()",
+      "substring(int, int)",
+      "format(String, Object[])",
+      "length()"
+    ],
+    "io.fabric8.kubernetes.client.ConfigBuilder": [
+      "build()"
+    ],
+    "org.slf4j.Logger": [
+      "debug(String)"
+    ]
+  },
+  "full_method_info": "private static Config getK8sConfig(AppConfig.SparkCluster sparkCluster) {\n    Long timeoutMillis = sparkCluster.getTimeoutMillis();\n    if (timeoutMillis == null) {\n        timeoutMillis = DEFAULT_TIMEOUT_MILLIS;\n    }\n    String userToken = sparkCluster.getUserTokenSOPSDecoded();\n    String caCertData = sparkCluster.getCaCertDataSOPSDecoded();\n    ConfigBuilder configBuilder = new ConfigBuilder().withApiVersion(\"v1\").withMasterUrl(sparkCluster.getMasterUrl()).withUsername(sparkCluster.getUserName()).withOauthToken(userToken).withCaCertData(caCertData).withNamespace(sparkCluster.getSparkApplicationNamespace()).withConnectionTimeout(timeoutMillis.intValue()).withRequestTimeout(timeoutMillis.intValue()).withWebsocketTimeout(timeoutMillis).withUserAgent(Constants.KUBERNETES_USER_AGENT);\n    if (sparkCluster.getHttpProxy() != null && !sparkCluster.getHttpProxy().isEmpty()) {\n        configBuilder = configBuilder.withHttpProxy(sparkCluster.getHttpProxy());\n    }\n    if (sparkCluster.getHttpsProxy() != null && !sparkCluster.getHttpsProxy().isEmpty()) {\n        configBuilder = configBuilder.withHttpsProxy(sparkCluster.getHttpsProxy());\n    }\n    Config config = configBuilder.build();\n    logger.debug(String.format(\"Spark cluster userName %s\", sparkCluster.getUserName()));\n    logger.debug(String.format(\"Spark cluster userToken first 10 char %s\", userToken.substring(0, 10)));\n    logger.debug(String.format(\"Spark cluster userToken length %s\", userToken.length()));\n    logger.debug(String.format(\"Spark cluster caCertData length %s\", caCertData.length()));\n    return config;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

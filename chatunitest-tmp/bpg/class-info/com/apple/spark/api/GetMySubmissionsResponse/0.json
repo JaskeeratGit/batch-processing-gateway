@@ -1,0 +1,18 @@
+{
+  "className": "GetMySubmissionsResponse",
+  "methodName": "getSubmissions",
+  "brief": "public List<SubmissionSummary> getSubmissions(){}",
+  "methodSignature": "getSubmissions()",
+  "sourceCode": "public List<SubmissionSummary> getSubmissions() {\n    return submissions;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public List<SubmissionSummary> getSubmissions() {\n    return submissions;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

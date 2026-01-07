@@ -1,0 +1,47 @@
+{
+  "attempt0": {
+    "testClassName": "SparkConstants_isApplicationStopped_0_0_Test",
+    "fullName": "com.apple.spark.core.SparkConstants_isApplicationStopped_0_0_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/SparkConstants_isApplicationStopped_0_0_Test.java",
+    "className": "SparkConstants",
+    "packageName": "com.apple.spark.core",
+    "methodName": "isApplicationStopped",
+    "methodSig": "isApplicationStopped(String)"
+  },
+  "attempt1": {
+    "testClassName": "SparkConstants_isApplicationStopped_0_1_Test",
+    "fullName": "com.apple.spark.core.SparkConstants_isApplicationStopped_0_1_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/SparkConstants_isApplicationStopped_0_0_Test.java",
+    "className": "SparkConstants",
+    "packageName": "com.apple.spark.core",
+    "methodName": "isApplicationStopped",
+    "methodSig": "isApplicationStopped(String)"
+  },
+  "attempt2": {
+    "testClassName": "SparkConstants_isApplicationStopped_0_2_Test",
+    "fullName": "com.apple.spark.core.SparkConstants_isApplicationStopped_0_2_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/SparkConstants_isApplicationStopped_0_0_Test.java",
+    "className": "SparkConstants",
+    "packageName": "com.apple.spark.core",
+    "methodName": "isApplicationStopped",
+    "methodSig": "isApplicationStopped(String)"
+  },
+  "attempt3": {
+    "testClassName": "SparkConstants_isApplicationStopped_0_3_Test",
+    "fullName": "com.apple.spark.core.SparkConstants_isApplicationStopped_0_3_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/SparkConstants_isApplicationStopped_0_0_Test.java",
+    "className": "SparkConstants",
+    "packageName": "com.apple.spark.core",
+    "methodName": "isApplicationStopped",
+    "methodSig": "isApplicationStopped(String)"
+  },
+  "attempt4": {
+    "testClassName": "SparkConstants_isApplicationStopped_0_4_Test",
+    "fullName": "com.apple.spark.core.SparkConstants_isApplicationStopped_0_4_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/SparkConstants_isApplicationStopped_0_0_Test.java",
+    "className": "SparkConstants",
+    "packageName": "com.apple.spark.core",
+    "methodName": "isApplicationStopped",
+    "methodSig": "isApplicationStopped(String)"
+  }
+}

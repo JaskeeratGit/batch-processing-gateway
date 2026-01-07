@@ -1,0 +1,22 @@
+{
+  "className": "EnvVarSource",
+  "methodName": "setFieldRef",
+  "brief": "public void setFieldRef(ObjectFieldSelector fieldRef){}",
+  "methodSignature": "setFieldRef(ObjectFieldSelector)",
+  "sourceCode": "public void setFieldRef(ObjectFieldSelector fieldRef) {\n    this.fieldRef = fieldRef;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "ObjectFieldSelector"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.operator.ObjectFieldSelector": []
+  },
+  "full_method_info": "public void setFieldRef(ObjectFieldSelector fieldRef) {\n    this.fieldRef = fieldRef;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

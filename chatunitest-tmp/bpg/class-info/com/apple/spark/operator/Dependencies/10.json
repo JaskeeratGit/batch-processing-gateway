@@ -1,0 +1,18 @@
+{
+  "className": "Dependencies",
+  "methodName": "getRepositories",
+  "brief": "public List<String> getRepositories(){}",
+  "methodSignature": "getRepositories()",
+  "sourceCode": "public List<String> getRepositories() {\n    return repositories;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public List<String> getRepositories() {\n    return repositories;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

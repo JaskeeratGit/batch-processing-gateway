@@ -1,0 +1,54 @@
+{
+  "className": "ApplicationSubmissionHelper",
+  "methodName": "applyFeatureGate",
+  "brief": "private static Map<String, String> applyFeatureGate(\n      SubmitApplicationRequest request, Map<String, String> conf){}",
+  "methodSignature": "applyFeatureGate(SubmitApplicationRequest, Map)",
+  "sourceCode": "private static Map<String, String> applyFeatureGate(\n      SubmitApplicationRequest request, Map<String, String> conf) {\n    String featureSwitch = \"RangerOnCustomImage\";\n    List<String> rangerKeys =\n        new ArrayList<>(Arrays.asList(\"spark.sql.extensions\", \"spark.ranger.plugin.spark.env\"));\n\n    Map<String, String> filteredMap =\n        conf.entrySet().stream()\n            .filter(\n                map -> {\n                  if (request.getImage() != null\n                      && (StringUtils.isEmpty(conf.get(featureSwitch))\n                          || !conf.get(featureSwitch).equalsIgnoreCase(\"On\"))) {\n                    return !rangerKeys.contains(map.getKey());\n                  } else {\n                    return true;\n                  }\n                })\n            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));\n\n    return filteredMap;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "SubmitApplicationRequest",
+    "Map<String,String>"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.api.SubmitApplicationRequest": [
+      "getImage()"
+    ],
+    "java.util.Arrays": [
+      "asList(T[])"
+    ],
+    "java.util.stream.Stream": [
+      "collect(Collector<? super T, A, R>)",
+      "filter(Predicate<? super T>)"
+    ],
+    "java.util.Collection": [
+      "stream()"
+    ],
+    "java.util.Map": [
+      "get(Object)",
+      "entrySet()"
+    ],
+    "org.apache.commons.lang3.StringUtils": [
+      "isEmpty(CharSequence)"
+    ],
+    "java.lang.String": [
+      "equalsIgnoreCase(String)"
+    ],
+    "java.util.List": [
+      "contains(Object)"
+    ],
+    "java.util.Map.Entry": [
+      "getKey()"
+    ],
+    "java.util.stream.Collectors": [
+      "toMap(Function<? super T, ? extends K>, Function<? super T, ? extends U>)"
+    ]
+  },
+  "full_method_info": "private static Map<String, String> applyFeatureGate(SubmitApplicationRequest request, Map<String, String> conf) {\n    String featureSwitch = \"RangerOnCustomImage\";\n    List<String> rangerKeys = new ArrayList<>(Arrays.asList(\"spark.sql.extensions\", \"spark.ranger.plugin.spark.env\"));\n    Map<String, String> filteredMap = conf.entrySet().stream().filter(map -> {\n        if (request.getImage() != null && (StringUtils.isEmpty(conf.get(featureSwitch)) || !conf.get(featureSwitch).equalsIgnoreCase(\"On\"))) {\n            return !rangerKeys.contains(map.getKey());\n        } else {\n            return true;\n        }\n    }).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));\n    return filteredMap;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

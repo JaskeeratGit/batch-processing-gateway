@@ -1,0 +1,66 @@
+{
+  "fullClassName": "com.apple.spark.rest.HealthcheckRest",
+  "className": "HealthcheckRest",
+  "index": 39,
+  "modifier": "[public ]",
+  "extend": "[RestBase]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.rest",
+  "packageDeclaration": "package com.apple.spark.rest;",
+  "classSignature": "@PermitAll\n@Path(HEALTH_CHECK_API)\n@Produces(MediaType.APPLICATION_JSON)\npublic class HealthcheckRest",
+  "hasConstructor": true,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import static com.apple.spark.core.Constants.HEALTH_CHECK_API;",
+    "import com.apple.spark.AppConfig;",
+    "import com.apple.spark.api.HealthcheckResponse;",
+    "import com.apple.spark.security.User;",
+    "import io.dropwizard.auth.Auth;",
+    "import io.micrometer.core.instrument.MeterRegistry;",
+    "import io.micrometer.core.instrument.Tag;",
+    "import io.swagger.v3.oas.annotations.Operation;",
+    "import io.swagger.v3.oas.annotations.Parameter;",
+    "import io.swagger.v3.oas.annotations.media.Content;",
+    "import io.swagger.v3.oas.annotations.media.Schema;",
+    "import io.swagger.v3.oas.annotations.responses.ApiResponse;",
+    "import javax.annotation.security.PermitAll;",
+    "import javax.ws.rs.GET;",
+    "import javax.ws.rs.Path;",
+    "import javax.ws.rs.Produces;",
+    "import javax.ws.rs.core.MediaType;",
+    "import org.slf4j.Logger;",
+    "import org.slf4j.LoggerFactory;"
+  ],
+  "fields": [
+    "private static final Logger logger = LoggerFactory.getLogger(HealthcheckRest.class);"
+  ],
+  "superClasses": [
+    "RestBase"
+  ],
+  "implementedTypes": [],
+  "methodSigs": {
+    "healthcheckStatus(User)": "0",
+    "HealthcheckRest(AppConfig, MeterRegistry)": "1"
+  },
+  "methodsBrief": [
+    "@GET\n  @Path(\"status\")\n  @Operation(\n      summary = \"Check the current service status\",\n      tags = {\"Health Check\"})\n  @ApiResponse(\n      responseCode = \"200\",\n      content =\n          @Content(\n              mediaType = \"application/json\",\n                  schema = @Schema(implementation = HealthcheckResponse.class)),\n          description = \"OK\")\n  public HealthcheckResponse healthcheckStatus(@Parameter(hidden = true) @Auth User user){}",
+    "public HealthcheckRest(AppConfig appConfig, MeterRegistry meterRegistry){}"
+  ],
+  "constructorSigs": [
+    "HealthcheckRest(AppConfig, MeterRegistry)"
+  ],
+  "constructorBrief": [
+    "public HealthcheckRest(AppConfig appConfig, MeterRegistry meterRegistry){}"
+  ],
+  "getterSetterSigs": [],
+  "getterSetterBrief": [],
+  "constructorDeps": {
+    "com.apple.spark.AppConfig": [],
+    "io.micrometer.core.instrument.MeterRegistry": []
+  },
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.rest;\n\nimport static com.apple.spark.core.Constants.HEALTH_CHECK_API;\nimport com.apple.spark.AppConfig;\nimport com.apple.spark.api.HealthcheckResponse;\nimport com.apple.spark.security.User;\nimport io.dropwizard.auth.Auth;\nimport io.micrometer.core.instrument.MeterRegistry;\nimport io.micrometer.core.instrument.Tag;\nimport io.swagger.v3.oas.annotations.Operation;\nimport io.swagger.v3.oas.annotations.Parameter;\nimport io.swagger.v3.oas.annotations.media.Content;\nimport io.swagger.v3.oas.annotations.media.Schema;\nimport io.swagger.v3.oas.annotations.responses.ApiResponse;\nimport javax.annotation.security.PermitAll;\nimport javax.ws.rs.GET;\nimport javax.ws.rs.Path;\nimport javax.ws.rs.Produces;\nimport javax.ws.rs.core.MediaType;\nimport org.slf4j.Logger;\nimport org.slf4j.LoggerFactory;\n\n@PermitAll\n@Path(HEALTH_CHECK_API)\n@Produces(MediaType.APPLICATION_JSON)\npublic class HealthcheckRest extends RestBase {\n\n    private static final Logger logger = LoggerFactory.getLogger(HealthcheckRest.class);\n\n    public HealthcheckRest(AppConfig appConfig, MeterRegistry meterRegistry) {\n        super(appConfig, meterRegistry);\n    }\n\n    @GET\n    @Path(\"status\")\n    @Operation(summary = \"Check the current service status\", tags = { \"Health Check\" })\n    @ApiResponse(responseCode = \"200\", content = @Content(mediaType = \"application/json\", schema = @Schema(implementation = HealthcheckResponse.class)), description = \"OK\")\n    public HealthcheckResponse healthcheckStatus(@Parameter(hidden = true) @Auth User user) {\n        requestCounters.increment(REQUEST_METRIC_NAME, Tag.of(\"name\", \"healthcheck\"), Tag.of(\"user\", user.getName()));\n        HealthcheckResponse response = new HealthcheckResponse();\n        response.setStatus(\"OK\");\n        return response;\n    }\n}\n",
+  "classDeclarationCode": "@PermitAll\n@Path(HEALTH_CHECK_API)\n@Produces(MediaType.APPLICATION_JSON)\npublic class HealthcheckRest extends RestBase {\n\n    private static final Logger logger = LoggerFactory.getLogger(HealthcheckRest.class);\n\n    public HealthcheckRest(AppConfig appConfig, MeterRegistry meterRegistry) {\n        super(appConfig, meterRegistry);\n    }\n\n    @GET\n    @Path(\"status\")\n    @Operation(summary = \"Check the current service status\", tags = { \"Health Check\" })\n    @ApiResponse(responseCode = \"200\", content = @Content(mediaType = \"application/json\", schema = @Schema(implementation = HealthcheckResponse.class)), description = \"OK\")\n    public HealthcheckResponse healthcheckStatus(@Parameter(hidden = true) @Auth User user) {\n        requestCounters.increment(REQUEST_METRIC_NAME, Tag.of(\"name\", \"healthcheck\"), Tag.of(\"user\", user.getName()));\n        HealthcheckResponse response = new HealthcheckResponse();\n        response.setStatus(\"OK\");\n        return response;\n    }\n}",
+  "subClasses": []
+}

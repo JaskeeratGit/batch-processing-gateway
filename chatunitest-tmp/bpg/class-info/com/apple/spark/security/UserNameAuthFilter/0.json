@@ -1,0 +1,36 @@
+{
+  "className": "UserNameAuthFilter",
+  "methodName": "filter",
+  "brief": "@Override\n  public void filter(ContainerRequestContext requestContext){}",
+  "methodSignature": "filter(ContainerRequestContext)",
+  "sourceCode": "@Override\n  public void filter(ContainerRequestContext requestContext) {\n    BasicCredentials credentials =\n        this.getCredentials(requestContext.getHeaders().getFirst(Constants.USER_HEADER_KEY));\n    if (!this.authenticate(requestContext, credentials, \"BASIC\")) {\n      throw new WebApplicationException(\n          this.unauthorizedHandler.buildResponse(this.prefix, this.realm));\n    }\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "ContainerRequestContext"
+  ],
+  "dependentMethods": {
+    "javax.ws.rs.container.ContainerRequestContext": [
+      "getHeaders()"
+    ],
+    "com.apple.spark.security.UserNameAuthFilter": [
+      "getCredentials(String)"
+    ],
+    "javax.ws.rs.core.MultivaluedMap": [
+      "getFirst(K)"
+    ],
+    "io.dropwizard.auth.AuthFilter": [
+      "authenticate(ContainerRequestContext, C, String)"
+    ],
+    "io.dropwizard.auth.UnauthorizedHandler": [
+      "buildResponse(String, String)"
+    ]
+  },
+  "full_method_info": "@Override\npublic void filter(ContainerRequestContext requestContext) {\n    BasicCredentials credentials = this.getCredentials(requestContext.getHeaders().getFirst(Constants.USER_HEADER_KEY));\n    if (!this.authenticate(requestContext, credentials, \"BASIC\")) {\n        throw new WebApplicationException(this.unauthorizedHandler.buildResponse(this.prefix, this.realm));\n    }\n}",
+  "method_comment": "",
+  "method_annotation": "@Override\n"
+}

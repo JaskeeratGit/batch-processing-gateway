@@ -1,0 +1,20 @@
+{
+  "className": "KubernetesHelper",
+  "methodName": "isLabelValueAlphanumericChar",
+  "brief": "private static boolean isLabelValueAlphanumericChar(char ch){}",
+  "methodSignature": "isLabelValueAlphanumericChar(char)",
+  "sourceCode": "private static boolean isLabelValueAlphanumericChar(char ch) {\n    return (ch >= '0' && ch <= '9') || (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z');\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "char"
+  ],
+  "dependentMethods": {},
+  "full_method_info": "private static boolean isLabelValueAlphanumericChar(char ch) {\n    return (ch >= '0' && ch <= '9') || (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z');\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

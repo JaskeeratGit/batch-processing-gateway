@@ -1,0 +1,22 @@
+{
+  "className": "NodeSelectorRequirement",
+  "methodName": "setValues",
+  "brief": "public void setValues(String[] values){}",
+  "methodSignature": "setValues(String[])",
+  "sourceCode": "public void setValues(String[] values) {\n    this.values = values;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String[]"
+  ],
+  "dependentMethods": {
+    "java.lang.String": []
+  },
+  "full_method_info": "public void setValues(String[] values) {\n    this.values = values;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

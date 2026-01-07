@@ -1,0 +1,33 @@
+{
+  "className": "RoundRobinZonePicker",
+  "methodName": "update",
+  "brief": "@Override\n  public void update(final List<String> allowedZones){}",
+  "methodSignature": "update(List)",
+  "sourceCode": "@Override\n  public void update(final List<String> allowedZones) {\n    if (allowedZones == null || allowedZones.isEmpty()) {\n      throw new RuntimeException(\"Invalid allowedZones: Empty\");\n    }\n    if (allowedZones.stream().anyMatch(Objects::isNull)\n        || allowedZones.stream().anyMatch(String::isEmpty)) {\n      throw new RuntimeException(\"Invalid allowedZones: Some zone is empty\");\n    }\n    this.allowedZones = allowedZones;\n    this.index.set(0);\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "List<String>"
+  ],
+  "dependentMethods": {
+    "java.util.List": [
+      "isEmpty()"
+    ],
+    "java.util.stream.Stream": [
+      "anyMatch(Predicate<? super T>)"
+    ],
+    "java.util.Collection": [
+      "stream()"
+    ],
+    "java.util.concurrent.atomic.AtomicInteger": [
+      "set(int)"
+    ]
+  },
+  "full_method_info": "@Override\npublic void update(final List<String> allowedZones) {\n    if (allowedZones == null || allowedZones.isEmpty()) {\n        throw new RuntimeException(\"Invalid allowedZones: Empty\");\n    }\n    if (allowedZones.stream().anyMatch(Objects::isNull) || allowedZones.stream().anyMatch(String::isEmpty)) {\n        throw new RuntimeException(\"Invalid allowedZones: Some zone is empty\");\n    }\n    this.allowedZones = allowedZones;\n    this.index.set(0);\n}",
+  "method_comment": "",
+  "method_annotation": "@Override\n"
+}

@@ -1,0 +1,25 @@
+{
+  "className": "LogDao",
+  "methodName": "verifyDBName",
+  "brief": "public static void verifyDBName(String dbName){}",
+  "methodSignature": "verifyDBName(String)",
+  "sourceCode": "public static void verifyDBName(String dbName) {\n    if (dbName == null || dbName.length() == 0) {\n      throw new RuntimeException(\"DB name should not be null or empty\");\n    }\n    if (dbName.matches(\".*[^0-9a-zA-Z$_].*\")) {\n      throw new RuntimeException(\"DB name should include only [^0-9a-zA-Z$_]: \" + dbName);\n    }\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "matches(String)",
+      "length()"
+    ]
+  },
+  "full_method_info": "/**\n * Verify a DB name to ensure the characters are legit: ASCII: [0-9,a-z,A-Z$_] (basic Latin\n * letters, digits 0-9, dollar, underscore) This is necessary for SQL queries.\n *\n * @param dbName\n */\npublic static void verifyDBName(String dbName) {\n    if (dbName == null || dbName.length() == 0) {\n        throw new RuntimeException(\"DB name should not be null or empty\");\n    }\n    if (dbName.matches(\".*[^0-9a-zA-Z$_].*\")) {\n        throw new RuntimeException(\"DB name should include only [^0-9a-zA-Z$_]: \" + dbName);\n    }\n}",
+  "method_comment": "\n   * Verify a DB name to ensure the characters are legit: ASCII: [0-9,a-z,A-Z$_] (basic Latin\n   * letters, digits 0-9, dollar, underscore) This is necessary for SQL queries.\n   *\n   * @param dbName\n   ",
+  "method_annotation": ""
+}

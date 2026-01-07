@@ -1,0 +1,22 @@
+{
+  "className": "SparkCluster",
+  "methodName": "setSparkUIOptions",
+  "brief": "public void setSparkUIOptions(SparkUIConfiguration sparkUIOptions){}",
+  "methodSignature": "setSparkUIOptions(SparkUIConfiguration)",
+  "sourceCode": "public void setSparkUIOptions(SparkUIConfiguration sparkUIOptions) {\n      this.sparkUIOptions = sparkUIOptions;\n    }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "SparkUIConfiguration"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.operator.SparkUIConfiguration": []
+  },
+  "full_method_info": "public void setSparkUIOptions(SparkUIConfiguration sparkUIOptions) {\n    this.sparkUIOptions = sparkUIOptions;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

@@ -1,0 +1,18 @@
+{
+  "className": "IngressTLS",
+  "methodName": "getHosts",
+  "brief": "public List<String> getHosts(){}",
+  "methodSignature": "getHosts()",
+  "sourceCode": "public List<String> getHosts() {\n    return hosts;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public List<String> getHosts() {\n    return hosts;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

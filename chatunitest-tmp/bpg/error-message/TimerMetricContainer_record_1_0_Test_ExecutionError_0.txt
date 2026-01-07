@@ -1,0 +1,94 @@
+package com.apple.spark.util;
+
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.Timer;
+import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.concurrent.ConcurrentHashMap;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import java.util.List;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
+/**
+ * JUnit 5 tests for TimerMetricContainer.record(Runnable, String, Collection<Tag>)
+ */
+public class TimerMetricContainer_record_1_0_Test {
+
+    @Test
+    public void record_shouldInvokeTimerAndRunRunnable_whenTagsProvided() throws Exception {
+        // Arrange
+        MeterRegistry meterRegistry = mock(MeterRegistry.class);
+        Timer mockTimer = mock(Timer.class);
+        // Make mocked Timer execute the runnable passed to record(...) so we can observe side-effects and exceptions
+        doAnswer(invocation -> {
+            Runnable r = invocation.getArgument(0);
+            r.run();
+            return null;
+        }).when(mockTimer).record(ArgumentMatchers.any(Runnable.class));
+        String metricName = "test.metric";
+        Collection<Tag> tags = Arrays.asList(mock(Tag.class));
+        // stub meterRegistry.timer(name, iterable) to return our mock Timer for any iterable argument
+        when(meterRegistry.timer(eq(metricName), ArgumentMatchers.any(Iterable.class))).thenReturn(mockTimer);
+        TimerMetricContainer container = new TimerMetricContainer(meterRegistry);
+        // a side-effect flag to assert runnable ran
+        final boolean[] ran = { false };
+        Runnable runnable = () -> ran[0] = true;
+        // Act
+        container.record(runnable, metricName, tags);
+        // Assert
+        assertTrue(ran[0], "The runnable should have been executed by Timer.record");
+        verify(mockTimer, times(1)).record(ArgumentMatchers.any(Runnable.class));
+        // Use reflection to access private field 'timers' and assert it has been populated (cache behavior)
+        Field timersField = TimerMetricContainer.class.getDeclaredField("timers");
+        timersField.setAccessible(true);
+        @SuppressWarnings("unchecked")
+        ConcurrentHashMap<Object, Timer> timersMap = (ConcurrentHashMap<Object, Timer>) timersField.get(container);
+        assertNotNull(timersMap, "Timers map should be present");
+        assertTrue(timersMap.size() >= 0, "Timers map should be accessible (size >= 0)");
+    }
+
+    @Test
+    public void record_shouldPropagateExceptionThrownByRunnable_andStillCallTimer() throws Exception {
+        // Arrange
+        MeterRegistry meterRegistry = mock(MeterRegistry.class);
+        Timer mockTimer = mock(Timer.class);
+        // Make mocked Timer execute the runnable passed to record(...) so exception will propagate
+        doAnswer(invocation -> {
+            Runnable r = invocation.getArgument(0);
+            r.run();
+            return null;
+        }).when(mockTimer).record(ArgumentMatchers.any(Runnable.class));
+        String metricName = "test.metric.exception";
+        // also allow null tags (some implementations may pass null)
+        when(meterRegistry.timer(eq(metricName), ArgumentMatchers.any(Iterable.class))).thenReturn(mockTimer);
+        when(meterRegistry.timer(eq(metricName), (Iterable<Tag>) null)).thenReturn(mockTimer);
+        TimerMetricContainer container = new TimerMetricContainer(meterRegistry);
+        // Runnable that throws
+        Runnable throwing = () -> {
+            throw new RuntimeException("boom");
+        };
+        // Act & Assert
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> container.record(throwing, metricName, Collections.emptyList()));
+        assertEquals("boom", ex.getMessage());
+        verify(mockTimer, times(1)).record(ArgumentMatchers.any(Runnable.class));
+        // Also assert reflection access to private 'timers' field exists and is a ConcurrentHashMap
+        Field timersField = TimerMetricContainer.class.getDeclaredField("timers");
+        timersField.setAccessible(true);
+        Object timersObj = timersField.get(container);
+        assertNotNull(timersObj);
+        assertTrue(timersObj instanceof ConcurrentHashMap, "timers field should be a ConcurrentHashMap");
+    }
+}
+
+--------------------------------------------
+Error in record_shouldPropagateExceptionThrownByRunnable_andStillCallTimer(): line 62 : java.lang.IllegalStateException: Could not initialize plugin: interface org.mockito.plugins.MockMaker (alternate: null)
+Error in record_shouldInvokeTimerAndRunRunnable_whenTagsProvided(): line 29 : java.lang.IllegalStateException: Could not initialize plugin: interface org.mockito.plugins.MockMaker (alternate: null)

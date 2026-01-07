@@ -1,0 +1,105 @@
+package com.apple.spark.core;
+
+import static org.mockito.ArgumentMatchers.*;
+import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.logging.LoggingMeterRegistry;
+import java.lang.reflect.Field;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import com.apple.spark.util.TimerMetricContainer;
+import com.apple.spark.util.CounterMetricContainer;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import static com.apple.spark.core.Constants.DEFAULT_DB_NAME;
+import static com.apple.spark.core.SparkConstants.RUNNING_STATE;
+import static com.apple.spark.core.SparkConstants.SUBMITTED_STATE;
+import com.apple.spark.api.SubmitApplicationRequest;
+import com.apple.spark.util.CustomSerDe;
+import io.micrometer.core.instrument.MeterRegistry;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import javax.sql.rowset.CachedRowSet;
+import javax.sql.rowset.RowSetProvider;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class LogDao_logApplicationFinished_9_0_Test_testLogApplicationFinishedHandlesExceptionAndIncrementsFailureMetric {
+
+    private static void setField(Object target, String fieldName, Object value) throws Exception {
+        Field f = findField(target.getClass(), fieldName);
+        f.setAccessible(true);
+        f.set(target, value);
+    }
+
+    private static Field findField(Class<?> clazz, String name) throws NoSuchFieldException {
+        Class<?> c = clazz;
+        while (c != null) {
+            try {
+                return c.getDeclaredField(name);
+            } catch (NoSuchFieldException e) {
+                c = c.getSuperclass();
+            }
+        }
+        throw new NoSuchFieldException(name);
+    }
+
+
+
+    @Test
+    public void testLogApplicationFinishedHandlesExceptionAndIncrementsFailureMetric() throws Exception {
+        LogDao dao = new LogDao("", "u", "p", "mydb", new LoggingMeterRegistry());
+        // Prepare mocks
+        DBConnection mockDbConn = mock(DBConnection.class);
+        Connection mockConnection = mock(Connection.class);
+        PreparedStatement mockStmt = mock(PreparedStatement.class);
+        when(mockDbConn.getConnection()).thenReturn(mockConnection);
+        when(mockConnection.prepareStatement(anyString())).thenReturn(mockStmt);
+        // Make executeUpdate throw SQLException
+        doThrow(new SQLException("boom")).when(mockStmt).executeUpdate();
+        setField(dao, "dbConnection", mockDbConn);
+        setField(dao, "bypassLog", false);
+        TimerMetricContainer immediateTimer = new TimerMetricContainer(new LoggingMeterRegistry()) {
+
+            @Override
+            public void record(Runnable runnable, String metricName, io.micrometer.core.instrument.Tag... tags) {
+                runnable.run();
+            }
+        };
+        setField(dao, "timerMetrics", immediateTimer);
+        CounterMetricContainer mockFailure = mock(CounterMetricContainer.class);
+        setField(dao, "failureMetrics", mockFailure);
+        // Invoke
+        dao.logApplicationFinished("sub-err", "FAILED", new Timestamp(System.currentTimeMillis()), 0.5, 0.5);
+        // Verify executeUpdate attempted
+        verify(mockStmt, times(1)).executeUpdate();
+        // Verify failureMetrics.increment was called with expected tags: operation=log_app_finished and exception=SQLException
+        // Capture arguments
+        @SuppressWarnings("unchecked")
+        org.mockito.ArgumentCaptor<io.micrometer.core.instrument.Tag[]> tagsCaptor = org.mockito.ArgumentCaptor.forClass(io.micrometer.core.instrument.Tag[].class);
+        org.mockito.ArgumentCaptor<String> metricNameCaptor = org.mockito.ArgumentCaptor.forClass(String.class);
+        verify(mockFailure, times(1)).increment(metricNameCaptor.capture(), tagsCaptor.capture());
+        String metricName = metricNameCaptor.getValue();
+        io.micrometer.core.instrument.Tag[] tags = tagsCaptor.getValue();
+        assertNotNull(metricName);
+        assertNotNull(tags);
+        boolean foundOperation = false;
+        boolean foundException = false;
+        for (Tag t : tags) {
+            if ("operation".equals(t.getKey()) && "log_app_finished".equals(t.getValue())) {
+                foundOperation = true;
+            }
+            if ("exception".equals(t.getKey()) && "SQLException".equals(t.getValue())) {
+                foundException = true;
+            }
+        }
+        assertTrue(foundOperation, "operation tag with log_app_finished should be present");
+        assertTrue(foundException, "exception tag with SQLException should be present");
+    }
+}

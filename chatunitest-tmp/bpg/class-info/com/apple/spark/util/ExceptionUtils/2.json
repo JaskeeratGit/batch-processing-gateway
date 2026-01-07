@@ -1,0 +1,22 @@
+{
+  "className": "ExceptionUtils",
+  "methodName": "meterJsonProcessingException",
+  "brief": "public static void meterJsonProcessingException(){}",
+  "methodSignature": "meterJsonProcessingException()",
+  "sourceCode": "public static void meterJsonProcessingException() {\n    jsonProcessingExceptionMeter.mark();\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {
+    "com.codahale.metrics.Meter": [
+      "mark()"
+    ]
+  },
+  "full_method_info": "public static void meterJsonProcessingException() {\n    jsonProcessingExceptionMeter.mark();\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

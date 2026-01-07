@@ -1,0 +1,49 @@
+{
+  "className": "HttpUtils",
+  "methodName": "post",
+  "brief": "public static String post(\n          String url, InputStream stream, String headerName, String headerValue, long contentLength){}",
+  "methodSignature": "post(String, InputStream, String, String, long)",
+  "sourceCode": "public static String post(\n          String url, InputStream stream, String headerName, String headerValue, long contentLength) {\n    HttpRequest request = null;\n    try {\n      var builder = HttpRequest.newBuilder().uri(new URI(url));\n      if (headerName != null && !headerName.isEmpty()) {\n        builder = builder.header(headerName, headerValue);\n      }\n      request = builder.POST(HttpRequest.BodyPublishers.ofInputStream(() -> stream)).build();\n      return executeHttpRequest(url, request, HttpResponse.BodyHandlers.ofString());\n    } catch (Throwable ex) {\n      throw new RuntimeException(\n              String.format(\"Failed to execute %s on %s\", request.method(), url), ex);\n    }\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String",
+    "InputStream",
+    "String",
+    "String",
+    "long"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "isEmpty()",
+      "format(String, Object[])"
+    ],
+    "java.io.InputStream": [],
+    "java.net.http.HttpRequest.Builder": [
+      "POST(BodyPublisher)",
+      "uri(URI)",
+      "header(String, String)",
+      "build()"
+    ],
+    "java.net.http.HttpRequest": [
+      "newBuilder()",
+      "method()"
+    ],
+    "java.net.http.HttpRequest.BodyPublishers": [
+      "ofInputStream(InputStream>)"
+    ],
+    "com.apple.spark.util.HttpUtils": [
+      "executeHttpRequest(String, HttpRequest, String>)"
+    ],
+    "java.net.http.HttpResponse.BodyHandlers": [
+      "ofString()"
+    ]
+  },
+  "full_method_info": "public static String post(String url, InputStream stream, String headerName, String headerValue, long contentLength) {\n    HttpRequest request = null;\n    try {\n        var builder = HttpRequest.newBuilder().uri(new URI(url));\n        if (headerName != null && !headerName.isEmpty()) {\n            builder = builder.header(headerName, headerValue);\n        }\n        request = builder.POST(HttpRequest.BodyPublishers.ofInputStream(() -> stream)).build();\n        return executeHttpRequest(url, request, HttpResponse.BodyHandlers.ofString());\n    } catch (Throwable ex) {\n        throw new RuntimeException(String.format(\"Failed to execute %s on %s\", request.method(), url), ex);\n    }\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

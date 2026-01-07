@@ -1,0 +1,96 @@
+{
+  "className": "ApplicationSubmissionHelper",
+  "methodName": "getExecutorSpec",
+  "brief": "public static ExecutorSpec getExecutorSpec(\n      SubmitApplicationRequest request,\n      AppConfig appConfig,\n      String parentQueue,\n      SparkCluster sparkCluster){}",
+  "methodSignature": "getExecutorSpec(SubmitApplicationRequest, AppConfig, String, SparkCluster)",
+  "sourceCode": "public static ExecutorSpec getExecutorSpec(\n      SubmitApplicationRequest request,\n      AppConfig appConfig,\n      String parentQueue,\n      SparkCluster sparkCluster) {\n    ExecutorSpec executorSpec = new ExecutorSpec();\n\n    if (request.getExecutor() != null) {\n      executorSpec.copyFrom(request.getExecutor());\n\n      Map<String, String> executorLabels = request.getExecutor().getLabels();\n      if (executorLabels != null) {\n        Map<String, String> labels = new HashMap<>();\n        if (executorLabels.containsKey(DAG_NAME_LABEL)) {\n          labels.put(\n              DAG_NAME_LABEL,\n              KubernetesHelper.normalizeLabelValue(executorLabels.get(DAG_NAME_LABEL)));\n        }\n        if (executorLabels.containsKey(TASK_NAME_LABEL)) {\n          labels.put(\n              TASK_NAME_LABEL,\n              KubernetesHelper.normalizeLabelValue(executorLabels.get(TASK_NAME_LABEL)));\n        }\n        executorLabels.putAll(labels);\n        executorSpec.setLabels(executorLabels);\n      }\n    }\n\n    // if there's any volumes and volume mounts specified, add them to executor spec\n    // mounts specified in requests have higher priority\n    if (request.getExecutor() != null\n        && request.getVolumes() != null\n        && !request.getVolumes().isEmpty()) {\n      executorSpec.setVolumeMounts(request.getExecutor().getVolumeMounts());\n    } else if (sparkCluster.getExecutor() != null\n        && sparkCluster.getVolumes() != null\n        && !sparkCluster.getVolumes().isEmpty()) {\n      executorSpec.setVolumeMounts(sparkCluster.getExecutor().getVolumeMounts());\n    }\n\n    double executorCpuBufferRatioQueue = getExecutorCPUBufferForQueue(appConfig, parentQueue);\n    double executorMemBufferRatioQueue = getExecutorMemBufferForQueue(appConfig, parentQueue);\n\n    int originalExecutorCores = executorSpec.getCores();\n    long adjustedExecutorCores = Math.round(originalExecutorCores * executorCpuBufferRatioQueue);\n    executorSpec.setCores((int) adjustedExecutorCores);\n    logger.info(\"Setting executor core to {}\", adjustedExecutorCores);\n\n    if (executorSpec.getCoreLimit() == null || executorSpec.getCoreLimit().isEmpty()) {\n      executorSpec.setCoreLimit(\n          String.format(\n              \"%sm\",\n              Math.ceil(executorSpec.getCores() * CORE_LIMIT_RATIO * executorCpuBufferRatioQueue)));\n    } else {\n      long originalExecutorCoreLimit = Long.parseLong(executorSpec.getCoreLimit());\n      long adjustedExecutorCoreLimit =\n          Math.round(originalExecutorCoreLimit * executorCpuBufferRatioQueue);\n      executorSpec.setCoreLimit(String.valueOf(adjustedExecutorCoreLimit));\n      logger.info(\"Setting executor core limits to {}\", adjustedExecutorCoreLimit);\n    }\n\n    long originalExecutorMem = getMemNumFromRequestStr(executorSpec.getMemory());\n    long adjustedExecutorMem = (long) Math.ceil(originalExecutorMem * executorMemBufferRatioQueue);\n    String memUnit = getMemUnitFromRequestStr(executorSpec.getMemory());\n    executorSpec.setMemory(adjustedExecutorMem + memUnit);\n    logger.info(\"Setting executor memory to {}{}\", adjustedExecutorMem, memUnit);\n\n    // set annotations to executor pod to avoid scale-in from KubeCA\n    if (executorSpec.getAnnotations() == null) {\n      Map<String, String> executorAnnotations = new HashMap<>();\n      executorAnnotations.put(\n          KUBE_CLUSTER_AUTOSCALER_SCALE_IN_ANNOTATION_KEY,\n          KUBE_CLUSTER_AUTOSCALER_SCALE_IN_ANNOTATION_VALUE);\n      executorSpec.setAnnotations(executorAnnotations);\n    }\n\n    if (executorSpec.getAffinity() == null) {\n\n      NodeAffinity nodeAffinityOnExecutor =\n          createNodeAffinityForSparkPods(request, appConfig, parentQueue, sparkCluster, false);\n\n      if (nodeAffinityOnExecutor != null) {\n        executorSpec.setAffinity(new Affinity(nodeAffinityOnExecutor));\n      }\n    }\n\n    PodDNSConfig executorPodDNSConfig = new PodDNSConfig();\n    executorPodDNSConfig.setOptions(\n        Collections.singletonList(\n            new PodDNSConfigOption(DNS_CONFIG_OPTION_NDOTS_NAME, DNS_CONFIG_OPTION_NDOTS_VALUE)));\n    executorSpec.setDnsConfig(executorPodDNSConfig);\n\n    return executorSpec;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "SubmitApplicationRequest",
+    "AppConfig",
+    "String",
+    "SparkCluster"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.api.SubmitApplicationRequest": [
+      "getExecutor()",
+      "getVolumes()"
+    ],
+    "com.apple.spark.AppConfig": [],
+    "java.lang.String": [
+      "isEmpty()",
+      "format(String, Object[])",
+      "valueOf(long)"
+    ],
+    "com.apple.spark.AppConfig.SparkCluster": [
+      "getExecutor()",
+      "getVolumes()"
+    ],
+    "com.apple.spark.operator.ExecutorSpec": [
+      "copyFrom(ExecutorSpec)"
+    ],
+    "com.apple.spark.operator.SparkPodSpec": [
+      "getCoreLimit()",
+      "getLabels()",
+      "getCores()",
+      "setDnsConfig(PodDNSConfig)",
+      "setAnnotations(String>)",
+      "getAffinity()",
+      "setLabels(String>)",
+      "getVolumeMounts()",
+      "getAnnotations()",
+      "setMemory(String)",
+      "setVolumeMounts(VolumeMount>)",
+      "setAffinity(Affinity)",
+      "setCoreLimit(String)",
+      "getMemory()",
+      "setCores(Integer)"
+    ],
+    "java.util.Map": [
+      "get(Object)",
+      "putAll(Map<? extends K, ? extends V>)",
+      "put(K, V)",
+      "containsKey(Object)"
+    ],
+    "com.apple.spark.core.KubernetesHelper": [
+      "normalizeLabelValue(String)"
+    ],
+    "java.util.List": [
+      "isEmpty()"
+    ],
+    "com.apple.spark.core.ApplicationSubmissionHelper": [
+      "getMemUnitFromRequestStr(String)",
+      "getMemNumFromRequestStr(String)",
+      "getExecutorMemBufferForQueue(AppConfig, String)",
+      "getExecutorCPUBufferForQueue(AppConfig, String)"
+    ],
+    "java.lang.Math": [
+      "ceil(double)",
+      "round(double)"
+    ],
+    "org.slf4j.Logger": [
+      "info(String, Object, Object)",
+      "info(String, Object)"
+    ],
+    "java.lang.Long": [
+      "parseLong(String)"
+    ],
+    "com.apple.spark.core.SparkPodNodeAffinityHelper": [
+      "createNodeAffinityForSparkPods(SubmitApplicationRequest, AppConfig, String, SparkCluster, boolean)"
+    ],
+    "io.fabric8.kubernetes.api.model.PodDNSConfig": [
+      "setOptions(PodDNSConfigOption>)"
+    ],
+    "java.util.Collections": [
+      "singletonList(T)"
+    ]
+  },
+  "full_method_info": "public static ExecutorSpec getExecutorSpec(SubmitApplicationRequest request, AppConfig appConfig, String parentQueue, SparkCluster sparkCluster) {\n    ExecutorSpec executorSpec = new ExecutorSpec();\n    if (request.getExecutor() != null) {\n        executorSpec.copyFrom(request.getExecutor());\n        Map<String, String> executorLabels = request.getExecutor().getLabels();\n        if (executorLabels != null) {\n            Map<String, String> labels = new HashMap<>();\n            if (executorLabels.containsKey(DAG_NAME_LABEL)) {\n                labels.put(DAG_NAME_LABEL, KubernetesHelper.normalizeLabelValue(executorLabels.get(DAG_NAME_LABEL)));\n            }\n            if (executorLabels.containsKey(TASK_NAME_LABEL)) {\n                labels.put(TASK_NAME_LABEL, KubernetesHelper.normalizeLabelValue(executorLabels.get(TASK_NAME_LABEL)));\n            }\n            executorLabels.putAll(labels);\n            executorSpec.setLabels(executorLabels);\n        }\n    }\n    // if there's any volumes and volume mounts specified, add them to executor spec\n    // mounts specified in requests have higher priority\n    if (request.getExecutor() != null && request.getVolumes() != null && !request.getVolumes().isEmpty()) {\n        executorSpec.setVolumeMounts(request.getExecutor().getVolumeMounts());\n    } else if (sparkCluster.getExecutor() != null && sparkCluster.getVolumes() != null && !sparkCluster.getVolumes().isEmpty()) {\n        executorSpec.setVolumeMounts(sparkCluster.getExecutor().getVolumeMounts());\n    }\n    double executorCpuBufferRatioQueue = getExecutorCPUBufferForQueue(appConfig, parentQueue);\n    double executorMemBufferRatioQueue = getExecutorMemBufferForQueue(appConfig, parentQueue);\n    int originalExecutorCores = executorSpec.getCores();\n    long adjustedExecutorCores = Math.round(originalExecutorCores * executorCpuBufferRatioQueue);\n    executorSpec.setCores((int) adjustedExecutorCores);\n    logger.info(\"Setting executor core to {}\", adjustedExecutorCores);\n    if (executorSpec.getCoreLimit() == null || executorSpec.getCoreLimit().isEmpty()) {\n        executorSpec.setCoreLimit(String.format(\"%sm\", Math.ceil(executorSpec.getCores() * CORE_LIMIT_RATIO * executorCpuBufferRatioQueue)));\n    } else {\n        long originalExecutorCoreLimit = Long.parseLong(executorSpec.getCoreLimit());\n        long adjustedExecutorCoreLimit = Math.round(originalExecutorCoreLimit * executorCpuBufferRatioQueue);\n        executorSpec.setCoreLimit(String.valueOf(adjustedExecutorCoreLimit));\n        logger.info(\"Setting executor core limits to {}\", adjustedExecutorCoreLimit);\n    }\n    long originalExecutorMem = getMemNumFromRequestStr(executorSpec.getMemory());\n    long adjustedExecutorMem = (long) Math.ceil(originalExecutorMem * executorMemBufferRatioQueue);\n    String memUnit = getMemUnitFromRequestStr(executorSpec.getMemory());\n    executorSpec.setMemory(adjustedExecutorMem + memUnit);\n    logger.info(\"Setting executor memory to {}{}\", adjustedExecutorMem, memUnit);\n    // set annotations to executor pod to avoid scale-in from KubeCA\n    if (executorSpec.getAnnotations() == null) {\n        Map<String, String> executorAnnotations = new HashMap<>();\n        executorAnnotations.put(KUBE_CLUSTER_AUTOSCALER_SCALE_IN_ANNOTATION_KEY, KUBE_CLUSTER_AUTOSCALER_SCALE_IN_ANNOTATION_VALUE);\n        executorSpec.setAnnotations(executorAnnotations);\n    }\n    if (executorSpec.getAffinity() == null) {\n        NodeAffinity nodeAffinityOnExecutor = createNodeAffinityForSparkPods(request, appConfig, parentQueue, sparkCluster, false);\n        if (nodeAffinityOnExecutor != null) {\n            executorSpec.setAffinity(new Affinity(nodeAffinityOnExecutor));\n        }\n    }\n    PodDNSConfig executorPodDNSConfig = new PodDNSConfig();\n    executorPodDNSConfig.setOptions(Collections.singletonList(new PodDNSConfigOption(DNS_CONFIG_OPTION_NDOTS_NAME, DNS_CONFIG_OPTION_NDOTS_VALUE)));\n    executorSpec.setDnsConfig(executorPodDNSConfig);\n    return executorSpec;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

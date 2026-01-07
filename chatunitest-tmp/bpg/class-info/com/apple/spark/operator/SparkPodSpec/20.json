@@ -1,0 +1,22 @@
+{
+  "className": "SparkPodSpec",
+  "methodName": "setDnsConfig",
+  "brief": "public void setDnsConfig(PodDNSConfig dnsConfig){}",
+  "methodSignature": "setDnsConfig(PodDNSConfig)",
+  "sourceCode": "public void setDnsConfig(PodDNSConfig dnsConfig) {\n    this.dnsConfig = dnsConfig;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "PodDNSConfig"
+  ],
+  "dependentMethods": {
+    "io.fabric8.kubernetes.api.model.PodDNSConfig": []
+  },
+  "full_method_info": "public void setDnsConfig(PodDNSConfig dnsConfig) {\n    this.dnsConfig = dnsConfig;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

@@ -1,0 +1,32 @@
+{
+  "className": "ApplicationSubmissionRest",
+  "methodName": "removeEnvFromSpec",
+  "brief": "private SparkApplicationSpec removeEnvFromSpec(SparkApplicationSpec sparkApplicationSpec){}",
+  "methodSignature": "removeEnvFromSpec(SparkApplicationSpec)",
+  "sourceCode": "private SparkApplicationSpec removeEnvFromSpec(SparkApplicationSpec sparkApplicationSpec) {\n    try {\n      if (sparkApplicationSpec.getDriver().getEnv() != null) {\n        sparkApplicationSpec.getDriver().setEnv(null);\n      }\n      if (sparkApplicationSpec.getExecutor().getEnv() != null) {\n        sparkApplicationSpec.getExecutor().setEnv(null);\n      }\n    } catch (Exception e) {\n      logger.warn(\"Failed to remove env variables from spec {}\", e);\n    }\n    return sparkApplicationSpec;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "SparkApplicationSpec"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.operator.SparkApplicationSpec": [
+      "getExecutor()",
+      "getDriver()"
+    ],
+    "com.apple.spark.operator.SparkPodSpec": [
+      "setEnv(EnvVar>)",
+      "getEnv()"
+    ],
+    "org.slf4j.Logger": [
+      "warn(String, Throwable)"
+    ]
+  },
+  "full_method_info": "/**\n * Remove env variables from spec to avoid leaking sensitive information\n *\n * @param sparkApplicationSpec full application spec (will be modified)\n * @return modified application spec\n */\nprivate SparkApplicationSpec removeEnvFromSpec(SparkApplicationSpec sparkApplicationSpec) {\n    try {\n        if (sparkApplicationSpec.getDriver().getEnv() != null) {\n            sparkApplicationSpec.getDriver().setEnv(null);\n        }\n        if (sparkApplicationSpec.getExecutor().getEnv() != null) {\n            sparkApplicationSpec.getExecutor().setEnv(null);\n        }\n    } catch (Exception e) {\n        logger.warn(\"Failed to remove env variables from spec {}\", e);\n    }\n    return sparkApplicationSpec;\n}",
+  "method_comment": "\n   * Remove env variables from spec to avoid leaking sensitive information\n   *\n   * @param sparkApplicationSpec full application spec (will be modified)\n   * @return modified application spec\n   ",
+  "method_annotation": ""
+}

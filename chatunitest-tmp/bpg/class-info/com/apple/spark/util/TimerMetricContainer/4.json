@@ -1,0 +1,42 @@
+{
+  "className": "TimerMetricContainer",
+  "methodName": "getTimer",
+  "brief": "private Timer getTimer(String metricName, Collection<Tag> tags){}",
+  "methodSignature": "getTimer(String, Collection)",
+  "sourceCode": "private Timer getTimer(String metricName, Collection<Tag> tags) {\n    List<String> tagValues = tags.stream().map(Tag::getValue).collect(Collectors.toList());\n    MetricId metricId = new MetricId(metricName, tagValues);\n    Timer timer = timers.get(metricId);\n    if (timer == null) {\n      timer =\n          timers.computeIfAbsent(\n              metricId, k -> Timer.builder(metricName).tags(tags).register(meterRegistry));\n    }\n    return timer;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String",
+    "Collection<Tag>"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [],
+    "java.util.stream.Stream": [
+      "map(Function<? super T, ? extends R>)"
+    ],
+    "java.util.Collection": [
+      "stream()"
+    ],
+    "java.util.stream.Collectors": [
+      "toList()"
+    ],
+    "java.util.concurrent.ConcurrentHashMap": [
+      "get(Object)",
+      "computeIfAbsent(K, Function<? super K, ? extends V>)"
+    ],
+    "io.micrometer.core.instrument.Timer.Builder": [
+      "tags(Tag>)"
+    ],
+    "io.micrometer.core.instrument.Timer": [
+      "builder(String)"
+    ]
+  },
+  "full_method_info": "private Timer getTimer(String metricName, Collection<Tag> tags) {\n    List<String> tagValues = tags.stream().map(Tag::getValue).collect(Collectors.toList());\n    MetricId metricId = new MetricId(metricName, tagValues);\n    Timer timer = timers.get(metricId);\n    if (timer == null) {\n        timer = timers.computeIfAbsent(metricId, k -> Timer.builder(metricName).tags(tags).register(meterRegistry));\n    }\n    return timer;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

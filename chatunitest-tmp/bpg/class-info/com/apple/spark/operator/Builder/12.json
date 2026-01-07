@@ -1,0 +1,22 @@
+{
+  "className": "Builder",
+  "methodName": "withBatchScheduler",
+  "brief": "public Builder withBatchScheduler(String batchScheduler){}",
+  "methodSignature": "withBatchScheduler(String)",
+  "sourceCode": "public Builder withBatchScheduler(String batchScheduler) {\n      this.sparkApplicationSpec.batchScheduler = batchScheduler;\n      return this;\n    }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": []
+  },
+  "full_method_info": "public Builder withBatchScheduler(String batchScheduler) {\n    this.sparkApplicationSpec.batchScheduler = batchScheduler;\n    return this;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

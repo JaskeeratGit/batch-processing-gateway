@@ -1,0 +1,48 @@
+{
+  "className": "AdminRest",
+  "methodName": "listAllSubmissions",
+  "brief": "private Response listAllSubmissions(User user){}",
+  "methodSignature": "listAllSubmissions(User)",
+  "sourceCode": "private Response listAllSubmissions(User user) {\n    return Response.ok(\n            new RestSubmissionsStreamingOutput() {\n              @Override\n              public void write(OutputStream outputStream) throws WebApplicationException {\n                try {\n                  for (AppConfig.SparkCluster sparkCluster : getSparkClusters()) {\n                    SparkApplicationResourceList list = getSparkApplicationResources(sparkCluster);\n                    writeSubmissions(outputStream, list, sparkCluster, getAppConfig());\n                  }\n                  logger.info(\n                      \"Finished streaming all submissions, requested by user {}\", user.getName());\n                } catch (Throwable ex) {\n                  logger.warn(\n                      String.format(\n                          \"Hit exception when streaming all submissions, requested by user %s\",\n                          user.getName()),\n                      ex);\n                  ExceptionUtils.meterException();\n                }\n              }\n            })\n        .build();\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "User"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.security.User": [
+      "getName()"
+    ],
+    "javax.ws.rs.core.Response.ResponseBuilder": [
+      "build()"
+    ],
+    "javax.ws.rs.core.Response": [
+      "ok(Object)"
+    ],
+    "com.apple.spark.rest.RestBase": [
+      "getSparkClusters()",
+      "getAppConfig()",
+      "getSparkApplicationResources(SparkCluster)"
+    ],
+    "com.apple.spark.core.RestSubmissionsStreamingOutput": [
+      "writeSubmissions(OutputStream, SparkApplicationResourceList, SparkCluster, AppConfig)"
+    ],
+    "org.slf4j.Logger": [
+      "warn(String, Throwable)",
+      "info(String, Object)"
+    ],
+    "java.lang.String": [
+      "format(String, Object[])"
+    ],
+    "com.apple.spark.util.ExceptionUtils": [
+      "meterException()"
+    ]
+  },
+  "full_method_info": "private Response listAllSubmissions(User user) {\n    return Response.ok(new RestSubmissionsStreamingOutput() {\n\n        @Override\n        public void write(OutputStream outputStream) throws WebApplicationException {\n            try {\n                for (AppConfig.SparkCluster sparkCluster : getSparkClusters()) {\n                    SparkApplicationResourceList list = getSparkApplicationResources(sparkCluster);\n                    writeSubmissions(outputStream, list, sparkCluster, getAppConfig());\n                }\n                logger.info(\"Finished streaming all submissions, requested by user {}\", user.getName());\n            } catch (Throwable ex) {\n                logger.warn(String.format(\"Hit exception when streaming all submissions, requested by user %s\", user.getName()), ex);\n                ExceptionUtils.meterException();\n            }\n        }\n    }).build();\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

@@ -1,0 +1,82 @@
+{
+  "fullClassName": "com.apple.spark.operator.MonitoringSpec",
+  "className": "MonitoringSpec",
+  "index": 17,
+  "modifier": "[public ]",
+  "extend": "[]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.operator",
+  "packageDeclaration": "package com.apple.spark.operator;",
+  "classSignature": "@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class MonitoringSpec",
+  "hasConstructor": false,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import com.fasterxml.jackson.annotation.JsonIgnoreProperties;",
+    "import com.fasterxml.jackson.annotation.JsonInclude;"
+  ],
+  "fields": [
+    "private Boolean exposeDriverMetrics;",
+    "private Boolean exposeExecutorMetrics;",
+    "private String metricsProperties;",
+    "private String metricsPropertiesFile;",
+    "private PrometheusSpec prometheus;"
+  ],
+  "superClasses": [],
+  "implementedTypes": [],
+  "methodSigs": {
+    "getExposeDriverMetrics()": "0",
+    "setExposeDriverMetrics(Boolean)": "1",
+    "getExposeExecutorMetrics()": "2",
+    "setExposeExecutorMetrics(Boolean)": "3",
+    "getMetricsProperties()": "4",
+    "setMetricsProperties(String)": "5",
+    "getMetricsPropertiesFile()": "6",
+    "setMetricsPropertiesFile(String)": "7",
+    "getPrometheus()": "8",
+    "setPrometheus(PrometheusSpec)": "9"
+  },
+  "methodsBrief": [
+    "public Boolean getExposeDriverMetrics(){}",
+    "public void setExposeDriverMetrics(Boolean exposeDriverMetrics){}",
+    "public Boolean getExposeExecutorMetrics(){}",
+    "public void setExposeExecutorMetrics(Boolean exposeExecutorMetrics){}",
+    "public String getMetricsProperties(){}",
+    "public void setMetricsProperties(String metricsProperties){}",
+    "public String getMetricsPropertiesFile(){}",
+    "public void setMetricsPropertiesFile(String metricsPropertiesFile){}",
+    "public PrometheusSpec getPrometheus(){}",
+    "public void setPrometheus(PrometheusSpec prometheus){}"
+  ],
+  "constructorSigs": [],
+  "constructorBrief": [],
+  "getterSetterSigs": [
+    "getExposeDriverMetrics()",
+    "setExposeDriverMetrics(Boolean)",
+    "getExposeExecutorMetrics()",
+    "setExposeExecutorMetrics(Boolean)",
+    "getMetricsProperties()",
+    "setMetricsProperties(String)",
+    "getMetricsPropertiesFile()",
+    "setMetricsPropertiesFile(String)",
+    "getPrometheus()",
+    "setPrometheus(PrometheusSpec)"
+  ],
+  "getterSetterBrief": [
+    "public Boolean getExposeDriverMetrics(){}",
+    "public void setExposeDriverMetrics(Boolean exposeDriverMetrics){}",
+    "public Boolean getExposeExecutorMetrics(){}",
+    "public void setExposeExecutorMetrics(Boolean exposeExecutorMetrics){}",
+    "public String getMetricsProperties(){}",
+    "public void setMetricsProperties(String metricsProperties){}",
+    "public String getMetricsPropertiesFile(){}",
+    "public void setMetricsPropertiesFile(String metricsPropertiesFile){}",
+    "public PrometheusSpec getPrometheus(){}",
+    "public void setPrometheus(PrometheusSpec prometheus){}"
+  ],
+  "constructorDeps": {},
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.operator;\n\nimport com.fasterxml.jackson.annotation.JsonIgnoreProperties;\nimport com.fasterxml.jackson.annotation.JsonInclude;\n\n@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class MonitoringSpec {\n\n    private Boolean exposeDriverMetrics;\n\n    private Boolean exposeExecutorMetrics;\n\n    private String metricsProperties;\n\n    private String metricsPropertiesFile;\n\n    private PrometheusSpec prometheus;\n\n    public Boolean getExposeDriverMetrics() {\n        return exposeDriverMetrics;\n    }\n\n    public void setExposeDriverMetrics(Boolean exposeDriverMetrics) {\n        this.exposeDriverMetrics = exposeDriverMetrics;\n    }\n\n    public Boolean getExposeExecutorMetrics() {\n        return exposeExecutorMetrics;\n    }\n\n    public void setExposeExecutorMetrics(Boolean exposeExecutorMetrics) {\n        this.exposeExecutorMetrics = exposeExecutorMetrics;\n    }\n\n    public String getMetricsProperties() {\n        return metricsProperties;\n    }\n\n    public void setMetricsProperties(String metricsProperties) {\n        this.metricsProperties = metricsProperties;\n    }\n\n    public String getMetricsPropertiesFile() {\n        return metricsPropertiesFile;\n    }\n\n    public void setMetricsPropertiesFile(String metricsPropertiesFile) {\n        this.metricsPropertiesFile = metricsPropertiesFile;\n    }\n\n    public PrometheusSpec getPrometheus() {\n        return prometheus;\n    }\n\n    public void setPrometheus(PrometheusSpec prometheus) {\n        this.prometheus = prometheus;\n    }\n}\n",
+  "classDeclarationCode": "@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class MonitoringSpec {\n\n    private Boolean exposeDriverMetrics;\n\n    private Boolean exposeExecutorMetrics;\n\n    private String metricsProperties;\n\n    private String metricsPropertiesFile;\n\n    private PrometheusSpec prometheus;\n\n    public Boolean getExposeDriverMetrics() {\n        return exposeDriverMetrics;\n    }\n\n    public void setExposeDriverMetrics(Boolean exposeDriverMetrics) {\n        this.exposeDriverMetrics = exposeDriverMetrics;\n    }\n\n    public Boolean getExposeExecutorMetrics() {\n        return exposeExecutorMetrics;\n    }\n\n    public void setExposeExecutorMetrics(Boolean exposeExecutorMetrics) {\n        this.exposeExecutorMetrics = exposeExecutorMetrics;\n    }\n\n    public String getMetricsProperties() {\n        return metricsProperties;\n    }\n\n    public void setMetricsProperties(String metricsProperties) {\n        this.metricsProperties = metricsProperties;\n    }\n\n    public String getMetricsPropertiesFile() {\n        return metricsPropertiesFile;\n    }\n\n    public void setMetricsPropertiesFile(String metricsPropertiesFile) {\n        this.metricsPropertiesFile = metricsPropertiesFile;\n    }\n\n    public PrometheusSpec getPrometheus() {\n        return prometheus;\n    }\n\n    public void setPrometheus(PrometheusSpec prometheus) {\n        this.prometheus = prometheus;\n    }\n}",
+  "subClasses": []
+}

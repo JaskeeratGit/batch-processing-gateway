@@ -1,0 +1,18 @@
+{
+  "className": "PrometheusSpec",
+  "methodName": "getJmxExporterJar",
+  "brief": "public String getJmxExporterJar(){}",
+  "methodSignature": "getJmxExporterJar()",
+  "sourceCode": "public String getJmxExporterJar() {\n    return jmxExporterJar;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public String getJmxExporterJar() {\n    return jmxExporterJar;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

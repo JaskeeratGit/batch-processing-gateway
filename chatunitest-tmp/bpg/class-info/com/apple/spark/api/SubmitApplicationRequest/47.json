@@ -1,0 +1,22 @@
+{
+  "className": "SubmitApplicationRequest",
+  "methodName": "setQueueToken",
+  "brief": "public void setQueueToken(String queueToken){}",
+  "methodSignature": "setQueueToken(String)",
+  "sourceCode": "public void setQueueToken(String queueToken) {\n    this.queueToken = queueToken;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": []
+  },
+  "full_method_info": "public void setQueueToken(String queueToken) {\n    this.queueToken = queueToken;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

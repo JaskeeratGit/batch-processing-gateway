@@ -1,0 +1,30 @@
+{
+  "className": "Builder",
+  "methodName": "extendSparkConf",
+  "brief": "public Builder extendSparkConf(Map<String, String> sparkConf){}",
+  "methodSignature": "extendSparkConf(Map)",
+  "sourceCode": "public Builder extendSparkConf(Map<String, String> sparkConf) {\n      if (sparkConf == null || sparkConf.size() == 0) {\n        return this;\n      }\n\n      if (this.sparkApplicationSpec.sparkConf == null) {\n        this.sparkApplicationSpec.sparkConf = new HashMap<>();\n      }\n\n      for (Map.Entry<String, String> entry : sparkConf.entrySet()) {\n        this.sparkApplicationSpec.sparkConf.put(entry.getKey(), entry.getValue());\n      }\n\n      return this;\n    }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "Map<String,String>"
+  ],
+  "dependentMethods": {
+    "java.util.Map": [
+      "entrySet()",
+      "put(K, V)",
+      "size()"
+    ],
+    "java.util.Map.Entry": [
+      "getValue()",
+      "getKey()"
+    ]
+  },
+  "full_method_info": "public Builder extendSparkConf(Map<String, String> sparkConf) {\n    if (sparkConf == null || sparkConf.size() == 0) {\n        return this;\n    }\n    if (this.sparkApplicationSpec.sparkConf == null) {\n        this.sparkApplicationSpec.sparkConf = new HashMap<>();\n    }\n    for (Map.Entry<String, String> entry : sparkConf.entrySet()) {\n        this.sparkApplicationSpec.sparkConf.put(entry.getKey(), entry.getValue());\n    }\n    return this;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

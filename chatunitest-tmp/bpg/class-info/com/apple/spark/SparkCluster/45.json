@@ -1,0 +1,22 @@
+{
+  "className": "SparkCluster",
+  "methodName": "setEksCluster",
+  "brief": "public void setEksCluster(String eksCluster){}",
+  "methodSignature": "setEksCluster(String)",
+  "sourceCode": "public void setEksCluster(String eksCluster) {\n      this.eksCluster = eksCluster;\n    }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": []
+  },
+  "full_method_info": "public void setEksCluster(String eksCluster) {\n    this.eksCluster = eksCluster;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

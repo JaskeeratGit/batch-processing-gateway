@@ -1,0 +1,18 @@
+{
+  "className": "SparkApplicationSpec",
+  "methodName": "getOriginalUser",
+  "brief": "public String getOriginalUser(){}",
+  "methodSignature": "getOriginalUser()",
+  "sourceCode": "public String getOriginalUser() {\n    return originalUser;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public String getOriginalUser() {\n    return originalUser;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

@@ -1,0 +1,69 @@
+{
+  "className": "LoadTest",
+  "methodName": "submitApplication",
+  "brief": "private static void submitApplication(\n      int applicationIndex, int mapTasks, int sleepSeconds, int executorCount){}",
+  "methodSignature": "submitApplication(int, int, int, int)",
+  "sourceCode": "private static void submitApplication(\n      int applicationIndex, int mapTasks, int sleepSeconds, int executorCount) {\n    SubmitApplicationRequest submitApplicationRequest = new SubmitApplicationRequest();\n\n    submitApplicationRequest.setSubmissionIdSuffix(\"loadtest\");\n\n    submitApplicationRequest.setType(\"Python\");\n    submitApplicationRequest.setSparkVersion(\"3.2\");\n    submitApplicationRequest.setMainApplicationFile(\"\"); // S3 path of PySpark application file\n    submitApplicationRequest.setArguments(\n        Arrays.asList(String.valueOf(mapTasks), String.valueOf(sleepSeconds)));\n\n    DriverSpec driver = new DriverSpec();\n\n    driver.setCores(1);\n    driver.setMemory(\"512m\");\n\n    submitApplicationRequest.setDriver(driver);\n\n    ExecutorSpec executor = new ExecutorSpec();\n    executor.setCores(1);\n    executor.setMemory(\"512m\");\n    executor.setInstances(executorCount);\n\n    submitApplicationRequest.setExecutor(executor);\n\n    String submitApplicationRequestJson;\n    try {\n      submitApplicationRequestJson =\n          (new ObjectMapper()).writeValueAsString(submitApplicationRequest);\n    } catch (JsonProcessingException e) {\n      throw new RuntimeException(\"Failed to serialize json for submit application request\", e);\n    }\n\n    long submitTime = System.currentTimeMillis();\n\n    SubmitApplicationResponse submitApplicationResponse =\n        HttpUtils.post(\n            submitSparkApplicationUrl,\n            submitApplicationRequestJson,\n            authHeaderName,\n            authHeaderValue,\n            SubmitApplicationResponse.class);\n\n    TestApplicationInfo testApp =\n        new TestApplicationInfo(submitApplicationResponse.getSubmissionId());\n    testApp.setSubmitTime(submitTime);\n    testApp.setSubmitLatency(System.currentTimeMillis() - submitTime);\n\n    runningApps.add(testApp);\n    logger.info(\n        \"Submitted application {} (latency {} millis): {}\",\n        applicationIndex,\n        testApp.getSubmitLatency(),\n        submitApplicationResponse.getSubmissionId());\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "int",
+    "int",
+    "int",
+    "int"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.api.SubmitApplicationRequest": [
+      "setSubmissionIdSuffix(String)",
+      "setMainApplicationFile(String)",
+      "setExecutor(ExecutorSpec)",
+      "setDriver(DriverSpec)",
+      "setArguments(String>)",
+      "setSparkVersion(String)",
+      "setType(String)"
+    ],
+    "java.util.Arrays": [
+      "asList(T[])"
+    ],
+    "java.lang.String": [
+      "valueOf(int)"
+    ],
+    "com.apple.spark.operator.SparkPodSpec": [
+      "setMemory(String)",
+      "setCores(Integer)"
+    ],
+    "com.apple.spark.operator.ExecutorSpec": [
+      "setInstances(Integer)"
+    ],
+    "com.fasterxml.jackson.databind.ObjectMapper": [
+      "writeValueAsString(Object)"
+    ],
+    "java.lang.System": [
+      "currentTimeMillis()"
+    ],
+    "com.apple.spark.util.HttpUtils": [
+      "post(String, String, String, String, Class<T>)"
+    ],
+    "com.apple.spark.api.SubmitApplicationResponse": [
+      "getSubmissionId()"
+    ],
+    "com.apple.spark.tools.LoadTest.TestApplicationInfo": [
+      "setSubmitTime(long)",
+      "setSubmitLatency(long)",
+      "getSubmitLatency()"
+    ],
+    "java.util.concurrent.ConcurrentLinkedQueue": [
+      "add(E)"
+    ],
+    "org.slf4j.Logger": [
+      "info(String, Object[])"
+    ]
+  },
+  "full_method_info": "private static void submitApplication(int applicationIndex, int mapTasks, int sleepSeconds, int executorCount) {\n    SubmitApplicationRequest submitApplicationRequest = new SubmitApplicationRequest();\n    submitApplicationRequest.setSubmissionIdSuffix(\"loadtest\");\n    submitApplicationRequest.setType(\"Python\");\n    submitApplicationRequest.setSparkVersion(\"3.2\");\n    // S3 path of PySpark application file\n    submitApplicationRequest.setMainApplicationFile(\"\");\n    submitApplicationRequest.setArguments(Arrays.asList(String.valueOf(mapTasks), String.valueOf(sleepSeconds)));\n    DriverSpec driver = new DriverSpec();\n    driver.setCores(1);\n    driver.setMemory(\"512m\");\n    submitApplicationRequest.setDriver(driver);\n    ExecutorSpec executor = new ExecutorSpec();\n    executor.setCores(1);\n    executor.setMemory(\"512m\");\n    executor.setInstances(executorCount);\n    submitApplicationRequest.setExecutor(executor);\n    String submitApplicationRequestJson;\n    try {\n        submitApplicationRequestJson = (new ObjectMapper()).writeValueAsString(submitApplicationRequest);\n    } catch (JsonProcessingException e) {\n        throw new RuntimeException(\"Failed to serialize json for submit application request\", e);\n    }\n    long submitTime = System.currentTimeMillis();\n    SubmitApplicationResponse submitApplicationResponse = HttpUtils.post(submitSparkApplicationUrl, submitApplicationRequestJson, authHeaderName, authHeaderValue, SubmitApplicationResponse.class);\n    TestApplicationInfo testApp = new TestApplicationInfo(submitApplicationResponse.getSubmissionId());\n    testApp.setSubmitTime(submitTime);\n    testApp.setSubmitLatency(System.currentTimeMillis() - submitTime);\n    runningApps.add(testApp);\n    logger.info(\"Submitted application {} (latency {} millis): {}\", applicationIndex, testApp.getSubmitLatency(), submitApplicationResponse.getSubmissionId());\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

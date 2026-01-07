@@ -1,0 +1,22 @@
+{
+  "className": "SparkApplicationSpec",
+  "methodName": "setMainClass",
+  "brief": "public void setMainClass(String mainClass){}",
+  "methodSignature": "setMainClass(String)",
+  "sourceCode": "public void setMainClass(String mainClass) {\n    this.mainClass = mainClass;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": []
+  },
+  "full_method_info": "public void setMainClass(String mainClass) {\n    this.mainClass = mainClass;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

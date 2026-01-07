@@ -1,0 +1,62 @@
+{
+  "method0": {
+    "methodName": "createNodeAffinityForSparkPods",
+    "signature": "createNodeAffinityForSparkPods(SubmitApplicationRequest, AppConfig, String, AppConfig.SparkCluster, boolean)",
+    "className": "SparkPodNodeAffinityHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method1": {
+    "methodName": "createNodeSelectorTermForRequired",
+    "signature": "createNodeSelectorTermForRequired(SubmitApplicationRequest, AppConfig, String, AppConfig.SparkCluster, boolean)",
+    "className": "SparkPodNodeAffinityHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method2": {
+    "methodName": "applyAvailabilityZoneExpression",
+    "signature": "applyAvailabilityZoneExpression(List, SubmitApplicationRequest)",
+    "className": "SparkPodNodeAffinityHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method3": {
+    "methodName": "applyDriverNodeLabelAffinity",
+    "signature": "applyDriverNodeLabelAffinity(List, AppConfig, String)",
+    "className": "SparkPodNodeAffinityHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method4": {
+    "methodName": "getDriverNodeLabelKeyForQueue",
+    "signature": "getDriverNodeLabelKeyForQueue(AppConfig, String)",
+    "className": "SparkPodNodeAffinityHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method5": {
+    "methodName": "getDriverNodeLabelValuesForQueue",
+    "signature": "getDriverNodeLabelValuesForQueue(AppConfig, String)",
+    "className": "SparkPodNodeAffinityHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method6": {
+    "methodName": "applyExecutorNodeLabelAffinity",
+    "signature": "applyExecutorNodeLabelAffinity(List, SubmitApplicationRequest, AppConfig, String)",
+    "className": "SparkPodNodeAffinityHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method7": {
+    "methodName": "getExecutorSpotNodeLabelValuesForQueue",
+    "signature": "getExecutorSpotNodeLabelValuesForQueue(AppConfig, String)",
+    "className": "SparkPodNodeAffinityHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method8": {
+    "methodName": "getExecutorNodeLabelKeyForQueue",
+    "signature": "getExecutorNodeLabelKeyForQueue(AppConfig, String)",
+    "className": "SparkPodNodeAffinityHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method9": {
+    "methodName": "getExecutorNodeLabelValuesForQueue",
+    "signature": "getExecutorNodeLabelValuesForQueue(AppConfig, String)",
+    "className": "SparkPodNodeAffinityHelper",
+    "packageName": "com.apple.spark.core"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "className": "SubmissionSummary",
+  "methodName": "setApplicationName",
+  "brief": "public void setApplicationName(String applicationName){}",
+  "methodSignature": "setApplicationName(String)",
+  "sourceCode": "public void setApplicationName(String applicationName) {\n    this.applicationName = applicationName;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": []
+  },
+  "full_method_info": "public void setApplicationName(String applicationName) {\n    this.applicationName = applicationName;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

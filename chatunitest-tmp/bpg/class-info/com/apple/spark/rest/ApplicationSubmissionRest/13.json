@@ -1,0 +1,24 @@
+{
+  "className": "ApplicationSubmissionRest",
+  "methodName": "getUserTagValue",
+  "brief": "private String getUserTagValue(User user){}",
+  "methodSignature": "getUserTagValue(User)",
+  "sourceCode": "private String getUserTagValue(User user) {\n    if (user != null && user.getName() != null) {\n      return user.getName();\n    } else {\n      return \"\";\n    }\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "User"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.security.User": [
+      "getName()"
+    ]
+  },
+  "full_method_info": "private String getUserTagValue(User user) {\n    if (user != null && user.getName() != null) {\n        return user.getName();\n    } else {\n        return \"\";\n    }\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

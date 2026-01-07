@@ -1,0 +1,42 @@
+{
+  "className": "ApplicationSubmissionRest",
+  "methodName": "configureZonesForRequest",
+  "brief": "private void configureZonesForRequest(\n      final SubmitApplicationRequest request,\n      final AppConfig appConfig,\n      final String queueName,\n      final AppConfig.SparkCluster sparkCluster,\n      final String submissionId){}",
+  "methodSignature": "configureZonesForRequest(SubmitApplicationRequest, AppConfig, String, AppConfig.SparkCluster, String)",
+  "sourceCode": "private void configureZonesForRequest(\n      final SubmitApplicationRequest request,\n      final AppConfig appConfig,\n      final String queueName,\n      final AppConfig.SparkCluster sparkCluster,\n      final String submissionId) {\n    List<String> pickedZones =\n        ZoneManager.pickZones(request, appConfig, queueName, sparkCluster, submissionId);\n    Map<String, String> sparkConf = request.getSparkConf();\n    if (sparkConf == null) {\n      sparkConf = new HashMap<>();\n    }\n    if (pickedZones == null || pickedZones.isEmpty()) {\n      // this should only be set by zone picker based on queue config\n      // will NOT allow application to hack this\n      sparkConf.remove(CONFIG_PICKED_ZONES);\n      return;\n    }\n    sparkConf.put(CONFIG_PICKED_ZONES, String.join(PICKED_ZONES_DELIMITER, pickedZones));\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "SubmitApplicationRequest",
+    "AppConfig",
+    "String",
+    "AppConfig.SparkCluster",
+    "String"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.api.SubmitApplicationRequest": [
+      "getSparkConf()"
+    ],
+    "com.apple.spark.AppConfig": [],
+    "java.lang.String": [
+      "join(CharSequence, CharSequence>)"
+    ],
+    "com.apple.spark.core.ZoneManager": [
+      "pickZones(SubmitApplicationRequest, AppConfig, String, SparkCluster, String)"
+    ],
+    "java.util.List": [
+      "isEmpty()"
+    ],
+    "java.util.Map": [
+      "remove(Object)",
+      "put(K, V)"
+    ]
+  },
+  "full_method_info": "private void configureZonesForRequest(final SubmitApplicationRequest request, final AppConfig appConfig, final String queueName, final AppConfig.SparkCluster sparkCluster, final String submissionId) {\n    List<String> pickedZones = ZoneManager.pickZones(request, appConfig, queueName, sparkCluster, submissionId);\n    Map<String, String> sparkConf = request.getSparkConf();\n    if (sparkConf == null) {\n        sparkConf = new HashMap<>();\n    }\n    if (pickedZones == null || pickedZones.isEmpty()) {\n        // this should only be set by zone picker based on queue config\n        // will NOT allow application to hack this\n        sparkConf.remove(CONFIG_PICKED_ZONES);\n        return;\n    }\n    sparkConf.put(CONFIG_PICKED_ZONES, String.join(PICKED_ZONES_DELIMITER, pickedZones));\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

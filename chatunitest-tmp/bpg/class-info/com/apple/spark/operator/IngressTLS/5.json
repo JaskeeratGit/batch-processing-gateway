@@ -1,0 +1,22 @@
+{
+  "className": "IngressTLS",
+  "methodName": "IngressTLS",
+  "brief": "public IngressTLS(IngressTLS ingressTLS){}",
+  "methodSignature": "IngressTLS(IngressTLS)",
+  "sourceCode": "public IngressTLS(IngressTLS ingressTLS) {\n    this.hosts = new ArrayList<>(ingressTLS.hosts);\n    this.secretName = ingressTLS.secretName;\n  }",
+  "useField": true,
+  "isConstructor": true,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "IngressTLS"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.operator.IngressTLS": []
+  },
+  "full_method_info": "public IngressTLS(IngressTLS ingressTLS) {\n    this.hosts = new ArrayList<>(ingressTLS.hosts);\n    this.secretName = ingressTLS.secretName;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

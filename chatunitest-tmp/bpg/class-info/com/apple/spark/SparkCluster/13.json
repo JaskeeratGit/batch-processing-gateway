@@ -1,0 +1,22 @@
+{
+  "className": "SparkCluster",
+  "methodName": "setUserTokenSOPS",
+  "brief": "public void setUserTokenSOPS(String userTokenSOPS){}",
+  "methodSignature": "setUserTokenSOPS(String)",
+  "sourceCode": "public void setUserTokenSOPS(String userTokenSOPS) {\n      this.userTokenSOPS = userTokenSOPS;\n    }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": []
+  },
+  "full_method_info": "public void setUserTokenSOPS(String userTokenSOPS) {\n    this.userTokenSOPS = userTokenSOPS;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

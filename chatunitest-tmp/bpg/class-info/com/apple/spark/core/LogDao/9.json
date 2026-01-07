@@ -1,0 +1,37 @@
+{
+  "className": "LogDao",
+  "methodName": "logApplicationFinished",
+  "brief": "public void logApplicationFinished(\n      String submissionId,\n      String status,\n      Timestamp finishedTime,\n      Double vCoreSecondCost,\n      Double memoryMbSecondCost){}",
+  "methodSignature": "logApplicationFinished(String, String, Timestamp, Double, Double)",
+  "sourceCode": "public void logApplicationFinished(\n      String submissionId,\n      String status,\n      Timestamp finishedTime,\n      Double vCoreSecondCost,\n      Double memoryMbSecondCost) {\n    if (bypassLog) {\n      return;\n    }\n\n    timerMetrics.record(\n        () ->\n            logApplicationFinishedImpl(\n                submissionId, status, finishedTime, vCoreSecondCost, memoryMbSecondCost),\n        DB_TIMER_METRIC_NAME,\n        Tag.of(OPERATION_TAG, LOG_APP_FINISHED_OPERATION));\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String",
+    "String",
+    "Timestamp",
+    "Double",
+    "Double"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [],
+    "java.sql.Timestamp": [],
+    "java.lang.Double": [],
+    "com.apple.spark.util.TimerMetricContainer": [
+      "record(Runnable, String, Tag[])"
+    ],
+    "com.apple.spark.core.LogDao": [
+      "logApplicationFinishedImpl(String, String, Timestamp, Double, Double)"
+    ],
+    "io.micrometer.core.instrument.Tag": [
+      "of(String, String)"
+    ]
+  },
+  "full_method_info": "public void logApplicationFinished(String submissionId, String status, Timestamp finishedTime, Double vCoreSecondCost, Double memoryMbSecondCost) {\n    if (bypassLog) {\n        return;\n    }\n    timerMetrics.record(() -> logApplicationFinishedImpl(submissionId, status, finishedTime, vCoreSecondCost, memoryMbSecondCost), DB_TIMER_METRIC_NAME, Tag.of(OPERATION_TAG, LOG_APP_FINISHED_OPERATION));\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

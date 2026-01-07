@@ -1,0 +1,29 @@
+{
+  "className": "HttpUtils",
+  "methodName": "get",
+  "brief": "public static <T> T get(String url, String headerName, String headerValue, Class<T> clazz){}",
+  "methodSignature": "get(String, String, String, Class)",
+  "sourceCode": "public static <T> T get(String url, String headerName, String headerValue, Class<T> clazz) {\n    String str = get(url, headerName, headerValue);\n    return parseJson(str, clazz);\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String",
+    "String",
+    "String",
+    "Class<T>"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [],
+    "com.apple.spark.util.HttpUtils": [
+      "get(String, String, String)",
+      "parseJson(String, Class<T>)"
+    ]
+  },
+  "full_method_info": "public static <T> T get(String url, String headerName, String headerValue, Class<T> clazz) {\n    String str = get(url, headerName, headerValue);\n    return parseJson(str, clazz);\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

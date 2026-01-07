@@ -1,0 +1,22 @@
+{
+  "className": "RequiredDuringSchedulingIgnoredDuringExecutionTerm",
+  "methodName": "setNodeSelectorTerms",
+  "brief": "public void setNodeSelectorTerms(NodeSelectorTerm[] nodeSelectorTerms){}",
+  "methodSignature": "setNodeSelectorTerms(NodeSelectorTerm[])",
+  "sourceCode": "public void setNodeSelectorTerms(NodeSelectorTerm[] nodeSelectorTerms) {\n    this.nodeSelectorTerms = nodeSelectorTerms;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "NodeSelectorTerm[]"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.operator.NodeSelectorTerm": []
+  },
+  "full_method_info": "public void setNodeSelectorTerms(NodeSelectorTerm[] nodeSelectorTerms) {\n    this.nodeSelectorTerms = nodeSelectorTerms;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

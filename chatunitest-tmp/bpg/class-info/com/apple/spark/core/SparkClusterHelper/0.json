@@ -1,0 +1,64 @@
+{
+  "className": "SparkClusterHelper",
+  "methodName": "getQueue",
+  "brief": "public static String getQueue(\n      AppConfig appConfig, SubmitApplicationRequest request, String user){}",
+  "methodSignature": "getQueue(AppConfig, SubmitApplicationRequest, String)",
+  "sourceCode": "public static String getQueue(\n      AppConfig appConfig, SubmitApplicationRequest request, String user) {\n    String queue = null;\n    if (!StringUtils.isEmpty(request.getQueue())) {\n      queue = normalizeQueue(request.getQueue());\n      logger.info(\"Use queue {} inside submission request from user {}\", queue, user);\n    } else if (appConfig.getQueues() != null) {\n      List<AppConfig.QueueConfig> queueConfigs =\n          appConfig.getQueues().stream()\n              .filter(q -> q.containUser(user))\n              .collect(Collectors.toList());\n      if (queueConfigs.size() > 1) {\n        Collections.shuffle(queueConfigs);\n      }\n      if (queueConfigs.size() > 0) {\n        queue = queueConfigs.get(0).getName();\n        logger.info(\"Use matched queue {} for user {}\", queue, user);\n      }\n    }\n\n    if (StringUtils.isEmpty(queue)) {\n      logger.info(\n          \"No queue found for submission request from user {}, will use {} queue\",\n          user,\n          DEFAULT_QUEUE);\n      queue = DEFAULT_QUEUE;\n    }\n\n    ApplicationSubmissionHelper.validateQueueToken(queue, request.getQueueToken(), appConfig);\n\n    return queue;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "AppConfig",
+    "SubmitApplicationRequest",
+    "String"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.AppConfig": [
+      "getQueues()"
+    ],
+    "com.apple.spark.api.SubmitApplicationRequest": [
+      "getQueue()",
+      "getQueueToken()"
+    ],
+    "java.lang.String": [],
+    "org.apache.commons.lang3.StringUtils": [
+      "isEmpty(CharSequence)"
+    ],
+    "com.apple.spark.core.SparkClusterHelper": [
+      "normalizeQueue(String)"
+    ],
+    "org.slf4j.Logger": [
+      "info(String, Object, Object)"
+    ],
+    "java.util.stream.Stream": [
+      "collect(Collector<? super T, A, R>)",
+      "filter(Predicate<? super T>)"
+    ],
+    "java.util.Collection": [
+      "stream()"
+    ],
+    "com.apple.spark.AppConfig.QueueConfig": [
+      "containUser(String)",
+      "getName()"
+    ],
+    "java.util.stream.Collectors": [
+      "toList()"
+    ],
+    "java.util.List": [
+      "get(int)",
+      "size()"
+    ],
+    "java.util.Collections": [
+      "shuffle(Object>)"
+    ],
+    "com.apple.spark.core.ApplicationSubmissionHelper": [
+      "validateQueueToken(String, String, AppConfig)"
+    ]
+  },
+  "full_method_info": "public static String getQueue(AppConfig appConfig, SubmitApplicationRequest request, String user) {\n    String queue = null;\n    if (!StringUtils.isEmpty(request.getQueue())) {\n        queue = normalizeQueue(request.getQueue());\n        logger.info(\"Use queue {} inside submission request from user {}\", queue, user);\n    } else if (appConfig.getQueues() != null) {\n        List<AppConfig.QueueConfig> queueConfigs = appConfig.getQueues().stream().filter(q -> q.containUser(user)).collect(Collectors.toList());\n        if (queueConfigs.size() > 1) {\n            Collections.shuffle(queueConfigs);\n        }\n        if (queueConfigs.size() > 0) {\n            queue = queueConfigs.get(0).getName();\n            logger.info(\"Use matched queue {} for user {}\", queue, user);\n        }\n    }\n    if (StringUtils.isEmpty(queue)) {\n        logger.info(\"No queue found for submission request from user {}, will use {} queue\", user, DEFAULT_QUEUE);\n        queue = DEFAULT_QUEUE;\n    }\n    ApplicationSubmissionHelper.validateQueueToken(queue, request.getQueueToken(), appConfig);\n    return queue;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

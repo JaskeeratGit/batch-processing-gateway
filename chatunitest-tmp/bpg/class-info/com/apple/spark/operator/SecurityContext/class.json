@@ -1,0 +1,64 @@
+{
+  "fullClassName": "com.apple.spark.operator.SecurityContext",
+  "className": "SecurityContext",
+  "index": 23,
+  "modifier": "[public ]",
+  "extend": "[]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.operator",
+  "packageDeclaration": "package com.apple.spark.operator;",
+  "classSignature": "@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class SecurityContext",
+  "hasConstructor": false,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import com.fasterxml.jackson.annotation.JsonIgnoreProperties;",
+    "import com.fasterxml.jackson.annotation.JsonInclude;"
+  ],
+  "fields": [
+    "private Boolean privileged;",
+    "private Long runAsUser;",
+    "private Boolean allowPrivilegeEscalation;"
+  ],
+  "superClasses": [],
+  "implementedTypes": [],
+  "methodSigs": {
+    "getPrivileged()": "0",
+    "setPrivileged(Boolean)": "1",
+    "getRunAsUser()": "2",
+    "setRunAsUser(Long)": "3",
+    "getAllowPrivilegeEscalation()": "4",
+    "setAllowPrivilegeEscalation(Boolean)": "5"
+  },
+  "methodsBrief": [
+    "public Boolean getPrivileged(){}",
+    "public void setPrivileged(Boolean privileged){}",
+    "public Long getRunAsUser(){}",
+    "public void setRunAsUser(Long runAsUser){}",
+    "public Boolean getAllowPrivilegeEscalation(){}",
+    "public void setAllowPrivilegeEscalation(Boolean allowPrivilegeEscalation){}"
+  ],
+  "constructorSigs": [],
+  "constructorBrief": [],
+  "getterSetterSigs": [
+    "getPrivileged()",
+    "setPrivileged(Boolean)",
+    "getRunAsUser()",
+    "setRunAsUser(Long)",
+    "getAllowPrivilegeEscalation()",
+    "setAllowPrivilegeEscalation(Boolean)"
+  ],
+  "getterSetterBrief": [
+    "public Boolean getPrivileged(){}",
+    "public void setPrivileged(Boolean privileged){}",
+    "public Long getRunAsUser(){}",
+    "public void setRunAsUser(Long runAsUser){}",
+    "public Boolean getAllowPrivilegeEscalation(){}",
+    "public void setAllowPrivilegeEscalation(Boolean allowPrivilegeEscalation){}"
+  ],
+  "constructorDeps": {},
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.operator;\n\nimport com.fasterxml.jackson.annotation.JsonIgnoreProperties;\nimport com.fasterxml.jackson.annotation.JsonInclude;\n\n@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class SecurityContext {\n\n    private Boolean privileged;\n\n    private Long runAsUser;\n\n    private Boolean allowPrivilegeEscalation;\n\n    public Boolean getPrivileged() {\n        return privileged;\n    }\n\n    public void setPrivileged(Boolean privileged) {\n        this.privileged = privileged;\n    }\n\n    public Long getRunAsUser() {\n        return runAsUser;\n    }\n\n    public void setRunAsUser(Long runAsUser) {\n        this.runAsUser = runAsUser;\n    }\n\n    public Boolean getAllowPrivilegeEscalation() {\n        return allowPrivilegeEscalation;\n    }\n\n    public void setAllowPrivilegeEscalation(Boolean allowPrivilegeEscalation) {\n        this.allowPrivilegeEscalation = allowPrivilegeEscalation;\n    }\n}\n",
+  "classDeclarationCode": "@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class SecurityContext {\n\n    private Boolean privileged;\n\n    private Long runAsUser;\n\n    private Boolean allowPrivilegeEscalation;\n\n    public Boolean getPrivileged() {\n        return privileged;\n    }\n\n    public void setPrivileged(Boolean privileged) {\n        this.privileged = privileged;\n    }\n\n    public Long getRunAsUser() {\n        return runAsUser;\n    }\n\n    public void setRunAsUser(Long runAsUser) {\n        this.runAsUser = runAsUser;\n    }\n\n    public Boolean getAllowPrivilegeEscalation() {\n        return allowPrivilegeEscalation;\n    }\n\n    public void setAllowPrivilegeEscalation(Boolean allowPrivilegeEscalation) {\n        this.allowPrivilegeEscalation = allowPrivilegeEscalation;\n    }\n}",
+  "subClasses": []
+}

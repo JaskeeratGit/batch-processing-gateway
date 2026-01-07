@@ -1,0 +1,22 @@
+{
+  "className": "SparkPodSpec",
+  "methodName": "setMemoryOverhead",
+  "brief": "public void setMemoryOverhead(String memoryOverhead){}",
+  "methodSignature": "setMemoryOverhead(String)",
+  "sourceCode": "public void setMemoryOverhead(String memoryOverhead) {\n    this.memoryOverhead = memoryOverhead;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": []
+  },
+  "full_method_info": "public void setMemoryOverhead(String memoryOverhead) {\n    this.memoryOverhead = memoryOverhead;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

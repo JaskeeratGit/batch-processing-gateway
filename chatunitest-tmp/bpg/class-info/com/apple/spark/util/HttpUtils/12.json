@@ -1,0 +1,49 @@
+{
+  "className": "HttpUtils",
+  "methodName": "delete",
+  "brief": "public static String delete(String url, String headerName, String headerValue){}",
+  "methodSignature": "delete(String, String, String)",
+  "sourceCode": "public static String delete(String url, String headerName, String headerValue) {\n    try {\n      var builder = HttpRequest.newBuilder().uri(new URI(url));\n      if (headerName != null && !headerName.isEmpty()) {\n        builder = builder.header(headerName, headerValue);\n      }\n      HttpRequest request = builder.DELETE().build();\n      HttpResponse<String> response =\n              HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofString());\n      return response.body();\n    } catch (Throwable ex) {\n      throw new RuntimeException(String.format(\"Failed to delete %s\", url), ex);\n    }\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String",
+    "String",
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "isEmpty()",
+      "format(String, Object[])"
+    ],
+    "java.net.http.HttpRequest.Builder": [
+      "uri(URI)",
+      "header(String, String)",
+      "build()",
+      "DELETE()"
+    ],
+    "java.net.http.HttpRequest": [
+      "newBuilder()"
+    ],
+    "java.net.http.HttpClient": [
+      "send(HttpRequest, BodyHandler<T>)",
+      "newBuilder()"
+    ],
+    "java.net.http.HttpClient.Builder": [
+      "build()"
+    ],
+    "java.net.http.HttpResponse.BodyHandlers": [
+      "ofString()"
+    ],
+    "java.net.http.HttpResponse": [
+      "body()"
+    ]
+  },
+  "full_method_info": "public static String delete(String url, String headerName, String headerValue) {\n    try {\n        var builder = HttpRequest.newBuilder().uri(new URI(url));\n        if (headerName != null && !headerName.isEmpty()) {\n            builder = builder.header(headerName, headerValue);\n        }\n        HttpRequest request = builder.DELETE().build();\n        HttpResponse<String> response = HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofString());\n        return response.body();\n    } catch (Throwable ex) {\n        throw new RuntimeException(String.format(\"Failed to delete %s\", url), ex);\n    }\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

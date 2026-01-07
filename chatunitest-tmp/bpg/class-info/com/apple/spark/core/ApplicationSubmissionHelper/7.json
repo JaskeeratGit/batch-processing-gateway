@@ -1,0 +1,29 @@
+{
+  "className": "ApplicationSubmissionHelper",
+  "methodName": "generateSubmissionId",
+  "brief": "public static String generateSubmissionId(String clusterId){}",
+  "methodSignature": "generateSubmissionId(String)",
+  "sourceCode": "public static String generateSubmissionId(String clusterId) {\n    return String.format(\"%s-%s\", clusterId, UUID.randomUUID().toString().replace(\"-\", \"\"));\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "format(String, Object[])",
+      "replace(CharSequence, CharSequence)"
+    ],
+    "java.util.UUID": [
+      "toString()",
+      "randomUUID()"
+    ]
+  },
+  "full_method_info": "public static String generateSubmissionId(String clusterId) {\n    return String.format(\"%s-%s\", clusterId, UUID.randomUUID().toString().replace(\"-\", \"\"));\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

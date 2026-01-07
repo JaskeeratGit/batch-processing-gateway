@@ -1,0 +1,20 @@
+{
+  "className": "SparkApplicationSpec",
+  "methodName": "setArguments",
+  "brief": "public void setArguments(List<String> arguments){}",
+  "methodSignature": "setArguments(List)",
+  "sourceCode": "public void setArguments(List<String> arguments) {\n    this.arguments = arguments;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "List<String>"
+  ],
+  "dependentMethods": {},
+  "full_method_info": "public void setArguments(List<String> arguments) {\n    this.arguments = arguments;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

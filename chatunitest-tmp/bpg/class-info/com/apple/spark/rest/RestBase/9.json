@@ -1,0 +1,27 @@
+{
+  "className": "RestBase",
+  "methodName": "RestBase",
+  "brief": "protected RestBase(AppConfig appConfig, MeterRegistry meterRegistry){}",
+  "methodSignature": "RestBase(AppConfig, MeterRegistry)",
+  "sourceCode": "protected RestBase(AppConfig appConfig, MeterRegistry meterRegistry) {\n    this.appConfig = appConfig;\n    this.registry = SharedMetricRegistries.getDefault();\n    this.requestCounters = new CounterMetricContainer(meterRegistry);\n    this.timerMetrics = new TimerMetricContainer(meterRegistry);\n  }",
+  "useField": true,
+  "isConstructor": true,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "AppConfig",
+    "MeterRegistry"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.AppConfig": [],
+    "io.micrometer.core.instrument.MeterRegistry": [],
+    "com.codahale.metrics.SharedMetricRegistries": [
+      "getDefault()"
+    ]
+  },
+  "full_method_info": "protected RestBase(AppConfig appConfig, MeterRegistry meterRegistry) {\n    this.appConfig = appConfig;\n    this.registry = SharedMetricRegistries.getDefault();\n    this.requestCounters = new CounterMetricContainer(meterRegistry);\n    this.timerMetrics = new TimerMetricContainer(meterRegistry);\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

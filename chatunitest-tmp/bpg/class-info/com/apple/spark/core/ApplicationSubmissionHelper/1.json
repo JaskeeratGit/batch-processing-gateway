@@ -1,0 +1,26 @@
+{
+  "className": "ApplicationSubmissionHelper",
+  "methodName": "getProxyUser",
+  "brief": "public static String getProxyUser(String user, String dagUser){}",
+  "methodSignature": "getProxyUser(String, String)",
+  "sourceCode": "public static String getProxyUser(String user, String dagUser) {\n    if (AIRFLOW_SYSTEM_ACCOUNTS.contains(user)) {\n      return dagUser;\n    }\n\n    return user;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String",
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [],
+    "java.util.Set": [
+      "contains(Object)"
+    ]
+  },
+  "full_method_info": "/**\n * When a job is submitted via Airflow, the username can be a system account. In that case, return\n * the DAG username as a proxy user. This will help some logging or metrics to have better\n * granularity.\n *\n * @param user the username that can potentially be an Airflow system account\n * @param dagUser the username specified in DAG\n * @return the DAG username if user is a system account\n */\npublic static String getProxyUser(String user, String dagUser) {\n    if (AIRFLOW_SYSTEM_ACCOUNTS.contains(user)) {\n        return dagUser;\n    }\n    return user;\n}",
+  "method_comment": "\n   * When a job is submitted via Airflow, the username can be a system account. In that case, return\n   * the DAG username as a proxy user. This will help some logging or metrics to have better\n   * granularity.\n   *\n   * @param user the username that can potentially be an Airflow system account\n   * @param dagUser the username specified in DAG\n   * @return the DAG username if user is a system account\n   ",
+  "method_annotation": ""
+}

@@ -1,0 +1,25 @@
+{
+  "className": "QueueConfig",
+  "methodName": "setExecutorMemBufferRatio",
+  "brief": "public void setExecutorMemBufferRatio(String executorMemBufferRatio){}",
+  "methodSignature": "setExecutorMemBufferRatio(String)",
+  "sourceCode": "public void setExecutorMemBufferRatio(String executorMemBufferRatio) {\n      this.executorMemBufferRatio = Double.parseDouble(executorMemBufferRatio);\n    }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [],
+    "java.lang.Double": [
+      "parseDouble(String)"
+    ]
+  },
+  "full_method_info": "public void setExecutorMemBufferRatio(String executorMemBufferRatio) {\n    this.executorMemBufferRatio = Double.parseDouble(executorMemBufferRatio);\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

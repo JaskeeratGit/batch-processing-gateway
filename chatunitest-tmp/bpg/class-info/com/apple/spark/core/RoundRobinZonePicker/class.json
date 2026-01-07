@@ -1,0 +1,51 @@
+{
+  "fullClassName": "com.apple.spark.core.RoundRobinZonePicker",
+  "className": "RoundRobinZonePicker",
+  "index": 99,
+  "modifier": "[public ]",
+  "extend": "[]",
+  "implement": "[ZonePicker]",
+  "packageName": "com.apple.spark.core",
+  "packageDeclaration": "package com.apple.spark.core;",
+  "classSignature": "public class RoundRobinZonePicker",
+  "hasConstructor": true,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import java.util.Collections;",
+    "import java.util.List;",
+    "import java.util.Objects;",
+    "import java.util.concurrent.atomic.AtomicInteger;"
+  ],
+  "fields": [
+    "private List<String> allowedZones;",
+    "private final AtomicInteger index = new AtomicInteger(0);"
+  ],
+  "superClasses": [],
+  "implementedTypes": [
+    "ZonePicker"
+  ],
+  "methodSigs": {
+    "update(List)": "0",
+    "pick()": "1",
+    "RoundRobinZonePicker()": "2"
+  },
+  "methodsBrief": [
+    "@Override\n  public void update(final List<String> allowedZones){}",
+    "@Override\n  public List<String> pick(){}",
+    "public RoundRobinZonePicker(){}"
+  ],
+  "constructorSigs": [
+    "RoundRobinZonePicker()"
+  ],
+  "constructorBrief": [
+    "public RoundRobinZonePicker(){}"
+  ],
+  "getterSetterSigs": [],
+  "getterSetterBrief": [],
+  "constructorDeps": {},
+  "compilationUnitCode": "package com.apple.spark.core;\n\nimport java.util.Collections;\nimport java.util.List;\nimport java.util.Objects;\nimport java.util.concurrent.atomic.AtomicInteger;\n\npublic class RoundRobinZonePicker implements ZonePicker {\n\n    private List<String> allowedZones;\n\n    private final AtomicInteger index = new AtomicInteger(0);\n\n    public RoundRobinZonePicker() {\n    }\n\n    @Override\n    public void update(final List<String> allowedZones) {\n        if (allowedZones == null || allowedZones.isEmpty()) {\n            throw new RuntimeException(\"Invalid allowedZones: Empty\");\n        }\n        if (allowedZones.stream().anyMatch(Objects::isNull) || allowedZones.stream().anyMatch(String::isEmpty)) {\n            throw new RuntimeException(\"Invalid allowedZones: Some zone is empty\");\n        }\n        this.allowedZones = allowedZones;\n        this.index.set(0);\n    }\n\n    @Override\n    public List<String> pick() {\n        int zoneIndex = index.getAndUpdate((input) -> (input + 1) % allowedZones.size());\n        String pickedZone = allowedZones.get(zoneIndex);\n        return Collections.singletonList(pickedZone);\n    }\n}\n",
+  "classDeclarationCode": "public class RoundRobinZonePicker implements ZonePicker {\n\n    private List<String> allowedZones;\n\n    private final AtomicInteger index = new AtomicInteger(0);\n\n    public RoundRobinZonePicker() {\n    }\n\n    @Override\n    public void update(final List<String> allowedZones) {\n        if (allowedZones == null || allowedZones.isEmpty()) {\n            throw new RuntimeException(\"Invalid allowedZones: Empty\");\n        }\n        if (allowedZones.stream().anyMatch(Objects::isNull) || allowedZones.stream().anyMatch(String::isEmpty)) {\n            throw new RuntimeException(\"Invalid allowedZones: Some zone is empty\");\n        }\n        this.allowedZones = allowedZones;\n        this.index.set(0);\n    }\n\n    @Override\n    public List<String> pick() {\n        int zoneIndex = index.getAndUpdate((input) -> (input + 1) % allowedZones.size());\n        String pickedZone = allowedZones.get(zoneIndex);\n        return Collections.singletonList(pickedZone);\n    }\n}",
+  "subClasses": []
+}

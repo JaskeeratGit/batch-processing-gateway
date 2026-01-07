@@ -1,0 +1,33 @@
+{
+  "className": "SparkCluster",
+  "methodName": "matchSparkVersion",
+  "brief": "public boolean matchSparkVersion(String sparkVersion){}",
+  "methodSignature": "matchSparkVersion(String)",
+  "sourceCode": "public boolean matchSparkVersion(String sparkVersion) {\n      return getSparkVersions() != null\n          && getSparkVersions().stream().anyMatch(v -> v.equalsIgnoreCase(sparkVersion));\n    }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "equalsIgnoreCase(String)"
+    ],
+    "com.apple.spark.AppConfig.SparkCluster": [
+      "getSparkVersions()"
+    ],
+    "java.util.stream.Stream": [
+      "anyMatch(Predicate<? super T>)"
+    ],
+    "java.util.Collection": [
+      "stream()"
+    ]
+  },
+  "full_method_info": "public boolean matchSparkVersion(String sparkVersion) {\n    return getSparkVersions() != null && getSparkVersions().stream().anyMatch(v -> v.equalsIgnoreCase(sparkVersion));\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

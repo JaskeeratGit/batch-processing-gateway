@@ -1,0 +1,30 @@
+{
+  "className": "TimerMetricContainer",
+  "methodName": "record",
+  "brief": "public <T> T record(Supplier<T> runnable, String metricName, Collection<Tag> tags){}",
+  "methodSignature": "record(Supplier, String, Collection)",
+  "sourceCode": "public <T> T record(Supplier<T> runnable, String metricName, Collection<Tag> tags) {\n    Timer timer = getTimer(metricName, tags);\n    return timer.record(runnable);\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "Supplier<T>",
+    "String",
+    "Collection<Tag>"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [],
+    "com.apple.spark.util.TimerMetricContainer": [
+      "getTimer(String, Tag>)"
+    ],
+    "io.micrometer.core.instrument.Timer": [
+      "record(Supplier<T>)"
+    ]
+  },
+  "full_method_info": "public <T> T record(Supplier<T> runnable, String metricName, Collection<Tag> tags) {\n    Timer timer = getTimer(metricName, tags);\n    return timer.record(runnable);\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

@@ -1,0 +1,30 @@
+{
+  "className": "ApplicationSubmissionHelper",
+  "methodName": "getMemNumFromRequestStr",
+  "brief": "private static long getMemNumFromRequestStr(String memStr){}",
+  "methodSignature": "getMemNumFromRequestStr(String)",
+  "sourceCode": "private static long getMemNumFromRequestStr(String memStr) {\n    int unitIndex = getMemUnitIndexFromRequestStr(memStr);\n    String memNumStr = memStr.substring(0, unitIndex);\n    return (long) Double.parseDouble(memNumStr);\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "substring(int, int)"
+    ],
+    "com.apple.spark.core.ApplicationSubmissionHelper": [
+      "getMemUnitIndexFromRequestStr(String)"
+    ],
+    "java.lang.Double": [
+      "parseDouble(String)"
+    ]
+  },
+  "full_method_info": "private static long getMemNumFromRequestStr(String memStr) {\n    int unitIndex = getMemUnitIndexFromRequestStr(memStr);\n    String memNumStr = memStr.substring(0, unitIndex);\n    return (long) Double.parseDouble(memNumStr);\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

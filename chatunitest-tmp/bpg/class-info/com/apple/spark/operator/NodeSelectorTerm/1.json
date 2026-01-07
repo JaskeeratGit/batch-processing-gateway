@@ -1,0 +1,22 @@
+{
+  "className": "NodeSelectorTerm",
+  "methodName": "setMatchExpressions",
+  "brief": "public void setMatchExpressions(NodeSelectorRequirement[] matchExpressions){}",
+  "methodSignature": "setMatchExpressions(NodeSelectorRequirement[])",
+  "sourceCode": "public void setMatchExpressions(NodeSelectorRequirement[] matchExpressions) {\n    this.matchExpressions = matchExpressions;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "NodeSelectorRequirement[]"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.operator.NodeSelectorRequirement": []
+  },
+  "full_method_info": "public void setMatchExpressions(NodeSelectorRequirement[] matchExpressions) {\n    this.matchExpressions = matchExpressions;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

@@ -1,0 +1,22 @@
+{
+  "className": "TestApplicationInfo",
+  "methodName": "setDriverStartTime",
+  "brief": "public void setDriverStartTime(Long driverStartTime){}",
+  "methodSignature": "setDriverStartTime(Long)",
+  "sourceCode": "public void setDriverStartTime(Long driverStartTime) {\n      this.driverStartTime = driverStartTime;\n    }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "Long"
+  ],
+  "dependentMethods": {
+    "java.lang.Long": []
+  },
+  "full_method_info": "public void setDriverStartTime(Long driverStartTime) {\n    this.driverStartTime = driverStartTime;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

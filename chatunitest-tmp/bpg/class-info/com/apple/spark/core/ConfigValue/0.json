@@ -1,0 +1,31 @@
+{
+  "className": "ConfigValue",
+  "methodName": "tryGetEncodedSecretValue",
+  "brief": "public static String tryGetEncodedSecretValue(String value){}",
+  "methodSignature": "tryGetEncodedSecretValue(String)",
+  "sourceCode": "public static String tryGetEncodedSecretValue(String value) {\n    if (value == null || value.isEmpty()) {\n      return value;\n    }\n    if (value.startsWith(PLAINTEXT_PREFIX)) {\n      return value.substring(PLAINTEXT_PREFIX.length());\n    } else if (value.startsWith(LOCALHOST_ENV_PREFIX)) {\n      return tryGetEncodedSecretValueFromEnvVar(value);\n    } else if (value.startsWith(K8S_SECRET_PREFIX)) {\n      return tryGetEncodedSecretValueFromK8sSecret(value);\n    }\n    return value;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "startsWith(String)",
+      "isEmpty()",
+      "substring(int)",
+      "length()"
+    ],
+    "com.apple.spark.core.ConfigValue": [
+      "tryGetEncodedSecretValueFromEnvVar(String)",
+      "tryGetEncodedSecretValueFromK8sSecret(String)"
+    ]
+  },
+  "full_method_info": "/**\n * This method tries to get secret value from an encoded string.\n * Following are examples for encoded string:\n * plaintext:value123 - get plaintext value like value123\n * localhost:env:my_env_variable_name - get value from environment variable my_env_variable_name\n * k8s:secret:namespace1:secret1:key1 - read secret secret1 in current kubernetes cluster and namespace namespace1, and get value for key1\n *\n * If the value is not in recognized encoding, this method will return the value directly.\n * @param value\n * @return\n */\npublic static String tryGetEncodedSecretValue(String value) {\n    if (value == null || value.isEmpty()) {\n        return value;\n    }\n    if (value.startsWith(PLAINTEXT_PREFIX)) {\n        return value.substring(PLAINTEXT_PREFIX.length());\n    } else if (value.startsWith(LOCALHOST_ENV_PREFIX)) {\n        return tryGetEncodedSecretValueFromEnvVar(value);\n    } else if (value.startsWith(K8S_SECRET_PREFIX)) {\n        return tryGetEncodedSecretValueFromK8sSecret(value);\n    }\n    return value;\n}",
+  "method_comment": "*\n   * This method tries to get secret value from an encoded string.\n   * Following are examples for encoded string:\n   * plaintext:value123 - get plaintext value like value123\n   * localhost:env:my_env_variable_name - get value from environment variable my_env_variable_name\n   * k8s:secret:namespace1:secret1:key1 - read secret secret1 in current kubernetes cluster and namespace namespace1, and get value for key1\n   *\n   * If the value is not in recognized encoding, this method will return the value directly.\n   * @param value\n   * @return\n   ",
+  "method_annotation": ""
+}

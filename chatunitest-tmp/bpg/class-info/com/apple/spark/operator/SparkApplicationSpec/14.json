@@ -1,0 +1,18 @@
+{
+  "className": "SparkApplicationSpec",
+  "methodName": "getImagePullSecrets",
+  "brief": "public String getImagePullSecrets(){}",
+  "methodSignature": "getImagePullSecrets()",
+  "sourceCode": "public String getImagePullSecrets() {\n    return imagePullSecrets;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public String getImagePullSecrets() {\n    return imagePullSecrets;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

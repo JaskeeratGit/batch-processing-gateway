@@ -1,0 +1,18 @@
+{
+  "className": "EnvVarSource",
+  "methodName": "getFieldRef",
+  "brief": "public ObjectFieldSelector getFieldRef(){}",
+  "methodSignature": "getFieldRef()",
+  "sourceCode": "public ObjectFieldSelector getFieldRef() {\n    return fieldRef;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public ObjectFieldSelector getFieldRef() {\n    return fieldRef;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

@@ -1,0 +1,29 @@
+{
+  "className": "HttpUtils",
+  "methodName": "delete",
+  "brief": "public static <T> T delete(String url, String headerName, String headerValue, Class<T> clazz){}",
+  "methodSignature": "delete(String, String, String, Class)",
+  "sourceCode": "public static <T> T delete(String url, String headerName, String headerValue, Class<T> clazz) {\n    String str = delete(url, headerName, headerValue);\n    return parseJson(str, clazz);\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String",
+    "String",
+    "String",
+    "Class<T>"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [],
+    "com.apple.spark.util.HttpUtils": [
+      "parseJson(String, Class<T>)",
+      "delete(String, String, String)"
+    ]
+  },
+  "full_method_info": "public static <T> T delete(String url, String headerName, String headerValue, Class<T> clazz) {\n    String str = delete(url, headerName, headerValue);\n    return parseJson(str, clazz);\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

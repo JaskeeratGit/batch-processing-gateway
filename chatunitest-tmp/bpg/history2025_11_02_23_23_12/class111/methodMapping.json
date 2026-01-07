@@ -1,0 +1,14 @@
+{
+  "method0": {
+    "methodName": "main",
+    "signature": "main(String[])",
+    "className": "QueueTokenGenerator",
+    "packageName": "com.apple.spark.tools"
+  },
+  "method1": {
+    "methodName": "printArgumentExample",
+    "signature": "printArgumentExample()",
+    "className": "QueueTokenGenerator",
+    "packageName": "com.apple.spark.tools"
+  }
+}

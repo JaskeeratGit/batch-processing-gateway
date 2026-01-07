@@ -1,0 +1,32 @@
+{
+  "className": "SparkClusterHelper",
+  "methodName": "normalizeQueue",
+  "brief": "public static String normalizeQueue(String queue){}",
+  "methodSignature": "normalizeQueue(String)",
+  "sourceCode": "public static String normalizeQueue(String queue) {\n    // replace repeating dots with single dot\n    String regexRepeatingDots = \"([\\\\.])\\\\1{1,}\";\n    String q1 = queue.replaceAll(regexRepeatingDots, \"$1\");\n\n    // Trim leading and trailing dots\n    String regexTrimDots = \"[\\\\.]*(.*[^\\\\.])[\\\\.]*\";\n    Pattern r = Pattern.compile(regexTrimDots);\n\n    Matcher m = r.matcher(q1);\n    if (m.find()) {\n      return m.group(1);\n    } else {\n      return null;\n    }\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "replaceAll(String, String)"
+    ],
+    "java.util.regex.Pattern": [
+      "matcher(CharSequence)",
+      "compile(String)"
+    ],
+    "java.util.regex.Matcher": [
+      "find()",
+      "group(int)"
+    ]
+  },
+  "full_method_info": "public static String normalizeQueue(String queue) {\n    // replace repeating dots with single dot\n    String regexRepeatingDots = \"([\\\\.])\\\\1{1,}\";\n    String q1 = queue.replaceAll(regexRepeatingDots, \"$1\");\n    // Trim leading and trailing dots\n    String regexTrimDots = \"[\\\\.]*(.*[^\\\\.])[\\\\.]*\";\n    Pattern r = Pattern.compile(regexTrimDots);\n    Matcher m = r.matcher(q1);\n    if (m.find()) {\n        return m.group(1);\n    } else {\n        return null;\n    }\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

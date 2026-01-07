@@ -1,0 +1,22 @@
+{
+  "className": "SubmitApplicationResponse",
+  "methodName": "setSubmissionId",
+  "brief": "public void setSubmissionId(String submissionId){}",
+  "methodSignature": "setSubmissionId(String)",
+  "sourceCode": "public void setSubmissionId(String submissionId) {\n    this.submissionId = submissionId;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": []
+  },
+  "full_method_info": "public void setSubmissionId(String submissionId) {\n    this.submissionId = submissionId;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

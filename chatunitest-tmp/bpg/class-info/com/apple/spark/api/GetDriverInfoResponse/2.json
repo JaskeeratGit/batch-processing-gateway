@@ -1,0 +1,18 @@
+{
+  "className": "GetDriverInfoResponse",
+  "methodName": "getStartTime",
+  "brief": "public Long getStartTime(){}",
+  "methodSignature": "getStartTime()",
+  "sourceCode": "public Long getStartTime() {\n    return startTime;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public Long getStartTime() {\n    return startTime;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

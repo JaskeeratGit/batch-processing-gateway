@@ -1,0 +1,20 @@
+{
+  "className": "SparkPodSpec",
+  "methodName": "setEnv",
+  "brief": "public void setEnv(List<EnvVar> env){}",
+  "methodSignature": "setEnv(List)",
+  "sourceCode": "public void setEnv(List<EnvVar> env) {\n    this.env = env;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "List<EnvVar>"
+  ],
+  "dependentMethods": {},
+  "full_method_info": "public void setEnv(List<EnvVar> env) {\n    this.env = env;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

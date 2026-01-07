@@ -1,0 +1,29 @@
+{
+  "className": "ApplicationSubmissionHelper",
+  "methodName": "generateSubmissionId",
+  "brief": "public static String generateSubmissionId(String clusterId, String submissionIdSuffix){}",
+  "methodSignature": "generateSubmissionId(String, String)",
+  "sourceCode": "public static String generateSubmissionId(String clusterId, String submissionIdSuffix) {\n    if (submissionIdSuffix != null && !submissionIdSuffix.isEmpty()) {\n      return String.format(\"%s-%s\", generateSubmissionId(clusterId), submissionIdSuffix);\n    }\n\n    return generateSubmissionId(clusterId);\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String",
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "isEmpty()",
+      "format(String, Object[])"
+    ],
+    "com.apple.spark.core.ApplicationSubmissionHelper": [
+      "generateSubmissionId(String)"
+    ]
+  },
+  "full_method_info": "public static String generateSubmissionId(String clusterId, String submissionIdSuffix) {\n    if (submissionIdSuffix != null && !submissionIdSuffix.isEmpty()) {\n        return String.format(\"%s-%s\", generateSubmissionId(clusterId), submissionIdSuffix);\n    }\n    return generateSubmissionId(clusterId);\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

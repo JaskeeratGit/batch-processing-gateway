@@ -1,0 +1,18 @@
+{
+  "className": "Affinity",
+  "methodName": "getNodeAffinity",
+  "brief": "public NodeAffinity getNodeAffinity(){}",
+  "methodSignature": "getNodeAffinity()",
+  "sourceCode": "public NodeAffinity getNodeAffinity() {\n    return nodeAffinity;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public NodeAffinity getNodeAffinity() {\n    return nodeAffinity;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

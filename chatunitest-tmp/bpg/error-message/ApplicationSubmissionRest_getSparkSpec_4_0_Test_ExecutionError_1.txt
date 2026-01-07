@@ -1,0 +1,207 @@
+package com.apple.spark.rest;
+
+import com.apple.spark.AppConfig;
+import com.apple.spark.operator.DriverSpec;
+import com.apple.spark.operator.ExecutorSpec;
+import com.apple.spark.operator.EnvVar;
+import com.apple.spark.operator.SparkApplication;
+import com.apple.spark.operator.SparkApplicationSpec;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+import java.lang.reflect.Method;
+import java.util.Collections;
+import java.util.List;
+import com.apple.spark.security.User;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import static com.apple.spark.core.ApplicationSubmissionHelper.getDriverSpec;
+import static com.apple.spark.core.ApplicationSubmissionHelper.getExecutorSpec;
+import static com.apple.spark.core.ApplicationSubmissionHelper.getImage;
+import static com.apple.spark.core.ApplicationSubmissionHelper.getProxyUser;
+import static com.apple.spark.core.ApplicationSubmissionHelper.getSparkConf;
+import static com.apple.spark.core.ApplicationSubmissionHelper.getSparkUIConfiguration;
+import static com.apple.spark.core.ApplicationSubmissionHelper.getType;
+import static com.apple.spark.core.ApplicationSubmissionHelper.getVolumes;
+import static com.apple.spark.core.ApplicationSubmissionHelper.getYuniKornSchedulerConfig;
+import static com.apple.spark.core.BatchSchedulerConstants.YUNIKORN_ROOT_QUEUE;
+import static com.apple.spark.core.BatchSchedulerConstants.YUNIKORN_SCHEDULER;
+import static com.apple.spark.core.Constants.*;
+import com.apple.spark.AppConfig.SparkCluster;
+import com.apple.spark.api.DeleteSubmissionResponse;
+import com.apple.spark.api.GetDriverInfoResponse;
+import com.apple.spark.api.GetMySubmissionsResponse;
+import com.apple.spark.api.GetSubmissionStatusResponse;
+import com.apple.spark.api.SubmissionSummary;
+import com.apple.spark.api.SubmitApplicationRequest;
+import com.apple.spark.api.SubmitApplicationResponse;
+import com.apple.spark.core.*;
+import com.apple.spark.operator.DriverInfo;
+import com.apple.spark.operator.SparkApplicationResourceList;
+import com.apple.spark.util.ConfigUtil;
+import com.apple.spark.util.CustomSerDe;
+import com.apple.spark.util.DateTimeUtils;
+import com.apple.spark.util.ExceptionUtils;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.SharedMetricRegistries;
+import com.codahale.metrics.annotation.ExceptionMetered;
+import com.codahale.metrics.annotation.Timed;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
+import io.dropwizard.auth.Auth;
+import io.fabric8.kubernetes.api.model.Event;
+import io.fabric8.kubernetes.api.model.EventList;
+import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.PodStatus;
+import io.fabric8.kubernetes.client.DefaultKubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.Resource;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import javax.annotation.security.PermitAll;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Unit tests for ApplicationSubmissionRest#getSparkSpec and the private removeEnvFromSpec method.
+ */
+public class ApplicationSubmissionRest_getSparkSpec_4_0_Test {
+
+    // Helper subclass to override getSparkApplicationResource to return a mocked SparkApplication.
+    static class TestApplicationSubmissionRest extends ApplicationSubmissionRest {
+
+        private final SparkApplication returned;
+
+        TestApplicationSubmissionRest(AppConfig config, SimpleMeterRegistry meterRegistry, SparkApplication returned) {
+            super(config, meterRegistry);
+            this.returned = returned;
+        }
+
+        @Override
+        protected SparkApplication getSparkApplicationResource(String submissionId) {
+            return returned;
+        }
+    }
+
+    @Test
+    public void testGetSparkSpec_removesEnvFromDriverAndExecutor() {
+        // Arrange
+        AppConfig cfg = new AppConfig();
+        SimpleMeterRegistry meterRegistry = new SimpleMeterRegistry();
+        SparkApplication sparkApp = mock(SparkApplication.class);
+        SparkApplicationSpec spec = mock(SparkApplicationSpec.class);
+        DriverSpec driver = mock(DriverSpec.class);
+        ExecutorSpec executor = mock(ExecutorSpec.class);
+        // driver and executor have non-null env lists (EnvVar)
+        List<EnvVar> env = Collections.singletonList(mock(EnvVar.class));
+        when(driver.getEnv()).thenReturn(env);
+        when(executor.getEnv()).thenReturn(env);
+        when(spec.getDriver()).thenReturn(driver);
+        when(spec.getExecutor()).thenReturn(executor);
+        when(sparkApp.getSpec()).thenReturn(spec);
+        ApplicationSubmissionRest rest = new TestApplicationSubmissionRest(cfg, meterRegistry, sparkApp);
+        // Act
+        SparkApplicationSpec returned = rest.getSparkSpec("submission-1", "none", new User("alice"));
+        // Assert
+        // The same spec instance returned by our mock should be returned
+        assertSame(spec, returned);
+        // verify that setEnv(null) was invoked on both driver and executor (env removed)
+        verify(driver).setEnv(null);
+        verify(executor).setEnv(null);
+    }
+
+    @Test
+    public void testGetSparkSpec_handlesNullEnvs() {
+        // Arrange
+        AppConfig cfg = new AppConfig();
+        SimpleMeterRegistry meterRegistry = new SimpleMeterRegistry();
+        SparkApplication sparkApp = mock(SparkApplication.class);
+        SparkApplicationSpec spec = mock(SparkApplicationSpec.class);
+        DriverSpec driver = mock(DriverSpec.class);
+        ExecutorSpec executor = mock(ExecutorSpec.class);
+        // both envs are null -> removeEnvFromSpec should not call setEnv
+        when(driver.getEnv()).thenReturn(null);
+        when(executor.getEnv()).thenReturn(null);
+        when(spec.getDriver()).thenReturn(driver);
+        when(spec.getExecutor()).thenReturn(executor);
+        when(sparkApp.getSpec()).thenReturn(spec);
+        ApplicationSubmissionRest rest = new TestApplicationSubmissionRest(cfg, meterRegistry, sparkApp);
+        // Act
+        SparkApplicationSpec returned = rest.getSparkSpec("submission-2", "none", new User("bob"));
+        // Assert
+        assertSame(spec, returned);
+        // setEnv should NOT be called because env was already null
+        verify(driver, never()).setEnv(anyList());
+        verify(executor, never()).setEnv(anyList());
+    }
+
+    @Test
+    public void testRemoveEnvFromSpec_exceptionHandled_viaReflection() throws Exception {
+        // Arrange
+        AppConfig cfg = new AppConfig();
+        SimpleMeterRegistry meterRegistry = new SimpleMeterRegistry();
+        SparkApplication sparkApp = mock(SparkApplication.class);
+        SparkApplicationSpec spec = mock(SparkApplicationSpec.class);
+        DriverSpec driver = mock(DriverSpec.class);
+        ExecutorSpec executor = mock(ExecutorSpec.class);
+        // Make driver.getEnv() throw to exercise the catch block inside removeEnvFromSpec
+        when(driver.getEnv()).thenThrow(new RuntimeException("boom"));
+        // executor returns a non-null env to ensure code path would have attempted setEnv if not for exception
+        when(executor.getEnv()).thenReturn(Collections.singletonList(mock(EnvVar.class)));
+        when(spec.getDriver()).thenReturn(driver);
+        when(spec.getExecutor()).thenReturn(executor);
+        when(sparkApp.getSpec()).thenReturn(spec);
+        ApplicationSubmissionRest rest = new TestApplicationSubmissionRest(cfg, meterRegistry, sparkApp);
+        // Use reflection to invoke private removeEnvFromSpec
+        Method m = ApplicationSubmissionRest.class.getDeclaredMethod("removeEnvFromSpec", SparkApplicationSpec.class);
+        m.setAccessible(true);
+        // Act: should not throw even though driver.getEnv() throws inside method
+        Object ret = m.invoke(rest, spec);
+        // Assert: returned object should be the same spec (method returns passed spec)
+        assertSame(spec, ret);
+        // Because exception occurred before executor.setEnv(null) is reached, verify executor.setEnv was not called
+        verify(executor, never()).setEnv(null);
+    }
+}
+
+--------------------------------------------
+Error in testGetSparkSpec_handlesNullEnvs(): line 155 : java.lang.IllegalStateException: Could not initialize plugin: interface org.mockito.plugins.MockMaker (alternate: null)
+Error in testGetSparkSpec_removesEnvFromDriverAndExecutor(): line 128 : java.lang.IllegalStateException: Could not initialize plugin: interface org.mockito.plugins.MockMaker (alternate: null)
+Error in testRemoveEnvFromSpec_exceptionHandled_viaReflection(): line 180 : java.lang.IllegalStateException: Could not initialize plugin: interface org.mockito.plugins.MockMaker (alternate: null)

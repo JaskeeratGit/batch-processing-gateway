@@ -1,0 +1,80 @@
+package com.apple.spark.util;
+
+import com.codahale.metrics.Meter;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.VarHandle;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import com.apple.spark.core.Constants;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.SharedMetricRegistries;
+
+public class ExceptionUtils_meterJsonProcessingException_2_0_Test {
+
+    private Field jsonMeterField;
+
+    private Object originalJsonMeter;
+
+    @BeforeEach
+    void setUp() throws Exception {
+        jsonMeterField = ExceptionUtils.class.getDeclaredField("jsonProcessingExceptionMeter");
+        jsonMeterField.setAccessible(true);
+        originalJsonMeter = jsonMeterField.get(null);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        // Restore original value (may be null)
+        setFinalStatic(jsonMeterField, originalJsonMeter);
+    }
+
+    @Test
+    void meterJsonProcessingException_incrementsMeterCount() throws Exception {
+        Meter meter = (Meter) jsonMeterField.get(null);
+        assertNotNull(meter, "Expected existing meter to be non-null for this test");
+        long before = meter.getCount();
+        ExceptionUtils.meterJsonProcessingException();
+        long after = meter.getCount();
+        assertEquals(before + 1, after);
+    }
+
+    @Test
+    void meterJsonProcessingException_whenMeterIsNull_throwsNullPointerException() throws Exception {
+        // Set the private static final meter field to null and verify NPE is thrown
+        setFinalStatic(jsonMeterField, null);
+        assertThrows(NullPointerException.class, () -> ExceptionUtils.meterJsonProcessingException());
+    }
+
+    /**
+     * Helper to set a private static final field via VarHandle (preferred) or reflection fallback.
+     */
+    private static void setFinalStatic(Field field, Object newValue) throws Exception {
+        field.setAccessible(true);
+        try {
+            // Try VarHandle approach (works on Java 9+)
+            MethodHandles.Lookup lookup = MethodHandles.privateLookupIn(field.getDeclaringClass(), MethodHandles.lookup());
+            VarHandle vh = lookup.findStaticVarHandle(field.getDeclaringClass(), field.getName(), field.getType());
+            vh.set(newValue);
+        } catch (Exception e) {
+            // Fallback for environments where VarHandle/privateLookupIn isn't available:
+            // remove final modifier and set the field directly
+            try {
+                Field modifiersField = Field.class.getDeclaredField("modifiers");
+                modifiersField.setAccessible(true);
+                modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+            } catch (NoSuchFieldException nsfe) {
+                // If "modifiers" field not present, attempt to set accessible and set directly (may still fail)
+            }
+            field.set(null, newValue);
+        }
+    }
+}
+
+--------------------------------------------
+Error in ExceptionUtils_meterJsonProcessingException_2_0_Test: line 18 : class ExceptionUtils_meterJsonProcessingException_2_0_Test is public, should be declared in a file named ExceptionUtils_meterJsonProcessingException_2_0_Test.java

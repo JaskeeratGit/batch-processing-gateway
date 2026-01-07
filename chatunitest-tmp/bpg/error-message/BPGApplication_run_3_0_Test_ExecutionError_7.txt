@@ -1,0 +1,130 @@
+package com.apple.spark;
+
+import com.apple.spark.core.BPGStatsdConfig;
+import com.apple.spark.core.Constants;
+import com.apple.spark.health.BPGHealthCheck;
+import com.apple.spark.rest.AdminRest;
+import com.apple.spark.rest.ApplicationGetLogRest;
+import com.apple.spark.rest.ApplicationSubmissionRest;
+import com.apple.spark.rest.HealthcheckRest;
+import com.apple.spark.rest.CloudStorageRest;
+import com.apple.spark.security.User;
+import com.apple.spark.security.UserNameAuthFilter;
+import com.apple.spark.security.UserNameBasicAuthenticator;
+import com.apple.spark.security.UserUnauthorizedHandler;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.SharedMetricRegistries;
+import io.dropwizard.jersey.setup.JerseyEnvironment;
+import io.dropwizard.jetty.MutableServletContextHandler;
+import io.dropwizard.setup.Environment;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
+import io.swagger.v3.oas.integration.SwaggerConfiguration;
+import io.swagger.v3.oas.models.OpenAPI;
+import java.lang.reflect.Method;
+import java.util.*;
+import io.dropwizard.auth.AuthDynamicFeature;
+import io.dropwizard.auth.AuthValueFactoryProvider;
+import io.dropwizard.auth.basic.BasicCredentialAuthFilter;
+import io.dropwizard.auth.basic.BasicCredentials;
+import io.dropwizard.auth.chained.ChainedAuthFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import static com.apple.spark.core.Constants.SERVICE_ABBR;
+import com.apple.spark.core.ApplicationMonitor;
+import com.apple.spark.core.ThrowableExceptionMapper;
+import com.apple.spark.util.CounterMetricContainer;
+import io.dropwizard.Application;
+import io.dropwizard.setup.Bootstrap;
+import io.micrometer.core.instrument.Tag;
+import static com.apple.spark.core.Constants.QUEUE_INFO;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+@ExtendWith(MockitoExtension.class)
+public class BPGApplication_run_3_0_Test {
+
+    private Environment environment;
+
+    private JerseyEnvironment jerseyEnvironment;
+
+    private MutableServletContextHandler servletContextHandler;
+
+    private com.codahale.metrics.health.HealthCheckRegistry healthCheckRegistry;
+
+    private MetricRegistry metricRegistry;
+
+    @BeforeEach
+    public void setUp() {
+        environment = mock(Environment.class);
+        jerseyEnvironment = mock(JerseyEnvironment.class);
+        servletContextHandler = mock(MutableServletContextHandler.class);
+        healthCheckRegistry = mock(com.codahale.metrics.health.HealthCheckRegistry.class);
+        metricRegistry = new MetricRegistry();
+        when(environment.jersey()).thenReturn(jerseyEnvironment);
+        when(environment.getApplicationContext()).thenReturn(servletContextHandler);
+        when(environment.metrics()).thenReturn(metricRegistry);
+        when(environment.healthChecks()).thenReturn(healthCheckRegistry);
+        doNothing().when(jerseyEnvironment).register(any());
+        doNothing().when(healthCheckRegistry).register(anyString(), any());
+        doNothing().when(servletContextHandler).setContextPath(anyString());
+    }
+
+    @Test
+    public void testRun_nullContextPath_usesDefaultAndRegistersResources() {
+        AppConfig config = mock(AppConfig.class);
+        when(config.getApplicationContextPath()).thenReturn(null);
+        when(config.getAllowedUsers()).thenReturn(Collections.emptyList());
+        when(config.getBlockedUsers()).thenReturn(Collections.emptyList());
+        when(config.getSparkClusters()).thenReturn(Collections.emptyList());
+        BPGApplication app = new BPGApplication(false);
+        // Execute
+        app.run(config, environment);
+        // Verify default context path used
+        verify(servletContextHandler).setContextPath(Constants.DEFAULT_APPLICATION_CONTEXT_PATH);
+        // Verify that core REST resources are registered
+        verify(jerseyEnvironment).register(isA(ApplicationSubmissionRest.class));
+        verify(jerseyEnvironment).register(isA(ApplicationGetLogRest.class));
+        verify(jerseyEnvironment).register(isA(CloudStorageRest.class));
+        verify(jerseyEnvironment).register(isA(AdminRest.class));
+        verify(jerseyEnvironment).register(isA(HealthcheckRest.class));
+        // Verify exception mapper and auth bindings registered (at least once)
+        verify(jerseyEnvironment, atLeastOnce()).register(isA(ThrowableExceptionMapper.class));
+        verify(jerseyEnvironment, atLeastOnce()).register(isA(AuthDynamicFeature.class));
+        verify(jerseyEnvironment, atLeastOnce()).register(isA(AuthValueFactoryProvider.Binder.class));
+        // Verify health check registered
+        verify(healthCheckRegistry).register(eq("sparkClusters"), isA(BPGHealthCheck.class));
+        // Verify metric registry was added to SharedMetricRegistries
+        assertSame(metricRegistry, SharedMetricRegistries.getOrCreate(Constants.DEFAULT_METRIC_REGISTRY));
+    }
+
+    @Test
+    public void testRun_customContextPath_monitorApplicationTrue_and_invokePrivateSendPeriodicMetrics() throws Exception {
+        AppConfig config = mock(AppConfig.class);
+        when(config.getApplicationContextPath()).thenReturn("/custom");
+        when(config.getAllowedUsers()).thenReturn(Collections.emptyList());
+        when(config.getBlockedUsers()).thenReturn(Collections.emptyList());
+        when(config.getSparkClusters()).thenReturn(Collections.emptyList());
+        BPGApplication app = new BPGApplication(true);
+        // Execute run (this will attempt to start ApplicationMonitor if available)
+        app.run(config, environment);
+        // Verify custom context path used
+        verify(servletContextHandler).setContextPath("/custom");
+        // Now invoke private method sendPeriodicMetrics reflectively
+        Method m = BPGApplication.class.getDeclaredMethod("sendPeriodicMetrics", AppConfig.class, MeterRegistry.class);
+        m.setAccessible(true);
+        // Provide a simple MeterRegistry instance
+        SimpleMeterRegistry simpleMeterRegistry = new SimpleMeterRegistry();
+        // Should not throw
+        m.invoke(app, config, simpleMeterRegistry);
+    }
+}
+
+--------------------------------------------
+Error in testRun_nullContextPath_usesDefaultAndRegistersResources(): line 64 : java.lang.IllegalStateException: Could not initialize plugin: interface org.mockito.plugins.MockMaker (alternate: null)
+Error in testRun_customContextPath_monitorApplicationTrue_and_invokePrivateSendPeriodicMetrics(): line 64 : java.lang.IllegalStateException: Could not initialize plugin: interface org.mockito.plugins.MockMaker (alternate: null)

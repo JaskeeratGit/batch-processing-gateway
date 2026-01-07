@@ -1,0 +1,18 @@
+{
+  "className": "NodeAffinity",
+  "methodName": "getRequiredDuringSchedulingIgnoredDuringExecution",
+  "brief": "public RequiredDuringSchedulingIgnoredDuringExecutionTerm\n      getRequiredDuringSchedulingIgnoredDuringExecution(){}",
+  "methodSignature": "getRequiredDuringSchedulingIgnoredDuringExecution()",
+  "sourceCode": "public RequiredDuringSchedulingIgnoredDuringExecutionTerm\n      getRequiredDuringSchedulingIgnoredDuringExecution() {\n    return requiredDuringSchedulingIgnoredDuringExecution;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public RequiredDuringSchedulingIgnoredDuringExecutionTerm getRequiredDuringSchedulingIgnoredDuringExecution() {\n    return requiredDuringSchedulingIgnoredDuringExecution;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

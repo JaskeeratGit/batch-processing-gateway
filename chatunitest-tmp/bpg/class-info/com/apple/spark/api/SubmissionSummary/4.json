@@ -1,0 +1,18 @@
+{
+  "className": "SubmissionSummary",
+  "methodName": "getSparkVersion",
+  "brief": "public String getSparkVersion(){}",
+  "methodSignature": "getSparkVersion()",
+  "sourceCode": "public String getSparkVersion() {\n    return sparkVersion;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public String getSparkVersion() {\n    return sparkVersion;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

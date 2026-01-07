@@ -1,0 +1,47 @@
+{
+  "attempt0": {
+    "testClassName": "ThrowableExceptionMapper_toResponse_0_0_Test",
+    "fullName": "com.apple.spark.core.ThrowableExceptionMapper_toResponse_0_0_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/ThrowableExceptionMapper_toResponse_0_0_Test.java",
+    "className": "ThrowableExceptionMapper",
+    "packageName": "com.apple.spark.core",
+    "methodName": "toResponse",
+    "methodSig": "toResponse(Throwable)"
+  },
+  "attempt1": {
+    "testClassName": "ThrowableExceptionMapper_toResponse_0_1_Test",
+    "fullName": "com.apple.spark.core.ThrowableExceptionMapper_toResponse_0_1_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/ThrowableExceptionMapper_toResponse_0_0_Test.java",
+    "className": "ThrowableExceptionMapper",
+    "packageName": "com.apple.spark.core",
+    "methodName": "toResponse",
+    "methodSig": "toResponse(Throwable)"
+  },
+  "attempt2": {
+    "testClassName": "ThrowableExceptionMapper_toResponse_0_2_Test",
+    "fullName": "com.apple.spark.core.ThrowableExceptionMapper_toResponse_0_2_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/ThrowableExceptionMapper_toResponse_0_0_Test.java",
+    "className": "ThrowableExceptionMapper",
+    "packageName": "com.apple.spark.core",
+    "methodName": "toResponse",
+    "methodSig": "toResponse(Throwable)"
+  },
+  "attempt3": {
+    "testClassName": "ThrowableExceptionMapper_toResponse_0_3_Test",
+    "fullName": "com.apple.spark.core.ThrowableExceptionMapper_toResponse_0_3_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/ThrowableExceptionMapper_toResponse_0_0_Test.java",
+    "className": "ThrowableExceptionMapper",
+    "packageName": "com.apple.spark.core",
+    "methodName": "toResponse",
+    "methodSig": "toResponse(Throwable)"
+  },
+  "attempt4": {
+    "testClassName": "ThrowableExceptionMapper_toResponse_0_4_Test",
+    "fullName": "com.apple.spark.core.ThrowableExceptionMapper_toResponse_0_4_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/ThrowableExceptionMapper_toResponse_0_0_Test.java",
+    "className": "ThrowableExceptionMapper",
+    "packageName": "com.apple.spark.core",
+    "methodName": "toResponse",
+    "methodSig": "toResponse(Throwable)"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "className": "KubernetesHelper",
+  "methodName": "getSparkApplicationCrdContext",
+  "brief": "public static CustomResourceDefinitionContext getSparkApplicationCrdContext(){}",
+  "methodSignature": "getSparkApplicationCrdContext()",
+  "sourceCode": "public static CustomResourceDefinitionContext getSparkApplicationCrdContext() {\n    return new CustomResourceDefinitionContext.Builder()\n        .withGroup(SparkConstants.SPARK_APPLICATION_CRD_GROUP)\n        .withScope(SparkConstants.CRD_SCOPE)\n        .withVersion(SparkConstants.CRD_VERSION)\n        .withPlural(SparkConstants.SPARK_APPLICATION_CRD_PLURAL)\n        .build();\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {
+    "io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext.Builder": [
+      "withGroup(String)",
+      "withVersion(String)",
+      "withScope(String)",
+      "build()",
+      "withPlural(String)"
+    ]
+  },
+  "full_method_info": "public static CustomResourceDefinitionContext getSparkApplicationCrdContext() {\n    return new CustomResourceDefinitionContext.Builder().withGroup(SparkConstants.SPARK_APPLICATION_CRD_GROUP).withScope(SparkConstants.CRD_SCOPE).withVersion(SparkConstants.CRD_VERSION).withPlural(SparkConstants.SPARK_APPLICATION_CRD_PLURAL).build();\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

@@ -1,0 +1,30 @@
+{
+  "className": "KubernetesHelper",
+  "methodName": "closeQuietly",
+  "brief": "public static void closeQuietly(Closeable closeable){}",
+  "methodSignature": "closeQuietly(Closeable)",
+  "sourceCode": "public static void closeQuietly(Closeable closeable) {\n    try {\n      closeable.close();\n    } catch (Throwable ex) {\n      logger.warn(String.format(\"Failed to close %s\", closeable), ex);\n    }\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "Closeable"
+  ],
+  "dependentMethods": {
+    "java.io.Closeable": [
+      "close()"
+    ],
+    "org.slf4j.Logger": [
+      "warn(String, Throwable)"
+    ],
+    "java.lang.String": [
+      "format(String, Object[])"
+    ]
+  },
+  "full_method_info": "public static void closeQuietly(Closeable closeable) {\n    try {\n        closeable.close();\n    } catch (Throwable ex) {\n        logger.warn(String.format(\"Failed to close %s\", closeable), ex);\n    }\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

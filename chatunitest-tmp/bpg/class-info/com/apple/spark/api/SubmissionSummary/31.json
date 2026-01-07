@@ -1,0 +1,20 @@
+{
+  "className": "SubmissionSummary",
+  "methodName": "setApplicationArguments",
+  "brief": "public void setApplicationArguments(List<String> applicationArguments){}",
+  "methodSignature": "setApplicationArguments(List)",
+  "sourceCode": "public void setApplicationArguments(List<String> applicationArguments) {\n    this.applicationArguments = applicationArguments;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "List<String>"
+  ],
+  "dependentMethods": {},
+  "full_method_info": "public void setApplicationArguments(List<String> applicationArguments) {\n    this.applicationArguments = applicationArguments;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

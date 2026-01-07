@@ -1,0 +1,34 @@
+{
+  "className": "KubernetesHelper",
+  "methodName": "tryGetServiceAccountNamespace",
+  "brief": "public static String tryGetServiceAccountNamespace(){}",
+  "methodSignature": "tryGetServiceAccountNamespace()",
+  "sourceCode": "public static String tryGetServiceAccountNamespace() {\n    ConfigBuilder configBuilder = new ConfigBuilder(Config.autoConfigure(null));\n    String namespace = configBuilder.getNamespace();\n    if (namespace != null && !namespace.isEmpty()) {\n      return namespace;\n    }\n    Path path = Paths.get(SERVICE_ACCOUNT_FOLDER, SERVICE_ACCOUNT_NAMESPACE_FILE);\n    try {\n      return Files.readString(path);\n    } catch (Throwable e) {\n      return \"\";\n    }\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {
+    "io.fabric8.kubernetes.client.Config": [
+      "autoConfigure(String)"
+    ],
+    "io.fabric8.kubernetes.client.ConfigFluentImpl": [
+      "getNamespace()"
+    ],
+    "java.lang.String": [
+      "isEmpty()"
+    ],
+    "java.nio.file.Paths": [
+      "get(String, String[])"
+    ],
+    "java.nio.file.Files": [
+      "readString(Path)"
+    ]
+  },
+  "full_method_info": "public static String tryGetServiceAccountNamespace() {\n    ConfigBuilder configBuilder = new ConfigBuilder(Config.autoConfigure(null));\n    String namespace = configBuilder.getNamespace();\n    if (namespace != null && !namespace.isEmpty()) {\n        return namespace;\n    }\n    Path path = Paths.get(SERVICE_ACCOUNT_FOLDER, SERVICE_ACCOUNT_NAMESPACE_FILE);\n    try {\n        return Files.readString(path);\n    } catch (Throwable e) {\n        return \"\";\n    }\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

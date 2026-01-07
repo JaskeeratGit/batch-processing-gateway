@@ -1,0 +1,41 @@
+{
+  "className": "ApplicationSubmissionRest",
+  "methodName": "validateSubmissionRequest",
+  "brief": "private void validateSubmissionRequest(SubmitApplicationRequest request, String queueName){}",
+  "methodSignature": "validateSubmissionRequest(SubmitApplicationRequest, String)",
+  "sourceCode": "private void validateSubmissionRequest(SubmitApplicationRequest request, String queueName) {\n    int maxExecutorInstances = getMaxExecutorInstanceForQueue(queueName);\n    if (request.getExecutor() != null) {\n      Integer instances = request.getExecutor().getInstances();\n      if (instances != null) {\n        if (instances > maxExecutorInstances) {\n          throw new WebApplicationException(\n              String.format(\n                  \"Executor instances in Spark config (%s) exceeds limit (%d)\",\n                  instances, maxExecutorInstances),\n              Response.Status.BAD_REQUEST);\n        }\n      }\n    }\n    if (request.getSparkConf() != null) {\n      String configValueStr =\n          request.getSparkConf().get(SparkConstants.SPARK_CONF_EXECUTOR_INSTANCES);\n      if (configValueStr != null) {\n        int instances;\n        try {\n          instances = Integer.parseInt(configValueStr);\n        } catch (Throwable ex) {\n          throw new WebApplicationException(\n              String.format(\n                  \"Invalid value (%s) for Spark config: (%s)\",\n                  configValueStr, SparkConstants.SPARK_CONF_EXECUTOR_INSTANCES),\n              Response.Status.BAD_REQUEST);\n        }\n        if (instances > maxExecutorInstances) {\n          throw new WebApplicationException(\n              String.format(\n                  \"Executor instances in Spark config (%s) exceeds limit (%d)\",\n                  instances, maxExecutorInstances),\n              Response.Status.BAD_REQUEST);\n        }\n      }\n    }\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "SubmitApplicationRequest",
+    "String"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.api.SubmitApplicationRequest": [
+      "getExecutor()",
+      "getSparkConf()"
+    ],
+    "java.lang.String": [
+      "format(String, Object[])"
+    ],
+    "com.apple.spark.rest.ApplicationSubmissionRest": [
+      "getMaxExecutorInstanceForQueue(String)"
+    ],
+    "com.apple.spark.operator.ExecutorSpec": [
+      "getInstances()"
+    ],
+    "java.util.Map": [
+      "get(Object)"
+    ],
+    "java.lang.Integer": [
+      "parseInt(String)"
+    ]
+  },
+  "full_method_info": "/**\n * Ensure the submission request satisfies certain requirements. If executor spec is present in\n * request, the number of executors shouldn't exceed the limit. If executor spec is present as\n * `spark.executor.instances` param in Spark conf, the number of executors shouldn't exceed the\n * limit.\n *\n * @param request submission request\n * @param queueName name of the queue\n */\nprivate void validateSubmissionRequest(SubmitApplicationRequest request, String queueName) {\n    int maxExecutorInstances = getMaxExecutorInstanceForQueue(queueName);\n    if (request.getExecutor() != null) {\n        Integer instances = request.getExecutor().getInstances();\n        if (instances != null) {\n            if (instances > maxExecutorInstances) {\n                throw new WebApplicationException(String.format(\"Executor instances in Spark config (%s) exceeds limit (%d)\", instances, maxExecutorInstances), Response.Status.BAD_REQUEST);\n            }\n        }\n    }\n    if (request.getSparkConf() != null) {\n        String configValueStr = request.getSparkConf().get(SparkConstants.SPARK_CONF_EXECUTOR_INSTANCES);\n        if (configValueStr != null) {\n            int instances;\n            try {\n                instances = Integer.parseInt(configValueStr);\n            } catch (Throwable ex) {\n                throw new WebApplicationException(String.format(\"Invalid value (%s) for Spark config: (%s)\", configValueStr, SparkConstants.SPARK_CONF_EXECUTOR_INSTANCES), Response.Status.BAD_REQUEST);\n            }\n            if (instances > maxExecutorInstances) {\n                throw new WebApplicationException(String.format(\"Executor instances in Spark config (%s) exceeds limit (%d)\", instances, maxExecutorInstances), Response.Status.BAD_REQUEST);\n            }\n        }\n    }\n}",
+  "method_comment": "\n   * Ensure the submission request satisfies certain requirements. If executor spec is present in\n   * request, the number of executors shouldn't exceed the limit. If executor spec is present as\n   * `spark.executor.instances` param in Spark conf, the number of executors shouldn't exceed the\n   * limit.\n   *\n   * @param request submission request\n   * @param queueName name of the queue\n   ",
+  "method_annotation": ""
+}

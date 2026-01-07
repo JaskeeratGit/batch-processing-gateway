@@ -1,0 +1,39 @@
+{
+  "className": "SparkPodNodeAffinityHelper",
+  "methodName": "createNodeSelectorTermForRequired",
+  "brief": "private static NodeSelectorTerm createNodeSelectorTermForRequired(\n      final SubmitApplicationRequest request,\n      final AppConfig appConfig,\n      final String queue,\n      final AppConfig.SparkCluster sparkCluster,\n      final boolean isDriver){}",
+  "methodSignature": "createNodeSelectorTermForRequired(SubmitApplicationRequest, AppConfig, String, AppConfig.SparkCluster, boolean)",
+  "sourceCode": "private static NodeSelectorTerm createNodeSelectorTermForRequired(\n      final SubmitApplicationRequest request,\n      final AppConfig appConfig,\n      final String queue,\n      final AppConfig.SparkCluster sparkCluster,\n      final boolean isDriver) {\n\n    NodeSelectorTerm podNodeSelectorTerm = new NodeSelectorTerm();\n    List<NodeSelectorRequirement> matchExpressions = new ArrayList<>();\n\n    if (isDriver) {\n      applyDriverNodeLabelAffinity(matchExpressions, appConfig, queue);\n    } else {\n      applyExecutorNodeLabelAffinity(matchExpressions, request, appConfig, queue);\n    }\n    applyAvailabilityZoneExpression(matchExpressions, request);\n\n    if (!matchExpressions.isEmpty()) {\n      podNodeSelectorTerm.setMatchExpressions(\n          matchExpressions.toArray(NodeSelectorRequirement[]::new));\n    }\n    return podNodeSelectorTerm;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "SubmitApplicationRequest",
+    "AppConfig",
+    "String",
+    "AppConfig.SparkCluster",
+    "boolean"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.api.SubmitApplicationRequest": [],
+    "com.apple.spark.AppConfig": [],
+    "java.lang.String": [],
+    "com.apple.spark.core.SparkPodNodeAffinityHelper": [
+      "applyAvailabilityZoneExpression(NodeSelectorRequirement>, SubmitApplicationRequest)",
+      "applyDriverNodeLabelAffinity(NodeSelectorRequirement>, AppConfig, String)",
+      "applyExecutorNodeLabelAffinity(NodeSelectorRequirement>, SubmitApplicationRequest, AppConfig, String)"
+    ],
+    "java.util.List": [
+      "isEmpty()"
+    ],
+    "java.util.Collection": [
+      "toArray(IntFunction<T[]>)"
+    ]
+  },
+  "full_method_info": "private static NodeSelectorTerm createNodeSelectorTermForRequired(final SubmitApplicationRequest request, final AppConfig appConfig, final String queue, final AppConfig.SparkCluster sparkCluster, final boolean isDriver) {\n    NodeSelectorTerm podNodeSelectorTerm = new NodeSelectorTerm();\n    List<NodeSelectorRequirement> matchExpressions = new ArrayList<>();\n    if (isDriver) {\n        applyDriverNodeLabelAffinity(matchExpressions, appConfig, queue);\n    } else {\n        applyExecutorNodeLabelAffinity(matchExpressions, request, appConfig, queue);\n    }\n    applyAvailabilityZoneExpression(matchExpressions, request);\n    if (!matchExpressions.isEmpty()) {\n        podNodeSelectorTerm.setMatchExpressions(matchExpressions.toArray(NodeSelectorRequirement[]::new));\n    }\n    return podNodeSelectorTerm;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

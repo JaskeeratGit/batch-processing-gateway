@@ -1,0 +1,18 @@
+{
+  "className": "DynamicAllocation",
+  "methodName": "getMinExecutors",
+  "brief": "public Integer getMinExecutors(){}",
+  "methodSignature": "getMinExecutors()",
+  "sourceCode": "public Integer getMinExecutors() {\n    return minExecutors;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public Integer getMinExecutors() {\n    return minExecutors;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

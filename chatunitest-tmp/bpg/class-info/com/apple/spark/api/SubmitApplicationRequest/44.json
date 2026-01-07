@@ -1,0 +1,18 @@
+{
+  "className": "SubmitApplicationRequest",
+  "methodName": "getQueue",
+  "brief": "public String getQueue(){}",
+  "methodSignature": "getQueue()",
+  "sourceCode": "public String getQueue() {\n    return queue;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public String getQueue() {\n    return queue;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

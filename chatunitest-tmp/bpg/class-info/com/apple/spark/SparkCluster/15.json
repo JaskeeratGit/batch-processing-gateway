@@ -1,0 +1,22 @@
+{
+  "className": "SparkCluster",
+  "methodName": "setTimeoutMillis",
+  "brief": "public void setTimeoutMillis(Long timeoutMillis){}",
+  "methodSignature": "setTimeoutMillis(Long)",
+  "sourceCode": "public void setTimeoutMillis(Long timeoutMillis) {\n      this.timeoutMillis = timeoutMillis;\n    }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "Long"
+  ],
+  "dependentMethods": {
+    "java.lang.Long": []
+  },
+  "full_method_info": "public void setTimeoutMillis(Long timeoutMillis) {\n    this.timeoutMillis = timeoutMillis;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

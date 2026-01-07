@@ -1,0 +1,52 @@
+{
+  "className": "SubmissionStatus",
+  "methodName": "copyFrom",
+  "brief": "public void copyFrom(SparkApplication sparkApplicationResource){}",
+  "methodSignature": "copyFrom(SparkApplication)",
+  "sourceCode": "public void copyFrom(SparkApplication sparkApplicationResource) {\n    Long creationTime =\n        DateTimeUtils.parseOrNull(sparkApplicationResource.getMetadata().getCreationTimestamp());\n    this.setCreationTime(creationTime);\n    if (sparkApplicationResource.getStatus() != null) {\n      SparkApplicationStatus status = sparkApplicationResource.getStatus();\n      this.setSparkApplicationId(status.getSparkApplicationId());\n      this.setExecutionAttempts(\n          status.getExecutionAttempts() == null ? 1 : status.getExecutionAttempts());\n      this.setTerminationTime(DateTimeUtils.parseOrNull(status.getTerminationTime()));\n      if (status.getApplicationState() != null) {\n        this.setApplicationState(status.getApplicationState().getState());\n        this.setApplicationErrorMessage(status.getApplicationState().getErrorMessage());\n      }\n    }\n    if (this.getApplicationState() == null) {\n      this.setApplicationState(Constants.UNKNOWN_STATE);\n    }\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "SparkApplication"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.operator.SparkApplication": [
+      "getStatus()"
+    ],
+    "com.apple.spark.util.DateTimeUtils": [
+      "parseOrNull(String)"
+    ],
+    "io.fabric8.kubernetes.api.model.ObjectMeta": [
+      "getCreationTimestamp()"
+    ],
+    "io.fabric8.kubernetes.client.CustomResource": [
+      "getMetadata()"
+    ],
+    "com.apple.spark.api.SubmissionStatus": [
+      "setExecutionAttempts(Integer)",
+      "setApplicationErrorMessage(String)",
+      "getApplicationState()",
+      "setSparkApplicationId(String)",
+      "setCreationTime(Long)",
+      "setApplicationState(String)",
+      "setTerminationTime(Long)"
+    ],
+    "com.apple.spark.operator.SparkApplicationStatus": [
+      "getApplicationState()",
+      "getSparkApplicationId()",
+      "getExecutionAttempts()",
+      "getTerminationTime()"
+    ],
+    "com.apple.spark.operator.ApplicationState": [
+      "getState()",
+      "getErrorMessage()"
+    ]
+  },
+  "full_method_info": "public void copyFrom(SparkApplication sparkApplicationResource) {\n    Long creationTime = DateTimeUtils.parseOrNull(sparkApplicationResource.getMetadata().getCreationTimestamp());\n    this.setCreationTime(creationTime);\n    if (sparkApplicationResource.getStatus() != null) {\n        SparkApplicationStatus status = sparkApplicationResource.getStatus();\n        this.setSparkApplicationId(status.getSparkApplicationId());\n        this.setExecutionAttempts(status.getExecutionAttempts() == null ? 1 : status.getExecutionAttempts());\n        this.setTerminationTime(DateTimeUtils.parseOrNull(status.getTerminationTime()));\n        if (status.getApplicationState() != null) {\n            this.setApplicationState(status.getApplicationState().getState());\n            this.setApplicationErrorMessage(status.getApplicationState().getErrorMessage());\n        }\n    }\n    if (this.getApplicationState() == null) {\n        this.setApplicationState(Constants.UNKNOWN_STATE);\n    }\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

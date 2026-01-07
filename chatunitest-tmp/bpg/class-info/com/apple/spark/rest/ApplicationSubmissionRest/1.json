@@ -1,0 +1,116 @@
+{
+  "className": "ApplicationSubmissionRest",
+  "methodName": "submitApplicationImpl",
+  "brief": "private SubmitApplicationResponse submitApplicationImpl(\n      String requestBody, String contentType, User user, String dagUser){}",
+  "methodSignature": "submitApplicationImpl(String, String, User, String)",
+  "sourceCode": "private SubmitApplicationResponse submitApplicationImpl(\n      String requestBody, String contentType, User user, String dagUser) {\n    SubmitApplicationRequest request =\n        ApplicationSubmissionHelper.parseSubmitRequest(requestBody, contentType);\n    String queue = SparkClusterHelper.getQueue(appConfig, request, user.getName());\n\n    // some sanity check on some basic requirements for a request\n    validateSubmissionRequest(request, queue);\n\n    // choose Spark cluster to submit the job to\n    AppConfig.SparkCluster sparkCluster =\n        SparkClusterHelper.chooseSparkCluster(appConfig, request, user.getName());\n\n    String sparkVersionTagValue =\n        request.getSparkVersion() != null ? request.getSparkVersion() : \"\";\n\n    String submissionId =\n        ApplicationSubmissionHelper.generateSubmissionId(\n            sparkCluster.getId(), request.getSubmissionIdSuffix());\n    logger.info(\"Creating application submission: {}\", submissionId);\n\n    // Use the DAG user in case the user is a system account from Airflow jobs\n    String proxyUser = getProxyUser(user.getName(), dagUser);\n\n    // Java / Python\n    String type = getType(request.getType(), request.getMainClass());\n    String sparkVersion = request.getSparkVersion();\n\n    String parentQueue = SparkClusterHelper.getParentQueue(queue);\n    String queueTagValue = queue == null ? \"\" : queue;\n\n    // configure zones for the spark job to run\n    configureZonesForRequest(request, appConfig, parentQueue, sparkCluster, submissionId);\n\n    // the Spark spec to be submitted to Spark cluster\n    SparkApplicationSpec.Builder specBuilder =\n        new SparkApplicationSpec.Builder()\n            .withMode(SparkConstants.CLUSTER_MODE)\n            .withOriginalUser(user.getName())\n            .withProxyUser(proxyUser)\n            .withType(type)\n            .withSparkVersion(sparkVersion)\n            .withMainClass(request.getMainClass())\n            .withMainApplicationFile(request.getMainApplicationFile())\n            .withDriver(getDriverSpec(request, appConfig, parentQueue, sparkCluster))\n            .withExecutor(getExecutorSpec(request, appConfig, parentQueue, sparkCluster))\n            .withImage(getImage(getAppConfig(), request, type, sparkVersion, proxyUser))\n            .withArguments(request.getArguments())\n            .withImagePullPolicy(request.getImagePullPolicy())\n            .withRestartPolicy(request.getRestartPolicy())\n            .withVolumes(request.getVolumes())\n            .withDeps(request.getDeps())\n            .withPythonVersion(request.getPythonVersion())\n            .withTimeToLiveSeconds(sparkCluster.getTtlSeconds())\n            .extendSparkConf(getSparkConf(submissionId, request, appConfig, sparkCluster))\n            .withSparkUIConfiguration(getSparkUIConfiguration(submissionId, sparkCluster))\n            .extendVolumes(getVolumes(request, sparkCluster));\n\n    // only set scheduler if it's YuniKorn\n    String batchScheduler = sparkCluster.getBatchScheduler();\n    if (batchScheduler != null) {\n      if (batchScheduler.equals(YUNIKORN_SCHEDULER)) {\n        specBuilder.withBatchScheduler(YUNIKORN_SCHEDULER);\n        specBuilder.withBatchSchedulerOptions(getYuniKornSchedulerConfig(queue));\n        logger.info(\"Setting queue of submission {} to {}\", submissionId, queue);\n      } else {\n        logger.info(\n            \"batchScheduler {} is not supported. Revert to using the default-scheduler\",\n            batchScheduler);\n      }\n    }\n\n    SparkApplicationSpec sparkSpec = specBuilder.build();\n\n    // Set environment variables\n    ApplicationSubmissionHelper.populateEnv(sparkSpec, request, sparkCluster);\n\n    requestCounters.increment(\n        REQUEST_METRIC_NAME,\n        Tag.of(\"name\", \"submit_application\"),\n        Tag.of(\"user\", user.getName()),\n        Tag.of(\"proxy_user\", proxyUser),\n        Tag.of(\"spark_version\", sparkVersionTagValue),\n        Tag.of(\"spark_cluster\", sparkCluster.getId()),\n        Tag.of(\"queue\", queueTagValue));\n\n    logDao.logApplicationSubmission(submissionId, sparkSpec.getProxyUser(), request);\n    SubmitApplicationResponse response =\n        submitSparkCRD(sparkCluster, submissionId, sparkSpec, request, queue, parentQueue);\n    return response;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String",
+    "String",
+    "User",
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "equals(Object)"
+    ],
+    "com.apple.spark.security.User": [
+      "getName()"
+    ],
+    "com.apple.spark.core.ApplicationSubmissionHelper": [
+      "parseSubmitRequest(String, String)",
+      "getImage(AppConfig, SubmitApplicationRequest, String, String, String)",
+      "getProxyUser(String, String)",
+      "getType(String, String)",
+      "getDriverSpec(SubmitApplicationRequest, AppConfig, String, SparkCluster)",
+      "getExecutorSpec(SubmitApplicationRequest, AppConfig, String, SparkCluster)",
+      "getVolumes(SubmitApplicationRequest, SparkCluster)",
+      "getYuniKornSchedulerConfig(String)",
+      "getSparkUIConfiguration(String, SparkCluster)",
+      "generateSubmissionId(String, String)",
+      "getSparkConf(String, SubmitApplicationRequest, AppConfig, SparkCluster)",
+      "populateEnv(SparkApplicationSpec, SubmitApplicationRequest, SparkCluster)"
+    ],
+    "com.apple.spark.core.SparkClusterHelper": [
+      "getQueue(AppConfig, SubmitApplicationRequest, String)",
+      "getParentQueue(String)",
+      "chooseSparkCluster(AppConfig, SubmitApplicationRequest, String)"
+    ],
+    "com.apple.spark.rest.ApplicationSubmissionRest": [
+      "submitSparkCRD(SparkCluster, String, SparkApplicationSpec, SubmitApplicationRequest, String, String)",
+      "configureZonesForRequest(SubmitApplicationRequest, AppConfig, String, SparkCluster, String)",
+      "validateSubmissionRequest(SubmitApplicationRequest, String)"
+    ],
+    "com.apple.spark.api.SubmitApplicationRequest": [
+      "getSubmissionIdSuffix()",
+      "getDeps()",
+      "getVolumes()",
+      "getType()",
+      "getArguments()",
+      "getRestartPolicy()",
+      "getImagePullPolicy()",
+      "getSparkVersion()",
+      "getMainClass()",
+      "getPythonVersion()",
+      "getMainApplicationFile()"
+    ],
+    "com.apple.spark.AppConfig.SparkCluster": [
+      "getId()",
+      "getBatchScheduler()",
+      "getTtlSeconds()"
+    ],
+    "org.slf4j.Logger": [
+      "info(String, Object, Object)",
+      "info(String, Object)"
+    ],
+    "com.apple.spark.operator.SparkApplicationSpec.Builder": [
+      "withTimeToLiveSeconds(Long)",
+      "withPythonVersion(String)",
+      "withMainApplicationFile(String)",
+      "withImage(String)",
+      "extendSparkConf(String>)",
+      "withSparkVersion(String)",
+      "withArguments(String>)",
+      "build()",
+      "withProxyUser(String)",
+      "withMainClass(String)",
+      "withBatchScheduler(String)",
+      "withDriver(DriverSpec)",
+      "withOriginalUser(String)",
+      "withMode(String)",
+      "extendVolumes(Volume>)",
+      "withSparkUIConfiguration(SparkUIConfiguration)",
+      "withType(String)",
+      "withImagePullPolicy(String)",
+      "withExecutor(ExecutorSpec)",
+      "withDeps(Dependencies)",
+      "withRestartPolicy(RestartPolicy)",
+      "withBatchSchedulerOptions(BatchSchedulerConfiguration)",
+      "withVolumes(Volume>)"
+    ],
+    "com.apple.spark.rest.RestBase": [
+      "getAppConfig()"
+    ],
+    "com.apple.spark.util.CounterMetricContainer": [
+      "increment(String, Tag[])"
+    ],
+    "io.micrometer.core.instrument.Tag": [
+      "of(String, String)"
+    ],
+    "com.apple.spark.core.LogDao": [
+      "logApplicationSubmission(String, String, SubmitApplicationRequest)"
+    ],
+    "com.apple.spark.operator.SparkApplicationSpec": [
+      "getProxyUser()"
+    ]
+  },
+  "full_method_info": "private SubmitApplicationResponse submitApplicationImpl(String requestBody, String contentType, User user, String dagUser) {\n    SubmitApplicationRequest request = ApplicationSubmissionHelper.parseSubmitRequest(requestBody, contentType);\n    String queue = SparkClusterHelper.getQueue(appConfig, request, user.getName());\n    // some sanity check on some basic requirements for a request\n    validateSubmissionRequest(request, queue);\n    // choose Spark cluster to submit the job to\n    AppConfig.SparkCluster sparkCluster = SparkClusterHelper.chooseSparkCluster(appConfig, request, user.getName());\n    String sparkVersionTagValue = request.getSparkVersion() != null ? request.getSparkVersion() : \"\";\n    String submissionId = ApplicationSubmissionHelper.generateSubmissionId(sparkCluster.getId(), request.getSubmissionIdSuffix());\n    logger.info(\"Creating application submission: {}\", submissionId);\n    // Use the DAG user in case the user is a system account from Airflow jobs\n    String proxyUser = getProxyUser(user.getName(), dagUser);\n    // Java / Python\n    String type = getType(request.getType(), request.getMainClass());\n    String sparkVersion = request.getSparkVersion();\n    String parentQueue = SparkClusterHelper.getParentQueue(queue);\n    String queueTagValue = queue == null ? \"\" : queue;\n    // configure zones for the spark job to run\n    configureZonesForRequest(request, appConfig, parentQueue, sparkCluster, submissionId);\n    // the Spark spec to be submitted to Spark cluster\n    SparkApplicationSpec.Builder specBuilder = new SparkApplicationSpec.Builder().withMode(SparkConstants.CLUSTER_MODE).withOriginalUser(user.getName()).withProxyUser(proxyUser).withType(type).withSparkVersion(sparkVersion).withMainClass(request.getMainClass()).withMainApplicationFile(request.getMainApplicationFile()).withDriver(getDriverSpec(request, appConfig, parentQueue, sparkCluster)).withExecutor(getExecutorSpec(request, appConfig, parentQueue, sparkCluster)).withImage(getImage(getAppConfig(), request, type, sparkVersion, proxyUser)).withArguments(request.getArguments()).withImagePullPolicy(request.getImagePullPolicy()).withRestartPolicy(request.getRestartPolicy()).withVolumes(request.getVolumes()).withDeps(request.getDeps()).withPythonVersion(request.getPythonVersion()).withTimeToLiveSeconds(sparkCluster.getTtlSeconds()).extendSparkConf(getSparkConf(submissionId, request, appConfig, sparkCluster)).withSparkUIConfiguration(getSparkUIConfiguration(submissionId, sparkCluster)).extendVolumes(getVolumes(request, sparkCluster));\n    // only set scheduler if it's YuniKorn\n    String batchScheduler = sparkCluster.getBatchScheduler();\n    if (batchScheduler != null) {\n        if (batchScheduler.equals(YUNIKORN_SCHEDULER)) {\n            specBuilder.withBatchScheduler(YUNIKORN_SCHEDULER);\n            specBuilder.withBatchSchedulerOptions(getYuniKornSchedulerConfig(queue));\n            logger.info(\"Setting queue of submission {} to {}\", submissionId, queue);\n        } else {\n            logger.info(\"batchScheduler {} is not supported. Revert to using the default-scheduler\", batchScheduler);\n        }\n    }\n    SparkApplicationSpec sparkSpec = specBuilder.build();\n    // Set environment variables\n    ApplicationSubmissionHelper.populateEnv(sparkSpec, request, sparkCluster);\n    requestCounters.increment(REQUEST_METRIC_NAME, Tag.of(\"name\", \"submit_application\"), Tag.of(\"user\", user.getName()), Tag.of(\"proxy_user\", proxyUser), Tag.of(\"spark_version\", sparkVersionTagValue), Tag.of(\"spark_cluster\", sparkCluster.getId()), Tag.of(\"queue\", queueTagValue));\n    logDao.logApplicationSubmission(submissionId, sparkSpec.getProxyUser(), request);\n    SubmitApplicationResponse response = submitSparkCRD(sparkCluster, submissionId, sparkSpec, request, queue, parentQueue);\n    return response;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

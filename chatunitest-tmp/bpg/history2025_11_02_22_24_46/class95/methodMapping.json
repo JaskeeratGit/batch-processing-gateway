@@ -1,0 +1,152 @@
+{
+  "method0": {
+    "methodName": "parseSubmitRequest",
+    "signature": "parseSubmitRequest(String, String)",
+    "className": "ApplicationSubmissionHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method1": {
+    "methodName": "getProxyUser",
+    "signature": "getProxyUser(String, String)",
+    "className": "ApplicationSubmissionHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method10": {
+    "methodName": "validateQueueToken",
+    "signature": "validateQueueToken(String, String, AppConfig)",
+    "className": "ApplicationSubmissionHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method11": {
+    "methodName": "substitutionSparkConfigValue",
+    "signature": "substitutionSparkConfigValue(String, String)",
+    "className": "ApplicationSubmissionHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method12": {
+    "methodName": "applyFeatureGate",
+    "signature": "applyFeatureGate(SubmitApplicationRequest, Map)",
+    "className": "ApplicationSubmissionHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method13": {
+    "methodName": "getYuniKornSchedulerConfig",
+    "signature": "getYuniKornSchedulerConfig(String)",
+    "className": "ApplicationSubmissionHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method14": {
+    "methodName": "getDriverSpec",
+    "signature": "getDriverSpec(SubmitApplicationRequest, AppConfig, String, SparkCluster)",
+    "className": "ApplicationSubmissionHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method15": {
+    "methodName": "getDriverCPUBufferForQueue",
+    "signature": "getDriverCPUBufferForQueue(AppConfig, String)",
+    "className": "ApplicationSubmissionHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method16": {
+    "methodName": "getDriverMemBufferForQueue",
+    "signature": "getDriverMemBufferForQueue(AppConfig, String)",
+    "className": "ApplicationSubmissionHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method17": {
+    "methodName": "getExecutorMemBufferForQueue",
+    "signature": "getExecutorMemBufferForQueue(AppConfig, String)",
+    "className": "ApplicationSubmissionHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method18": {
+    "methodName": "getExecutorCPUBufferForQueue",
+    "signature": "getExecutorCPUBufferForQueue(AppConfig, String)",
+    "className": "ApplicationSubmissionHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method19": {
+    "methodName": "getMemNumFromRequestStr",
+    "signature": "getMemNumFromRequestStr(String)",
+    "className": "ApplicationSubmissionHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method2": {
+    "methodName": "looksLikeFilePath",
+    "signature": "looksLikeFilePath(String)",
+    "className": "ApplicationSubmissionHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method20": {
+    "methodName": "getMemUnitFromRequestStr",
+    "signature": "getMemUnitFromRequestStr(String)",
+    "className": "ApplicationSubmissionHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method21": {
+    "methodName": "getMemUnitIndexFromRequestStr",
+    "signature": "getMemUnitIndexFromRequestStr(String)",
+    "className": "ApplicationSubmissionHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method22": {
+    "methodName": "getExecutorSpec",
+    "signature": "getExecutorSpec(SubmitApplicationRequest, AppConfig, String, SparkCluster)",
+    "className": "ApplicationSubmissionHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method23": {
+    "methodName": "getType",
+    "signature": "getType(String, String)",
+    "className": "ApplicationSubmissionHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method24": {
+    "methodName": "getImage",
+    "signature": "getImage(AppConfig, SubmitApplicationRequest, String, String, String)",
+    "className": "ApplicationSubmissionHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method3": {
+    "methodName": "getSparkConf",
+    "signature": "getSparkConf(String, SubmitApplicationRequest, AppConfig, AppConfig.SparkCluster)",
+    "className": "ApplicationSubmissionHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method4": {
+    "methodName": "getSparkUIConfiguration",
+    "signature": "getSparkUIConfiguration(String, AppConfig.SparkCluster)",
+    "className": "ApplicationSubmissionHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method5": {
+    "methodName": "getVolumes",
+    "signature": "getVolumes(SubmitApplicationRequest, AppConfig.SparkCluster)",
+    "className": "ApplicationSubmissionHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method6": {
+    "methodName": "populateEnv",
+    "signature": "populateEnv(SparkApplicationSpec, SubmitApplicationRequest, AppConfig.SparkCluster)",
+    "className": "ApplicationSubmissionHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method7": {
+    "methodName": "generateSubmissionId",
+    "signature": "generateSubmissionId(String)",
+    "className": "ApplicationSubmissionHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method8": {
+    "methodName": "generateSubmissionId",
+    "signature": "generateSubmissionId(String, String)",
+    "className": "ApplicationSubmissionHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method9": {
+    "methodName": "getClusterIdFromSubmissionId",
+    "signature": "getClusterIdFromSubmissionId(String)",
+    "className": "ApplicationSubmissionHelper",
+    "packageName": "com.apple.spark.core"
+  }
+}

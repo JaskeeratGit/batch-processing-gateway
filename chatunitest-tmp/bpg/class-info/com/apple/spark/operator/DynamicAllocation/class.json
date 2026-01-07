@@ -1,0 +1,80 @@
+{
+  "fullClassName": "com.apple.spark.operator.DynamicAllocation",
+  "className": "DynamicAllocation",
+  "index": 10,
+  "modifier": "[public ]",
+  "extend": "[]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.operator",
+  "packageDeclaration": "package com.apple.spark.operator;",
+  "classSignature": "@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class DynamicAllocation",
+  "hasConstructor": false,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import com.fasterxml.jackson.annotation.JsonIgnoreProperties;",
+    "import com.fasterxml.jackson.annotation.JsonInclude;"
+  ],
+  "fields": [
+    "private boolean enabled;",
+    "private Integer initialExecutors;",
+    "private Integer minExecutors;",
+    "private Integer maxExecutors;",
+    "private Long shuffleTrackingTimeout;"
+  ],
+  "superClasses": [],
+  "implementedTypes": [],
+  "methodSigs": {
+    "isEnabled()": "0",
+    "setEnabled(boolean)": "1",
+    "getInitialExecutors()": "2",
+    "setInitialExecutors(Integer)": "3",
+    "getMinExecutors()": "4",
+    "setMinExecutors(Integer)": "5",
+    "getMaxExecutors()": "6",
+    "setMaxExecutors(Integer)": "7",
+    "getShuffleTrackingTimeout()": "8",
+    "setShuffleTrackingTimeout(Long)": "9"
+  },
+  "methodsBrief": [
+    "public boolean isEnabled(){}",
+    "public void setEnabled(boolean enabled){}",
+    "public Integer getInitialExecutors(){}",
+    "public void setInitialExecutors(Integer initialExecutors){}",
+    "public Integer getMinExecutors(){}",
+    "public void setMinExecutors(Integer minExecutors){}",
+    "public Integer getMaxExecutors(){}",
+    "public void setMaxExecutors(Integer maxExecutors){}",
+    "public Long getShuffleTrackingTimeout(){}",
+    "public void setShuffleTrackingTimeout(Long shuffleTrackingTimeout){}"
+  ],
+  "constructorSigs": [],
+  "constructorBrief": [],
+  "getterSetterSigs": [
+    "setEnabled(boolean)",
+    "getInitialExecutors()",
+    "setInitialExecutors(Integer)",
+    "getMinExecutors()",
+    "setMinExecutors(Integer)",
+    "getMaxExecutors()",
+    "setMaxExecutors(Integer)",
+    "getShuffleTrackingTimeout()",
+    "setShuffleTrackingTimeout(Long)"
+  ],
+  "getterSetterBrief": [
+    "public void setEnabled(boolean enabled){}",
+    "public Integer getInitialExecutors(){}",
+    "public void setInitialExecutors(Integer initialExecutors){}",
+    "public Integer getMinExecutors(){}",
+    "public void setMinExecutors(Integer minExecutors){}",
+    "public Integer getMaxExecutors(){}",
+    "public void setMaxExecutors(Integer maxExecutors){}",
+    "public Long getShuffleTrackingTimeout(){}",
+    "public void setShuffleTrackingTimeout(Long shuffleTrackingTimeout){}"
+  ],
+  "constructorDeps": {},
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.operator;\n\nimport com.fasterxml.jackson.annotation.JsonIgnoreProperties;\nimport com.fasterxml.jackson.annotation.JsonInclude;\n\n@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class DynamicAllocation {\n\n    private boolean enabled;\n\n    private Integer initialExecutors;\n\n    private Integer minExecutors;\n\n    private Integer maxExecutors;\n\n    private Long shuffleTrackingTimeout;\n\n    public boolean isEnabled() {\n        return enabled;\n    }\n\n    public void setEnabled(boolean enabled) {\n        this.enabled = enabled;\n    }\n\n    public Integer getInitialExecutors() {\n        return initialExecutors;\n    }\n\n    public void setInitialExecutors(Integer initialExecutors) {\n        this.initialExecutors = initialExecutors;\n    }\n\n    public Integer getMinExecutors() {\n        return minExecutors;\n    }\n\n    public void setMinExecutors(Integer minExecutors) {\n        this.minExecutors = minExecutors;\n    }\n\n    public Integer getMaxExecutors() {\n        return maxExecutors;\n    }\n\n    public void setMaxExecutors(Integer maxExecutors) {\n        this.maxExecutors = maxExecutors;\n    }\n\n    public Long getShuffleTrackingTimeout() {\n        return shuffleTrackingTimeout;\n    }\n\n    public void setShuffleTrackingTimeout(Long shuffleTrackingTimeout) {\n        this.shuffleTrackingTimeout = shuffleTrackingTimeout;\n    }\n}\n",
+  "classDeclarationCode": "@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class DynamicAllocation {\n\n    private boolean enabled;\n\n    private Integer initialExecutors;\n\n    private Integer minExecutors;\n\n    private Integer maxExecutors;\n\n    private Long shuffleTrackingTimeout;\n\n    public boolean isEnabled() {\n        return enabled;\n    }\n\n    public void setEnabled(boolean enabled) {\n        this.enabled = enabled;\n    }\n\n    public Integer getInitialExecutors() {\n        return initialExecutors;\n    }\n\n    public void setInitialExecutors(Integer initialExecutors) {\n        this.initialExecutors = initialExecutors;\n    }\n\n    public Integer getMinExecutors() {\n        return minExecutors;\n    }\n\n    public void setMinExecutors(Integer minExecutors) {\n        this.minExecutors = minExecutors;\n    }\n\n    public Integer getMaxExecutors() {\n        return maxExecutors;\n    }\n\n    public void setMaxExecutors(Integer maxExecutors) {\n        this.maxExecutors = maxExecutors;\n    }\n\n    public Long getShuffleTrackingTimeout() {\n        return shuffleTrackingTimeout;\n    }\n\n    public void setShuffleTrackingTimeout(Long shuffleTrackingTimeout) {\n        this.shuffleTrackingTimeout = shuffleTrackingTimeout;\n    }\n}",
+  "subClasses": []
+}

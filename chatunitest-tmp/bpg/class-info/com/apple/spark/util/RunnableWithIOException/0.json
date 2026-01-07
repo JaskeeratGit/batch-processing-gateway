@@ -1,0 +1,18 @@
+{
+  "className": "RunnableWithIOException",
+  "methodName": "run",
+  "brief": "void run() throws IOException;",
+  "methodSignature": "run()",
+  "sourceCode": "void run() throws IOException;",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "void run() throws IOException;",
+  "method_comment": "",
+  "method_annotation": ""
+}

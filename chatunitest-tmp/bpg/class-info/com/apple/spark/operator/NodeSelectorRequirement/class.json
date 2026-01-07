@@ -1,0 +1,76 @@
+{
+  "fullClassName": "com.apple.spark.operator.NodeSelectorRequirement",
+  "className": "NodeSelectorRequirement",
+  "index": 6,
+  "modifier": "[public ]",
+  "extend": "[]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.operator",
+  "packageDeclaration": "package com.apple.spark.operator;",
+  "classSignature": "@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class NodeSelectorRequirement",
+  "hasConstructor": true,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import com.fasterxml.jackson.annotation.JsonIgnoreProperties;",
+    "import com.fasterxml.jackson.annotation.JsonInclude;"
+  ],
+  "fields": [
+    "private String key;",
+    "private String operator;",
+    "private String[] values;"
+  ],
+  "superClasses": [],
+  "implementedTypes": [],
+  "methodSigs": {
+    "getKey()": "0",
+    "setKey(String)": "1",
+    "getOperator()": "2",
+    "setOperator(String)": "3",
+    "getValues()": "4",
+    "setValues(String[])": "5",
+    "NodeSelectorRequirement()": "6",
+    "NodeSelectorRequirement(String, String, String[])": "7"
+  },
+  "methodsBrief": [
+    "public String getKey(){}",
+    "public void setKey(String key){}",
+    "public String getOperator(){}",
+    "public void setOperator(String operator){}",
+    "public String[] getValues(){}",
+    "public void setValues(String[] values){}",
+    "public NodeSelectorRequirement(){}",
+    "public NodeSelectorRequirement(String key, String operator, String[] values){}"
+  ],
+  "constructorSigs": [
+    "NodeSelectorRequirement()",
+    "NodeSelectorRequirement(String, String, String[])"
+  ],
+  "constructorBrief": [
+    "public NodeSelectorRequirement(){}",
+    "public NodeSelectorRequirement(String key, String operator, String[] values){}"
+  ],
+  "getterSetterSigs": [
+    "getKey()",
+    "setKey(String)",
+    "getOperator()",
+    "setOperator(String)",
+    "getValues()",
+    "setValues(String[])"
+  ],
+  "getterSetterBrief": [
+    "public String getKey(){}",
+    "public void setKey(String key){}",
+    "public String getOperator(){}",
+    "public void setOperator(String operator){}",
+    "public String[] getValues(){}",
+    "public void setValues(String[] values){}"
+  ],
+  "constructorDeps": {
+    "java.lang.String": []
+  },
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.operator;\n\nimport com.fasterxml.jackson.annotation.JsonIgnoreProperties;\nimport com.fasterxml.jackson.annotation.JsonInclude;\n\n@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class NodeSelectorRequirement {\n\n    private String key;\n\n    private String operator;\n\n    private String[] values;\n\n    public NodeSelectorRequirement() {\n    }\n\n    public NodeSelectorRequirement(String key, String operator, String[] values) {\n        this.key = key;\n        this.operator = operator;\n        this.values = values;\n    }\n\n    public String getKey() {\n        return key;\n    }\n\n    public void setKey(String key) {\n        this.key = key;\n    }\n\n    public String getOperator() {\n        return operator;\n    }\n\n    public void setOperator(String operator) {\n        this.operator = operator;\n    }\n\n    public String[] getValues() {\n        return values;\n    }\n\n    public void setValues(String[] values) {\n        this.values = values;\n    }\n}\n",
+  "classDeclarationCode": "@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class NodeSelectorRequirement {\n\n    private String key;\n\n    private String operator;\n\n    private String[] values;\n\n    public NodeSelectorRequirement() {\n    }\n\n    public NodeSelectorRequirement(String key, String operator, String[] values) {\n        this.key = key;\n        this.operator = operator;\n        this.values = values;\n    }\n\n    public String getKey() {\n        return key;\n    }\n\n    public void setKey(String key) {\n        this.key = key;\n    }\n\n    public String getOperator() {\n        return operator;\n    }\n\n    public void setOperator(String operator) {\n        this.operator = operator;\n    }\n\n    public String[] getValues() {\n        return values;\n    }\n\n    public void setValues(String[] values) {\n        this.values = values;\n    }\n}",
+  "subClasses": []
+}

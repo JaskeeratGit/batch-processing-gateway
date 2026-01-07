@@ -1,0 +1,38 @@
+{
+  "className": "JwtUtils",
+  "methodName": "createToken",
+  "brief": "public static String createToken(\n      String secret, String issuer, String subject, String claimName, List<String> claimItems){}",
+  "methodSignature": "createToken(String, String, String, String, List)",
+  "sourceCode": "public static String createToken(\n      String secret, String issuer, String subject, String claimName, List<String> claimItems) {\n    Algorithm algorithm = Algorithm.HMAC256(secret);\n    return JWT.create()\n        .withIssuer(issuer)\n        .withSubject(subject)\n        .withClaim(claimName, claimItems)\n        .sign(algorithm);\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String",
+    "String",
+    "String",
+    "String",
+    "List<String>"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [],
+    "com.auth0.jwt.algorithms.Algorithm": [
+      "HMAC256(String)"
+    ],
+    "com.auth0.jwt.JWTCreator.Builder": [
+      "withClaim(String, List<?>)",
+      "withIssuer(String)",
+      "withSubject(String)",
+      "sign(Algorithm)"
+    ],
+    "com.auth0.jwt.JWT": [
+      "create()"
+    ]
+  },
+  "full_method_info": "public static String createToken(String secret, String issuer, String subject, String claimName, List<String> claimItems) {\n    Algorithm algorithm = Algorithm.HMAC256(secret);\n    return JWT.create().withIssuer(issuer).withSubject(subject).withClaim(claimName, claimItems).sign(algorithm);\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

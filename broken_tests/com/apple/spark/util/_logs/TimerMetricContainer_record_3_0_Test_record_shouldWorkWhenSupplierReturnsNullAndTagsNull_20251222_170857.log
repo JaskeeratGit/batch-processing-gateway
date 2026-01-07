@@ -1,0 +1,21 @@
+[ERROR] COMPILATION ERROR : 
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/util/TimerMetricContainer_record_3_0_Test_record_shouldWorkWhenSupplierReturnsNullAndTagsNull.java:[50,27] reference to timer is ambiguous
+  both method timer(java.lang.String,java.lang.Iterable<io.micrometer.core.instrument.Tag>) in io.micrometer.core.instrument.MeterRegistry and method timer(java.lang.String,java.lang.String...) in io.micrometer.core.instrument.MeterRegistry match
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/util/TimerMetricContainer_record_3_0_Test_record_shouldWorkWhenSupplierReturnsNullAndTagsNull.java:[51,19] reference to record is ambiguous
+  both method <T>record(java.util.function.Supplier<T>) in io.micrometer.core.instrument.Timer and method record(java.lang.Runnable) in io.micrometer.core.instrument.Timer match
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/util/TimerMetricContainer_record_3_0_Test_record_shouldWorkWhenSupplierReturnsNullAndTagsNull.java:[58,30] reference to timer is ambiguous
+  both method timer(java.lang.String,java.lang.Iterable<io.micrometer.core.instrument.Tag>) in io.micrometer.core.instrument.MeterRegistry and method timer(java.lang.String,java.lang.String...) in io.micrometer.core.instrument.MeterRegistry match
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.8.1:testCompile (default-testCompile) on project bpg: Compilation failure: Compilation failure: 
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/util/TimerMetricContainer_record_3_0_Test_record_shouldWorkWhenSupplierReturnsNullAndTagsNull.java:[50,27] reference to timer is ambiguous
+[ERROR]   both method timer(java.lang.String,java.lang.Iterable<io.micrometer.core.instrument.Tag>) in io.micrometer.core.instrument.MeterRegistry and method timer(java.lang.String,java.lang.String...) in io.micrometer.core.instrument.MeterRegistry match
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/util/TimerMetricContainer_record_3_0_Test_record_shouldWorkWhenSupplierReturnsNullAndTagsNull.java:[51,19] reference to record is ambiguous
+[ERROR]   both method <T>record(java.util.function.Supplier<T>) in io.micrometer.core.instrument.Timer and method record(java.lang.Runnable) in io.micrometer.core.instrument.Timer match
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/util/TimerMetricContainer_record_3_0_Test_record_shouldWorkWhenSupplierReturnsNullAndTagsNull.java:[58,30] reference to timer is ambiguous
+[ERROR]   both method timer(java.lang.String,java.lang.Iterable<io.micrometer.core.instrument.Tag>) in io.micrometer.core.instrument.MeterRegistry and method timer(java.lang.String,java.lang.String...) in io.micrometer.core.instrument.MeterRegistry match
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

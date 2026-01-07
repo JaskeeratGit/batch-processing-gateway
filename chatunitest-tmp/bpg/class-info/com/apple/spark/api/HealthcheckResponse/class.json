@@ -1,0 +1,45 @@
+{
+  "fullClassName": "com.apple.spark.api.HealthcheckResponse",
+  "className": "HealthcheckResponse",
+  "index": 61,
+  "modifier": "[public ]",
+  "extend": "[]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.api",
+  "packageDeclaration": "package com.apple.spark.api;",
+  "classSignature": "@JsonInclude(JsonInclude.Include.NON_NULL)\npublic class HealthcheckResponse",
+  "hasConstructor": false,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import com.fasterxml.jackson.annotation.JsonInclude;"
+  ],
+  "fields": [
+    "private String status;"
+  ],
+  "superClasses": [],
+  "implementedTypes": [],
+  "methodSigs": {
+    "getStatus()": "0",
+    "setStatus(String)": "1"
+  },
+  "methodsBrief": [
+    "public String getStatus(){}",
+    "public void setStatus(String status){}"
+  ],
+  "constructorSigs": [],
+  "constructorBrief": [],
+  "getterSetterSigs": [
+    "getStatus()",
+    "setStatus(String)"
+  ],
+  "getterSetterBrief": [
+    "public String getStatus(){}",
+    "public void setStatus(String status){}"
+  ],
+  "constructorDeps": {},
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.api;\n\nimport com.fasterxml.jackson.annotation.JsonInclude;\n\n@JsonInclude(JsonInclude.Include.NON_NULL)\npublic class HealthcheckResponse {\n\n    private String status;\n\n    public String getStatus() {\n        return status;\n    }\n\n    public void setStatus(String status) {\n        this.status = status;\n    }\n}\n",
+  "classDeclarationCode": "@JsonInclude(JsonInclude.Include.NON_NULL)\npublic class HealthcheckResponse {\n\n    private String status;\n\n    public String getStatus() {\n        return status;\n    }\n\n    public void setStatus(String status) {\n        this.status = status;\n    }\n}",
+  "subClasses": []
+}

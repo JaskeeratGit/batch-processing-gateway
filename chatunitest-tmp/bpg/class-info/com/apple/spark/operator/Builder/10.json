@@ -1,0 +1,22 @@
+{
+  "className": "Builder",
+  "methodName": "withRestartPolicy",
+  "brief": "public Builder withRestartPolicy(RestartPolicy restartPolicy){}",
+  "methodSignature": "withRestartPolicy(RestartPolicy)",
+  "sourceCode": "public Builder withRestartPolicy(RestartPolicy restartPolicy) {\n      this.sparkApplicationSpec.restartPolicy = restartPolicy;\n      return this;\n    }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "RestartPolicy"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.operator.RestartPolicy": []
+  },
+  "full_method_info": "public Builder withRestartPolicy(RestartPolicy restartPolicy) {\n    this.sparkApplicationSpec.restartPolicy = restartPolicy;\n    return this;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

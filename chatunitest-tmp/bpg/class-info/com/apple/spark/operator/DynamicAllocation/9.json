@@ -1,0 +1,22 @@
+{
+  "className": "DynamicAllocation",
+  "methodName": "setShuffleTrackingTimeout",
+  "brief": "public void setShuffleTrackingTimeout(Long shuffleTrackingTimeout){}",
+  "methodSignature": "setShuffleTrackingTimeout(Long)",
+  "sourceCode": "public void setShuffleTrackingTimeout(Long shuffleTrackingTimeout) {\n    this.shuffleTrackingTimeout = shuffleTrackingTimeout;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "Long"
+  ],
+  "dependentMethods": {
+    "java.lang.Long": []
+  },
+  "full_method_info": "public void setShuffleTrackingTimeout(Long shuffleTrackingTimeout) {\n    this.shuffleTrackingTimeout = shuffleTrackingTimeout;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

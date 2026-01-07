@@ -1,0 +1,18 @@
+{
+  "className": "SparkCluster",
+  "methodName": "getCaCertDataSOPS",
+  "brief": "public String getCaCertDataSOPS(){}",
+  "methodSignature": "getCaCertDataSOPS()",
+  "sourceCode": "public String getCaCertDataSOPS() {\n      return caCertDataSOPS;\n    }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public String getCaCertDataSOPS() {\n    return caCertDataSOPS;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

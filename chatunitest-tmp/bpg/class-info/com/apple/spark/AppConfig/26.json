@@ -1,0 +1,20 @@
+{
+  "className": "AppConfig",
+  "methodName": "setAdminUsers",
+  "brief": "public void setAdminUsers(List<String> adminUsers){}",
+  "methodSignature": "setAdminUsers(List)",
+  "sourceCode": "public void setAdminUsers(List<String> adminUsers) {\n    this.adminUsers = adminUsers;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "List<String>"
+  ],
+  "dependentMethods": {},
+  "full_method_info": "public void setAdminUsers(List<String> adminUsers) {\n    this.adminUsers = adminUsers;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

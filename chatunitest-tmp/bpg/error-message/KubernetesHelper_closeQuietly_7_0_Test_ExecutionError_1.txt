@@ -1,0 +1,133 @@
+package com.apple.spark.core;
+
+import org.slf4j.Logger;
+import java.io.Closeable;
+import java.io.IOException;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.VarHandle;
+import java.util.concurrent.atomic.AtomicBoolean;
+import static org.mockito.ArgumentMatchers.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import com.apple.spark.AppConfig;
+import com.apple.spark.util.EndAwareInputStream;
+import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.client.*;
+import io.fabric8.kubernetes.client.dsl.LogWatch;
+import io.fabric8.kubernetes.client.dsl.PodResource;
+import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
+import org.slf4j.LoggerFactory;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+/**
+ * JUnit 5 tests for KubernetesHelper.closeQuietly(Closeable)
+ */
+public class KubernetesHelper_closeQuietly_7_0_Test {
+
+    private VarHandle loggerHandle;
+
+    private Logger originalLogger;
+
+    private Logger mockLogger;
+
+    @BeforeEach
+    public void setUp() throws Throwable {
+        // Obtain a VarHandle to the private static final logger field and replace it with a mock
+        MethodHandles.Lookup lookup = MethodHandles.privateLookupIn(KubernetesHelper.class, MethodHandles.lookup());
+        loggerHandle = lookup.findStaticVarHandle(KubernetesHelper.class, "logger", Logger.class);
+        originalLogger = (Logger) loggerHandle.get();
+        mockLogger = mock(Logger.class);
+        loggerHandle.set(mockLogger);
+    }
+
+    @AfterEach
+    public void tearDown() throws Throwable {
+        // Restore original logger
+        if (loggerHandle != null && originalLogger != null) {
+            loggerHandle.set(originalLogger);
+        }
+    }
+
+    @Test
+    public void testCloseQuietly_nullArgument_logs() {
+        // Passing null should result in a caught NPE and a warning logged
+        KubernetesHelper.closeQuietly(null);
+        // Verify that a warning was logged with a throwable
+        verify(mockLogger).warn(eq("Failed to close null"), any(Throwable.class));
+    }
+
+    @Test
+    public void testCloseQuietly_logsWhenCloseThrowsIOException() {
+        // Create a Closeable that throws IOException on close
+        Closeable bad = new Closeable() {
+
+            @Override
+            public void close() throws IOException {
+                throw new IOException("io-fail");
+            }
+
+            @Override
+            public String toString() {
+                return "bad-io-closeable";
+            }
+        };
+        KubernetesHelper.closeQuietly(bad);
+        // Verify that a warning was logged with a throwable (IOException)
+        verify(mockLogger).warn(startsWith("Failed to close "), any(Throwable.class));
+    }
+
+    @Test
+    public void testCloseQuietly_logsWhenCloseThrowsError() {
+        // Create a Closeable that throws an Error on close
+        Closeable bad = new Closeable() {
+
+            @Override
+            public void close() {
+                throw new AssertionError("assert-fail");
+            }
+
+            @Override
+            public String toString() {
+                return "bad-error-closeable";
+            }
+        };
+        KubernetesHelper.closeQuietly(bad);
+        // Verify that a warning was logged with a throwable (Error)
+        verify(mockLogger).warn(startsWith("Failed to close "), any(Throwable.class));
+    }
+
+    @Test
+    public void testCloseQuietly_closesSuccessfully_noWarning() throws Exception {
+        // Create a Closeable that records that it was closed
+        AtomicBoolean closed = new AtomicBoolean(false);
+        Closeable ok = new Closeable() {
+
+            @Override
+            public void close() {
+                closed.set(true);
+            }
+
+            @Override
+            public String toString() {
+                return "ok-closeable";
+            }
+        };
+        KubernetesHelper.closeQuietly(ok);
+        // Ensure it was closed and no warning was logged
+        assertTrue(closed.get());
+        verify(mockLogger, never()).warn(anyString(), any(Throwable.class));
+    }
+}
+
+--------------------------------------------
+Error in testCloseQuietly_nullArgument_logs(): line 46 : java.lang.IllegalStateException: Could not initialize plugin: interface org.mockito.plugins.MockMaker (alternate: null)
+Error in testCloseQuietly_logsWhenCloseThrowsIOException(): line 46 : java.lang.IllegalStateException: Could not initialize plugin: interface org.mockito.plugins.MockMaker (alternate: null)
+Error in testCloseQuietly_logsWhenCloseThrowsError(): line 46 : java.lang.IllegalStateException: Could not initialize plugin: interface org.mockito.plugins.MockMaker (alternate: null)
+Error in testCloseQuietly_closesSuccessfully_noWarning(): line 46 : java.lang.IllegalStateException: Could not initialize plugin: interface org.mockito.plugins.MockMaker (alternate: null)

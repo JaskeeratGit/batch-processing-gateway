@@ -1,0 +1,43 @@
+{
+  "fullClassName": "com.apple.spark.operator.ConfigMapVolumeSource",
+  "className": "ConfigMapVolumeSource",
+  "index": 33,
+  "modifier": "[public ]",
+  "extend": "[]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.operator",
+  "packageDeclaration": "package com.apple.spark.operator;",
+  "classSignature": "public class ConfigMapVolumeSource",
+  "hasConstructor": false,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [],
+  "fields": [
+    "private String name;"
+  ],
+  "superClasses": [],
+  "implementedTypes": [],
+  "methodSigs": {
+    "getName()": "0",
+    "setName(String)": "1"
+  },
+  "methodsBrief": [
+    "public String getName(){}",
+    "public void setName(String name){}"
+  ],
+  "constructorSigs": [],
+  "constructorBrief": [],
+  "getterSetterSigs": [
+    "getName()",
+    "setName(String)"
+  ],
+  "getterSetterBrief": [
+    "public String getName(){}",
+    "public void setName(String name){}"
+  ],
+  "constructorDeps": {},
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.operator;\n\npublic class ConfigMapVolumeSource {\n\n    private String name;\n\n    public String getName() {\n        return name;\n    }\n\n    public void setName(String name) {\n        this.name = name;\n    }\n}\n",
+  "classDeclarationCode": "public class ConfigMapVolumeSource {\n\n    private String name;\n\n    public String getName() {\n        return name;\n    }\n\n    public void setName(String name) {\n        this.name = name;\n    }\n}",
+  "subClasses": []
+}

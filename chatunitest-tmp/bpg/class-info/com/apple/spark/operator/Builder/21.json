@@ -1,0 +1,25 @@
+{
+  "className": "Builder",
+  "methodName": "extendVolumes",
+  "brief": "public Builder extendVolumes(List<Volume> volumes){}",
+  "methodSignature": "extendVolumes(List)",
+  "sourceCode": "public Builder extendVolumes(List<Volume> volumes) {\n      if (volumes == null || volumes.size() == 0) {\n        return this;\n      }\n\n      if (this.sparkApplicationSpec.volumes == null) {\n        this.sparkApplicationSpec.volumes = new ArrayList<>();\n      }\n\n      this.sparkApplicationSpec.volumes.addAll(volumes);\n      return this;\n    }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "List<Volume>"
+  ],
+  "dependentMethods": {
+    "java.util.List": [
+      "addAll(Collection<? extends E>)",
+      "size()"
+    ]
+  },
+  "full_method_info": "public Builder extendVolumes(List<Volume> volumes) {\n    if (volumes == null || volumes.size() == 0) {\n        return this;\n    }\n    if (this.sparkApplicationSpec.volumes == null) {\n        this.sparkApplicationSpec.volumes = new ArrayList<>();\n    }\n    this.sparkApplicationSpec.volumes.addAll(volumes);\n    return this;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

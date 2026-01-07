@@ -1,0 +1,35 @@
+{
+  "fullClassName": "com.apple.spark.rest.AwsConstants",
+  "className": "AwsConstants",
+  "index": 42,
+  "modifier": "[public ]",
+  "extend": "[]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.rest",
+  "packageDeclaration": "package com.apple.spark.rest;",
+  "classSignature": "public class AwsConstants",
+  "hasConstructor": false,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import com.amazonaws.regions.Regions;"
+  ],
+  "fields": [
+    "public static final int S3_GET_TIMEOUT_MILLISECS = 180 * 1000;",
+    "public static final int S3_PUT_TIMEOUT_MILLISECS = 180 * 1000;",
+    "public static final Regions CLIENT_REGION = Regions.US_WEST_2;"
+  ],
+  "superClasses": [],
+  "implementedTypes": [],
+  "methodSigs": {},
+  "methodsBrief": [],
+  "constructorSigs": [],
+  "constructorBrief": [],
+  "getterSetterSigs": [],
+  "getterSetterBrief": [],
+  "constructorDeps": {},
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.rest;\n\nimport com.amazonaws.regions.Regions;\n\npublic class AwsConstants {\n\n    public static final int S3_GET_TIMEOUT_MILLISECS = 180 * 1000;\n\n    public static final int S3_PUT_TIMEOUT_MILLISECS = 180 * 1000;\n\n    public static final Regions CLIENT_REGION = Regions.US_WEST_2;\n}\n",
+  "classDeclarationCode": "public class AwsConstants {\n\n    public static final int S3_GET_TIMEOUT_MILLISECS = 180 * 1000;\n\n    public static final int S3_PUT_TIMEOUT_MILLISECS = 180 * 1000;\n\n    public static final Regions CLIENT_REGION = Regions.US_WEST_2;\n}",
+  "subClasses": []
+}

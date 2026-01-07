@@ -1,0 +1,18 @@
+{
+  "className": "PrometheusSpec",
+  "methodName": "getConfiguration",
+  "brief": "public String getConfiguration(){}",
+  "methodSignature": "getConfiguration()",
+  "sourceCode": "public String getConfiguration() {\n    return configuration;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public String getConfiguration() {\n    return configuration;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

@@ -1,0 +1,42 @@
+{
+  "className": "HttpUtils",
+  "methodName": "executeHttpRequest",
+  "brief": "private static String executeHttpRequest(\n          String url, HttpRequest request, HttpResponse.BodyHandler<String> bodyHandler){}",
+  "methodSignature": "executeHttpRequest(String, HttpRequest, HttpResponse.BodyHandler)",
+  "sourceCode": "private static String executeHttpRequest(\n          String url, HttpRequest request, HttpResponse.BodyHandler<String> bodyHandler) {\n    try {\n      HttpResponse<String> response = HttpClient.newBuilder().build().send(request, bodyHandler);\n      checkResponseOK(url, response);\n      String responseStr = response.body();\n      return responseStr;\n    } catch (Throwable ex) {\n      throw new RuntimeException(\n              String.format(\"Failed to execute %s on %s\", request.method(), url), ex);\n    }\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String",
+    "HttpRequest",
+    "HttpResponse.BodyHandler<String>"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "format(String, Object[])"
+    ],
+    "java.net.http.HttpRequest": [
+      "method()"
+    ],
+    "java.net.http.HttpClient": [
+      "send(HttpRequest, BodyHandler<T>)",
+      "newBuilder()"
+    ],
+    "java.net.http.HttpClient.Builder": [
+      "build()"
+    ],
+    "com.apple.spark.util.HttpUtils": [
+      "checkResponseOK(String, HttpResponse<?>)"
+    ],
+    "java.net.http.HttpResponse": [
+      "body()"
+    ]
+  },
+  "full_method_info": "private static String executeHttpRequest(String url, HttpRequest request, HttpResponse.BodyHandler<String> bodyHandler) {\n    try {\n        HttpResponse<String> response = HttpClient.newBuilder().build().send(request, bodyHandler);\n        checkResponseOK(url, response);\n        String responseStr = response.body();\n        return responseStr;\n    } catch (Throwable ex) {\n        throw new RuntimeException(String.format(\"Failed to execute %s on %s\", request.method(), url), ex);\n    }\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

@@ -1,0 +1,27 @@
+{
+  "className": "RestBase",
+  "methodName": "checkRateForListSubmissions",
+  "brief": "protected void checkRateForListSubmissions(String endpointLogInfo){}",
+  "methodSignature": "checkRateForListSubmissions(String)",
+  "sourceCode": "protected void checkRateForListSubmissions(String endpointLogInfo) {\n    boolean acquired = rateLimiterListSubmissions.tryAcquire();\n    if (!acquired) {\n      throw new WebApplicationException(\n          String.format(\n              \"Too many requests for %s endpoint (limit: %s requests per second)\",\n              endpointLogInfo, PERMITS_PER_SECOND_LIST_SUBMISSIONS),\n          Response.Status.TOO_MANY_REQUESTS);\n    }\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "format(String, Object[])"
+    ],
+    "com.google.common.util.concurrent.RateLimiter": [
+      "tryAcquire()"
+    ]
+  },
+  "full_method_info": "protected void checkRateForListSubmissions(String endpointLogInfo) {\n    boolean acquired = rateLimiterListSubmissions.tryAcquire();\n    if (!acquired) {\n        throw new WebApplicationException(String.format(\"Too many requests for %s endpoint (limit: %s requests per second)\", endpointLogInfo, PERMITS_PER_SECOND_LIST_SUBMISSIONS), Response.Status.TOO_MANY_REQUESTS);\n    }\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

@@ -1,0 +1,20 @@
+{
+  "className": "SubmitApplicationRequest",
+  "methodName": "setSpotInstance",
+  "brief": "public void setSpotInstance(boolean spotInstance){}",
+  "methodSignature": "setSpotInstance(boolean)",
+  "sourceCode": "public void setSpotInstance(boolean spotInstance) {\n    this.spotInstance = spotInstance;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "boolean"
+  ],
+  "dependentMethods": {},
+  "full_method_info": "public void setSpotInstance(boolean spotInstance) {\n    this.spotInstance = spotInstance;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

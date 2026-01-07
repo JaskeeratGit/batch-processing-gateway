@@ -1,0 +1,64 @@
+{
+  "fullClassName": "com.apple.spark.operator.BatchSchedulerConfiguration",
+  "className": "BatchSchedulerConfiguration",
+  "index": 20,
+  "modifier": "[public ]",
+  "extend": "[]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.operator",
+  "packageDeclaration": "package com.apple.spark.operator;",
+  "classSignature": "@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class BatchSchedulerConfiguration",
+  "hasConstructor": false,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import com.fasterxml.jackson.annotation.JsonIgnoreProperties;",
+    "import com.fasterxml.jackson.annotation.JsonInclude;"
+  ],
+  "fields": [
+    "private String queue;",
+    "private boolean gangSchedulingEnabled;",
+    "private int reservationTimeoutInSeconds = 480;"
+  ],
+  "superClasses": [],
+  "implementedTypes": [],
+  "methodSigs": {
+    "getQueue()": "0",
+    "setQueue(String)": "1",
+    "getGang()": "2",
+    "setGang(boolean)": "3",
+    "getReservationTimeoutInSeconds()": "4",
+    "setReservationTimeoutInSeconds(int)": "5"
+  },
+  "methodsBrief": [
+    "public String getQueue(){}",
+    "public void setQueue(String queue){}",
+    "public boolean getGang(){}",
+    "public void setGang(boolean gangSchedulingEnabled){}",
+    "public int getReservationTimeoutInSeconds(){}",
+    "public void setReservationTimeoutInSeconds(int reservationTimeoutInSeconds){}"
+  ],
+  "constructorSigs": [],
+  "constructorBrief": [],
+  "getterSetterSigs": [
+    "getQueue()",
+    "setQueue(String)",
+    "getGang()",
+    "setGang(boolean)",
+    "getReservationTimeoutInSeconds()",
+    "setReservationTimeoutInSeconds(int)"
+  ],
+  "getterSetterBrief": [
+    "public String getQueue(){}",
+    "public void setQueue(String queue){}",
+    "public boolean getGang(){}",
+    "public void setGang(boolean gangSchedulingEnabled){}",
+    "public int getReservationTimeoutInSeconds(){}",
+    "public void setReservationTimeoutInSeconds(int reservationTimeoutInSeconds){}"
+  ],
+  "constructorDeps": {},
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.operator;\n\nimport com.fasterxml.jackson.annotation.JsonIgnoreProperties;\nimport com.fasterxml.jackson.annotation.JsonInclude;\n\n@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class BatchSchedulerConfiguration {\n\n    private String queue;\n\n    private boolean gangSchedulingEnabled;\n\n    private int reservationTimeoutInSeconds = 480;\n\n    public String getQueue() {\n        return queue;\n    }\n\n    public void setQueue(String queue) {\n        this.queue = queue;\n    }\n\n    public boolean getGang() {\n        return gangSchedulingEnabled;\n    }\n\n    public void setGang(boolean gangSchedulingEnabled) {\n        this.gangSchedulingEnabled = gangSchedulingEnabled;\n    }\n\n    public int getReservationTimeoutInSeconds() {\n        return reservationTimeoutInSeconds;\n    }\n\n    public void setReservationTimeoutInSeconds(int reservationTimeoutInSeconds) {\n        this.reservationTimeoutInSeconds = reservationTimeoutInSeconds;\n    }\n}\n",
+  "classDeclarationCode": "@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class BatchSchedulerConfiguration {\n\n    private String queue;\n\n    private boolean gangSchedulingEnabled;\n\n    private int reservationTimeoutInSeconds = 480;\n\n    public String getQueue() {\n        return queue;\n    }\n\n    public void setQueue(String queue) {\n        this.queue = queue;\n    }\n\n    public boolean getGang() {\n        return gangSchedulingEnabled;\n    }\n\n    public void setGang(boolean gangSchedulingEnabled) {\n        this.gangSchedulingEnabled = gangSchedulingEnabled;\n    }\n\n    public int getReservationTimeoutInSeconds() {\n        return reservationTimeoutInSeconds;\n    }\n\n    public void setReservationTimeoutInSeconds(int reservationTimeoutInSeconds) {\n        this.reservationTimeoutInSeconds = reservationTimeoutInSeconds;\n    }\n}",
+  "subClasses": []
+}

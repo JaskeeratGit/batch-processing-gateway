@@ -1,0 +1,18 @@
+{
+  "className": "SubmissionSummary",
+  "methodName": "getExecutorInstances",
+  "brief": "public int getExecutorInstances(){}",
+  "methodSignature": "getExecutorInstances()",
+  "sourceCode": "public int getExecutorInstances() {\n    return executorInstances;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public int getExecutorInstances() {\n    return executorInstances;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

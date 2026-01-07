@@ -1,0 +1,79 @@
+{
+  "className": "LoadTest",
+  "methodName": "main",
+  "brief": "public static void main(String[] args){}",
+  "methodSignature": "main(String[])",
+  "sourceCode": "public static void main(String[] args) {\n    int applications = 10;\n    int mapTasks = 2;\n    int sleepSeconds = 3;\n    int maxWaitSeconds = 60 * 60;\n    int executors = 1;\n    boolean deleteApplication = true;\n\n    for (int i = 0; i < args.length; ) {\n      String argName = args[i++];\n      if (argName.equalsIgnoreCase(\"-applications\")) {\n        applications = Integer.parseInt(args[i++]);\n      } else if (argName.equalsIgnoreCase(\"-mapTasks\")) {\n        mapTasks = Integer.parseInt(args[i++]);\n      } else if (argName.equalsIgnoreCase(\"-sleepSeconds\")) {\n        sleepSeconds = Integer.parseInt(args[i++]);\n      } else if (argName.equalsIgnoreCase(\"-maxWaitSeconds\")) {\n        maxWaitSeconds = Integer.parseInt(args[i++]);\n      } else if (argName.equalsIgnoreCase(\"-executors\")) {\n        executors = Integer.parseInt(args[i++]);\n      } else if (argName.equalsIgnoreCase(\"-deleteApplication\")) {\n        deleteApplication = Boolean.parseBoolean(args[i++]);\n      } else {\n        throw new RuntimeException(String.format(\"Unsupported argument: %s\", argName));\n      }\n    }\n\n    for (int i = 0; i < applications; i++) {\n      final int applicationIndex = i;\n      final int mapTasksFinal = mapTasks;\n      final int sleepSecondsFinal = sleepSeconds;\n      final int executorsFinal = executors;\n      CompletableFuture.runAsync(\n          () ->\n              submitApplication(\n                  applicationIndex, mapTasksFinal, sleepSecondsFinal, executorsFinal));\n    }\n\n    long waitStartTime = System.currentTimeMillis();\n    while (finishedApps.size() < applications) {\n      if (System.currentTimeMillis() - waitStartTime > TimeUnit.MINUTES.toMillis(maxWaitSeconds)) {\n        break;\n      }\n      List<TestApplicationInfo> appsToRemove = new ArrayList<>();\n      for (TestApplicationInfo app : runningApps) {\n        String getStatusUrl = String.format(getStatusUrlFormat, app.getSubmissionId());\n        GetSubmissionStatusResponse getSubmissionStatusResponse =\n            HttpUtils.get(\n                getStatusUrl, authHeaderName, authHeaderValue, GetSubmissionStatusResponse.class);\n        if (SparkConstants.isApplicationStopped(\n            getSubmissionStatusResponse.getApplicationState())) {\n          app.setState(getSubmissionStatusResponse.getApplicationState());\n          app.setCompletedTime(getSubmissionStatusResponse.getTerminationTime());\n\n          String getDriverUrl = String.format(getDriverUrlFormat, app.getSubmissionId());\n          GetDriverInfoResponse getDriverInfoResponse =\n              HttpUtils.get(\n                  getDriverUrl, authHeaderName, authHeaderValue, GetDriverInfoResponse.class);\n          app.setDriverStartTime(getDriverInfoResponse.getStartTime());\n\n          logger.info(\"Test application completed: {}\", app);\n          appsToRemove.add(app);\n        }\n      }\n      for (TestApplicationInfo app : appsToRemove) {\n        runningApps.remove(app);\n        finishedApps.add(app);\n      }\n      if (!runningApps.isEmpty()) {\n        int waitSeconds = 10;\n        logger.info(\"Wait {} seconds to check application\", waitSeconds);\n        try {\n          Thread.sleep(waitSeconds * 1000);\n        } catch (InterruptedException e) {\n        }\n      }\n    }\n\n    if (deleteApplication) {\n      for (TestApplicationInfo app : finishedApps) {\n        String deleteUrl = String.format(deleteUrlFormat, app.getSubmissionId());\n        logger.info(\"Deleting application {}\", app.getSubmissionId());\n        HttpUtils.delete(deleteUrl, authHeaderName, authHeaderValue);\n      }\n    }\n\n    System.exit(0);\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String[]"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "format(String, Object[])",
+      "equalsIgnoreCase(String)"
+    ],
+    "java.lang.Integer": [
+      "parseInt(String)"
+    ],
+    "java.lang.Boolean": [
+      "parseBoolean(String)"
+    ],
+    "java.util.concurrent.CompletableFuture": [
+      "runAsync(Runnable)"
+    ],
+    "com.apple.spark.tools.LoadTest": [
+      "submitApplication(int, int, int, int)"
+    ],
+    "java.lang.System": [
+      "exit(int)",
+      "currentTimeMillis()"
+    ],
+    "java.util.concurrent.ConcurrentLinkedQueue": [
+      "remove(Object)",
+      "isEmpty()",
+      "add(E)",
+      "size()"
+    ],
+    "java.util.concurrent.TimeUnit": [
+      "toMillis(long)"
+    ],
+    "com.apple.spark.tools.LoadTest.TestApplicationInfo": [
+      "setState(String)",
+      "getSubmissionId()",
+      "setCompletedTime(Long)",
+      "setDriverStartTime(Long)"
+    ],
+    "com.apple.spark.util.HttpUtils": [
+      "get(String, String, String, Class<T>)",
+      "delete(String, String, String)"
+    ],
+    "com.apple.spark.core.SparkConstants": [
+      "isApplicationStopped(String)"
+    ],
+    "com.apple.spark.api.SubmissionStatus": [
+      "getApplicationState()",
+      "getTerminationTime()"
+    ],
+    "com.apple.spark.api.GetDriverInfoResponse": [
+      "getStartTime()"
+    ],
+    "org.slf4j.Logger": [
+      "info(String, Object)"
+    ],
+    "java.util.List": [
+      "add(E)"
+    ],
+    "java.lang.Thread": [
+      "sleep(long)"
+    ]
+  },
+  "full_method_info": "public static void main(String[] args) {\n    int applications = 10;\n    int mapTasks = 2;\n    int sleepSeconds = 3;\n    int maxWaitSeconds = 60 * 60;\n    int executors = 1;\n    boolean deleteApplication = true;\n    for (int i = 0; i < args.length; ) {\n        String argName = args[i++];\n        if (argName.equalsIgnoreCase(\"-applications\")) {\n            applications = Integer.parseInt(args[i++]);\n        } else if (argName.equalsIgnoreCase(\"-mapTasks\")) {\n            mapTasks = Integer.parseInt(args[i++]);\n        } else if (argName.equalsIgnoreCase(\"-sleepSeconds\")) {\n            sleepSeconds = Integer.parseInt(args[i++]);\n        } else if (argName.equalsIgnoreCase(\"-maxWaitSeconds\")) {\n            maxWaitSeconds = Integer.parseInt(args[i++]);\n        } else if (argName.equalsIgnoreCase(\"-executors\")) {\n            executors = Integer.parseInt(args[i++]);\n        } else if (argName.equalsIgnoreCase(\"-deleteApplication\")) {\n            deleteApplication = Boolean.parseBoolean(args[i++]);\n        } else {\n            throw new RuntimeException(String.format(\"Unsupported argument: %s\", argName));\n        }\n    }\n    for (int i = 0; i < applications; i++) {\n        final int applicationIndex = i;\n        final int mapTasksFinal = mapTasks;\n        final int sleepSecondsFinal = sleepSeconds;\n        final int executorsFinal = executors;\n        CompletableFuture.runAsync(() -> submitApplication(applicationIndex, mapTasksFinal, sleepSecondsFinal, executorsFinal));\n    }\n    long waitStartTime = System.currentTimeMillis();\n    while (finishedApps.size() < applications) {\n        if (System.currentTimeMillis() - waitStartTime > TimeUnit.MINUTES.toMillis(maxWaitSeconds)) {\n            break;\n        }\n        List<TestApplicationInfo> appsToRemove = new ArrayList<>();\n        for (TestApplicationInfo app : runningApps) {\n            String getStatusUrl = String.format(getStatusUrlFormat, app.getSubmissionId());\n            GetSubmissionStatusResponse getSubmissionStatusResponse = HttpUtils.get(getStatusUrl, authHeaderName, authHeaderValue, GetSubmissionStatusResponse.class);\n            if (SparkConstants.isApplicationStopped(getSubmissionStatusResponse.getApplicationState())) {\n                app.setState(getSubmissionStatusResponse.getApplicationState());\n                app.setCompletedTime(getSubmissionStatusResponse.getTerminationTime());\n                String getDriverUrl = String.format(getDriverUrlFormat, app.getSubmissionId());\n                GetDriverInfoResponse getDriverInfoResponse = HttpUtils.get(getDriverUrl, authHeaderName, authHeaderValue, GetDriverInfoResponse.class);\n                app.setDriverStartTime(getDriverInfoResponse.getStartTime());\n                logger.info(\"Test application completed: {}\", app);\n                appsToRemove.add(app);\n            }\n        }\n        for (TestApplicationInfo app : appsToRemove) {\n            runningApps.remove(app);\n            finishedApps.add(app);\n        }\n        if (!runningApps.isEmpty()) {\n            int waitSeconds = 10;\n            logger.info(\"Wait {} seconds to check application\", waitSeconds);\n            try {\n                Thread.sleep(waitSeconds * 1000);\n            } catch (InterruptedException e) {\n            }\n        }\n    }\n    if (deleteApplication) {\n        for (TestApplicationInfo app : finishedApps) {\n            String deleteUrl = String.format(deleteUrlFormat, app.getSubmissionId());\n            logger.info(\"Deleting application {}\", app.getSubmissionId());\n            HttpUtils.delete(deleteUrl, authHeaderName, authHeaderValue);\n        }\n    }\n    System.exit(0);\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

@@ -1,0 +1,48 @@
+{
+  "className": "SubmissionSummary",
+  "methodName": "copyFrom",
+  "brief": "public void copyFrom(\n      SparkApplication sparkApplicationResource,\n      AppConfig.SparkCluster sparkCluster,\n      AppConfig appConfig){}",
+  "methodSignature": "copyFrom(SparkApplication, AppConfig.SparkCluster, AppConfig)",
+  "sourceCode": "public void copyFrom(\n      SparkApplication sparkApplicationResource,\n      AppConfig.SparkCluster sparkCluster,\n      AppConfig appConfig) {\n    this.copyFrom(sparkApplicationResource);\n    if (!StringUtils.isEmpty(sparkCluster.getSparkUIUrl())\n        && SparkConstants.RUNNING_STATE.equalsIgnoreCase(getApplicationState())) {\n      String url = ConfigUtil.getSparkUIUrl(sparkCluster, submissionId);\n      setSparkUIUrl(url);\n    } else if (SparkConstants.COMPLETED_STATE.equalsIgnoreCase(getApplicationState())\n        || SparkConstants.FAILED_STATE.equalsIgnoreCase(getApplicationState())) {\n      String url =\n          ConfigUtil.getSparkHistoryUrl(appConfig.getSparkHistoryDns(), getSparkApplicationId());\n      setSparkUIUrl(url);\n    }\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "SparkApplication",
+    "AppConfig.SparkCluster",
+    "AppConfig"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.operator.SparkApplication": [],
+    "com.apple.spark.AppConfig": [
+      "getSparkHistoryDns()"
+    ],
+    "com.apple.spark.api.SubmissionSummary": [
+      "copyFrom(SparkApplication)",
+      "setSparkUIUrl(String)"
+    ],
+    "org.apache.commons.lang3.StringUtils": [
+      "isEmpty(CharSequence)"
+    ],
+    "com.apple.spark.AppConfig.SparkCluster": [
+      "getSparkUIUrl()"
+    ],
+    "java.lang.String": [
+      "equalsIgnoreCase(String)"
+    ],
+    "com.apple.spark.api.SubmissionStatus": [
+      "getApplicationState()",
+      "getSparkApplicationId()"
+    ],
+    "com.apple.spark.util.ConfigUtil": [
+      "getSparkUIUrl(SparkCluster, String)",
+      "getSparkHistoryUrl(String, String)"
+    ]
+  },
+  "full_method_info": "public void copyFrom(SparkApplication sparkApplicationResource, AppConfig.SparkCluster sparkCluster, AppConfig appConfig) {\n    this.copyFrom(sparkApplicationResource);\n    if (!StringUtils.isEmpty(sparkCluster.getSparkUIUrl()) && SparkConstants.RUNNING_STATE.equalsIgnoreCase(getApplicationState())) {\n        String url = ConfigUtil.getSparkUIUrl(sparkCluster, submissionId);\n        setSparkUIUrl(url);\n    } else if (SparkConstants.COMPLETED_STATE.equalsIgnoreCase(getApplicationState()) || SparkConstants.FAILED_STATE.equalsIgnoreCase(getApplicationState())) {\n        String url = ConfigUtil.getSparkHistoryUrl(appConfig.getSparkHistoryDns(), getSparkApplicationId());\n        setSparkUIUrl(url);\n    }\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

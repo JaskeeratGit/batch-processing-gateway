@@ -1,0 +1,47 @@
+{
+  "attempt0": {
+    "testClassName": "SparkPodNodeAffinityHelper_createNodeAffinityForSparkPods_0_0_Test",
+    "fullName": "com.apple.spark.core.SparkPodNodeAffinityHelper_createNodeAffinityForSparkPods_0_0_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/SparkPodNodeAffinityHelper_createNodeAffinityForSparkPods_0_0_Test.java",
+    "className": "SparkPodNodeAffinityHelper",
+    "packageName": "com.apple.spark.core",
+    "methodName": "createNodeAffinityForSparkPods",
+    "methodSig": "createNodeAffinityForSparkPods(SubmitApplicationRequest, AppConfig, String, AppConfig.SparkCluster, boolean)"
+  },
+  "attempt1": {
+    "testClassName": "SparkPodNodeAffinityHelper_createNodeAffinityForSparkPods_0_1_Test",
+    "fullName": "com.apple.spark.core.SparkPodNodeAffinityHelper_createNodeAffinityForSparkPods_0_1_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/SparkPodNodeAffinityHelper_createNodeAffinityForSparkPods_0_0_Test.java",
+    "className": "SparkPodNodeAffinityHelper",
+    "packageName": "com.apple.spark.core",
+    "methodName": "createNodeAffinityForSparkPods",
+    "methodSig": "createNodeAffinityForSparkPods(SubmitApplicationRequest, AppConfig, String, AppConfig.SparkCluster, boolean)"
+  },
+  "attempt2": {
+    "testClassName": "SparkPodNodeAffinityHelper_createNodeAffinityForSparkPods_0_2_Test",
+    "fullName": "com.apple.spark.core.SparkPodNodeAffinityHelper_createNodeAffinityForSparkPods_0_2_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/SparkPodNodeAffinityHelper_createNodeAffinityForSparkPods_0_0_Test.java",
+    "className": "SparkPodNodeAffinityHelper",
+    "packageName": "com.apple.spark.core",
+    "methodName": "createNodeAffinityForSparkPods",
+    "methodSig": "createNodeAffinityForSparkPods(SubmitApplicationRequest, AppConfig, String, AppConfig.SparkCluster, boolean)"
+  },
+  "attempt3": {
+    "testClassName": "SparkPodNodeAffinityHelper_createNodeAffinityForSparkPods_0_3_Test",
+    "fullName": "com.apple.spark.core.SparkPodNodeAffinityHelper_createNodeAffinityForSparkPods_0_3_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/SparkPodNodeAffinityHelper_createNodeAffinityForSparkPods_0_0_Test.java",
+    "className": "SparkPodNodeAffinityHelper",
+    "packageName": "com.apple.spark.core",
+    "methodName": "createNodeAffinityForSparkPods",
+    "methodSig": "createNodeAffinityForSparkPods(SubmitApplicationRequest, AppConfig, String, AppConfig.SparkCluster, boolean)"
+  },
+  "attempt4": {
+    "testClassName": "SparkPodNodeAffinityHelper_createNodeAffinityForSparkPods_0_4_Test",
+    "fullName": "com.apple.spark.core.SparkPodNodeAffinityHelper_createNodeAffinityForSparkPods_0_4_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/SparkPodNodeAffinityHelper_createNodeAffinityForSparkPods_0_0_Test.java",
+    "className": "SparkPodNodeAffinityHelper",
+    "packageName": "com.apple.spark.core",
+    "methodName": "createNodeAffinityForSparkPods",
+    "methodSig": "createNodeAffinityForSparkPods(SubmitApplicationRequest, AppConfig, String, AppConfig.SparkCluster, boolean)"
+  }
+}

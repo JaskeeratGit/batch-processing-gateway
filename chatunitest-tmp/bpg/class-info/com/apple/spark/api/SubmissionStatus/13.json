@@ -1,0 +1,30 @@
+{
+  "className": "SubmissionStatus",
+  "methodName": "getDuration",
+  "brief": "public Long getDuration(){}",
+  "methodSignature": "getDuration()",
+  "sourceCode": "public Long getDuration() {\n    Long duration = 0L;\n    if (creationTime != null) {\n      if (terminationTime == null) {\n        if (getApplicationState().equals(RUNNING_STATE)\n            || getApplicationState().equals(SUBMITTED_STATE)) {\n          duration = System.currentTimeMillis() - getCreationTime();\n        }\n      } else {\n        duration = getTerminationTime() - getCreationTime();\n      }\n    }\n    return duration;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {
+    "java.lang.String": [
+      "equals(Object)"
+    ],
+    "com.apple.spark.api.SubmissionStatus": [
+      "getApplicationState()",
+      "getCreationTime()",
+      "getTerminationTime()"
+    ],
+    "java.lang.System": [
+      "currentTimeMillis()"
+    ]
+  },
+  "full_method_info": "public Long getDuration() {\n    Long duration = 0L;\n    if (creationTime != null) {\n        if (terminationTime == null) {\n            if (getApplicationState().equals(RUNNING_STATE) || getApplicationState().equals(SUBMITTED_STATE)) {\n                duration = System.currentTimeMillis() - getCreationTime();\n            }\n        } else {\n            duration = getTerminationTime() - getCreationTime();\n        }\n    }\n    return duration;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

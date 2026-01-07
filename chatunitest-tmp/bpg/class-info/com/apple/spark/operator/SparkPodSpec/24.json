@@ -1,0 +1,20 @@
+{
+  "className": "SparkPodSpec",
+  "methodName": "setVolumeMounts",
+  "brief": "public void setVolumeMounts(List<VolumeMount> volumeMounts){}",
+  "methodSignature": "setVolumeMounts(List)",
+  "sourceCode": "public void setVolumeMounts(List<VolumeMount> volumeMounts) {\n    this.volumeMounts = volumeMounts;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "List<VolumeMount>"
+  ],
+  "dependentMethods": {},
+  "full_method_info": "public void setVolumeMounts(List<VolumeMount> volumeMounts) {\n    this.volumeMounts = volumeMounts;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

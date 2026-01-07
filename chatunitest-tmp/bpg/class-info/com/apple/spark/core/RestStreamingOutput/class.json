@@ -1,0 +1,42 @@
+{
+  "fullClassName": "com.apple.spark.core.RestStreamingOutput",
+  "className": "RestStreamingOutput",
+  "index": 93,
+  "modifier": "[public , abstract ]",
+  "extend": "[]",
+  "implement": "[StreamingOutput]",
+  "packageName": "com.apple.spark.core",
+  "packageDeclaration": "package com.apple.spark.core;",
+  "classSignature": "public abstract class RestStreamingOutput",
+  "hasConstructor": false,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": true,
+  "imports": [
+    "import java.io.IOException;",
+    "import java.io.OutputStream;",
+    "import java.nio.charset.StandardCharsets;",
+    "import javax.ws.rs.core.StreamingOutput;"
+  ],
+  "fields": [],
+  "superClasses": [],
+  "implementedTypes": [
+    "StreamingOutput"
+  ],
+  "methodSigs": {
+    "writeLine(OutputStream, String)": "0"
+  },
+  "methodsBrief": [
+    "protected void writeLine(OutputStream outputStream, String line) throws IOException{}"
+  ],
+  "constructorSigs": [],
+  "constructorBrief": [],
+  "getterSetterSigs": [],
+  "getterSetterBrief": [],
+  "constructorDeps": {},
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.core;\n\nimport java.io.IOException;\nimport java.io.OutputStream;\nimport java.nio.charset.StandardCharsets;\nimport javax.ws.rs.core.StreamingOutput;\n\npublic abstract class RestStreamingOutput implements StreamingOutput {\n\n    protected void writeLine(OutputStream outputStream, String line) throws IOException {\n        outputStream.write(line.getBytes(StandardCharsets.UTF_8));\n        outputStream.write(System.lineSeparator().getBytes(StandardCharsets.UTF_8));\n    }\n}\n",
+  "classDeclarationCode": "public abstract class RestStreamingOutput implements StreamingOutput {\n\n    protected void writeLine(OutputStream outputStream, String line) throws IOException {\n        outputStream.write(line.getBytes(StandardCharsets.UTF_8));\n        outputStream.write(System.lineSeparator().getBytes(StandardCharsets.UTF_8));\n    }\n}",
+  "subClasses": [
+    "com.apple.spark.core.RestSubmissionsStreamingOutput"
+  ]
+}

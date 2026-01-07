@@ -1,0 +1,35 @@
+{
+  "className": "ApplicationGetLogRest",
+  "methodName": "getS3Client",
+  "brief": "private AmazonS3 getS3Client(){}",
+  "methodSignature": "getS3Client()",
+  "sourceCode": "private AmazonS3 getS3Client() {\n    if (s3Client == null) {\n      ClientConfiguration clientConfiguration = new ClientConfiguration();\n      clientConfiguration.setConnectionTimeout(S3_GET_TIMEOUT_MILLISECS);\n      clientConfiguration.setRequestTimeout(S3_GET_TIMEOUT_MILLISECS);\n      clientConfiguration.setSocketTimeout(S3_GET_TIMEOUT_MILLISECS);\n      clientConfiguration.setClientExecutionTimeout(S3_GET_TIMEOUT_MILLISECS);\n\n      s3Client =\n          AmazonS3ClientBuilder.standard()\n              .withRegion(CLIENT_REGION)\n              .withClientConfiguration(clientConfiguration)\n              .build();\n    }\n    return s3Client;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {
+    "com.amazonaws.ClientConfiguration": [
+      "setSocketTimeout(int)",
+      "setRequestTimeout(int)",
+      "setConnectionTimeout(int)",
+      "setClientExecutionTimeout(int)"
+    ],
+    "com.amazonaws.client.builder.AwsSyncClientBuilder": [
+      "build()"
+    ],
+    "com.amazonaws.client.builder.AwsClientBuilder": [
+      "withRegion(Regions)",
+      "withClientConfiguration(ClientConfiguration)"
+    ],
+    "com.amazonaws.services.s3.AmazonS3ClientBuilder": [
+      "standard()"
+    ]
+  },
+  "full_method_info": "private AmazonS3 getS3Client() {\n    if (s3Client == null) {\n        ClientConfiguration clientConfiguration = new ClientConfiguration();\n        clientConfiguration.setConnectionTimeout(S3_GET_TIMEOUT_MILLISECS);\n        clientConfiguration.setRequestTimeout(S3_GET_TIMEOUT_MILLISECS);\n        clientConfiguration.setSocketTimeout(S3_GET_TIMEOUT_MILLISECS);\n        clientConfiguration.setClientExecutionTimeout(S3_GET_TIMEOUT_MILLISECS);\n        s3Client = AmazonS3ClientBuilder.standard().withRegion(CLIENT_REGION).withClientConfiguration(clientConfiguration).build();\n    }\n    return s3Client;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

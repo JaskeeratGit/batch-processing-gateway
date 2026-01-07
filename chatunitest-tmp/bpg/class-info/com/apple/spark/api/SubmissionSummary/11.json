@@ -1,0 +1,22 @@
+{
+  "className": "SubmissionSummary",
+  "methodName": "setDagName",
+  "brief": "public void setDagName(String dagName){}",
+  "methodSignature": "setDagName(String)",
+  "sourceCode": "public void setDagName(String dagName) {\n    this.dagName = dagName;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": []
+  },
+  "full_method_info": "public void setDagName(String dagName) {\n    this.dagName = dagName;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

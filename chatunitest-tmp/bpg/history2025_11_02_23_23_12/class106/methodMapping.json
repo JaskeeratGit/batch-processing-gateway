@@ -1,0 +1,50 @@
+{
+  "method0": {
+    "methodName": "main",
+    "signature": "main(String[])",
+    "className": "BPGApplication",
+    "packageName": "com.apple.spark"
+  },
+  "method1": {
+    "methodName": "getName",
+    "signature": "getName()",
+    "className": "BPGApplication",
+    "packageName": "com.apple.spark"
+  },
+  "method2": {
+    "methodName": "initialize",
+    "signature": "initialize(Bootstrap)",
+    "className": "BPGApplication",
+    "packageName": "com.apple.spark"
+  },
+  "method3": {
+    "methodName": "run",
+    "signature": "run(AppConfig, Environment)",
+    "className": "BPGApplication",
+    "packageName": "com.apple.spark"
+  },
+  "method4": {
+    "methodName": "sendPeriodicMetrics",
+    "signature": "sendPeriodicMetrics(AppConfig, MeterRegistry)",
+    "className": "BPGApplication",
+    "packageName": "com.apple.spark"
+  },
+  "method5": {
+    "methodName": "sendQueueInfoMetrics",
+    "signature": "sendQueueInfoMetrics(AppConfig, CounterMetricContainer)",
+    "className": "BPGApplication",
+    "packageName": "com.apple.spark"
+  },
+  "method6": {
+    "methodName": "BPGApplication",
+    "signature": "BPGApplication()",
+    "className": "BPGApplication",
+    "packageName": "com.apple.spark"
+  },
+  "method7": {
+    "methodName": "BPGApplication",
+    "signature": "BPGApplication(boolean)",
+    "className": "BPGApplication",
+    "packageName": "com.apple.spark"
+  }
+}

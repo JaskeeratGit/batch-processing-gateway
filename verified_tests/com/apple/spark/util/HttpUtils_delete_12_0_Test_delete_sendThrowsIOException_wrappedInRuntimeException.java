@@ -1,0 +1,55 @@
+package com.apple.spark.util;
+
+import static org.mockito.ArgumentMatchers.*;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.InputStream;
+
+/**
+ * JUnit 5 tests for HttpUtils.delete(...)
+ *
+ * Note: These tests use Mockito's static mocking (mockStatic). Ensure Mockito (with inline mock maker)
+ * is available on the test classpath (e.g., mockito-inline).
+ */
+public class HttpUtils_delete_12_0_Test_delete_sendThrowsIOException_wrappedInRuntimeException {
+
+
+
+
+    @Test
+    public void delete_sendThrowsIOException_wrappedInRuntimeException() throws Exception {
+        try (MockedStatic<HttpRequest> reqStatic = mockStatic(HttpRequest.class);
+            MockedStatic<HttpClient> clientStatic = mockStatic(HttpClient.class)) {
+            HttpRequest.Builder reqBuilder = mock(HttpRequest.Builder.class);
+            HttpRequest requestMock = mock(HttpRequest.class);
+            when(reqBuilder.uri(any(URI.class))).thenReturn(reqBuilder);
+            when(reqBuilder.DELETE()).thenReturn(reqBuilder);
+            when(reqBuilder.build()).thenReturn(requestMock);
+            reqStatic.when(HttpRequest::newBuilder).thenReturn(reqBuilder);
+            HttpClient.Builder clientBuilder = mock(HttpClient.Builder.class);
+            HttpClient clientMock = mock(HttpClient.class);
+            when(clientBuilder.build()).thenReturn(clientMock);
+            clientStatic.when(HttpClient::newBuilder).thenReturn(clientBuilder);
+            when(clientMock.send(eq(requestMock), any(HttpResponse.BodyHandler.class))).thenThrow(new IOException("network failure"));
+            RuntimeException ex = assertThrows(RuntimeException.class, () -> HttpUtils.delete("http://example.com/fail", "H", "V"));
+            assertTrue(ex.getMessage().contains("Failed to delete"));
+            assertTrue(ex.getMessage().contains("http://example.com/fail"));
+            assertNotNull(ex.getCause());
+            assertTrue(ex.getCause() instanceof IOException);
+            assertEquals("network failure", ex.getCause().getMessage());
+        }
+    }
+
+}

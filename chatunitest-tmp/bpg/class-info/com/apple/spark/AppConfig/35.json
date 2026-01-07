@@ -1,0 +1,41 @@
+{
+  "className": "AppConfig",
+  "methodName": "resolveImage",
+  "brief": "public Optional<SparkImage> resolveImage(String type, String version){}",
+  "methodSignature": "resolveImage(String, String)",
+  "sourceCode": "public Optional<SparkImage> resolveImage(String type, String version) {\n    if (sparkImages == null || sparkImages.isEmpty()) {\n      return Optional.empty();\n    }\n    return sparkImages.stream()\n        .filter(\n            t ->\n                typeMatch(t.types, type)\n                    && t.version != null\n                    && t.version.equalsIgnoreCase(version))\n        .findFirst();\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String",
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "equalsIgnoreCase(String)"
+    ],
+    "java.util.List": [
+      "isEmpty()"
+    ],
+    "java.util.Optional": [
+      "empty()"
+    ],
+    "java.util.stream.Stream": [
+      "findFirst()",
+      "filter(Predicate<? super T>)"
+    ],
+    "java.util.Collection": [
+      "stream()"
+    ],
+    "com.apple.spark.AppConfig": [
+      "typeMatch(String>, String)"
+    ]
+  },
+  "full_method_info": "public Optional<SparkImage> resolveImage(String type, String version) {\n    if (sparkImages == null || sparkImages.isEmpty()) {\n        return Optional.empty();\n    }\n    return sparkImages.stream().filter(t -> typeMatch(t.types, type) && t.version != null && t.version.equalsIgnoreCase(version)).findFirst();\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

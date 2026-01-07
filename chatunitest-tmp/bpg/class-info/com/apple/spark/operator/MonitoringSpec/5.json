@@ -1,0 +1,22 @@
+{
+  "className": "MonitoringSpec",
+  "methodName": "setMetricsProperties",
+  "brief": "public void setMetricsProperties(String metricsProperties){}",
+  "methodSignature": "setMetricsProperties(String)",
+  "sourceCode": "public void setMetricsProperties(String metricsProperties) {\n    this.metricsProperties = metricsProperties;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": []
+  },
+  "full_method_info": "public void setMetricsProperties(String metricsProperties) {\n    this.metricsProperties = metricsProperties;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

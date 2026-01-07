@@ -1,0 +1,22 @@
+{
+  "className": "IngressTLS",
+  "methodName": "setSecretName",
+  "brief": "public void setSecretName(String secretName){}",
+  "methodSignature": "setSecretName(String)",
+  "sourceCode": "public void setSecretName(String secretName) {\n    this.secretName = secretName;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": []
+  },
+  "full_method_info": "public void setSecretName(String secretName) {\n    this.secretName = secretName;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

@@ -1,0 +1,22 @@
+{
+  "className": "NamespaceAndName",
+  "methodName": "setNamespace",
+  "brief": "public void setNamespace(String namespace){}",
+  "methodSignature": "setNamespace(String)",
+  "sourceCode": "public void setNamespace(String namespace) {\n    this.namespace = namespace;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": []
+  },
+  "full_method_info": "public void setNamespace(String namespace) {\n    this.namespace = namespace;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

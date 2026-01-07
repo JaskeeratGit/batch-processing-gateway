@@ -1,0 +1,20 @@
+[ERROR] COMPILATION ERROR : 
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/RunningApplicationMonitor_onUpdate_1_0_Test_testOnUpdate_nameNull_logsAndDoesNothing.java:[96,51] no suitable method found for thenReturn(java.lang.Object)
+    method org.mockito.stubbing.OngoingStubbing.thenReturn(com.apple.spark.operator.ApplicationState) is not applicable
+      (argument mismatch; java.lang.Object cannot be converted to com.apple.spark.operator.ApplicationState)
+    method org.mockito.stubbing.OngoingStubbing.thenReturn(com.apple.spark.operator.ApplicationState,com.apple.spark.operator.ApplicationState...) is not applicable
+      (argument mismatch; java.lang.Object cannot be converted to com.apple.spark.operator.ApplicationState)
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.8.1:testCompile (default-testCompile) on project bpg: Compilation failure
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/RunningApplicationMonitor_onUpdate_1_0_Test_testOnUpdate_nameNull_logsAndDoesNothing.java:[96,51] no suitable method found for thenReturn(java.lang.Object)
+[ERROR]     method org.mockito.stubbing.OngoingStubbing.thenReturn(com.apple.spark.operator.ApplicationState) is not applicable
+[ERROR]       (argument mismatch; java.lang.Object cannot be converted to com.apple.spark.operator.ApplicationState)
+[ERROR]     method org.mockito.stubbing.OngoingStubbing.thenReturn(com.apple.spark.operator.ApplicationState,com.apple.spark.operator.ApplicationState...) is not applicable
+[ERROR]       (argument mismatch; java.lang.Object cannot be converted to com.apple.spark.operator.ApplicationState)
+[ERROR] 
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

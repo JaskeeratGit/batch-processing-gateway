@@ -1,0 +1,18 @@
+{
+  "className": "SparkApplicationSpec",
+  "methodName": "getMonitoring",
+  "brief": "public MonitoringSpec getMonitoring(){}",
+  "methodSignature": "getMonitoring()",
+  "sourceCode": "public MonitoringSpec getMonitoring() {\n    return monitoring;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public MonitoringSpec getMonitoring() {\n    return monitoring;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

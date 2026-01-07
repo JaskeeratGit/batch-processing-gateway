@@ -1,0 +1,22 @@
+{
+  "className": "QueueConfig",
+  "methodName": "setMaxRunningMillis",
+  "brief": "public void setMaxRunningMillis(Long maxRunningMillis){}",
+  "methodSignature": "setMaxRunningMillis(Long)",
+  "sourceCode": "public void setMaxRunningMillis(Long maxRunningMillis) {\n      this.maxRunningMillis = maxRunningMillis;\n    }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "Long"
+  ],
+  "dependentMethods": {
+    "java.lang.Long": []
+  },
+  "full_method_info": "public void setMaxRunningMillis(Long maxRunningMillis) {\n    this.maxRunningMillis = maxRunningMillis;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

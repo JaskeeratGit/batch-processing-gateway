@@ -1,0 +1,47 @@
+{
+  "attempt0": {
+    "testClassName": "RunningApplicationMonitor_deleteLongRunningApplications_2_0_Test",
+    "fullName": "com.apple.spark.core.RunningApplicationMonitor_deleteLongRunningApplications_2_0_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/RunningApplicationMonitor_deleteLongRunningApplications_2_0_Test.java",
+    "className": "RunningApplicationMonitor",
+    "packageName": "com.apple.spark.core",
+    "methodName": "deleteLongRunningApplications",
+    "methodSig": "deleteLongRunningApplications()"
+  },
+  "attempt1": {
+    "testClassName": "RunningApplicationMonitor_deleteLongRunningApplications_2_1_Test",
+    "fullName": "com.apple.spark.core.RunningApplicationMonitor_deleteLongRunningApplications_2_1_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/RunningApplicationMonitor_deleteLongRunningApplications_2_0_Test.java",
+    "className": "RunningApplicationMonitor",
+    "packageName": "com.apple.spark.core",
+    "methodName": "deleteLongRunningApplications",
+    "methodSig": "deleteLongRunningApplications()"
+  },
+  "attempt2": {
+    "testClassName": "RunningApplicationMonitor_deleteLongRunningApplications_2_2_Test",
+    "fullName": "com.apple.spark.core.RunningApplicationMonitor_deleteLongRunningApplications_2_2_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/RunningApplicationMonitor_deleteLongRunningApplications_2_0_Test.java",
+    "className": "RunningApplicationMonitor",
+    "packageName": "com.apple.spark.core",
+    "methodName": "deleteLongRunningApplications",
+    "methodSig": "deleteLongRunningApplications()"
+  },
+  "attempt3": {
+    "testClassName": "RunningApplicationMonitor_deleteLongRunningApplications_2_3_Test",
+    "fullName": "com.apple.spark.core.RunningApplicationMonitor_deleteLongRunningApplications_2_3_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/RunningApplicationMonitor_deleteLongRunningApplications_2_0_Test.java",
+    "className": "RunningApplicationMonitor",
+    "packageName": "com.apple.spark.core",
+    "methodName": "deleteLongRunningApplications",
+    "methodSig": "deleteLongRunningApplications()"
+  },
+  "attempt4": {
+    "testClassName": "RunningApplicationMonitor_deleteLongRunningApplications_2_4_Test",
+    "fullName": "com.apple.spark.core.RunningApplicationMonitor_deleteLongRunningApplications_2_4_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/RunningApplicationMonitor_deleteLongRunningApplications_2_0_Test.java",
+    "className": "RunningApplicationMonitor",
+    "packageName": "com.apple.spark.core",
+    "methodName": "deleteLongRunningApplications",
+    "methodSig": "deleteLongRunningApplications()"
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "fullClassName": "com.apple.spark.operator.RestartPolicy",
+  "className": "RestartPolicy",
+  "index": 31,
+  "modifier": "[public ]",
+  "extend": "[]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.operator",
+  "packageDeclaration": "package com.apple.spark.operator;",
+  "classSignature": "@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class RestartPolicy",
+  "hasConstructor": false,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import com.fasterxml.jackson.annotation.JsonIgnoreProperties;",
+    "import com.fasterxml.jackson.annotation.JsonInclude;"
+  ],
+  "fields": [
+    "private String type;",
+    "private Integer onSubmissionFailureRetries;",
+    "private Integer onFailureRetries;",
+    "private Long onSubmissionFailureRetryInterval;",
+    "private Long onFailureRetryInterval;"
+  ],
+  "superClasses": [],
+  "implementedTypes": [],
+  "methodSigs": {
+    "getType()": "0",
+    "setType(String)": "1",
+    "getOnSubmissionFailureRetries()": "2",
+    "setOnSubmissionFailureRetries(Integer)": "3",
+    "getOnFailureRetries()": "4",
+    "setOnFailureRetries(Integer)": "5",
+    "getOnSubmissionFailureRetryInterval()": "6",
+    "setOnSubmissionFailureRetryInterval(Long)": "7",
+    "getOnFailureRetryInterval()": "8",
+    "setOnFailureRetryInterval(Long)": "9"
+  },
+  "methodsBrief": [
+    "public String getType(){}",
+    "public void setType(String type){}",
+    "public Integer getOnSubmissionFailureRetries(){}",
+    "public void setOnSubmissionFailureRetries(Integer onSubmissionFailureRetries){}",
+    "public Integer getOnFailureRetries(){}",
+    "public void setOnFailureRetries(Integer onFailureRetries){}",
+    "public Long getOnSubmissionFailureRetryInterval(){}",
+    "public void setOnSubmissionFailureRetryInterval(Long onSubmissionFailureRetryInterval){}",
+    "public Long getOnFailureRetryInterval(){}",
+    "public void setOnFailureRetryInterval(Long onFailureRetryInterval){}"
+  ],
+  "constructorSigs": [],
+  "constructorBrief": [],
+  "getterSetterSigs": [
+    "getType()",
+    "setType(String)",
+    "getOnSubmissionFailureRetries()",
+    "setOnSubmissionFailureRetries(Integer)",
+    "getOnFailureRetries()",
+    "setOnFailureRetries(Integer)",
+    "getOnSubmissionFailureRetryInterval()",
+    "setOnSubmissionFailureRetryInterval(Long)",
+    "getOnFailureRetryInterval()",
+    "setOnFailureRetryInterval(Long)"
+  ],
+  "getterSetterBrief": [
+    "public String getType(){}",
+    "public void setType(String type){}",
+    "public Integer getOnSubmissionFailureRetries(){}",
+    "public void setOnSubmissionFailureRetries(Integer onSubmissionFailureRetries){}",
+    "public Integer getOnFailureRetries(){}",
+    "public void setOnFailureRetries(Integer onFailureRetries){}",
+    "public Long getOnSubmissionFailureRetryInterval(){}",
+    "public void setOnSubmissionFailureRetryInterval(Long onSubmissionFailureRetryInterval){}",
+    "public Long getOnFailureRetryInterval(){}",
+    "public void setOnFailureRetryInterval(Long onFailureRetryInterval){}"
+  ],
+  "constructorDeps": {},
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.operator;\n\nimport com.fasterxml.jackson.annotation.JsonIgnoreProperties;\nimport com.fasterxml.jackson.annotation.JsonInclude;\n\n@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class RestartPolicy {\n\n    private String type;\n\n    private Integer onSubmissionFailureRetries;\n\n    private Integer onFailureRetries;\n\n    private Long onSubmissionFailureRetryInterval;\n\n    private Long onFailureRetryInterval;\n\n    public String getType() {\n        return type;\n    }\n\n    public void setType(String type) {\n        this.type = type;\n    }\n\n    public Integer getOnSubmissionFailureRetries() {\n        return onSubmissionFailureRetries;\n    }\n\n    public void setOnSubmissionFailureRetries(Integer onSubmissionFailureRetries) {\n        this.onSubmissionFailureRetries = onSubmissionFailureRetries;\n    }\n\n    public Integer getOnFailureRetries() {\n        return onFailureRetries;\n    }\n\n    public void setOnFailureRetries(Integer onFailureRetries) {\n        this.onFailureRetries = onFailureRetries;\n    }\n\n    public Long getOnSubmissionFailureRetryInterval() {\n        return onSubmissionFailureRetryInterval;\n    }\n\n    public void setOnSubmissionFailureRetryInterval(Long onSubmissionFailureRetryInterval) {\n        this.onSubmissionFailureRetryInterval = onSubmissionFailureRetryInterval;\n    }\n\n    public Long getOnFailureRetryInterval() {\n        return onFailureRetryInterval;\n    }\n\n    public void setOnFailureRetryInterval(Long onFailureRetryInterval) {\n        this.onFailureRetryInterval = onFailureRetryInterval;\n    }\n}\n",
+  "classDeclarationCode": "@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class RestartPolicy {\n\n    private String type;\n\n    private Integer onSubmissionFailureRetries;\n\n    private Integer onFailureRetries;\n\n    private Long onSubmissionFailureRetryInterval;\n\n    private Long onFailureRetryInterval;\n\n    public String getType() {\n        return type;\n    }\n\n    public void setType(String type) {\n        this.type = type;\n    }\n\n    public Integer getOnSubmissionFailureRetries() {\n        return onSubmissionFailureRetries;\n    }\n\n    public void setOnSubmissionFailureRetries(Integer onSubmissionFailureRetries) {\n        this.onSubmissionFailureRetries = onSubmissionFailureRetries;\n    }\n\n    public Integer getOnFailureRetries() {\n        return onFailureRetries;\n    }\n\n    public void setOnFailureRetries(Integer onFailureRetries) {\n        this.onFailureRetries = onFailureRetries;\n    }\n\n    public Long getOnSubmissionFailureRetryInterval() {\n        return onSubmissionFailureRetryInterval;\n    }\n\n    public void setOnSubmissionFailureRetryInterval(Long onSubmissionFailureRetryInterval) {\n        this.onSubmissionFailureRetryInterval = onSubmissionFailureRetryInterval;\n    }\n\n    public Long getOnFailureRetryInterval() {\n        return onFailureRetryInterval;\n    }\n\n    public void setOnFailureRetryInterval(Long onFailureRetryInterval) {\n        this.onFailureRetryInterval = onFailureRetryInterval;\n    }\n}",
+  "subClasses": []
+}

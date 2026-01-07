@@ -1,0 +1,29 @@
+{
+  "className": "RoundRobinZonePicker",
+  "methodName": "pick",
+  "brief": "@Override\n  public List<String> pick(){}",
+  "methodSignature": "pick()",
+  "sourceCode": "@Override\n  public List<String> pick() {\n    int zoneIndex = index.getAndUpdate((input) -> (input + 1) % allowedZones.size());\n    String pickedZone = allowedZones.get(zoneIndex);\n    return Collections.singletonList(pickedZone);\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {
+    "java.util.concurrent.atomic.AtomicInteger": [
+      "getAndUpdate(IntUnaryOperator)"
+    ],
+    "java.util.List": [
+      "get(int)",
+      "size()"
+    ],
+    "java.util.Collections": [
+      "singletonList(T)"
+    ]
+  },
+  "full_method_info": "@Override\npublic List<String> pick() {\n    int zoneIndex = index.getAndUpdate((input) -> (input + 1) % allowedZones.size());\n    String pickedZone = allowedZones.get(zoneIndex);\n    return Collections.singletonList(pickedZone);\n}",
+  "method_comment": "",
+  "method_annotation": "@Override\n"
+}

@@ -1,0 +1,55 @@
+{
+  "className": "LogDao",
+  "methodName": "getSubmissionIdFromAppIdImpl",
+  "brief": "private String getSubmissionIdFromAppIdImpl(String appId){}",
+  "methodSignature": "getSubmissionIdFromAppIdImpl(String)",
+  "sourceCode": "private String getSubmissionIdFromAppIdImpl(String appId) {\n    String queryResult = \"\";\n\n    String sql =\n        String.format(\n            \"SELECT submission_id from %s.application_submission where app_id = ?\", dbName);\n\n    try (PreparedStatement statement = dbConnection.getConnection().prepareStatement(sql)) {\n      statement.setString(1, appId);\n      try (ResultSet resultSet = statement.executeQuery()) {\n        boolean seenResult = false;\n        while (resultSet.next()) {\n          // there must be one submission ID for any app ID\n          if (seenResult) {\n            logger.warn(String.format(\"Found multiple records for the same appId: %s\"), appId);\n            queryResult = \"\";\n            break;\n          }\n\n          Object object = resultSet.getObject(\"submission_id\");\n          if (object == null) {\n            queryResult = \"\";\n          } else {\n            queryResult = object.toString();\n          }\n          seenResult = true;\n        }\n      }\n    } catch (Throwable ex) {\n      logger.warn(String.format(\"Failed to execute SQL query: %s\", sql), ex);\n      failureMetrics.increment(\n          DB_FAILURE_METRIC_NAME,\n          Tag.of(OPERATION_TAG, QUERY_SUBMISSION_OPERATION),\n          Tag.of(EXCEPTION_TAG, ex.getClass().getSimpleName()));\n    }\n    return queryResult;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "format(String, Object[])"
+    ],
+    "java.sql.Connection": [
+      "prepareStatement(String)"
+    ],
+    "com.apple.spark.core.DBConnection": [
+      "getConnection()"
+    ],
+    "java.sql.PreparedStatement": [
+      "setString(int, String)",
+      "executeQuery()"
+    ],
+    "java.sql.ResultSet": [
+      "next()",
+      "getObject(String)"
+    ],
+    "org.slf4j.Logger": [
+      "warn(String, Throwable)",
+      "warn(String, Object)"
+    ],
+    "java.lang.Object": [
+      "toString()",
+      "getClass()"
+    ],
+    "com.apple.spark.util.CounterMetricContainer": [
+      "increment(String, Tag[])"
+    ],
+    "io.micrometer.core.instrument.Tag": [
+      "of(String, String)"
+    ],
+    "java.lang.Class": [
+      "getSimpleName()"
+    ]
+  },
+  "full_method_info": "// This method returns an empty string if the field value is null\nprivate String getSubmissionIdFromAppIdImpl(String appId) {\n    String queryResult = \"\";\n    String sql = String.format(\"SELECT submission_id from %s.application_submission where app_id = ?\", dbName);\n    try (PreparedStatement statement = dbConnection.getConnection().prepareStatement(sql)) {\n        statement.setString(1, appId);\n        try (ResultSet resultSet = statement.executeQuery()) {\n            boolean seenResult = false;\n            while (resultSet.next()) {\n                // there must be one submission ID for any app ID\n                if (seenResult) {\n                    logger.warn(String.format(\"Found multiple records for the same appId: %s\"), appId);\n                    queryResult = \"\";\n                    break;\n                }\n                Object object = resultSet.getObject(\"submission_id\");\n                if (object == null) {\n                    queryResult = \"\";\n                } else {\n                    queryResult = object.toString();\n                }\n                seenResult = true;\n            }\n        }\n    } catch (Throwable ex) {\n        logger.warn(String.format(\"Failed to execute SQL query: %s\", sql), ex);\n        failureMetrics.increment(DB_FAILURE_METRIC_NAME, Tag.of(OPERATION_TAG, QUERY_SUBMISSION_OPERATION), Tag.of(EXCEPTION_TAG, ex.getClass().getSimpleName()));\n    }\n    return queryResult;\n}",
+  "method_comment": " This method returns an empty string if the field value is null",
+  "method_annotation": ""
+}

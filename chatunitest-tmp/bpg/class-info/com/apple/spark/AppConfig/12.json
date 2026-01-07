@@ -1,0 +1,18 @@
+{
+  "className": "AppConfig",
+  "methodName": "getSparkLogS3Bucket",
+  "brief": "public String getSparkLogS3Bucket(){}",
+  "methodSignature": "getSparkLogS3Bucket()",
+  "sourceCode": "public String getSparkLogS3Bucket() {\n    return sparkLogS3Bucket;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public String getSparkLogS3Bucket() {\n    return sparkLogS3Bucket;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

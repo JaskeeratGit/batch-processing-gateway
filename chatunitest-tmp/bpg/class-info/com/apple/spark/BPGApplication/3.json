@@ -1,0 +1,75 @@
+{
+  "className": "BPGApplication",
+  "methodName": "run",
+  "brief": "@Override\n  public void run(final AppConfig configuration, final Environment environment){}",
+  "methodSignature": "run(AppConfig, Environment)",
+  "sourceCode": "@Override\n  public void run(final AppConfig configuration, final Environment environment) {\n    String applicationContextPath = configuration.getApplicationContextPath();\n    if (applicationContextPath == null || applicationContextPath.isEmpty()) {\n      applicationContextPath = Constants.DEFAULT_APPLICATION_CONTEXT_PATH;\n    }\n    environment.getApplicationContext().setContextPath(applicationContextPath);\n\n    // Get the application's metric registry\n    MetricRegistry registry = environment.metrics();\n    SharedMetricRegistries.add(Constants.DEFAULT_METRIC_REGISTRY, registry);\n\n    MeterRegistry meterRegistry = BPGStatsdConfig.createMeterRegistry();\n\n    // Register all resources\n    final ApplicationSubmissionRest applicationSubmissionRest =\n        new ApplicationSubmissionRest(configuration, meterRegistry);\n    environment.jersey().register(applicationSubmissionRest);\n\n    final ApplicationGetLogRest applicationGetLogRest =\n        new ApplicationGetLogRest(configuration, meterRegistry);\n    environment.jersey().register(applicationGetLogRest);\n\n    final CloudStorageRest cloudStorageRest = new CloudStorageRest(configuration, meterRegistry);\n    environment.jersey().register(cloudStorageRest);\n\n    final AdminRest adminRest = new AdminRest(configuration, meterRegistry);\n    environment.jersey().register(adminRest);\n\n    final HealthcheckRest healthcheckRest = new HealthcheckRest(configuration, meterRegistry);\n    environment.jersey().register(healthcheckRest);\n\n    environment.jersey().register(new ThrowableExceptionMapper(environment.metrics()));\n\n    // To accept a username header\n    UserNameAuthFilter<User> userNameAuthFilter =\n        new UserNameAuthFilter.Builder<User>()\n            .setAuthenticator(\n                new UserNameBasicAuthenticator(\n                    configuration.getAllowedUsers(), configuration.getBlockedUsers()))\n            .setRealm(Constants.REALM)\n            .setUnauthorizedHandler(new UserUnauthorizedHandler())\n            .buildAuthFilter();\n\n    // To accept basic authentication\n    BasicCredentialAuthFilter<User> basicCredentialAuthFilter =\n        new BasicCredentialAuthFilter.Builder<User>()\n            .setAuthenticator(\n                new UserNameBasicAuthenticator(\n                    configuration.getAllowedUsers(), configuration.getBlockedUsers()))\n            .setRealm(Constants.REALM)\n            .setUnauthorizedHandler(new UserUnauthorizedHandler())\n            .buildAuthFilter();\n\n    // The auth will pass if any of the auth filters pass\n    ChainedAuthFilter<BasicCredentials, User> chainedAuthFilter =\n        new ChainedAuthFilter<>(Arrays.asList(userNameAuthFilter, basicCredentialAuthFilter));\n\n    environment.jersey().register(new AuthDynamicFeature(chainedAuthFilter));\n\n    // To use @Auth to inject a User Principal type into REST resource\n    environment.jersey().register(new AuthValueFactoryProvider.Binder<>(User.class));\n\n    final BPGHealthCheck healthCheck = new BPGHealthCheck(configuration.getSparkClusters());\n    environment.healthChecks().register(\"sparkClusters\", healthCheck);\n\n    // Support OpenAPI spec for all components under com.apple.spark.rest\n    OpenAPI openAPI = new OpenAPI();\n    SwaggerConfiguration oasConfig =\n        new SwaggerConfiguration()\n            .openAPI(openAPI)\n            .prettyPrint(true)\n            .resourcePackages(new HashSet<>(Arrays.asList(\"com.apple.spark.rest\")));\n\n    environment.jersey().register(new OpenApiResource().openApiConfiguration(oasConfig));\n\n    // This code block is for enabling CORS so that they can be reachable from\n    // different domain/port\n    // Opening this up can be risky but leaving the commented code here in case we are able to\n    // enable it after evaluating the risks\n    /*\n    final FilterRegistration.Dynamic cors =\n            environment.servlets().addFilter(\"CORS\", CrossOriginFilter.class);\n\n    cors.setInitParameter(\"allowedOrigins\", \"*\");\n    cors.setInitParameter(\"allowedHeaders\", \"X-Requested-With,Content-Type,Accept,Origin\");\n    cors.setInitParameter(\"allowedMethods\", \"OPTIONS,GET,PUT,POST,DELETE,HEAD\");\n\n    cors.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, \"/*\");\n     */\n\n    if (monitorApplication) {\n      logger.info(\"Starting application monitor\");\n      new ApplicationMonitor(configuration, meterRegistry).start();\n    }\n\n    sendPeriodicMetrics(configuration, meterRegistry);\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "AppConfig",
+    "Environment"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.AppConfig": [
+      "getSparkClusters()",
+      "getAllowedUsers()",
+      "getBlockedUsers()",
+      "getApplicationContextPath()"
+    ],
+    "io.dropwizard.setup.Environment": [
+      "getApplicationContext()",
+      "healthChecks()",
+      "metrics()",
+      "jersey()"
+    ],
+    "java.lang.String": [
+      "isEmpty()"
+    ],
+    "org.eclipse.jetty.server.handler.ContextHandler": [
+      "setContextPath(String)"
+    ],
+    "com.codahale.metrics.SharedMetricRegistries": [
+      "add(String, MetricRegistry)"
+    ],
+    "com.apple.spark.core.BPGStatsdConfig": [
+      "createMeterRegistry()"
+    ],
+    "io.dropwizard.jersey.setup.JerseyEnvironment": [
+      "register(Object)"
+    ],
+    "io.dropwizard.auth.AuthFilter.AuthFilterBuilder": [
+      "setAuthenticator(Authenticator<C, P>)"
+    ],
+    "java.util.Arrays": [
+      "asList(T[])"
+    ],
+    "com.codahale.metrics.health.HealthCheckRegistry": [
+      "register(String, HealthCheck)"
+    ],
+    "io.swagger.v3.oas.integration.SwaggerConfiguration": [
+      "prettyPrint(Boolean)",
+      "openAPI(OpenAPI)",
+      "resourcePackages(String>)"
+    ],
+    "io.swagger.v3.jaxrs2.integration.resources.BaseOpenApiResource": [
+      "openApiConfiguration(OpenAPIConfiguration)"
+    ],
+    "org.slf4j.Logger": [
+      "info(String)"
+    ],
+    "com.apple.spark.core.ApplicationMonitor": [
+      "start()"
+    ],
+    "com.apple.spark.BPGApplication": [
+      "sendPeriodicMetrics(AppConfig, MeterRegistry)"
+    ]
+  },
+  "full_method_info": "@Override\npublic void run(final AppConfig configuration, final Environment environment) {\n    String applicationContextPath = configuration.getApplicationContextPath();\n    if (applicationContextPath == null || applicationContextPath.isEmpty()) {\n        applicationContextPath = Constants.DEFAULT_APPLICATION_CONTEXT_PATH;\n    }\n    environment.getApplicationContext().setContextPath(applicationContextPath);\n    // Get the application's metric registry\n    MetricRegistry registry = environment.metrics();\n    SharedMetricRegistries.add(Constants.DEFAULT_METRIC_REGISTRY, registry);\n    MeterRegistry meterRegistry = BPGStatsdConfig.createMeterRegistry();\n    // Register all resources\n    final ApplicationSubmissionRest applicationSubmissionRest = new ApplicationSubmissionRest(configuration, meterRegistry);\n    environment.jersey().register(applicationSubmissionRest);\n    final ApplicationGetLogRest applicationGetLogRest = new ApplicationGetLogRest(configuration, meterRegistry);\n    environment.jersey().register(applicationGetLogRest);\n    final CloudStorageRest cloudStorageRest = new CloudStorageRest(configuration, meterRegistry);\n    environment.jersey().register(cloudStorageRest);\n    final AdminRest adminRest = new AdminRest(configuration, meterRegistry);\n    environment.jersey().register(adminRest);\n    final HealthcheckRest healthcheckRest = new HealthcheckRest(configuration, meterRegistry);\n    environment.jersey().register(healthcheckRest);\n    environment.jersey().register(new ThrowableExceptionMapper(environment.metrics()));\n    // To accept a username header\n    UserNameAuthFilter<User> userNameAuthFilter = new UserNameAuthFilter.Builder<User>().setAuthenticator(new UserNameBasicAuthenticator(configuration.getAllowedUsers(), configuration.getBlockedUsers())).setRealm(Constants.REALM).setUnauthorizedHandler(new UserUnauthorizedHandler()).buildAuthFilter();\n    // To accept basic authentication\n    BasicCredentialAuthFilter<User> basicCredentialAuthFilter = new BasicCredentialAuthFilter.Builder<User>().setAuthenticator(new UserNameBasicAuthenticator(configuration.getAllowedUsers(), configuration.getBlockedUsers())).setRealm(Constants.REALM).setUnauthorizedHandler(new UserUnauthorizedHandler()).buildAuthFilter();\n    // The auth will pass if any of the auth filters pass\n    ChainedAuthFilter<BasicCredentials, User> chainedAuthFilter = new ChainedAuthFilter<>(Arrays.asList(userNameAuthFilter, basicCredentialAuthFilter));\n    environment.jersey().register(new AuthDynamicFeature(chainedAuthFilter));\n    // To use @Auth to inject a User Principal type into REST resource\n    environment.jersey().register(new AuthValueFactoryProvider.Binder<>(User.class));\n    final BPGHealthCheck healthCheck = new BPGHealthCheck(configuration.getSparkClusters());\n    environment.healthChecks().register(\"sparkClusters\", healthCheck);\n    // Support OpenAPI spec for all components under com.apple.spark.rest\n    OpenAPI openAPI = new OpenAPI();\n    SwaggerConfiguration oasConfig = new SwaggerConfiguration().openAPI(openAPI).prettyPrint(true).resourcePackages(new HashSet<>(Arrays.asList(\"com.apple.spark.rest\")));\n    environment.jersey().register(new OpenApiResource().openApiConfiguration(oasConfig));\n    // This code block is for enabling CORS so that they can be reachable from\n    // different domain/port\n    // Opening this up can be risky but leaving the commented code here in case we are able to\n    // enable it after evaluating the risks\n    /*\n    final FilterRegistration.Dynamic cors =\n            environment.servlets().addFilter(\"CORS\", CrossOriginFilter.class);\n\n    cors.setInitParameter(\"allowedOrigins\", \"*\");\n    cors.setInitParameter(\"allowedHeaders\", \"X-Requested-With,Content-Type,Accept,Origin\");\n    cors.setInitParameter(\"allowedMethods\", \"OPTIONS,GET,PUT,POST,DELETE,HEAD\");\n\n    cors.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, \"/*\");\n     */\n    if (monitorApplication) {\n        logger.info(\"Starting application monitor\");\n        new ApplicationMonitor(configuration, meterRegistry).start();\n    }\n    sendPeriodicMetrics(configuration, meterRegistry);\n}",
+  "method_comment": "",
+  "method_annotation": "@Override\n"
+}

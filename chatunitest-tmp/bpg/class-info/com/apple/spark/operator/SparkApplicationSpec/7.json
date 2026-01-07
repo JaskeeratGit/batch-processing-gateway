@@ -1,0 +1,22 @@
+{
+  "className": "SparkApplicationSpec",
+  "methodName": "setOriginalUser",
+  "brief": "public void setOriginalUser(String originalUser){}",
+  "methodSignature": "setOriginalUser(String)",
+  "sourceCode": "public void setOriginalUser(String originalUser) {\n    this.originalUser = originalUser;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": []
+  },
+  "full_method_info": "public void setOriginalUser(String originalUser) {\n    this.originalUser = originalUser;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

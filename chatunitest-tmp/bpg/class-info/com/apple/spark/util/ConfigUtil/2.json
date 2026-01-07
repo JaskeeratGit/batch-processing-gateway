@@ -1,0 +1,25 @@
+{
+  "className": "ConfigUtil",
+  "methodName": "getSparkHistoryUrl",
+  "brief": "public static String getSparkHistoryUrl(String sparkHistoryDns, String appId){}",
+  "methodSignature": "getSparkHistoryUrl(String, String)",
+  "sourceCode": "public static String getSparkHistoryUrl(String sparkHistoryDns, String appId) {\n    return String.format(\"https://%s/history/%s\", sparkHistoryDns, appId);\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String",
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "format(String, Object[])"
+    ]
+  },
+  "full_method_info": "public static String getSparkHistoryUrl(String sparkHistoryDns, String appId) {\n    return String.format(\"https://%s/history/%s\", sparkHistoryDns, appId);\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

@@ -1,0 +1,69 @@
+{
+  "className": "ApplicationMonitor",
+  "methodName": "start",
+  "brief": "private void start(AppConfig.SparkCluster sparkCluster, Timer timer){}",
+  "methodSignature": "start(AppConfig.SparkCluster, Timer)",
+  "sourceCode": "private void start(AppConfig.SparkCluster sparkCluster, Timer timer) {\n    logger.info(\n        \"Creating informer for spark cluster {}, EKS: {}, namespace: {}\",\n        sparkCluster.getId(),\n        sparkCluster.getEksCluster(),\n        sparkCluster.getSparkApplicationNamespace());\n\n    KubernetesClient client = KubernetesHelper.getK8sClient(sparkCluster);\n\n    clients.add(client);\n\n    SharedInformerFactory sharedInformerFactory = client.informers();\n    informerFactories.add(sharedInformerFactory);\n\n    SharedIndexInformer<SparkApplication> informer =\n            sharedInformerFactory.sharedIndexInformerFor(SparkApplication.class, RESYNC_MILLIS);\n\n    RunningApplicationMonitor runningApplicationMonitor =\n        new RunningApplicationMonitor(sparkCluster, timer, meterRegistry);\n\n    informer.addEventHandler(\n        new ResourceEventHandler<SparkApplication>() {\n          @Override\n          public void onAdd(SparkApplication sparkApplicationResource) {}\n\n          @Override\n          public void onUpdate(\n                  SparkApplication prevCRDState, SparkApplication newCRDState) {\n            int timeoutMillis = 100;\n            try {\n              boolean added =\n                  applicationUpdateEventQueue.offer(\n                      new ApplicationUpdateEvent(\n                          sparkCluster, prevCRDState, newCRDState, runningApplicationMonitor),\n                      timeoutMillis,\n                      TimeUnit.MILLISECONDS);\n              if (!added) {\n                requestCounters.increment(MONITOR_DROPPED_EVENT);\n                long value = droppedEvents.incrementAndGet();\n                logger.warn(\n                    \"Failed to enqueue application update event due to queue full, application: {},\"\n                        + \" total dropped: {}\",\n                    prevCRDState.getMetadata().getName(),\n                    value);\n              }\n            } catch (Throwable e) {\n              logger.warn(\"Failed to enqueue application update event\", e);\n            }\n          }\n\n          @Override\n          public void onDelete(\n              SparkApplication sparkApplicationResource,\n              boolean deletedFinalStateUnknown) {}\n        });\n\n    sharedInformerFactory.addSharedInformerEventListener(\n        ex ->\n            logger.warn(\n                String.format(\n                    \"Got exception with informer for spark cluster %s\", sparkCluster.getId()),\n                ex));\n\n    logger.info(\"Starting all registered informers\");\n    sharedInformerFactory.startAllRegisteredInformers();\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "AppConfig.SparkCluster",
+    "Timer"
+  ],
+  "dependentMethods": {
+    "java.util.Timer": [],
+    "org.slf4j.Logger": [
+      "warn(String, Throwable)",
+      "info(String)",
+      "info(String, Object[])",
+      "warn(String, Object, Object)"
+    ],
+    "com.apple.spark.AppConfig.SparkCluster": [
+      "getId()",
+      "getEksCluster()",
+      "getSparkApplicationNamespace()"
+    ],
+    "com.apple.spark.core.KubernetesHelper": [
+      "getK8sClient(SparkCluster)"
+    ],
+    "java.util.List": [
+      "add(E)"
+    ],
+    "io.fabric8.kubernetes.client.KubernetesClient": [
+      "informers()"
+    ],
+    "io.fabric8.kubernetes.client.informers.SharedInformerFactory": [
+      "addSharedInformerEventListener(SharedInformerEventListener)",
+      "startAllRegisteredInformers()",
+      "sharedIndexInformerFor(Class<T>, long)"
+    ],
+    "io.fabric8.kubernetes.client.informers.SharedIndexInformer": [
+      "addEventHandler(ResourceEventHandler<? super T>)"
+    ],
+    "java.util.concurrent.ArrayBlockingQueue": [
+      "offer(E, long, TimeUnit)"
+    ],
+    "com.apple.spark.util.CounterMetricContainer": [
+      "increment(String, Tag[])"
+    ],
+    "java.util.concurrent.atomic.AtomicLong": [
+      "incrementAndGet()"
+    ],
+    "io.fabric8.kubernetes.api.model.ObjectMeta": [
+      "getName()"
+    ],
+    "io.fabric8.kubernetes.client.CustomResource": [
+      "getMetadata()"
+    ],
+    "java.lang.String": [
+      "format(String, Object[])"
+    ]
+  },
+  "full_method_info": "/**\n * For the given Spark cluster, start a runningApplicationMonitor, and then register a CRD\n * informer to keep track of all CRD updates. The updates are put into the\n * applicationUpdateEventQueue for processing later.\n *\n * @param sparkCluster Spark cluster\n * @param timer timer to set up runningApplicationMonitor\n */\nprivate void start(AppConfig.SparkCluster sparkCluster, Timer timer) {\n    logger.info(\"Creating informer for spark cluster {}, EKS: {}, namespace: {}\", sparkCluster.getId(), sparkCluster.getEksCluster(), sparkCluster.getSparkApplicationNamespace());\n    KubernetesClient client = KubernetesHelper.getK8sClient(sparkCluster);\n    clients.add(client);\n    SharedInformerFactory sharedInformerFactory = client.informers();\n    informerFactories.add(sharedInformerFactory);\n    SharedIndexInformer<SparkApplication> informer = sharedInformerFactory.sharedIndexInformerFor(SparkApplication.class, RESYNC_MILLIS);\n    RunningApplicationMonitor runningApplicationMonitor = new RunningApplicationMonitor(sparkCluster, timer, meterRegistry);\n    informer.addEventHandler(new ResourceEventHandler<SparkApplication>() {\n\n        @Override\n        public void onAdd(SparkApplication sparkApplicationResource) {\n        }\n\n        @Override\n        public void onUpdate(SparkApplication prevCRDState, SparkApplication newCRDState) {\n            int timeoutMillis = 100;\n            try {\n                boolean added = applicationUpdateEventQueue.offer(new ApplicationUpdateEvent(sparkCluster, prevCRDState, newCRDState, runningApplicationMonitor), timeoutMillis, TimeUnit.MILLISECONDS);\n                if (!added) {\n                    requestCounters.increment(MONITOR_DROPPED_EVENT);\n                    long value = droppedEvents.incrementAndGet();\n                    logger.warn(\"Failed to enqueue application update event due to queue full, application: {},\" + \" total dropped: {}\", prevCRDState.getMetadata().getName(), value);\n                }\n            } catch (Throwable e) {\n                logger.warn(\"Failed to enqueue application update event\", e);\n            }\n        }\n\n        @Override\n        public void onDelete(SparkApplication sparkApplicationResource, boolean deletedFinalStateUnknown) {\n        }\n    });\n    sharedInformerFactory.addSharedInformerEventListener(ex -> logger.warn(String.format(\"Got exception with informer for spark cluster %s\", sparkCluster.getId()), ex));\n    logger.info(\"Starting all registered informers\");\n    sharedInformerFactory.startAllRegisteredInformers();\n}",
+  "method_comment": "\n   * For the given Spark cluster, start a runningApplicationMonitor, and then register a CRD\n   * informer to keep track of all CRD updates. The updates are put into the\n   * applicationUpdateEventQueue for processing later.\n   *\n   * @param sparkCluster Spark cluster\n   * @param timer timer to set up runningApplicationMonitor\n   ",
+  "method_annotation": ""
+}

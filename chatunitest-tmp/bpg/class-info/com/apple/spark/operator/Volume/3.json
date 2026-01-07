@@ -1,0 +1,22 @@
+{
+  "className": "Volume",
+  "methodName": "setHostPath",
+  "brief": "public void setHostPath(HostPathVolumeSource hostPath){}",
+  "methodSignature": "setHostPath(HostPathVolumeSource)",
+  "sourceCode": "public void setHostPath(HostPathVolumeSource hostPath) {\n    this.hostPath = hostPath;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "HostPathVolumeSource"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.operator.HostPathVolumeSource": []
+  },
+  "full_method_info": "public void setHostPath(HostPathVolumeSource hostPath) {\n    this.hostPath = hostPath;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

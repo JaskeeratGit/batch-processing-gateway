@@ -1,0 +1,29 @@
+{
+  "className": "HttpUtils",
+  "methodName": "post",
+  "brief": "public static String post(String url, InputStream stream, String headerName, String headerValue){}",
+  "methodSignature": "post(String, InputStream, String, String)",
+  "sourceCode": "public static String post(String url, InputStream stream, String headerName, String headerValue) {\n    return post(url, stream, headerName, headerValue, -1);\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String",
+    "InputStream",
+    "String",
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [],
+    "java.io.InputStream": [],
+    "com.apple.spark.util.HttpUtils": [
+      "post(String, InputStream, String, String, long)"
+    ]
+  },
+  "full_method_info": "public static String post(String url, InputStream stream, String headerName, String headerValue) {\n    return post(url, stream, headerName, headerValue, -1);\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

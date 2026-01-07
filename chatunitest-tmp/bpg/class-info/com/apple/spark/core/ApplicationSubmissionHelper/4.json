@@ -1,0 +1,40 @@
+{
+  "className": "ApplicationSubmissionHelper",
+  "methodName": "getSparkUIConfiguration",
+  "brief": "public static SparkUIConfiguration getSparkUIConfiguration(\n      String submissionId, AppConfig.SparkCluster sparkCluster){}",
+  "methodSignature": "getSparkUIConfiguration(String, AppConfig.SparkCluster)",
+  "sourceCode": "public static SparkUIConfiguration getSparkUIConfiguration(\n      String submissionId, AppConfig.SparkCluster sparkCluster) {\n    SparkUIConfiguration sparkJobUIConfiguration = null;\n\n    if (sparkCluster.getSparkUIOptions() != null) {\n      sparkJobUIConfiguration = new SparkUIConfiguration(sparkCluster.getSparkUIOptions());\n      //      sparkSpec.setSparkUIOptions(sparkJobUIConfiguration);\n\n      if (sparkJobUIConfiguration.getIngressAnnotations() != null) {\n        Map<String, String> expandedValues = new HashMap<>();\n        for (Map.Entry<String, String> entry :\n            sparkJobUIConfiguration.getIngressAnnotations().entrySet()) {\n          expandedValues.put(\n              entry.getKey(),\n              entry\n                  .getValue()\n                  .replace(Constants.SPARK_APPLICATION_RESOURCE_NAME_VAR, submissionId));\n        }\n        sparkJobUIConfiguration.setIngressAnnotations(expandedValues);\n      }\n    }\n\n    return sparkJobUIConfiguration;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String",
+    "AppConfig.SparkCluster"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "replace(CharSequence, CharSequence)"
+    ],
+    "com.apple.spark.AppConfig.SparkCluster": [
+      "getSparkUIOptions()"
+    ],
+    "com.apple.spark.operator.SparkUIConfiguration": [
+      "getIngressAnnotations()",
+      "setIngressAnnotations(String>)"
+    ],
+    "java.util.Map": [
+      "entrySet()",
+      "put(K, V)"
+    ],
+    "java.util.Map.Entry": [
+      "getValue()",
+      "getKey()"
+    ]
+  },
+  "full_method_info": "public static SparkUIConfiguration getSparkUIConfiguration(String submissionId, AppConfig.SparkCluster sparkCluster) {\n    SparkUIConfiguration sparkJobUIConfiguration = null;\n    if (sparkCluster.getSparkUIOptions() != null) {\n        sparkJobUIConfiguration = new SparkUIConfiguration(sparkCluster.getSparkUIOptions());\n        // sparkSpec.setSparkUIOptions(sparkJobUIConfiguration);\n        if (sparkJobUIConfiguration.getIngressAnnotations() != null) {\n            Map<String, String> expandedValues = new HashMap<>();\n            for (Map.Entry<String, String> entry : sparkJobUIConfiguration.getIngressAnnotations().entrySet()) {\n                expandedValues.put(entry.getKey(), entry.getValue().replace(Constants.SPARK_APPLICATION_RESOURCE_NAME_VAR, submissionId));\n            }\n            sparkJobUIConfiguration.setIngressAnnotations(expandedValues);\n        }\n    }\n    return sparkJobUIConfiguration;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

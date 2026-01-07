@@ -1,0 +1,18 @@
+{
+  "className": "SparkPodSpec",
+  "methodName": "getTerminationGracePeriodSeconds",
+  "brief": "public Long getTerminationGracePeriodSeconds(){}",
+  "methodSignature": "getTerminationGracePeriodSeconds()",
+  "sourceCode": "public Long getTerminationGracePeriodSeconds() {\n    return terminationGracePeriodSeconds;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public Long getTerminationGracePeriodSeconds() {\n    return terminationGracePeriodSeconds;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

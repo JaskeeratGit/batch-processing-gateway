@@ -1,0 +1,33 @@
+{
+  "className": "BPGApplication",
+  "methodName": "sendPeriodicMetrics",
+  "brief": "private void sendPeriodicMetrics(AppConfig configuration, MeterRegistry meterRegistry){}",
+  "methodSignature": "sendPeriodicMetrics(AppConfig, MeterRegistry)",
+  "sourceCode": "private void sendPeriodicMetrics(AppConfig configuration, MeterRegistry meterRegistry) {\n    CounterMetricContainer periodicMetrics = new CounterMetricContainer(meterRegistry);\n    long metricInterval = 30000;\n    new Timer(true)\n        .schedule(\n            new TimerTask() {\n              @Override\n              public void run() {\n                try {\n                  sendQueueInfoMetrics(configuration, periodicMetrics);\n                } catch (Throwable ex) {\n                  logger.warn(\"Failed to send queue info metrics\", ex);\n                }\n              }\n            },\n            metricInterval,\n            metricInterval);\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "AppConfig",
+    "MeterRegistry"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.AppConfig": [],
+    "io.micrometer.core.instrument.MeterRegistry": [],
+    "java.util.Timer": [
+      "schedule(TimerTask, long, long)"
+    ],
+    "com.apple.spark.BPGApplication": [
+      "sendQueueInfoMetrics(AppConfig, CounterMetricContainer)"
+    ],
+    "org.slf4j.Logger": [
+      "warn(String, Throwable)"
+    ]
+  },
+  "full_method_info": "private void sendPeriodicMetrics(AppConfig configuration, MeterRegistry meterRegistry) {\n    CounterMetricContainer periodicMetrics = new CounterMetricContainer(meterRegistry);\n    long metricInterval = 30000;\n    new Timer(true).schedule(new TimerTask() {\n\n        @Override\n        public void run() {\n            try {\n                sendQueueInfoMetrics(configuration, periodicMetrics);\n            } catch (Throwable ex) {\n                logger.warn(\"Failed to send queue info metrics\", ex);\n            }\n        }\n    }, metricInterval, metricInterval);\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

@@ -1,0 +1,47 @@
+{
+  "attempt0": {
+    "testClassName": "UserNameBasicAuthenticator_authenticate_0_0_Test",
+    "fullName": "com.apple.spark.security.UserNameBasicAuthenticator_authenticate_0_0_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/security/UserNameBasicAuthenticator_authenticate_0_0_Test.java",
+    "className": "UserNameBasicAuthenticator",
+    "packageName": "com.apple.spark.security",
+    "methodName": "authenticate",
+    "methodSig": "authenticate(BasicCredentials)"
+  },
+  "attempt1": {
+    "testClassName": "UserNameBasicAuthenticator_authenticate_0_1_Test",
+    "fullName": "com.apple.spark.security.UserNameBasicAuthenticator_authenticate_0_1_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/security/UserNameBasicAuthenticator_authenticate_0_0_Test.java",
+    "className": "UserNameBasicAuthenticator",
+    "packageName": "com.apple.spark.security",
+    "methodName": "authenticate",
+    "methodSig": "authenticate(BasicCredentials)"
+  },
+  "attempt2": {
+    "testClassName": "UserNameBasicAuthenticator_authenticate_0_2_Test",
+    "fullName": "com.apple.spark.security.UserNameBasicAuthenticator_authenticate_0_2_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/security/UserNameBasicAuthenticator_authenticate_0_0_Test.java",
+    "className": "UserNameBasicAuthenticator",
+    "packageName": "com.apple.spark.security",
+    "methodName": "authenticate",
+    "methodSig": "authenticate(BasicCredentials)"
+  },
+  "attempt3": {
+    "testClassName": "UserNameBasicAuthenticator_authenticate_0_3_Test",
+    "fullName": "com.apple.spark.security.UserNameBasicAuthenticator_authenticate_0_3_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/security/UserNameBasicAuthenticator_authenticate_0_0_Test.java",
+    "className": "UserNameBasicAuthenticator",
+    "packageName": "com.apple.spark.security",
+    "methodName": "authenticate",
+    "methodSig": "authenticate(BasicCredentials)"
+  },
+  "attempt4": {
+    "testClassName": "UserNameBasicAuthenticator_authenticate_0_4_Test",
+    "fullName": "com.apple.spark.security.UserNameBasicAuthenticator_authenticate_0_4_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/security/UserNameBasicAuthenticator_authenticate_0_0_Test.java",
+    "className": "UserNameBasicAuthenticator",
+    "packageName": "com.apple.spark.security",
+    "methodName": "authenticate",
+    "methodSig": "authenticate(BasicCredentials)"
+  }
+}

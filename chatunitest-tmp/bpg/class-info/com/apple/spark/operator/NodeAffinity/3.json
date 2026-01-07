@@ -1,0 +1,22 @@
+{
+  "className": "NodeAffinity",
+  "methodName": "setRequiredDuringSchedulingIgnoredDuringExecution",
+  "brief": "public void setRequiredDuringSchedulingIgnoredDuringExecution(\n      RequiredDuringSchedulingIgnoredDuringExecutionTerm\n          requiredDuringSchedulingIgnoredDuringExecution){}",
+  "methodSignature": "setRequiredDuringSchedulingIgnoredDuringExecution(RequiredDuringSchedulingIgnoredDuringExecutionTerm)",
+  "sourceCode": "public void setRequiredDuringSchedulingIgnoredDuringExecution(\n      RequiredDuringSchedulingIgnoredDuringExecutionTerm\n          requiredDuringSchedulingIgnoredDuringExecution) {\n    this.requiredDuringSchedulingIgnoredDuringExecution =\n        requiredDuringSchedulingIgnoredDuringExecution;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "RequiredDuringSchedulingIgnoredDuringExecutionTerm"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.operator.RequiredDuringSchedulingIgnoredDuringExecutionTerm": []
+  },
+  "full_method_info": "public void setRequiredDuringSchedulingIgnoredDuringExecution(RequiredDuringSchedulingIgnoredDuringExecutionTerm requiredDuringSchedulingIgnoredDuringExecution) {\n    this.requiredDuringSchedulingIgnoredDuringExecution = requiredDuringSchedulingIgnoredDuringExecution;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

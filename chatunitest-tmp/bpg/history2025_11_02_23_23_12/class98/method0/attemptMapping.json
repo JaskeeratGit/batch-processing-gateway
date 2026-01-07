@@ -1,0 +1,47 @@
+{
+  "attempt0": {
+    "testClassName": "KubernetesHelper_tryGetServiceAccountNamespace_0_0_Test",
+    "fullName": "com.apple.spark.core.KubernetesHelper_tryGetServiceAccountNamespace_0_0_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/KubernetesHelper_tryGetServiceAccountNamespace_0_0_Test.java",
+    "className": "KubernetesHelper",
+    "packageName": "com.apple.spark.core",
+    "methodName": "tryGetServiceAccountNamespace",
+    "methodSig": "tryGetServiceAccountNamespace()"
+  },
+  "attempt1": {
+    "testClassName": "KubernetesHelper_tryGetServiceAccountNamespace_0_1_Test",
+    "fullName": "com.apple.spark.core.KubernetesHelper_tryGetServiceAccountNamespace_0_1_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/KubernetesHelper_tryGetServiceAccountNamespace_0_0_Test.java",
+    "className": "KubernetesHelper",
+    "packageName": "com.apple.spark.core",
+    "methodName": "tryGetServiceAccountNamespace",
+    "methodSig": "tryGetServiceAccountNamespace()"
+  },
+  "attempt2": {
+    "testClassName": "KubernetesHelper_tryGetServiceAccountNamespace_0_2_Test",
+    "fullName": "com.apple.spark.core.KubernetesHelper_tryGetServiceAccountNamespace_0_2_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/KubernetesHelper_tryGetServiceAccountNamespace_0_0_Test.java",
+    "className": "KubernetesHelper",
+    "packageName": "com.apple.spark.core",
+    "methodName": "tryGetServiceAccountNamespace",
+    "methodSig": "tryGetServiceAccountNamespace()"
+  },
+  "attempt3": {
+    "testClassName": "KubernetesHelper_tryGetServiceAccountNamespace_0_3_Test",
+    "fullName": "com.apple.spark.core.KubernetesHelper_tryGetServiceAccountNamespace_0_3_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/KubernetesHelper_tryGetServiceAccountNamespace_0_0_Test.java",
+    "className": "KubernetesHelper",
+    "packageName": "com.apple.spark.core",
+    "methodName": "tryGetServiceAccountNamespace",
+    "methodSig": "tryGetServiceAccountNamespace()"
+  },
+  "attempt4": {
+    "testClassName": "KubernetesHelper_tryGetServiceAccountNamespace_0_4_Test",
+    "fullName": "com.apple.spark.core.KubernetesHelper_tryGetServiceAccountNamespace_0_4_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/KubernetesHelper_tryGetServiceAccountNamespace_0_0_Test.java",
+    "className": "KubernetesHelper",
+    "packageName": "com.apple.spark.core",
+    "methodName": "tryGetServiceAccountNamespace",
+    "methodSig": "tryGetServiceAccountNamespace()"
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "className": "CloudStorageRest",
+  "methodName": "uploadStreamGcs",
+  "brief": "private UploadS3Response uploadStreamGcs(InputStream inputStream, String bucket, String key){}",
+  "methodSignature": "uploadStreamGcs(InputStream, String, String)",
+  "sourceCode": "private UploadS3Response uploadStreamGcs(InputStream inputStream, String bucket, String key) {\n    Storage storage = StorageOptions.getDefaultInstance().getService();\n    BlobId blobId = BlobId.of(bucket, key);\n    BlobInfo blobInfo =\n        BlobInfo.newBuilder(blobId).setContentType(\"application/octet-stream\").build();\n    logger.info(\"Uploading to GCS: gs://{}/{}\", bucket, key);\n    try {\n      storage.createFrom(blobInfo, inputStream);\n      logger.info(\"Uploaded to GCS: gs://{}/{}\", bucket, key);\n    } catch (IOException e) {\n      throw new WebApplicationException(\n          \"Failed to upload to GCS: \" + ExceptionUtils.getExceptionNameAndMessage(e), e);\n    }\n    UploadS3Response response = new UploadS3Response();\n    response.setUrl(String.format(\"gs://%s/%s\", bucket, key));\n    return response;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "InputStream",
+    "String",
+    "String"
+  ],
+  "dependentMethods": {
+    "java.io.InputStream": [],
+    "java.lang.String": [
+      "format(String, Object[])"
+    ],
+    "com.google.cloud.ServiceOptions": [
+      "getService()"
+    ],
+    "com.google.cloud.storage.StorageOptions": [
+      "getDefaultInstance()"
+    ],
+    "com.google.cloud.storage.BlobId": [
+      "of(String, String)"
+    ],
+    "com.google.cloud.storage.BlobInfo.Builder": [
+      "build()",
+      "setContentType(String)"
+    ],
+    "com.google.cloud.storage.BlobInfo": [
+      "newBuilder(BlobId)"
+    ],
+    "org.slf4j.Logger": [
+      "info(String, Object, Object)"
+    ],
+    "com.google.cloud.storage.Storage": [
+      "createFrom(BlobInfo, InputStream, BlobWriteOption[])"
+    ],
+    "com.apple.spark.util.ExceptionUtils": [
+      "getExceptionNameAndMessage(Throwable)"
+    ],
+    "com.apple.spark.api.UploadS3Response": [
+      "setUrl(String)"
+    ]
+  },
+  "full_method_info": "private UploadS3Response uploadStreamGcs(InputStream inputStream, String bucket, String key) {\n    Storage storage = StorageOptions.getDefaultInstance().getService();\n    BlobId blobId = BlobId.of(bucket, key);\n    BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(\"application/octet-stream\").build();\n    logger.info(\"Uploading to GCS: gs://{}/{}\", bucket, key);\n    try {\n        storage.createFrom(blobInfo, inputStream);\n        logger.info(\"Uploaded to GCS: gs://{}/{}\", bucket, key);\n    } catch (IOException e) {\n        throw new WebApplicationException(\"Failed to upload to GCS: \" + ExceptionUtils.getExceptionNameAndMessage(e), e);\n    }\n    UploadS3Response response = new UploadS3Response();\n    response.setUrl(String.format(\"gs://%s/%s\", bucket, key));\n    return response;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

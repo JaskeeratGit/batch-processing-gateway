@@ -1,0 +1,31 @@
+{
+  "className": "ConfigUtil",
+  "methodName": "merge",
+  "brief": "public static List<SparkCluster> merge(List<SparkCluster> c1, List<SparkCluster> c2){}",
+  "methodSignature": "merge(List, List)",
+  "sourceCode": "public static List<SparkCluster> merge(List<SparkCluster> c1, List<SparkCluster> c2) {\n    Set<SparkCluster> combinedSet = new TreeSet<>(Comparator.comparing(SparkCluster::getId));\n\n    if (c1 != null) {\n      combinedSet.addAll(c1);\n    }\n    combinedSet.addAll(c2);\n\n    List<SparkCluster> combinedSparkClusters = new ArrayList<>(combinedSet);\n\n    if (combinedSparkClusters.isEmpty()) {\n      throw new RuntimeException(\n          \"Could not get Spark Clusters configuration from DB and k8s configmap. Exit.\");\n    }\n\n    return combinedSparkClusters;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "List<SparkCluster>",
+    "List<SparkCluster>"
+  ],
+  "dependentMethods": {
+    "java.util.Comparator": [
+      "comparing(Function<? super T, ? extends U>)"
+    ],
+    "java.util.Set": [
+      "addAll(Collection<? extends E>)"
+    ],
+    "java.util.List": [
+      "isEmpty()"
+    ]
+  },
+  "full_method_info": "public static List<SparkCluster> merge(List<SparkCluster> c1, List<SparkCluster> c2) {\n    Set<SparkCluster> combinedSet = new TreeSet<>(Comparator.comparing(SparkCluster::getId));\n    if (c1 != null) {\n        combinedSet.addAll(c1);\n    }\n    combinedSet.addAll(c2);\n    List<SparkCluster> combinedSparkClusters = new ArrayList<>(combinedSet);\n    if (combinedSparkClusters.isEmpty()) {\n        throw new RuntimeException(\"Could not get Spark Clusters configuration from DB and k8s configmap. Exit.\");\n    }\n    return combinedSparkClusters;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

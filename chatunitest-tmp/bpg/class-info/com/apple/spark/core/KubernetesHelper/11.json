@@ -1,0 +1,24 @@
+{
+  "className": "KubernetesHelper",
+  "methodName": "isLabelValueChar",
+  "brief": "private static boolean isLabelValueChar(char ch){}",
+  "methodSignature": "isLabelValueChar(char)",
+  "sourceCode": "private static boolean isLabelValueChar(char ch) {\n    return isLabelValueAlphanumericChar(ch) || ch == '-' || ch == '_' || ch == '.';\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "char"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.core.KubernetesHelper": [
+      "isLabelValueAlphanumericChar(char)"
+    ]
+  },
+  "full_method_info": "private static boolean isLabelValueChar(char ch) {\n    return isLabelValueAlphanumericChar(ch) || ch == '-' || ch == '_' || ch == '.';\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

@@ -1,0 +1,18 @@
+{
+  "className": "PrometheusSpec",
+  "methodName": "getConfigFile",
+  "brief": "public String getConfigFile(){}",
+  "methodSignature": "getConfigFile()",
+  "sourceCode": "public String getConfigFile() {\n    return configFile;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public String getConfigFile() {\n    return configFile;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

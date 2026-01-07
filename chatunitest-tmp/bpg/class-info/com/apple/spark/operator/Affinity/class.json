@@ -1,0 +1,58 @@
+{
+  "fullClassName": "com.apple.spark.operator.Affinity",
+  "className": "Affinity",
+  "index": 15,
+  "modifier": "[public ]",
+  "extend": "[]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.operator",
+  "packageDeclaration": "package com.apple.spark.operator;",
+  "classSignature": "@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class Affinity",
+  "hasConstructor": true,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import com.fasterxml.jackson.annotation.JsonIgnoreProperties;",
+    "import com.fasterxml.jackson.annotation.JsonInclude;"
+  ],
+  "fields": [
+    "private NodeAffinity nodeAffinity;"
+  ],
+  "superClasses": [],
+  "implementedTypes": [],
+  "methodSigs": {
+    "getNodeAffinity()": "0",
+    "setNodeAffinity(NodeAffinity)": "1",
+    "Affinity()": "2",
+    "Affinity(NodeAffinity)": "3"
+  },
+  "methodsBrief": [
+    "public NodeAffinity getNodeAffinity(){}",
+    "public void setNodeAffinity(NodeAffinity nodeAffinity){}",
+    "public Affinity(){}",
+    "public Affinity(NodeAffinity nodeAffinity){}"
+  ],
+  "constructorSigs": [
+    "Affinity()",
+    "Affinity(NodeAffinity)"
+  ],
+  "constructorBrief": [
+    "public Affinity(){}",
+    "public Affinity(NodeAffinity nodeAffinity){}"
+  ],
+  "getterSetterSigs": [
+    "getNodeAffinity()",
+    "setNodeAffinity(NodeAffinity)"
+  ],
+  "getterSetterBrief": [
+    "public NodeAffinity getNodeAffinity(){}",
+    "public void setNodeAffinity(NodeAffinity nodeAffinity){}"
+  ],
+  "constructorDeps": {
+    "com.apple.spark.operator.NodeAffinity": []
+  },
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.operator;\n\nimport com.fasterxml.jackson.annotation.JsonIgnoreProperties;\nimport com.fasterxml.jackson.annotation.JsonInclude;\n\n@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class Affinity {\n\n    private NodeAffinity nodeAffinity;\n\n    public Affinity() {\n    }\n\n    public Affinity(NodeAffinity nodeAffinity) {\n        this.nodeAffinity = nodeAffinity;\n    }\n\n    public NodeAffinity getNodeAffinity() {\n        return nodeAffinity;\n    }\n\n    public void setNodeAffinity(NodeAffinity nodeAffinity) {\n        this.nodeAffinity = nodeAffinity;\n    }\n}\n",
+  "classDeclarationCode": "@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class Affinity {\n\n    private NodeAffinity nodeAffinity;\n\n    public Affinity() {\n    }\n\n    public Affinity(NodeAffinity nodeAffinity) {\n        this.nodeAffinity = nodeAffinity;\n    }\n\n    public NodeAffinity getNodeAffinity() {\n        return nodeAffinity;\n    }\n\n    public void setNodeAffinity(NodeAffinity nodeAffinity) {\n        this.nodeAffinity = nodeAffinity;\n    }\n}",
+  "subClasses": []
+}

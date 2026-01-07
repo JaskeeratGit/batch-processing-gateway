@@ -1,0 +1,46 @@
+{
+  "className": "SparkPodNodeAffinityHelper",
+  "methodName": "getDriverNodeLabelValuesForQueue",
+  "brief": "private static List<String> getDriverNodeLabelValuesForQueue(AppConfig appConfig, String queue){}",
+  "methodSignature": "getDriverNodeLabelValuesForQueue(AppConfig, String)",
+  "sourceCode": "private static List<String> getDriverNodeLabelValuesForQueue(AppConfig appConfig, String queue) {\n    Optional<AppConfig.QueueConfig> queueConfigOptional =\n        appConfig.getQueues().stream().filter(t -> t.getName().equals(queue)).findFirst();\n    List<String> res = new ArrayList<>();\n\n    if (queueConfigOptional.isPresent()) {\n      AppConfig.QueueConfig queueConfig = queueConfigOptional.get();\n      if (queueConfig != null && queueConfig.getDriverNodeLabelValues() != null) {\n        res.addAll(queueConfig.getDriverNodeLabelValues());\n      }\n    }\n    return res;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "AppConfig",
+    "String"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.AppConfig": [
+      "getQueues()"
+    ],
+    "java.lang.String": [
+      "equals(Object)"
+    ],
+    "java.util.stream.Stream": [
+      "findFirst()",
+      "filter(Predicate<? super T>)"
+    ],
+    "java.util.Collection": [
+      "stream()"
+    ],
+    "com.apple.spark.AppConfig.QueueConfig": [
+      "getName()",
+      "getDriverNodeLabelValues()"
+    ],
+    "java.util.Optional": [
+      "isPresent()",
+      "get()"
+    ],
+    "java.util.List": [
+      "addAll(Collection<? extends E>)"
+    ]
+  },
+  "full_method_info": "private static List<String> getDriverNodeLabelValuesForQueue(AppConfig appConfig, String queue) {\n    Optional<AppConfig.QueueConfig> queueConfigOptional = appConfig.getQueues().stream().filter(t -> t.getName().equals(queue)).findFirst();\n    List<String> res = new ArrayList<>();\n    if (queueConfigOptional.isPresent()) {\n        AppConfig.QueueConfig queueConfig = queueConfigOptional.get();\n        if (queueConfig != null && queueConfig.getDriverNodeLabelValues() != null) {\n            res.addAll(queueConfig.getDriverNodeLabelValues());\n        }\n    }\n    return res;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

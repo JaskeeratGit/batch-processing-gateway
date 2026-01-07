@@ -1,0 +1,85 @@
+{
+  "fullClassName": "com.apple.spark.operator.VolumeMount",
+  "className": "VolumeMount",
+  "index": 32,
+  "modifier": "[public ]",
+  "extend": "[]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.operator",
+  "packageDeclaration": "package com.apple.spark.operator;",
+  "classSignature": "@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class VolumeMount",
+  "hasConstructor": true,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import com.fasterxml.jackson.annotation.JsonIgnoreProperties;",
+    "import com.fasterxml.jackson.annotation.JsonInclude;"
+  ],
+  "fields": [
+    "private String name;",
+    "private Boolean readOnly;",
+    "private String mountPath;",
+    "private String subPath;"
+  ],
+  "superClasses": [],
+  "implementedTypes": [],
+  "methodSigs": {
+    "getName()": "0",
+    "setName(String)": "1",
+    "getReadOnly()": "2",
+    "setReadOnly(Boolean)": "3",
+    "getMountPath()": "4",
+    "setMountPath(String)": "5",
+    "getSubPath()": "6",
+    "setSubPath(String)": "7",
+    "VolumeMount()": "8",
+    "VolumeMount(String, String)": "9"
+  },
+  "methodsBrief": [
+    "public String getName(){}",
+    "public void setName(String name){}",
+    "public Boolean getReadOnly(){}",
+    "public void setReadOnly(Boolean readOnly){}",
+    "public String getMountPath(){}",
+    "public void setMountPath(String mountPath){}",
+    "public String getSubPath(){}",
+    "public void setSubPath(String subPath){}",
+    "public VolumeMount(){}",
+    "public VolumeMount(String name, String mountPath){}"
+  ],
+  "constructorSigs": [
+    "VolumeMount()",
+    "VolumeMount(String, String)"
+  ],
+  "constructorBrief": [
+    "public VolumeMount(){}",
+    "public VolumeMount(String name, String mountPath){}"
+  ],
+  "getterSetterSigs": [
+    "getName()",
+    "setName(String)",
+    "getReadOnly()",
+    "setReadOnly(Boolean)",
+    "getMountPath()",
+    "setMountPath(String)",
+    "getSubPath()",
+    "setSubPath(String)"
+  ],
+  "getterSetterBrief": [
+    "public String getName(){}",
+    "public void setName(String name){}",
+    "public Boolean getReadOnly(){}",
+    "public void setReadOnly(Boolean readOnly){}",
+    "public String getMountPath(){}",
+    "public void setMountPath(String mountPath){}",
+    "public String getSubPath(){}",
+    "public void setSubPath(String subPath){}"
+  ],
+  "constructorDeps": {
+    "java.lang.String": []
+  },
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.operator;\n\nimport com.fasterxml.jackson.annotation.JsonIgnoreProperties;\nimport com.fasterxml.jackson.annotation.JsonInclude;\n\n@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class VolumeMount {\n\n    private String name;\n\n    private Boolean readOnly;\n\n    private String mountPath;\n\n    private String subPath;\n\n    public VolumeMount() {\n    }\n\n    public VolumeMount(String name, String mountPath) {\n        this.name = name;\n        this.mountPath = mountPath;\n    }\n\n    public String getName() {\n        return name;\n    }\n\n    public void setName(String name) {\n        this.name = name;\n    }\n\n    public Boolean getReadOnly() {\n        return readOnly;\n    }\n\n    public void setReadOnly(Boolean readOnly) {\n        this.readOnly = readOnly;\n    }\n\n    public String getMountPath() {\n        return mountPath;\n    }\n\n    public void setMountPath(String mountPath) {\n        this.mountPath = mountPath;\n    }\n\n    public String getSubPath() {\n        return subPath;\n    }\n\n    public void setSubPath(String subPath) {\n        this.subPath = subPath;\n    }\n}\n",
+  "classDeclarationCode": "@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class VolumeMount {\n\n    private String name;\n\n    private Boolean readOnly;\n\n    private String mountPath;\n\n    private String subPath;\n\n    public VolumeMount() {\n    }\n\n    public VolumeMount(String name, String mountPath) {\n        this.name = name;\n        this.mountPath = mountPath;\n    }\n\n    public String getName() {\n        return name;\n    }\n\n    public void setName(String name) {\n        this.name = name;\n    }\n\n    public Boolean getReadOnly() {\n        return readOnly;\n    }\n\n    public void setReadOnly(Boolean readOnly) {\n        this.readOnly = readOnly;\n    }\n\n    public String getMountPath() {\n        return mountPath;\n    }\n\n    public void setMountPath(String mountPath) {\n        this.mountPath = mountPath;\n    }\n\n    public String getSubPath() {\n        return subPath;\n    }\n\n    public void setSubPath(String subPath) {\n        this.subPath = subPath;\n    }\n}",
+  "subClasses": []
+}

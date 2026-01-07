@@ -1,0 +1,35 @@
+{
+  "className": "SparkSpecHelper",
+  "methodName": "copyEnv",
+  "brief": "public static void copyEnv(List<EnvVar> source, List<EnvVar> destination){}",
+  "methodSignature": "copyEnv(List, List)",
+  "sourceCode": "public static void copyEnv(List<EnvVar> source, List<EnvVar> destination) {\n    Map<String, Integer> destinationEnvIndex = new HashMap<>();\n    for (int i = 0; i < destination.size(); i++) {\n      destinationEnvIndex.put(destination.get(i).getName(), i);\n    }\n    for (EnvVar sourceEnvEntry : source) {\n      Integer indexInDestinationEnv = destinationEnvIndex.get(sourceEnvEntry.getName());\n      if (indexInDestinationEnv == null) {\n        destination.add(sourceEnvEntry);\n      } else {\n        destination.set(indexInDestinationEnv, sourceEnvEntry);\n      }\n    }\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "List<EnvVar>",
+    "List<EnvVar>"
+  ],
+  "dependentMethods": {
+    "java.util.List": [
+      "set(int, E)",
+      "get(int)",
+      "add(E)",
+      "size()"
+    ],
+    "java.util.Map": [
+      "get(Object)",
+      "put(K, V)"
+    ],
+    "com.apple.spark.operator.EnvVar": [
+      "getName()"
+    ]
+  },
+  "full_method_info": "// Copy environment variables from source to destination, with proper overwriting\npublic static void copyEnv(List<EnvVar> source, List<EnvVar> destination) {\n    Map<String, Integer> destinationEnvIndex = new HashMap<>();\n    for (int i = 0; i < destination.size(); i++) {\n        destinationEnvIndex.put(destination.get(i).getName(), i);\n    }\n    for (EnvVar sourceEnvEntry : source) {\n        Integer indexInDestinationEnv = destinationEnvIndex.get(sourceEnvEntry.getName());\n        if (indexInDestinationEnv == null) {\n            destination.add(sourceEnvEntry);\n        } else {\n            destination.set(indexInDestinationEnv, sourceEnvEntry);\n        }\n    }\n}",
+  "method_comment": " Copy environment variables from source to destination, with proper overwriting",
+  "method_annotation": ""
+}

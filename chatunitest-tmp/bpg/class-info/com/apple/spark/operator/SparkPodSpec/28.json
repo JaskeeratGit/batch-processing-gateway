@@ -1,0 +1,22 @@
+{
+  "className": "SparkPodSpec",
+  "methodName": "setAffinity",
+  "brief": "public void setAffinity(Affinity affinity){}",
+  "methodSignature": "setAffinity(Affinity)",
+  "sourceCode": "public void setAffinity(Affinity affinity) {\n    this.affinity = affinity;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "Affinity"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.operator.Affinity": []
+  },
+  "full_method_info": "public void setAffinity(Affinity affinity) {\n    this.affinity = affinity;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

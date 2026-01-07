@@ -1,0 +1,73 @@
+{
+  "fullClassName": "com.apple.spark.operator.PrometheusSpec",
+  "className": "PrometheusSpec",
+  "index": 27,
+  "modifier": "[public ]",
+  "extend": "[]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.operator",
+  "packageDeclaration": "package com.apple.spark.operator;",
+  "classSignature": "@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class PrometheusSpec",
+  "hasConstructor": false,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import com.fasterxml.jackson.annotation.JsonIgnoreProperties;",
+    "import com.fasterxml.jackson.annotation.JsonInclude;"
+  ],
+  "fields": [
+    "private String jmxExporterJar;",
+    "private Integer port;",
+    "private String configFile;",
+    "private String configuration;"
+  ],
+  "superClasses": [],
+  "implementedTypes": [],
+  "methodSigs": {
+    "getJmxExporterJar()": "0",
+    "setJmxExporterJar(String)": "1",
+    "getPort()": "2",
+    "setPort(Integer)": "3",
+    "getConfigFile()": "4",
+    "setConfigFile(String)": "5",
+    "getConfiguration()": "6",
+    "setConfiguration(String)": "7"
+  },
+  "methodsBrief": [
+    "public String getJmxExporterJar(){}",
+    "public void setJmxExporterJar(String jmxExporterJar){}",
+    "public Integer getPort(){}",
+    "public void setPort(Integer port){}",
+    "public String getConfigFile(){}",
+    "public void setConfigFile(String configFile){}",
+    "public String getConfiguration(){}",
+    "public void setConfiguration(String configuration){}"
+  ],
+  "constructorSigs": [],
+  "constructorBrief": [],
+  "getterSetterSigs": [
+    "getJmxExporterJar()",
+    "setJmxExporterJar(String)",
+    "getPort()",
+    "setPort(Integer)",
+    "getConfigFile()",
+    "setConfigFile(String)",
+    "getConfiguration()",
+    "setConfiguration(String)"
+  ],
+  "getterSetterBrief": [
+    "public String getJmxExporterJar(){}",
+    "public void setJmxExporterJar(String jmxExporterJar){}",
+    "public Integer getPort(){}",
+    "public void setPort(Integer port){}",
+    "public String getConfigFile(){}",
+    "public void setConfigFile(String configFile){}",
+    "public String getConfiguration(){}",
+    "public void setConfiguration(String configuration){}"
+  ],
+  "constructorDeps": {},
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.operator;\n\nimport com.fasterxml.jackson.annotation.JsonIgnoreProperties;\nimport com.fasterxml.jackson.annotation.JsonInclude;\n\n@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class PrometheusSpec {\n\n    private String jmxExporterJar;\n\n    private Integer port;\n\n    private String configFile;\n\n    private String configuration;\n\n    public String getJmxExporterJar() {\n        return jmxExporterJar;\n    }\n\n    public void setJmxExporterJar(String jmxExporterJar) {\n        this.jmxExporterJar = jmxExporterJar;\n    }\n\n    public Integer getPort() {\n        return port;\n    }\n\n    public void setPort(Integer port) {\n        this.port = port;\n    }\n\n    public String getConfigFile() {\n        return configFile;\n    }\n\n    public void setConfigFile(String configFile) {\n        this.configFile = configFile;\n    }\n\n    public String getConfiguration() {\n        return configuration;\n    }\n\n    public void setConfiguration(String configuration) {\n        this.configuration = configuration;\n    }\n}\n",
+  "classDeclarationCode": "@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class PrometheusSpec {\n\n    private String jmxExporterJar;\n\n    private Integer port;\n\n    private String configFile;\n\n    private String configuration;\n\n    public String getJmxExporterJar() {\n        return jmxExporterJar;\n    }\n\n    public void setJmxExporterJar(String jmxExporterJar) {\n        this.jmxExporterJar = jmxExporterJar;\n    }\n\n    public Integer getPort() {\n        return port;\n    }\n\n    public void setPort(Integer port) {\n        this.port = port;\n    }\n\n    public String getConfigFile() {\n        return configFile;\n    }\n\n    public void setConfigFile(String configFile) {\n        this.configFile = configFile;\n    }\n\n    public String getConfiguration() {\n        return configuration;\n    }\n\n    public void setConfiguration(String configuration) {\n        this.configuration = configuration;\n    }\n}",
+  "subClasses": []
+}

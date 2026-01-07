@@ -1,0 +1,30 @@
+{
+  "className": "ApplicationGetLogRest",
+  "methodName": "getSubmissionIdFromAppIdFromDB",
+  "brief": "private String getSubmissionIdFromAppIdFromDB(String appId){}",
+  "methodSignature": "getSubmissionIdFromAppIdFromDB(String)",
+  "sourceCode": "private String getSubmissionIdFromAppIdFromDB(String appId) {\n    String submission_id = \"\";\n    try {\n      submission_id = logDao.getSubmissionIdFromAppId(appId);\n    } catch (Exception e) {\n      logger.warn(\n          String.format(\"Could not get submission_id for appId: %s from database\", appId), e);\n    }\n    return submission_id;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "format(String, Object[])"
+    ],
+    "com.apple.spark.core.LogDao": [
+      "getSubmissionIdFromAppId(String)"
+    ],
+    "org.slf4j.Logger": [
+      "warn(String, Throwable)"
+    ]
+  },
+  "full_method_info": "private String getSubmissionIdFromAppIdFromDB(String appId) {\n    String submission_id = \"\";\n    try {\n        submission_id = logDao.getSubmissionIdFromAppId(appId);\n    } catch (Exception e) {\n        logger.warn(String.format(\"Could not get submission_id for appId: %s from database\", appId), e);\n    }\n    return submission_id;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

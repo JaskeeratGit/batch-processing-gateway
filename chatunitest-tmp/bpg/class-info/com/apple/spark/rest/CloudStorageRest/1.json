@@ -1,0 +1,108 @@
+{
+  "className": "CloudStorageRest",
+  "methodName": "uploadStreamS3",
+  "brief": "private UploadS3Response uploadStreamS3(\n      InputStream inputStream, Long contentLength, String bucket, String key){}",
+  "methodSignature": "uploadStreamS3(InputStream, Long, String, String)",
+  "sourceCode": "private UploadS3Response uploadStreamS3(\n      InputStream inputStream, Long contentLength, String bucket, String key) {\n    // Use default credential provider chain for imdsv2-rbacv2\n    DefaultAWSCredentialsProviderChain awsDefaultCredentialChain =\n        new DefaultAWSCredentialsProviderChain();\n\n    ClientConfiguration clientConfiguration = new ClientConfiguration();\n    clientConfiguration.setConnectionTimeout(S3_PUT_TIMEOUT_MILLISECS);\n    clientConfiguration.setRequestTimeout(S3_PUT_TIMEOUT_MILLISECS);\n    clientConfiguration.setSocketTimeout(S3_PUT_TIMEOUT_MILLISECS);\n    clientConfiguration.setClientExecutionTimeout(S3_PUT_TIMEOUT_MILLISECS);\n\n    AmazonS3ClientBuilder s3ClientBuilder =\n        AmazonS3ClientBuilder.standard()\n            .withClientConfiguration(clientConfiguration)\n            .withCredentials(awsDefaultCredentialChain);\n\n    if (s3endpoint.isPresent()) {\n      s3ClientBuilder.withEndpointConfiguration(\n          new AwsClientBuilder.EndpointConfiguration(s3endpoint.get(), CLIENT_REGION.getName()));\n      s3ClientBuilder.enablePathStyleAccess();\n    } else {\n      s3ClientBuilder.withRegion(CLIENT_REGION);\n    }\n\n    AmazonS3 s3Client = s3ClientBuilder.build();\n\n    // Sets the size threshold in bytes, for when to use multi-part.\n    final long multipartUploadThreshold = 10 * 1024 * 1024; // 10MB\n\n    TransferManager transferManager =\n        TransferManagerBuilder.standard()\n            .withS3Client(s3Client)\n            .withMultipartCopyThreshold(multipartUploadThreshold)\n            .withMultipartUploadThreshold(multipartUploadThreshold)\n            .build();\n\n    ObjectMetadata metadata = new ObjectMetadata();\n    metadata.setContentType(\"application/octet-stream\");\n    metadata.setContentLength(contentLength);\n\n    PutObjectRequest request = new PutObjectRequest(bucket, key, inputStream, metadata);\n\n    AtomicLong totalTransferredBytes = new AtomicLong(0);\n\n    request.setGeneralProgressListener(\n        new ProgressListener() {\n          private long lastLogTime = 0;\n\n          @Override\n          public void progressChanged(ProgressEvent progressEvent) {\n            long count = progressEvent.getBytesTransferred();\n            long total = totalTransferredBytes.addAndGet(count);\n            long currentTime = System.currentTimeMillis();\n            long logInterval = 10000;\n            if (currentTime - lastLogTime >= logInterval) {\n              logger.info(\n                  \"S3 upload progress: {}, recent transferred {} bytes, total transferred {}\",\n                  key,\n                  count,\n                  total);\n              lastLogTime = currentTime;\n            }\n          }\n        });\n\n    // https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/best-practices.html\n    request.getRequestClientOptions().setReadLimit((int) multipartUploadThreshold + 1);\n    request.setSdkRequestTimeout(S3_PUT_TIMEOUT_MILLISECS);\n    request.setSdkClientExecutionTimeout(S3_PUT_TIMEOUT_MILLISECS);\n    try {\n      Upload upload = transferManager.upload(request);\n      UploadResult uploadResult = upload.waitForUploadResult();\n      logger.info(\n          \"S3 upload finished: {}, file {} bytes, total transferred {}\",\n          key,\n          contentLength,\n          totalTransferredBytes.get());\n      if (!uploadResult.getKey().equals(key)) {\n        ExceptionUtils.meterRuntimeException();\n        throw new RuntimeException(\n            String.format(\"Invalid key in upload result: %s\", uploadResult.getKey()));\n      }\n    } catch (InterruptedException e) {\n      throw new WebApplicationException(\n          \"Failed to upload to s3: \" + ExceptionUtils.getExceptionNameAndMessage(e), e);\n    } finally {\n      transferManager.shutdownNow();\n    }\n\n    UploadS3Response response = new UploadS3Response();\n    response.setUrl(String.format(\"s3a://%s/%s\", bucket, key));\n    return response;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "InputStream",
+    "Long",
+    "String",
+    "String"
+  ],
+  "dependentMethods": {
+    "java.io.InputStream": [],
+    "java.lang.Long": [],
+    "java.lang.String": [
+      "equals(Object)",
+      "format(String, Object[])"
+    ],
+    "com.amazonaws.ClientConfiguration": [
+      "setSocketTimeout(int)",
+      "setRequestTimeout(int)",
+      "setConnectionTimeout(int)",
+      "setClientExecutionTimeout(int)"
+    ],
+    "com.amazonaws.client.builder.AwsClientBuilder": [
+      "withEndpointConfiguration(EndpointConfiguration)",
+      "withCredentials(AWSCredentialsProvider)",
+      "withRegion(Regions)",
+      "withClientConfiguration(ClientConfiguration)"
+    ],
+    "com.amazonaws.services.s3.AmazonS3ClientBuilder": [
+      "standard()"
+    ],
+    "java.util.Optional": [
+      "isPresent()",
+      "get()"
+    ],
+    "com.amazonaws.regions.Regions": [
+      "getName()"
+    ],
+    "com.amazonaws.services.s3.AmazonS3Builder": [
+      "enablePathStyleAccess()"
+    ],
+    "com.amazonaws.client.builder.AwsSyncClientBuilder": [
+      "build()"
+    ],
+    "com.amazonaws.services.s3.transfer.TransferManagerBuilder": [
+      "withMultipartCopyThreshold(Long)",
+      "withS3Client(AmazonS3)",
+      "withMultipartUploadThreshold(Long)",
+      "build()",
+      "standard()"
+    ],
+    "com.amazonaws.services.s3.model.ObjectMetadata": [
+      "setContentLength(long)",
+      "setContentType(String)"
+    ],
+    "com.amazonaws.AmazonWebServiceRequest": [
+      "setSdkClientExecutionTimeout(int)",
+      "setGeneralProgressListener(ProgressListener)",
+      "setSdkRequestTimeout(int)",
+      "getRequestClientOptions()"
+    ],
+    "com.amazonaws.event.ProgressEvent": [
+      "getBytesTransferred()"
+    ],
+    "java.util.concurrent.atomic.AtomicLong": [
+      "addAndGet(long)",
+      "get()"
+    ],
+    "java.lang.System": [
+      "currentTimeMillis()"
+    ],
+    "org.slf4j.Logger": [
+      "info(String, Object[])"
+    ],
+    "com.amazonaws.RequestClientOptions": [
+      "setReadLimit(int)"
+    ],
+    "com.amazonaws.services.s3.transfer.TransferManager": [
+      "upload(PutObjectRequest)",
+      "shutdownNow()"
+    ],
+    "com.amazonaws.services.s3.transfer.Upload": [
+      "waitForUploadResult()"
+    ],
+    "com.amazonaws.services.s3.transfer.model.UploadResult": [
+      "getKey()"
+    ],
+    "com.apple.spark.util.ExceptionUtils": [
+      "getExceptionNameAndMessage(Throwable)",
+      "meterRuntimeException()"
+    ],
+    "com.apple.spark.api.UploadS3Response": [
+      "setUrl(String)"
+    ]
+  },
+  "full_method_info": "private UploadS3Response uploadStreamS3(InputStream inputStream, Long contentLength, String bucket, String key) {\n    // Use default credential provider chain for imdsv2-rbacv2\n    DefaultAWSCredentialsProviderChain awsDefaultCredentialChain = new DefaultAWSCredentialsProviderChain();\n    ClientConfiguration clientConfiguration = new ClientConfiguration();\n    clientConfiguration.setConnectionTimeout(S3_PUT_TIMEOUT_MILLISECS);\n    clientConfiguration.setRequestTimeout(S3_PUT_TIMEOUT_MILLISECS);\n    clientConfiguration.setSocketTimeout(S3_PUT_TIMEOUT_MILLISECS);\n    clientConfiguration.setClientExecutionTimeout(S3_PUT_TIMEOUT_MILLISECS);\n    AmazonS3ClientBuilder s3ClientBuilder = AmazonS3ClientBuilder.standard().withClientConfiguration(clientConfiguration).withCredentials(awsDefaultCredentialChain);\n    if (s3endpoint.isPresent()) {\n        s3ClientBuilder.withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(s3endpoint.get(), CLIENT_REGION.getName()));\n        s3ClientBuilder.enablePathStyleAccess();\n    } else {\n        s3ClientBuilder.withRegion(CLIENT_REGION);\n    }\n    AmazonS3 s3Client = s3ClientBuilder.build();\n    // Sets the size threshold in bytes, for when to use multi-part.\n    // 10MB\n    final long multipartUploadThreshold = 10 * 1024 * 1024;\n    TransferManager transferManager = TransferManagerBuilder.standard().withS3Client(s3Client).withMultipartCopyThreshold(multipartUploadThreshold).withMultipartUploadThreshold(multipartUploadThreshold).build();\n    ObjectMetadata metadata = new ObjectMetadata();\n    metadata.setContentType(\"application/octet-stream\");\n    metadata.setContentLength(contentLength);\n    PutObjectRequest request = new PutObjectRequest(bucket, key, inputStream, metadata);\n    AtomicLong totalTransferredBytes = new AtomicLong(0);\n    request.setGeneralProgressListener(new ProgressListener() {\n\n        private long lastLogTime = 0;\n\n        @Override\n        public void progressChanged(ProgressEvent progressEvent) {\n            long count = progressEvent.getBytesTransferred();\n            long total = totalTransferredBytes.addAndGet(count);\n            long currentTime = System.currentTimeMillis();\n            long logInterval = 10000;\n            if (currentTime - lastLogTime >= logInterval) {\n                logger.info(\"S3 upload progress: {}, recent transferred {} bytes, total transferred {}\", key, count, total);\n                lastLogTime = currentTime;\n            }\n        }\n    });\n    // https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/best-practices.html\n    request.getRequestClientOptions().setReadLimit((int) multipartUploadThreshold + 1);\n    request.setSdkRequestTimeout(S3_PUT_TIMEOUT_MILLISECS);\n    request.setSdkClientExecutionTimeout(S3_PUT_TIMEOUT_MILLISECS);\n    try {\n        Upload upload = transferManager.upload(request);\n        UploadResult uploadResult = upload.waitForUploadResult();\n        logger.info(\"S3 upload finished: {}, file {} bytes, total transferred {}\", key, contentLength, totalTransferredBytes.get());\n        if (!uploadResult.getKey().equals(key)) {\n            ExceptionUtils.meterRuntimeException();\n            throw new RuntimeException(String.format(\"Invalid key in upload result: %s\", uploadResult.getKey()));\n        }\n    } catch (InterruptedException e) {\n        throw new WebApplicationException(\"Failed to upload to s3: \" + ExceptionUtils.getExceptionNameAndMessage(e), e);\n    } finally {\n        transferManager.shutdownNow();\n    }\n    UploadS3Response response = new UploadS3Response();\n    response.setUrl(String.format(\"s3a://%s/%s\", bucket, key));\n    return response;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

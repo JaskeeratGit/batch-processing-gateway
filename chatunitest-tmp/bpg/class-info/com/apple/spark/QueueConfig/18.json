@@ -1,0 +1,20 @@
+{
+  "className": "QueueConfig",
+  "methodName": "setExecutorSpotNodeLabelValues",
+  "brief": "public void setExecutorSpotNodeLabelValues(List<String> executorSpotNodeLabelValues){}",
+  "methodSignature": "setExecutorSpotNodeLabelValues(List)",
+  "sourceCode": "public void setExecutorSpotNodeLabelValues(List<String> executorSpotNodeLabelValues) {\n      this.executorSpotNodeLabelValues = executorSpotNodeLabelValues;\n    }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "List<String>"
+  ],
+  "dependentMethods": {},
+  "full_method_info": "public void setExecutorSpotNodeLabelValues(List<String> executorSpotNodeLabelValues) {\n    this.executorSpotNodeLabelValues = executorSpotNodeLabelValues;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

@@ -1,0 +1,44 @@
+{
+  "className": "ApplicationSubmissionHelper",
+  "methodName": "populateEnv",
+  "brief": "public static void populateEnv(\n      SparkApplicationSpec sparkSpec,\n      SubmitApplicationRequest request,\n      AppConfig.SparkCluster sparkCluster){}",
+  "methodSignature": "populateEnv(SparkApplicationSpec, SubmitApplicationRequest, AppConfig.SparkCluster)",
+  "sourceCode": "public static void populateEnv(\n      SparkApplicationSpec sparkSpec,\n      SubmitApplicationRequest request,\n      AppConfig.SparkCluster sparkCluster) {\n    if (sparkCluster.getDriver() != null && sparkCluster.getDriver().getEnv() != null) {\n      // there is env in spark cluster driver configure, copy it to spark spec\n      if (sparkSpec.getDriver() == null) {\n        sparkSpec.setDriver(new DriverSpec());\n      }\n      if (sparkSpec.getDriver().getEnv() == null) {\n        sparkSpec.getDriver().setEnv(new ArrayList<>());\n      }\n      SparkSpecHelper.copyEnv(sparkCluster.getDriver().getEnv(), sparkSpec.getDriver().getEnv());\n    }\n    if (request.getDriver() != null && request.getDriver().getEnv() != null) {\n      // there is env in request driver configure, copy it to spark spec\n      if (sparkSpec.getDriver() == null) {\n        sparkSpec.setDriver(new DriverSpec());\n      }\n      if (sparkSpec.getDriver().getEnv() == null) {\n        sparkSpec.getDriver().setEnv(new ArrayList<>());\n      }\n      SparkSpecHelper.copyEnv(request.getDriver().getEnv(), sparkSpec.getDriver().getEnv());\n    }\n    if (sparkCluster.getExecutor() != null && sparkCluster.getExecutor().getEnv() != null) {\n      // there is env in spark cluster executor configure, copy it to spark spec\n      if (sparkSpec.getExecutor() == null) {\n        sparkSpec.setExecutor(new ExecutorSpec());\n      }\n      if (sparkSpec.getExecutor().getEnv() == null) {\n        sparkSpec.getExecutor().setEnv(new ArrayList<>());\n      }\n      SparkSpecHelper.copyEnv(\n          sparkCluster.getExecutor().getEnv(), sparkSpec.getExecutor().getEnv());\n    }\n    if (request.getExecutor() != null && request.getExecutor().getEnv() != null) {\n      // there is env in request executor configure, copy it to spark spec\n      if (sparkSpec.getExecutor() == null) {\n        sparkSpec.setExecutor(new ExecutorSpec());\n      }\n      if (sparkSpec.getExecutor().getEnv() == null) {\n        sparkSpec.getExecutor().setEnv(new ArrayList<>());\n      }\n      SparkSpecHelper.copyEnv(request.getExecutor().getEnv(), sparkSpec.getExecutor().getEnv());\n    }\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "SparkApplicationSpec",
+    "SubmitApplicationRequest",
+    "AppConfig.SparkCluster"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.operator.SparkApplicationSpec": [
+      "getExecutor()",
+      "setExecutor(ExecutorSpec)",
+      "setDriver(DriverSpec)",
+      "getDriver()"
+    ],
+    "com.apple.spark.api.SubmitApplicationRequest": [
+      "getExecutor()",
+      "getDriver()"
+    ],
+    "com.apple.spark.AppConfig.SparkCluster": [
+      "getExecutor()",
+      "getDriver()"
+    ],
+    "com.apple.spark.operator.SparkPodSpec": [
+      "setEnv(EnvVar>)",
+      "getEnv()"
+    ],
+    "com.apple.spark.core.SparkSpecHelper": [
+      "copyEnv(EnvVar>, EnvVar>)"
+    ]
+  },
+  "full_method_info": "public static void populateEnv(SparkApplicationSpec sparkSpec, SubmitApplicationRequest request, AppConfig.SparkCluster sparkCluster) {\n    if (sparkCluster.getDriver() != null && sparkCluster.getDriver().getEnv() != null) {\n        // there is env in spark cluster driver configure, copy it to spark spec\n        if (sparkSpec.getDriver() == null) {\n            sparkSpec.setDriver(new DriverSpec());\n        }\n        if (sparkSpec.getDriver().getEnv() == null) {\n            sparkSpec.getDriver().setEnv(new ArrayList<>());\n        }\n        SparkSpecHelper.copyEnv(sparkCluster.getDriver().getEnv(), sparkSpec.getDriver().getEnv());\n    }\n    if (request.getDriver() != null && request.getDriver().getEnv() != null) {\n        // there is env in request driver configure, copy it to spark spec\n        if (sparkSpec.getDriver() == null) {\n            sparkSpec.setDriver(new DriverSpec());\n        }\n        if (sparkSpec.getDriver().getEnv() == null) {\n            sparkSpec.getDriver().setEnv(new ArrayList<>());\n        }\n        SparkSpecHelper.copyEnv(request.getDriver().getEnv(), sparkSpec.getDriver().getEnv());\n    }\n    if (sparkCluster.getExecutor() != null && sparkCluster.getExecutor().getEnv() != null) {\n        // there is env in spark cluster executor configure, copy it to spark spec\n        if (sparkSpec.getExecutor() == null) {\n            sparkSpec.setExecutor(new ExecutorSpec());\n        }\n        if (sparkSpec.getExecutor().getEnv() == null) {\n            sparkSpec.getExecutor().setEnv(new ArrayList<>());\n        }\n        SparkSpecHelper.copyEnv(sparkCluster.getExecutor().getEnv(), sparkSpec.getExecutor().getEnv());\n    }\n    if (request.getExecutor() != null && request.getExecutor().getEnv() != null) {\n        // there is env in request executor configure, copy it to spark spec\n        if (sparkSpec.getExecutor() == null) {\n            sparkSpec.setExecutor(new ExecutorSpec());\n        }\n        if (sparkSpec.getExecutor().getEnv() == null) {\n            sparkSpec.getExecutor().setEnv(new ArrayList<>());\n        }\n        SparkSpecHelper.copyEnv(request.getExecutor().getEnv(), sparkSpec.getExecutor().getEnv());\n    }\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

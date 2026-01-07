@@ -1,0 +1,47 @@
+{
+  "attempt0": {
+    "testClassName": "ExceptionUtils_meterIOException_4_0_Test",
+    "fullName": "com.apple.spark.util.ExceptionUtils_meterIOException_4_0_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/util/ExceptionUtils_meterIOException_4_0_Test.java",
+    "className": "ExceptionUtils",
+    "packageName": "com.apple.spark.util",
+    "methodName": "meterIOException",
+    "methodSig": "meterIOException()"
+  },
+  "attempt1": {
+    "testClassName": "ExceptionUtils_meterIOException_4_1_Test",
+    "fullName": "com.apple.spark.util.ExceptionUtils_meterIOException_4_1_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/util/ExceptionUtils_meterIOException_4_0_Test.java",
+    "className": "ExceptionUtils",
+    "packageName": "com.apple.spark.util",
+    "methodName": "meterIOException",
+    "methodSig": "meterIOException()"
+  },
+  "attempt2": {
+    "testClassName": "ExceptionUtils_meterIOException_4_2_Test",
+    "fullName": "com.apple.spark.util.ExceptionUtils_meterIOException_4_2_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/util/ExceptionUtils_meterIOException_4_0_Test.java",
+    "className": "ExceptionUtils",
+    "packageName": "com.apple.spark.util",
+    "methodName": "meterIOException",
+    "methodSig": "meterIOException()"
+  },
+  "attempt3": {
+    "testClassName": "ExceptionUtils_meterIOException_4_3_Test",
+    "fullName": "com.apple.spark.util.ExceptionUtils_meterIOException_4_3_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/util/ExceptionUtils_meterIOException_4_0_Test.java",
+    "className": "ExceptionUtils",
+    "packageName": "com.apple.spark.util",
+    "methodName": "meterIOException",
+    "methodSig": "meterIOException()"
+  },
+  "attempt4": {
+    "testClassName": "ExceptionUtils_meterIOException_4_4_Test",
+    "fullName": "com.apple.spark.util.ExceptionUtils_meterIOException_4_4_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/util/ExceptionUtils_meterIOException_4_0_Test.java",
+    "className": "ExceptionUtils",
+    "packageName": "com.apple.spark.util",
+    "methodName": "meterIOException",
+    "methodSig": "meterIOException()"
+  }
+}

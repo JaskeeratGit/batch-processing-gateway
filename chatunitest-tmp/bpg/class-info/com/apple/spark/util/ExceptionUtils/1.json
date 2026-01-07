@@ -1,0 +1,29 @@
+{
+  "className": "ExceptionUtils",
+  "methodName": "isTooManyRequest",
+  "brief": "public static boolean isTooManyRequest(Throwable ex){}",
+  "methodSignature": "isTooManyRequest(Throwable)",
+  "sourceCode": "public static boolean isTooManyRequest(Throwable ex) {\n    while (ex != null) {\n      if (ex.getMessage() != null && ex.getMessage().toLowerCase().contains(\"too many request\")) {\n        return true;\n      }\n      ex = ex.getCause();\n    }\n    return false;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "Throwable"
+  ],
+  "dependentMethods": {
+    "java.lang.Throwable": [
+      "getCause()",
+      "getMessage()"
+    ],
+    "java.lang.String": [
+      "toLowerCase()",
+      "contains(CharSequence)"
+    ]
+  },
+  "full_method_info": "public static boolean isTooManyRequest(Throwable ex) {\n    while (ex != null) {\n        if (ex.getMessage() != null && ex.getMessage().toLowerCase().contains(\"too many request\")) {\n            return true;\n        }\n        ex = ex.getCause();\n    }\n    return false;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

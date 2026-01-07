@@ -1,0 +1,18 @@
+{
+  "className": "KubernetesClusterAndNamespace",
+  "methodName": "toString",
+  "brief": "@Override\n  public String toString(){}",
+  "methodSignature": "toString()",
+  "sourceCode": "@Override\n  public String toString() {\n    return \"KubernetesClusterAndNamespace{\"\n        + \"masterUrl='\"\n        + masterUrl\n        + '\\''\n        + \", namespace='\"\n        + namespace\n        + '\\''\n        + '}';\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "@Override\npublic String toString() {\n    return \"KubernetesClusterAndNamespace{\" + \"masterUrl='\" + masterUrl + '\\'' + \", namespace='\" + namespace + '\\'' + '}';\n}",
+  "method_comment": "",
+  "method_annotation": "@Override\n"
+}

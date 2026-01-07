@@ -1,0 +1,18 @@
+{
+  "className": "ZonePicker",
+  "methodName": "pick",
+  "brief": "List<String> pick();",
+  "methodSignature": "pick()",
+  "sourceCode": "List<String> pick();",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "// return a list of zone ids, order matters\nList<String> pick();",
+  "method_comment": " return a list of zone ids, order matters",
+  "method_annotation": ""
+}

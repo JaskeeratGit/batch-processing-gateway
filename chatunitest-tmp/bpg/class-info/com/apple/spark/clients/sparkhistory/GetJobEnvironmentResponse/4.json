@@ -1,0 +1,26 @@
+{
+  "className": "GetJobEnvironmentResponse",
+  "methodName": "getPodNamePrefix",
+  "brief": "public String getPodNamePrefix(){}",
+  "methodSignature": "getPodNamePrefix()",
+  "sourceCode": "public String getPodNamePrefix() {\n    String podNamePrefix = \"\";\n    String key = \"\";\n    String value = \"\";\n    if (sparkProperties != null) {\n      int n = this.sparkProperties.size();\n      for (int i = 0; i < n; ++i) {\n        List<String> item = sparkProperties.get(i);\n        // the sparkProperties should have two items in each property\n        if (item.size() == 2) {\n          key = item.get(0);\n          value = item.get(1);\n          if (key.equalsIgnoreCase(\n              \"spark.kubernetes.executor.label.sparkoperator.k8s.io/app-name\")) {\n            podNamePrefix = value;\n            break;\n          }\n        }\n      }\n    }\n    return podNamePrefix;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {
+    "java.util.List": [
+      "get(int)",
+      "size()"
+    ],
+    "java.lang.String": [
+      "equalsIgnoreCase(String)"
+    ]
+  },
+  "full_method_info": "public String getPodNamePrefix() {\n    String podNamePrefix = \"\";\n    String key = \"\";\n    String value = \"\";\n    if (sparkProperties != null) {\n        int n = this.sparkProperties.size();\n        for (int i = 0; i < n; ++i) {\n            List<String> item = sparkProperties.get(i);\n            // the sparkProperties should have two items in each property\n            if (item.size() == 2) {\n                key = item.get(0);\n                value = item.get(1);\n                if (key.equalsIgnoreCase(\"spark.kubernetes.executor.label.sparkoperator.k8s.io/app-name\")) {\n                    podNamePrefix = value;\n                    break;\n                }\n            }\n        }\n    }\n    return podNamePrefix;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

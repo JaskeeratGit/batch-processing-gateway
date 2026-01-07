@@ -1,0 +1,26 @@
+{
+  "className": "RestBase",
+  "methodName": "getSparkApplicationResourcesByUser",
+  "brief": "protected SparkApplicationResourceList getSparkApplicationResourcesByUser(\n      AppConfig.SparkCluster sparkCluster, String user){}",
+  "methodSignature": "getSparkApplicationResourcesByUser(AppConfig.SparkCluster, String)",
+  "sourceCode": "protected SparkApplicationResourceList getSparkApplicationResourcesByUser(\n      AppConfig.SparkCluster sparkCluster, String user) {\n    return getSparkApplicationResourcesByLabel(sparkCluster, Constants.PROXY_USER_LABEL, user);\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "AppConfig.SparkCluster",
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [],
+    "com.apple.spark.rest.RestBase": [
+      "getSparkApplicationResourcesByLabel(SparkCluster, String, String)"
+    ]
+  },
+  "full_method_info": "protected SparkApplicationResourceList getSparkApplicationResourcesByUser(AppConfig.SparkCluster sparkCluster, String user) {\n    return getSparkApplicationResourcesByLabel(sparkCluster, Constants.PROXY_USER_LABEL, user);\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

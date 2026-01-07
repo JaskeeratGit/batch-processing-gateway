@@ -1,0 +1,38 @@
+{
+  "method0": {
+    "methodName": "createMeterRegistry",
+    "signature": "createMeterRegistry()",
+    "className": "BPGStatsdConfig",
+    "packageName": "com.apple.spark.core"
+  },
+  "method1": {
+    "methodName": "get",
+    "signature": "get(String)",
+    "className": "BPGStatsdConfig",
+    "packageName": "com.apple.spark.core"
+  },
+  "method2": {
+    "methodName": "enabled",
+    "signature": "enabled()",
+    "className": "BPGStatsdConfig",
+    "packageName": "com.apple.spark.core"
+  },
+  "method3": {
+    "methodName": "flavor",
+    "signature": "flavor()",
+    "className": "BPGStatsdConfig",
+    "packageName": "com.apple.spark.core"
+  },
+  "method4": {
+    "methodName": "host",
+    "signature": "host()",
+    "className": "BPGStatsdConfig",
+    "packageName": "com.apple.spark.core"
+  },
+  "method5": {
+    "methodName": "port",
+    "signature": "port()",
+    "className": "BPGStatsdConfig",
+    "packageName": "com.apple.spark.core"
+  }
+}

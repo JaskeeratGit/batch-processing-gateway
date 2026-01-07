@@ -1,0 +1,25 @@
+{
+  "className": "ApplicationSubmissionHelper",
+  "methodName": "getType",
+  "brief": "public static String getType(String specifiedType, String mainClass){}",
+  "methodSignature": "getType(String, String)",
+  "sourceCode": "public static String getType(String specifiedType, String mainClass) {\n    if (specifiedType != null && !specifiedType.isEmpty()) {\n      return specifiedType;\n    }\n\n    if (mainClass != null && !mainClass.isEmpty()) {\n      return Constants.JAVA_TYPE;\n    }\n\n    return Constants.PYTHON_TYPE;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String",
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "isEmpty()"
+    ]
+  },
+  "full_method_info": "public static String getType(String specifiedType, String mainClass) {\n    if (specifiedType != null && !specifiedType.isEmpty()) {\n        return specifiedType;\n    }\n    if (mainClass != null && !mainClass.isEmpty()) {\n        return Constants.JAVA_TYPE;\n    }\n    return Constants.PYTHON_TYPE;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

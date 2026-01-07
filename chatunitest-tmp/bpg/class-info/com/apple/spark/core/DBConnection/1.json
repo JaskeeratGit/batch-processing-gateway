@@ -1,0 +1,34 @@
+{
+  "className": "DBConnection",
+  "methodName": "executeSql",
+  "brief": "public void executeSql(String sql) throws SQLException{}",
+  "methodSignature": "executeSql(String)",
+  "sourceCode": "public void executeSql(String sql) throws SQLException {\n    logger.info(\"Executing SQL: {}\", sql);\n    getConnection().createStatement().execute(sql);\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [],
+    "org.slf4j.Logger": [
+      "info(String, Object)"
+    ],
+    "java.sql.Statement": [
+      "execute(String)"
+    ],
+    "java.sql.Connection": [
+      "createStatement()"
+    ],
+    "com.apple.spark.core.DBConnection": [
+      "getConnection()"
+    ]
+  },
+  "full_method_info": "public void executeSql(String sql) throws SQLException {\n    logger.info(\"Executing SQL: {}\", sql);\n    getConnection().createStatement().execute(sql);\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

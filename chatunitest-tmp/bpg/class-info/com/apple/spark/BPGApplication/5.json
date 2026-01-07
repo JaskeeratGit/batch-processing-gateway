@@ -1,0 +1,37 @@
+{
+  "className": "BPGApplication",
+  "methodName": "sendQueueInfoMetrics",
+  "brief": "private void sendQueueInfoMetrics(\n      AppConfig configuration, CounterMetricContainer periodicMetrics){}",
+  "methodSignature": "sendQueueInfoMetrics(AppConfig, CounterMetricContainer)",
+  "sourceCode": "private void sendQueueInfoMetrics(\n      AppConfig configuration, CounterMetricContainer periodicMetrics) {\n\n    if (configuration.getSparkClusters() != null) {\n      for (AppConfig.SparkCluster cluster : configuration.getSparkClusters()) {\n        List<String> sparkVersions =\n            cluster.getSparkVersions() == null ? new ArrayList<>() : cluster.getSparkVersions();\n        List<String> queues = cluster.getQueues() == null ? new ArrayList<>() : cluster.getQueues();\n        for (String sparkVersion : sparkVersions) {\n          for (String queue : queues) {\n            periodicMetrics.increment(\n                QUEUE_INFO,\n                Tag.of(\"eks\", cluster.getEksCluster()),\n                Tag.of(\"spark_cluster_id\", cluster.getId()),\n                Tag.of(\"spark_version\", sparkVersion),\n                Tag.of(\"queue\", queue));\n          }\n        }\n      }\n    }\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "AppConfig",
+    "CounterMetricContainer"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.AppConfig": [
+      "getSparkClusters()"
+    ],
+    "com.apple.spark.util.CounterMetricContainer": [
+      "increment(String, Tag[])"
+    ],
+    "com.apple.spark.AppConfig.SparkCluster": [
+      "getId()",
+      "getQueues()",
+      "getEksCluster()",
+      "getSparkVersions()"
+    ],
+    "io.micrometer.core.instrument.Tag": [
+      "of(String, String)"
+    ]
+  },
+  "full_method_info": "/**\n * Go through clusters and send out metrics, so we could show which queues are on which clusters.\n *\n * @param configuration App configuration\n * @param periodicMetrics Metric instances\n */\nprivate void sendQueueInfoMetrics(AppConfig configuration, CounterMetricContainer periodicMetrics) {\n    if (configuration.getSparkClusters() != null) {\n        for (AppConfig.SparkCluster cluster : configuration.getSparkClusters()) {\n            List<String> sparkVersions = cluster.getSparkVersions() == null ? new ArrayList<>() : cluster.getSparkVersions();\n            List<String> queues = cluster.getQueues() == null ? new ArrayList<>() : cluster.getQueues();\n            for (String sparkVersion : sparkVersions) {\n                for (String queue : queues) {\n                    periodicMetrics.increment(QUEUE_INFO, Tag.of(\"eks\", cluster.getEksCluster()), Tag.of(\"spark_cluster_id\", cluster.getId()), Tag.of(\"spark_version\", sparkVersion), Tag.of(\"queue\", queue));\n                }\n            }\n        }\n    }\n}",
+  "method_comment": "\n   * Go through clusters and send out metrics, so we could show which queues are on which clusters.\n   *\n   * @param configuration App configuration\n   * @param periodicMetrics Metric instances\n   ",
+  "method_annotation": ""
+}

@@ -1,0 +1,18 @@
+{
+  "className": "SparkApplication",
+  "methodName": "getSpec",
+  "brief": "public SparkApplicationSpec getSpec(){}",
+  "methodSignature": "getSpec()",
+  "sourceCode": "public SparkApplicationSpec getSpec() {\n    return spec;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public SparkApplicationSpec getSpec() {\n    return spec;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

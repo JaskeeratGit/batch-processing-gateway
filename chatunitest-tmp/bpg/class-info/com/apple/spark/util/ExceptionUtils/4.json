@@ -1,0 +1,22 @@
+{
+  "className": "ExceptionUtils",
+  "methodName": "meterIOException",
+  "brief": "public static void meterIOException(){}",
+  "methodSignature": "meterIOException()",
+  "sourceCode": "public static void meterIOException() {\n    ioExceptionMeter.mark();\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {
+    "com.codahale.metrics.Meter": [
+      "mark()"
+    ]
+  },
+  "full_method_info": "public static void meterIOException() {\n    ioExceptionMeter.mark();\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

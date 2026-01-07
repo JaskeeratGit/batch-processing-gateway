@@ -1,0 +1,8 @@
+{
+  "method0": {
+    "methodName": "main",
+    "signature": "main(String[])",
+    "className": "SparkClusterTest",
+    "packageName": "com.apple.spark.tools"
+  }
+}

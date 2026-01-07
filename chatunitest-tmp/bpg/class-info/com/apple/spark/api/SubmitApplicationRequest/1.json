@@ -1,0 +1,22 @@
+{
+  "className": "SubmitApplicationRequest",
+  "methodName": "setDriverOverheadFactor",
+  "brief": "public void setDriverOverheadFactor(Double driverOverheadFactor){}",
+  "methodSignature": "setDriverOverheadFactor(Double)",
+  "sourceCode": "public void setDriverOverheadFactor(Double driverOverheadFactor) {\n    this.driverOverheadFactor = driverOverheadFactor;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "Double"
+  ],
+  "dependentMethods": {
+    "java.lang.Double": []
+  },
+  "full_method_info": "public void setDriverOverheadFactor(Double driverOverheadFactor) {\n    this.driverOverheadFactor = driverOverheadFactor;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

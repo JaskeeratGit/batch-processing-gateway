@@ -1,0 +1,18 @@
+{
+  "className": "QueueConfig",
+  "methodName": "getMaxExecutorInstances",
+  "brief": "public Integer getMaxExecutorInstances(){}",
+  "methodSignature": "getMaxExecutorInstances()",
+  "sourceCode": "public Integer getMaxExecutorInstances() {\n      return maxExecutorInstances;\n    }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public Integer getMaxExecutorInstances() {\n    return maxExecutorInstances;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

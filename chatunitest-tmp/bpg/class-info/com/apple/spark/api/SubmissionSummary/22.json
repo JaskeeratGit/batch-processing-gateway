@@ -1,0 +1,18 @@
+{
+  "className": "SubmissionSummary",
+  "methodName": "getTotalCores",
+  "brief": "public int getTotalCores(){}",
+  "methodSignature": "getTotalCores()",
+  "sourceCode": "public int getTotalCores() {\n    return totalCores;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public int getTotalCores() {\n    return totalCores;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

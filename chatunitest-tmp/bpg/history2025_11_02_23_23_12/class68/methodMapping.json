@@ -1,0 +1,104 @@
+{
+  "method0": {
+    "methodName": "post",
+    "signature": "post(String, String, String, String, Class)",
+    "className": "HttpUtils",
+    "packageName": "com.apple.spark.util"
+  },
+  "method1": {
+    "methodName": "post",
+    "signature": "post(String, String, String, String, String, Class)",
+    "className": "HttpUtils",
+    "packageName": "com.apple.spark.util"
+  },
+  "method10": {
+    "methodName": "get",
+    "signature": "get(String)",
+    "className": "HttpUtils",
+    "packageName": "com.apple.spark.util"
+  },
+  "method11": {
+    "methodName": "delete",
+    "signature": "delete(String, String, String, Class)",
+    "className": "HttpUtils",
+    "packageName": "com.apple.spark.util"
+  },
+  "method12": {
+    "methodName": "delete",
+    "signature": "delete(String, String, String)",
+    "className": "HttpUtils",
+    "packageName": "com.apple.spark.util"
+  },
+  "method13": {
+    "methodName": "checkResponseOK",
+    "signature": "checkResponseOK(String, HttpResponse)",
+    "className": "HttpUtils",
+    "packageName": "com.apple.spark.util"
+  },
+  "method14": {
+    "methodName": "parseJson",
+    "signature": "parseJson(String, Class)",
+    "className": "HttpUtils",
+    "packageName": "com.apple.spark.util"
+  },
+  "method15": {
+    "methodName": "getHttpResponse",
+    "signature": "getHttpResponse(String, String, String)",
+    "className": "HttpUtils",
+    "packageName": "com.apple.spark.util"
+  },
+  "method16": {
+    "methodName": "executeHttpRequest",
+    "signature": "executeHttpRequest(String, HttpRequest, HttpResponse.BodyHandler)",
+    "className": "HttpUtils",
+    "packageName": "com.apple.spark.util"
+  },
+  "method2": {
+    "methodName": "post",
+    "signature": "post(String, String, String, String)",
+    "className": "HttpUtils",
+    "packageName": "com.apple.spark.util"
+  },
+  "method3": {
+    "methodName": "post",
+    "signature": "post(String, String, String, String, String)",
+    "className": "HttpUtils",
+    "packageName": "com.apple.spark.util"
+  },
+  "method4": {
+    "methodName": "post",
+    "signature": "post(String, InputStream, String, String, Class)",
+    "className": "HttpUtils",
+    "packageName": "com.apple.spark.util"
+  },
+  "method5": {
+    "methodName": "post",
+    "signature": "post(String, InputStream, String, String, long, Class)",
+    "className": "HttpUtils",
+    "packageName": "com.apple.spark.util"
+  },
+  "method6": {
+    "methodName": "post",
+    "signature": "post(String, InputStream, String, String)",
+    "className": "HttpUtils",
+    "packageName": "com.apple.spark.util"
+  },
+  "method7": {
+    "methodName": "post",
+    "signature": "post(String, InputStream, String, String, long)",
+    "className": "HttpUtils",
+    "packageName": "com.apple.spark.util"
+  },
+  "method8": {
+    "methodName": "get",
+    "signature": "get(String, String, String, Class)",
+    "className": "HttpUtils",
+    "packageName": "com.apple.spark.util"
+  },
+  "method9": {
+    "methodName": "get",
+    "signature": "get(String, String, String)",
+    "className": "HttpUtils",
+    "packageName": "com.apple.spark.util"
+  }
+}

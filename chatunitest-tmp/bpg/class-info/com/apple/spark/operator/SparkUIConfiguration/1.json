@@ -1,0 +1,22 @@
+{
+  "className": "SparkUIConfiguration",
+  "methodName": "setServicePort",
+  "brief": "public void setServicePort(Integer servicePort){}",
+  "methodSignature": "setServicePort(Integer)",
+  "sourceCode": "public void setServicePort(Integer servicePort) {\n    this.servicePort = servicePort;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "Integer"
+  ],
+  "dependentMethods": {
+    "java.lang.Integer": []
+  },
+  "full_method_info": "public void setServicePort(Integer servicePort) {\n    this.servicePort = servicePort;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

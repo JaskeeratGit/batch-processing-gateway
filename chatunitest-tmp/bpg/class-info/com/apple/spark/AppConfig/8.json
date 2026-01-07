@@ -1,0 +1,18 @@
+{
+  "className": "AppConfig",
+  "methodName": "getSparkImages",
+  "brief": "public List<SparkImage> getSparkImages(){}",
+  "methodSignature": "getSparkImages()",
+  "sourceCode": "public List<SparkImage> getSparkImages() {\n    return sparkImages;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public List<SparkImage> getSparkImages() {\n    return sparkImages;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

@@ -1,0 +1,39 @@
+{
+  "className": "LogDao",
+  "methodName": "updateJobInfo",
+  "brief": "public boolean updateJobInfo(\n      String submissionId,\n      Timestamp startTime,\n      int driverCore,\n      int driverMemoryMB,\n      int executorInstances,\n      String dagName,\n      String taskName,\n      String appName){}",
+  "methodSignature": "updateJobInfo(String, Timestamp, int, int, int, String, String, String)",
+  "sourceCode": "public boolean updateJobInfo(\n      String submissionId,\n      Timestamp startTime,\n      int driverCore,\n      int driverMemoryMB,\n      int executorInstances,\n      String dagName,\n      String taskName,\n      String appName) {\n    if (bypassLog) {\n      return true;\n    }\n\n    return timerMetrics.record(\n        () ->\n            updateJobInfoImpl(\n                submissionId,\n                startTime,\n                driverCore,\n                driverMemoryMB,\n                executorInstances,\n                dagName,\n                taskName,\n                appName),\n        DB_TIMER_METRIC_NAME,\n        Tag.of(OPERATION_TAG, UPDATE_SPARK_APP_INFO_OPERATION));\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String",
+    "Timestamp",
+    "int",
+    "int",
+    "int",
+    "String",
+    "String",
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [],
+    "java.sql.Timestamp": [],
+    "com.apple.spark.util.TimerMetricContainer": [
+      "record(Runnable, String, Tag[])"
+    ],
+    "com.apple.spark.core.LogDao": [
+      "updateJobInfoImpl(String, Timestamp, int, int, int, String, String, String)"
+    ],
+    "io.micrometer.core.instrument.Tag": [
+      "of(String, String)"
+    ]
+  },
+  "full_method_info": "public boolean updateJobInfo(String submissionId, Timestamp startTime, int driverCore, int driverMemoryMB, int executorInstances, String dagName, String taskName, String appName) {\n    if (bypassLog) {\n        return true;\n    }\n    return timerMetrics.record(() -> updateJobInfoImpl(submissionId, startTime, driverCore, driverMemoryMB, executorInstances, dagName, taskName, appName), DB_TIMER_METRIC_NAME, Tag.of(OPERATION_TAG, UPDATE_SPARK_APP_INFO_OPERATION));\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

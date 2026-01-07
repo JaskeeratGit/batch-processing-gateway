@@ -1,0 +1,22 @@
+{
+  "className": "SecurityContext",
+  "methodName": "setRunAsUser",
+  "brief": "public void setRunAsUser(Long runAsUser){}",
+  "methodSignature": "setRunAsUser(Long)",
+  "sourceCode": "public void setRunAsUser(Long runAsUser) {\n    this.runAsUser = runAsUser;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "Long"
+  ],
+  "dependentMethods": {
+    "java.lang.Long": []
+  },
+  "full_method_info": "public void setRunAsUser(Long runAsUser) {\n    this.runAsUser = runAsUser;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

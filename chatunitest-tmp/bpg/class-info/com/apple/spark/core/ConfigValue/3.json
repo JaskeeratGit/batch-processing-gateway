@@ -1,0 +1,18 @@
+{
+  "className": "ConfigValue",
+  "methodName": "ConfigValue",
+  "brief": "private ConfigValue(){}",
+  "methodSignature": "ConfigValue()",
+  "sourceCode": "private ConfigValue() {}",
+  "useField": false,
+  "isConstructor": true,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "private ConfigValue() {\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

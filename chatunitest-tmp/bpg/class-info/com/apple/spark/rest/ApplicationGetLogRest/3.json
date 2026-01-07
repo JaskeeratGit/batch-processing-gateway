@@ -1,0 +1,44 @@
+{
+  "className": "ApplicationGetLogRest",
+  "methodName": "getPodNamePrefixFromAppId",
+  "brief": "private String getPodNamePrefixFromAppId(String appId){}",
+  "methodSignature": "getPodNamePrefixFromAppId(String)",
+  "sourceCode": "private String getPodNamePrefixFromAppId(String appId) {\n    String podNamePrefix = \"\";\n    String response;\n    GetJobEnvironmentResponse jobEnvionmentResponse = new GetJobEnvironmentResponse();\n    String url =\n        getAppConfig().getSparkHistoryUrl() + \"/api/v1/applications/\" + appId + \"/environment\";\n    try {\n      // SparkHistoryUrl is the ELB endpoint that EKS container can access\n      // SparkHistoryDns is the actual sparkhisotry DNS that users use to access it\n      response = get(url, \"Host\", getAppConfig().getSparkHistoryDns());\n      ObjectMapper objectMapper = new ObjectMapper();\n      jobEnvionmentResponse = objectMapper.readValue(response, GetJobEnvironmentResponse.class);\n      podNamePrefix = jobEnvionmentResponse.getPodNamePrefix();\n    } catch (Exception e) {\n      logger.error(e.toString());\n    }\n    return podNamePrefix;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [],
+    "com.apple.spark.AppConfig": [
+      "getSparkHistoryDns()",
+      "getSparkHistoryUrl()"
+    ],
+    "com.apple.spark.rest.RestBase": [
+      "getAppConfig()"
+    ],
+    "com.apple.spark.util.HttpUtils": [
+      "get(String, String, String)"
+    ],
+    "com.fasterxml.jackson.databind.ObjectMapper": [
+      "readValue(String, Class<T>)"
+    ],
+    "com.apple.spark.clients.sparkhistory.GetJobEnvironmentResponse": [
+      "getPodNamePrefix()"
+    ],
+    "org.slf4j.Logger": [
+      "error(String)"
+    ],
+    "java.lang.Throwable": [
+      "toString()"
+    ]
+  },
+  "full_method_info": "private String getPodNamePrefixFromAppId(String appId) {\n    String podNamePrefix = \"\";\n    String response;\n    GetJobEnvironmentResponse jobEnvionmentResponse = new GetJobEnvironmentResponse();\n    String url = getAppConfig().getSparkHistoryUrl() + \"/api/v1/applications/\" + appId + \"/environment\";\n    try {\n        // SparkHistoryUrl is the ELB endpoint that EKS container can access\n        // SparkHistoryDns is the actual sparkhisotry DNS that users use to access it\n        response = get(url, \"Host\", getAppConfig().getSparkHistoryDns());\n        ObjectMapper objectMapper = new ObjectMapper();\n        jobEnvionmentResponse = objectMapper.readValue(response, GetJobEnvironmentResponse.class);\n        podNamePrefix = jobEnvionmentResponse.getPodNamePrefix();\n    } catch (Exception e) {\n        logger.error(e.toString());\n    }\n    return podNamePrefix;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

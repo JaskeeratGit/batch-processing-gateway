@@ -1,0 +1,22 @@
+{
+  "className": "QueueConfig",
+  "methodName": "setZonePickerName",
+  "brief": "public void setZonePickerName(final String zonePickerName){}",
+  "methodSignature": "setZonePickerName(String)",
+  "sourceCode": "public void setZonePickerName(final String zonePickerName) {\n      this.zonePickerName = zonePickerName;\n    }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": []
+  },
+  "full_method_info": "public void setZonePickerName(final String zonePickerName) {\n    this.zonePickerName = zonePickerName;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

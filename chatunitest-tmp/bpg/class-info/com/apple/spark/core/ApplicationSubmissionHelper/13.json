@@ -1,0 +1,27 @@
+{
+  "className": "ApplicationSubmissionHelper",
+  "methodName": "getYuniKornSchedulerConfig",
+  "brief": "public static BatchSchedulerConfiguration getYuniKornSchedulerConfig(String queue){}",
+  "methodSignature": "getYuniKornSchedulerConfig(String)",
+  "sourceCode": "public static BatchSchedulerConfiguration getYuniKornSchedulerConfig(String queue) {\n    if (queue == null) {\n      queue = YUNIKORN_SPARK_DEFAULT_QUEUE;\n    }\n\n    BatchSchedulerConfiguration schedulerConfig = new BatchSchedulerConfiguration();\n\n    schedulerConfig.setQueue(YUNIKORN_ROOT_QUEUE + \".\" + queue);\n    schedulerConfig.setGang(false);\n    schedulerConfig.setReservationTimeoutInSeconds(PLACEHOLDER_TIMEOUT_IN_SECONDS);\n\n    return schedulerConfig;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [],
+    "com.apple.spark.operator.BatchSchedulerConfiguration": [
+      "setGang(boolean)",
+      "setQueue(String)",
+      "setReservationTimeoutInSeconds(int)"
+    ]
+  },
+  "full_method_info": "/**\n * By default all Spark jobs go to the YuniKorn queue root.spark to be gang scheduled\n *\n * @param queue the name of the queue\n * @return BatchSchedulerConfiguration\n */\npublic static BatchSchedulerConfiguration getYuniKornSchedulerConfig(String queue) {\n    if (queue == null) {\n        queue = YUNIKORN_SPARK_DEFAULT_QUEUE;\n    }\n    BatchSchedulerConfiguration schedulerConfig = new BatchSchedulerConfiguration();\n    schedulerConfig.setQueue(YUNIKORN_ROOT_QUEUE + \".\" + queue);\n    schedulerConfig.setGang(false);\n    schedulerConfig.setReservationTimeoutInSeconds(PLACEHOLDER_TIMEOUT_IN_SECONDS);\n    return schedulerConfig;\n}",
+  "method_comment": "\n   * By default all Spark jobs go to the YuniKorn queue root.spark to be gang scheduled\n   *\n   * @param queue the name of the queue\n   * @return BatchSchedulerConfiguration\n   ",
+  "method_annotation": ""
+}

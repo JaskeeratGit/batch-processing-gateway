@@ -1,0 +1,77 @@
+{
+  "fullClassName": "com.apple.spark.util.MetricId",
+  "className": "MetricId",
+  "index": 76,
+  "modifier": "[public ]",
+  "extend": "[]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.util",
+  "packageDeclaration": "package com.apple.spark.util;",
+  "classSignature": "public class MetricId",
+  "hasConstructor": true,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import java.util.Collection;",
+    "import java.util.Collections;",
+    "import java.util.List;",
+    "import java.util.Objects;",
+    "import java.util.stream.Collectors;"
+  ],
+  "fields": [
+    "private final String metricName;",
+    "private final List<String> values;"
+  ],
+  "superClasses": [],
+  "implementedTypes": [],
+  "methodSigs": {
+    "getMetricName()": "0",
+    "getValues()": "1",
+    "equals(Object)": "2",
+    "hashCode()": "3",
+    "toString()": "4",
+    "MetricId(String, Collection)": "5"
+  },
+  "methodsBrief": [
+    "public String getMetricName(){}",
+    "public List<String> getValues(){}",
+    "@Override\n  public boolean equals(Object o){}",
+    "@Override\n  public int hashCode(){}",
+    "@Override\n  public String toString(){}",
+    "public MetricId(String metricName, Collection<String> values){}"
+  ],
+  "constructorSigs": [
+    "MetricId(String, Collection)"
+  ],
+  "constructorBrief": [
+    "public MetricId(String metricName, Collection<String> values){}"
+  ],
+  "getterSetterSigs": [
+    "getMetricName()",
+    "getValues()"
+  ],
+  "getterSetterBrief": [
+    "public String getMetricName(){}",
+    "public List<String> getValues(){}"
+  ],
+  "constructorDeps": {
+    "java.lang.String": [],
+    "java.util.Collections": [
+      "emptyList()"
+    ],
+    "java.util.stream.Stream": [
+      "collect(Collector<? super T, A, R>)",
+      "map(Function<? super T, ? extends R>)"
+    ],
+    "java.util.Collection": [
+      "stream()"
+    ],
+    "java.util.stream.Collectors": [
+      "toList()"
+    ]
+  },
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.util;\n\nimport java.util.Collection;\nimport java.util.Collections;\nimport java.util.List;\nimport java.util.Objects;\nimport java.util.stream.Collectors;\n\n/**\n * This class stores name and a list of tag values for metrics, which could uniquely identify a metric instance.\n */\npublic class MetricId {\n\n    private final String metricName;\n\n    private final List<String> values;\n\n    public MetricId(String metricName, Collection<String> values) {\n        this.metricName = metricName == null ? \"\" : metricName;\n        this.values = values == null ? Collections.emptyList() : values.stream().map(t -> t == null ? \"\" : t).collect(Collectors.toList());\n    }\n\n    public String getMetricName() {\n        return metricName;\n    }\n\n    public List<String> getValues() {\n        return values;\n    }\n\n    @Override\n    public boolean equals(Object o) {\n        if (this == o) {\n            return true;\n        }\n        if (o == null || getClass() != o.getClass()) {\n            return false;\n        }\n        MetricId metricId = (MetricId) o;\n        return Objects.equals(metricName, metricId.metricName) && Objects.equals(values, metricId.values);\n    }\n\n    @Override\n    public int hashCode() {\n        return Objects.hash(metricName, values);\n    }\n\n    @Override\n    public String toString() {\n        return \"MetricId{\" + \"metricName='\" + metricName + '\\'' + \", values=\" + values + '}';\n    }\n}\n",
+  "classDeclarationCode": "/**\n * This class stores name and a list of tag values for metrics, which could uniquely identify a metric instance.\n */\npublic class MetricId {\n\n    private final String metricName;\n\n    private final List<String> values;\n\n    public MetricId(String metricName, Collection<String> values) {\n        this.metricName = metricName == null ? \"\" : metricName;\n        this.values = values == null ? Collections.emptyList() : values.stream().map(t -> t == null ? \"\" : t).collect(Collectors.toList());\n    }\n\n    public String getMetricName() {\n        return metricName;\n    }\n\n    public List<String> getValues() {\n        return values;\n    }\n\n    @Override\n    public boolean equals(Object o) {\n        if (this == o) {\n            return true;\n        }\n        if (o == null || getClass() != o.getClass()) {\n            return false;\n        }\n        MetricId metricId = (MetricId) o;\n        return Objects.equals(metricName, metricId.metricName) && Objects.equals(values, metricId.values);\n    }\n\n    @Override\n    public int hashCode() {\n        return Objects.hash(metricName, values);\n    }\n\n    @Override\n    public String toString() {\n        return \"MetricId{\" + \"metricName='\" + metricName + '\\'' + \", values=\" + values + '}';\n    }\n}",
+  "subClasses": []
+}

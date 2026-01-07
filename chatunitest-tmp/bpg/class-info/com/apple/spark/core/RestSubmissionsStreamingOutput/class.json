@@ -1,0 +1,44 @@
+{
+  "fullClassName": "com.apple.spark.core.RestSubmissionsStreamingOutput",
+  "className": "RestSubmissionsStreamingOutput",
+  "index": 85,
+  "modifier": "[public , abstract ]",
+  "extend": "[RestStreamingOutput]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.core",
+  "packageDeclaration": "package com.apple.spark.core;",
+  "classSignature": "public abstract class RestSubmissionsStreamingOutput",
+  "hasConstructor": false,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": true,
+  "imports": [
+    "import com.apple.spark.AppConfig;",
+    "import com.apple.spark.api.SubmissionSummary;",
+    "import com.apple.spark.operator.SparkApplication;",
+    "import com.apple.spark.operator.SparkApplicationResourceList;",
+    "import com.fasterxml.jackson.databind.ObjectMapper;",
+    "import java.io.IOException;",
+    "import java.io.OutputStream;",
+    "import java.util.List;"
+  ],
+  "fields": [],
+  "superClasses": [
+    "RestStreamingOutput"
+  ],
+  "implementedTypes": [],
+  "methodSigs": {
+    "writeSubmissions(OutputStream, SparkApplicationResourceList, AppConfig.SparkCluster, AppConfig)": "0"
+  },
+  "methodsBrief": [
+    "protected void writeSubmissions(\n      OutputStream outputStream,\n      SparkApplicationResourceList list,\n      AppConfig.SparkCluster sparkCluster,\n      AppConfig appConfig)\n      throws IOException{}"
+  ],
+  "constructorSigs": [],
+  "constructorBrief": [],
+  "getterSetterSigs": [],
+  "getterSetterBrief": [],
+  "constructorDeps": {},
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.core;\n\nimport com.apple.spark.AppConfig;\nimport com.apple.spark.api.SubmissionSummary;\nimport com.apple.spark.operator.SparkApplication;\nimport com.apple.spark.operator.SparkApplicationResourceList;\nimport com.fasterxml.jackson.databind.ObjectMapper;\nimport java.io.IOException;\nimport java.io.OutputStream;\nimport java.util.List;\n\npublic abstract class RestSubmissionsStreamingOutput extends RestStreamingOutput {\n\n    protected void writeSubmissions(OutputStream outputStream, SparkApplicationResourceList list, AppConfig.SparkCluster sparkCluster, AppConfig appConfig) throws IOException {\n        if (list == null) {\n            return;\n        }\n        List<SparkApplication> sparkApplicationResources = list.getItems();\n        if (sparkApplicationResources == null) {\n            return;\n        }\n        ObjectMapper objectMapper = new ObjectMapper();\n        for (SparkApplication sparkApplicationResource : sparkApplicationResources) {\n            SubmissionSummary submission = new SubmissionSummary();\n            submission.copyFrom(sparkApplicationResource, sparkCluster, appConfig);\n            String str = objectMapper.writeValueAsString(submission);\n            writeLine(outputStream, str);\n        }\n        outputStream.flush();\n    }\n}\n",
+  "classDeclarationCode": "public abstract class RestSubmissionsStreamingOutput extends RestStreamingOutput {\n\n    protected void writeSubmissions(OutputStream outputStream, SparkApplicationResourceList list, AppConfig.SparkCluster sparkCluster, AppConfig appConfig) throws IOException {\n        if (list == null) {\n            return;\n        }\n        List<SparkApplication> sparkApplicationResources = list.getItems();\n        if (sparkApplicationResources == null) {\n            return;\n        }\n        ObjectMapper objectMapper = new ObjectMapper();\n        for (SparkApplication sparkApplicationResource : sparkApplicationResources) {\n            SubmissionSummary submission = new SubmissionSummary();\n            submission.copyFrom(sparkApplicationResource, sparkCluster, appConfig);\n            String str = objectMapper.writeValueAsString(submission);\n            writeLine(outputStream, str);\n        }\n        outputStream.flush();\n    }\n}",
+  "subClasses": []
+}

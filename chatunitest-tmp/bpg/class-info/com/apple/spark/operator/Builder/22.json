@@ -1,0 +1,18 @@
+{
+  "className": "Builder",
+  "methodName": "build",
+  "brief": "public SparkApplicationSpec build(){}",
+  "methodSignature": "build()",
+  "sourceCode": "public SparkApplicationSpec build() {\n      return this.sparkApplicationSpec;\n    }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public SparkApplicationSpec build() {\n    return this.sparkApplicationSpec;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

@@ -1,0 +1,39 @@
+{
+  "fullClassName": "com.apple.spark.tools.SparkClusterTest",
+  "className": "SparkClusterTest",
+  "index": 108,
+  "modifier": "[public ]",
+  "extend": "[]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.tools",
+  "packageDeclaration": "package com.apple.spark.tools;",
+  "classSignature": "public class SparkClusterTest",
+  "hasConstructor": false,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import com.apple.spark.AppConfig;",
+    "import com.apple.spark.core.KubernetesHelper;",
+    "import io.fabric8.kubernetes.api.model.Pod;",
+    "import io.fabric8.kubernetes.api.model.PodList;",
+    "import io.fabric8.kubernetes.client.DefaultKubernetesClient;"
+  ],
+  "fields": [],
+  "superClasses": [],
+  "implementedTypes": [],
+  "methodSigs": {
+    "main(String[])": "0"
+  },
+  "methodsBrief": [
+    "public static void main(String[] args){}"
+  ],
+  "constructorSigs": [],
+  "constructorBrief": [],
+  "getterSetterSigs": [],
+  "getterSetterBrief": [],
+  "constructorDeps": {},
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.tools;\n\nimport com.apple.spark.AppConfig;\nimport com.apple.spark.core.KubernetesHelper;\nimport io.fabric8.kubernetes.api.model.Pod;\nimport io.fabric8.kubernetes.api.model.PodList;\nimport io.fabric8.kubernetes.client.DefaultKubernetesClient;\n\n/**\n * This tool is to check a given Spark Cluster\n */\npublic class SparkClusterTest {\n\n    public static void main(String[] args) {\n        String apiServer = \"\";\n        String user = \"\";\n        String token = \"\";\n        String caCert = \"\";\n        String httpProxy = null;\n        String httpsProxy = null;\n        String namespace = \"\";\n        for (int i = 0; i < args.length; ) {\n            String argName = args[i++];\n            if (argName.equalsIgnoreCase(\"-api-server\")) {\n                apiServer = args[i++];\n            } else if (argName.equalsIgnoreCase(\"-user\")) {\n                user = args[i++];\n            } else if (argName.equalsIgnoreCase(\"-token\")) {\n                token = args[i++];\n            } else if (argName.equalsIgnoreCase(\"-ca-cert\")) {\n                caCert = args[i++];\n            } else if (argName.equalsIgnoreCase(\"-http-proxy\")) {\n                httpProxy = args[i++];\n            } else if (argName.equalsIgnoreCase(\"-https-proxy\")) {\n                httpsProxy = args[i++];\n            } else if (argName.equalsIgnoreCase(\"-namespace\")) {\n                namespace = args[i++];\n            } else {\n                throw new RuntimeException(String.format(\"Unsupported argument: %s\", argName));\n            }\n        }\n        AppConfig.SparkCluster sparkCluster = new AppConfig.SparkCluster();\n        sparkCluster.setMasterUrl(apiServer);\n        sparkCluster.setUserName(user);\n        sparkCluster.setUserTokenSOPS(token);\n        sparkCluster.setCaCertDataSOPS(caCert);\n        sparkCluster.setHttpProxy(httpProxy);\n        sparkCluster.setHttpsProxy(httpsProxy);\n        sparkCluster.setSparkApplicationNamespace(namespace);\n        System.out.println(String.format(\"Listing pods in cluster %s namespace %s\", sparkCluster.getMasterUrl(), sparkCluster.getSparkApplicationNamespace()));\n        try (DefaultKubernetesClient client = KubernetesHelper.getK8sClient(sparkCluster)) {\n            PodList podList = client.pods().inNamespace(sparkCluster.getSparkApplicationNamespace()).list();\n            for (Pod pod : podList.getItems()) {\n                System.out.println(String.format(\"Pod %s %s\", pod.getMetadata().getName(), pod.getStatus().getPhase()));\n            }\n        }\n    }\n}\n",
+  "classDeclarationCode": "/**\n * This tool is to check a given Spark Cluster\n */\npublic class SparkClusterTest {\n\n    public static void main(String[] args) {\n        String apiServer = \"\";\n        String user = \"\";\n        String token = \"\";\n        String caCert = \"\";\n        String httpProxy = null;\n        String httpsProxy = null;\n        String namespace = \"\";\n        for (int i = 0; i < args.length; ) {\n            String argName = args[i++];\n            if (argName.equalsIgnoreCase(\"-api-server\")) {\n                apiServer = args[i++];\n            } else if (argName.equalsIgnoreCase(\"-user\")) {\n                user = args[i++];\n            } else if (argName.equalsIgnoreCase(\"-token\")) {\n                token = args[i++];\n            } else if (argName.equalsIgnoreCase(\"-ca-cert\")) {\n                caCert = args[i++];\n            } else if (argName.equalsIgnoreCase(\"-http-proxy\")) {\n                httpProxy = args[i++];\n            } else if (argName.equalsIgnoreCase(\"-https-proxy\")) {\n                httpsProxy = args[i++];\n            } else if (argName.equalsIgnoreCase(\"-namespace\")) {\n                namespace = args[i++];\n            } else {\n                throw new RuntimeException(String.format(\"Unsupported argument: %s\", argName));\n            }\n        }\n        AppConfig.SparkCluster sparkCluster = new AppConfig.SparkCluster();\n        sparkCluster.setMasterUrl(apiServer);\n        sparkCluster.setUserName(user);\n        sparkCluster.setUserTokenSOPS(token);\n        sparkCluster.setCaCertDataSOPS(caCert);\n        sparkCluster.setHttpProxy(httpProxy);\n        sparkCluster.setHttpsProxy(httpsProxy);\n        sparkCluster.setSparkApplicationNamespace(namespace);\n        System.out.println(String.format(\"Listing pods in cluster %s namespace %s\", sparkCluster.getMasterUrl(), sparkCluster.getSparkApplicationNamespace()));\n        try (DefaultKubernetesClient client = KubernetesHelper.getK8sClient(sparkCluster)) {\n            PodList podList = client.pods().inNamespace(sparkCluster.getSparkApplicationNamespace()).list();\n            for (Pod pod : podList.getItems()) {\n                System.out.println(String.format(\"Pod %s %s\", pod.getMetadata().getName(), pod.getStatus().getPhase()));\n            }\n        }\n    }\n}",
+  "subClasses": []
+}

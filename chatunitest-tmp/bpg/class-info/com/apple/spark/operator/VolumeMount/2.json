@@ -1,0 +1,18 @@
+{
+  "className": "VolumeMount",
+  "methodName": "getReadOnly",
+  "brief": "public Boolean getReadOnly(){}",
+  "methodSignature": "getReadOnly()",
+  "sourceCode": "public Boolean getReadOnly() {\n    return readOnly;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public Boolean getReadOnly() {\n    return readOnly;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

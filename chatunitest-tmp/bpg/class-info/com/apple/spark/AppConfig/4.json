@@ -1,0 +1,20 @@
+{
+  "className": "AppConfig",
+  "methodName": "setFixedSparkConf",
+  "brief": "public void setFixedSparkConf(Map<String, String> fixedSparkConf){}",
+  "methodSignature": "setFixedSparkConf(Map)",
+  "sourceCode": "public void setFixedSparkConf(Map<String, String> fixedSparkConf) {\n    this.fixedSparkConf = fixedSparkConf;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "Map<String,String>"
+  ],
+  "dependentMethods": {},
+  "full_method_info": "public void setFixedSparkConf(Map<String, String> fixedSparkConf) {\n    this.fixedSparkConf = fixedSparkConf;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

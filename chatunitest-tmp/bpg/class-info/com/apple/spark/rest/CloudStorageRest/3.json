@@ -1,0 +1,43 @@
+{
+  "className": "CloudStorageRest",
+  "methodName": "generateS3Key",
+  "brief": "private String generateS3Key(String fileName, String folderName){}",
+  "methodSignature": "generateS3Key(String, String)",
+  "sourceCode": "private String generateS3Key(String fileName, String folderName) {\n    if (StringUtils.isEmpty(folderName)) {\n      DateTimeFormatter formatter =\n          DateTimeFormatter.ofPattern(\"yyyyMMdd\").withZone(ZoneOffset.UTC);\n      String dateStr = formatter.format(Instant.now());\n      return String.format(\n          \"%s/%s/%s/%s\", appConfig.getS3Folder(), dateStr, UUID.randomUUID(), fileName);\n    } else {\n      folderName = StringUtils.strip(folderName, \"/\");\n      return String.format(\"%s/%s/%s\", appConfig.getS3Folder(), folderName, fileName);\n    }\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String",
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "format(String, Object[])"
+    ],
+    "org.apache.commons.lang3.StringUtils": [
+      "strip(String, String)",
+      "isEmpty(CharSequence)"
+    ],
+    "java.time.format.DateTimeFormatter": [
+      "format(TemporalAccessor)",
+      "withZone(ZoneId)",
+      "ofPattern(String)"
+    ],
+    "java.time.Instant": [
+      "now()"
+    ],
+    "com.apple.spark.AppConfig": [
+      "getS3Folder()"
+    ],
+    "java.util.UUID": [
+      "randomUUID()"
+    ]
+  },
+  "full_method_info": "private String generateS3Key(String fileName, String folderName) {\n    if (StringUtils.isEmpty(folderName)) {\n        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(\"yyyyMMdd\").withZone(ZoneOffset.UTC);\n        String dateStr = formatter.format(Instant.now());\n        return String.format(\"%s/%s/%s/%s\", appConfig.getS3Folder(), dateStr, UUID.randomUUID(), fileName);\n    } else {\n        folderName = StringUtils.strip(folderName, \"/\");\n        return String.format(\"%s/%s/%s\", appConfig.getS3Folder(), folderName, fileName);\n    }\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

@@ -1,0 +1,66 @@
+{
+  "className": "ApplicationSubmissionRest",
+  "methodName": "getStatusImpl",
+  "brief": "private GetSubmissionStatusResponse getStatusImpl(String submissionId, User user){}",
+  "methodSignature": "getStatusImpl(String, User)",
+  "sourceCode": "private GetSubmissionStatusResponse getStatusImpl(String submissionId, User user) {\n    requestCounters.increment(\n        REQUEST_METRIC_NAME, Tag.of(\"name\", \"get_status\"), Tag.of(\"user\", user.getName()));\n\n    GetSubmissionStatusResponseCacheValue cacheValue;\n    try {\n      cacheValue = statusCache.get(submissionId);\n    } catch (ExecutionException ex) {\n      requestCounters.increment(\n          STATUS_CACHE_GET_FAILURE, Tag.of(\"exception\", ex.getClass().getSimpleName()));\n      logger.warn(String.format(\"Failed to get status from cache for %s\", submissionId), ex);\n      AppConfig.SparkCluster sparkCluster = getSparkCluster(submissionId);\n      return getStatusImplWithoutCache(\n          getSparkApplicationResource(submissionId), submissionId, sparkCluster);\n    }\n\n    if (cacheValue == null) {\n      logger.warn(\"Got null status cache value for {}\", submissionId);\n      AppConfig.SparkCluster sparkCluster = getSparkCluster(submissionId);\n      return getStatusImplWithoutCache(\n          getSparkApplicationResource(submissionId), submissionId, sparkCluster);\n    }\n\n    long cacheElapsedTime = System.currentTimeMillis() - cacheValue.getCreatedTimeMillis();\n    // The cache library should make sure the cached value refreshed after expiration.\n    // Just in case the cache library has issue and does not refresh,\n    // we check it again here and force fetching status from Kubernetes if necessary.\n    if (cacheElapsedTime > statusCacheExpireMillis * 2) {\n      logger.warn(\n          \"Got expired status cache value ({} millis) for {}\", cacheElapsedTime, submissionId);\n      AppConfig.SparkCluster sparkCluster = getSparkCluster(submissionId);\n      return getStatusImplWithoutCache(\n          getSparkApplicationResource(submissionId), submissionId, sparkCluster);\n    }\n\n    if (cacheValue.getResponse() == null) {\n      if (cacheValue.getException() != null) {\n        Throwable cachedException = cacheValue.getException();\n        if (cachedException instanceof WebApplicationException) {\n          throw (WebApplicationException) cachedException;\n        }\n        throw new WebApplicationException(\n            String.format(\n                \"Failed to get status: %s\",\n                ExceptionUtils.getExceptionNameAndMessage(cacheValue.getException())),\n            Response.Status.INTERNAL_SERVER_ERROR);\n      } else {\n        throw new WebApplicationException(\n            \"Failed to get status (got null status from cache)\",\n            Response.Status.INTERNAL_SERVER_ERROR);\n      }\n    }\n\n    return cacheValue.getResponse();\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String",
+    "User"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "format(String, Object[])"
+    ],
+    "com.apple.spark.security.User": [
+      "getName()"
+    ],
+    "com.apple.spark.util.CounterMetricContainer": [
+      "increment(String, Tag[])"
+    ],
+    "io.micrometer.core.instrument.Tag": [
+      "of(String, String)"
+    ],
+    "com.google.common.cache.LoadingCache": [
+      "get(K)"
+    ],
+    "java.lang.Class": [
+      "getSimpleName()"
+    ],
+    "java.lang.Object": [
+      "getClass()"
+    ],
+    "org.slf4j.Logger": [
+      "warn(String, Throwable)",
+      "warn(String, Object)",
+      "warn(String, Object, Object)"
+    ],
+    "com.apple.spark.rest.RestBase": [
+      "getSparkApplicationResource(String)",
+      "getSparkCluster(String)"
+    ],
+    "com.apple.spark.rest.ApplicationSubmissionRest": [
+      "getStatusImplWithoutCache(SparkApplication, String, SparkCluster)"
+    ],
+    "java.lang.System": [
+      "currentTimeMillis()"
+    ],
+    "com.apple.spark.rest.GetSubmissionStatusResponseCacheValue": [
+      "getCreatedTimeMillis()",
+      "getException()",
+      "getResponse()"
+    ],
+    "com.apple.spark.util.ExceptionUtils": [
+      "getExceptionNameAndMessage(Throwable)"
+    ]
+  },
+  "full_method_info": "private GetSubmissionStatusResponse getStatusImpl(String submissionId, User user) {\n    requestCounters.increment(REQUEST_METRIC_NAME, Tag.of(\"name\", \"get_status\"), Tag.of(\"user\", user.getName()));\n    GetSubmissionStatusResponseCacheValue cacheValue;\n    try {\n        cacheValue = statusCache.get(submissionId);\n    } catch (ExecutionException ex) {\n        requestCounters.increment(STATUS_CACHE_GET_FAILURE, Tag.of(\"exception\", ex.getClass().getSimpleName()));\n        logger.warn(String.format(\"Failed to get status from cache for %s\", submissionId), ex);\n        AppConfig.SparkCluster sparkCluster = getSparkCluster(submissionId);\n        return getStatusImplWithoutCache(getSparkApplicationResource(submissionId), submissionId, sparkCluster);\n    }\n    if (cacheValue == null) {\n        logger.warn(\"Got null status cache value for {}\", submissionId);\n        AppConfig.SparkCluster sparkCluster = getSparkCluster(submissionId);\n        return getStatusImplWithoutCache(getSparkApplicationResource(submissionId), submissionId, sparkCluster);\n    }\n    long cacheElapsedTime = System.currentTimeMillis() - cacheValue.getCreatedTimeMillis();\n    // The cache library should make sure the cached value refreshed after expiration.\n    // Just in case the cache library has issue and does not refresh,\n    // we check it again here and force fetching status from Kubernetes if necessary.\n    if (cacheElapsedTime > statusCacheExpireMillis * 2) {\n        logger.warn(\"Got expired status cache value ({} millis) for {}\", cacheElapsedTime, submissionId);\n        AppConfig.SparkCluster sparkCluster = getSparkCluster(submissionId);\n        return getStatusImplWithoutCache(getSparkApplicationResource(submissionId), submissionId, sparkCluster);\n    }\n    if (cacheValue.getResponse() == null) {\n        if (cacheValue.getException() != null) {\n            Throwable cachedException = cacheValue.getException();\n            if (cachedException instanceof WebApplicationException) {\n                throw (WebApplicationException) cachedException;\n            }\n            throw new WebApplicationException(String.format(\"Failed to get status: %s\", ExceptionUtils.getExceptionNameAndMessage(cacheValue.getException())), Response.Status.INTERNAL_SERVER_ERROR);\n        } else {\n            throw new WebApplicationException(\"Failed to get status (got null status from cache)\", Response.Status.INTERNAL_SERVER_ERROR);\n        }\n    }\n    return cacheValue.getResponse();\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

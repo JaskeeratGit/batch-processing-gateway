@@ -1,0 +1,79 @@
+package com.apple.spark.core;
+
+import java.lang.reflect.Method;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import io.micrometer.core.instrument.Clock;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.logging.LoggingMeterRegistry;
+import io.micrometer.statsd.StatsdConfig;
+import io.micrometer.statsd.StatsdFlavor;
+import io.micrometer.statsd.StatsdMeterRegistry;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/*
+  Fixed test: use Mockito's MockedStatic for System.getenv to avoid JVM module reflective access issues.
+  Tests invoke port() via reflection as requested.
+*/
+public class BPGStatsdConfig_port_5_0_Test {
+
+    private static final String STATSD_SERVER_PORT_ENV_NAME = "STATSD_SERVER_PORT";
+
+    @Test
+    public void testPort_whenEnvNotSet_returnsZero() throws Exception {
+        try (MockedStatic<System> mocked = mockStatic(System.class)) {
+            mocked.when(() -> System.getenv(STATSD_SERVER_PORT_ENV_NAME)).thenReturn(null);
+            int result = invokePortViaReflection();
+            assertEquals(0, result);
+        }
+    }
+
+    @Test
+    public void testPort_whenEnvEmpty_returnsZero() throws Exception {
+        try (MockedStatic<System> mocked = mockStatic(System.class)) {
+            mocked.when(() -> System.getenv(STATSD_SERVER_PORT_ENV_NAME)).thenReturn("");
+            int result = invokePortViaReflection();
+            assertEquals(0, result);
+        }
+    }
+
+    @Test
+    public void testPort_whenEnvIsValidNumber_returnsParsedInt() throws Exception {
+        try (MockedStatic<System> mocked = mockStatic(System.class)) {
+            mocked.when(() -> System.getenv(STATSD_SERVER_PORT_ENV_NAME)).thenReturn("8125");
+            int result = invokePortViaReflection();
+            assertEquals(8125, result);
+        }
+    }
+
+    @Test
+    public void testPort_whenEnvIsInvalidNumber_returnsZero() throws Exception {
+        try (MockedStatic<System> mocked = mockStatic(System.class)) {
+            mocked.when(() -> System.getenv(STATSD_SERVER_PORT_ENV_NAME)).thenReturn("notANumber");
+            int result = invokePortViaReflection();
+            assertEquals(0, result);
+        }
+    }
+
+    // Helper to invoke port() via reflection (as requested)
+    private int invokePortViaReflection() throws Exception {
+        Class<?> clazz = Class.forName("com.apple.spark.core.BPGStatsdConfig");
+        Object instance = clazz.getDeclaredConstructor().newInstance();
+        Method m = clazz.getDeclaredMethod("port");
+        m.setAccessible(true);
+        Object ret = m.invoke(instance);
+        return (ret instanceof Integer) ? (Integer) ret : 0;
+    }
+}
+
+--------------------------------------------
+Error in testPort_whenEnvNotSet_returnsZero(): line 30 : java.lang.IllegalStateException: Could not initialize plugin: interface org.mockito.plugins.MockMaker (alternate: null)
+Error in testPort_whenEnvIsValidNumber_returnsParsedInt(): line 48 : java.lang.IllegalStateException: Could not initialize plugin: interface org.mockito.plugins.MockMaker (alternate: null)
+Error in testPort_whenEnvEmpty_returnsZero(): line 39 : java.lang.IllegalStateException: Could not initialize plugin: interface org.mockito.plugins.MockMaker (alternate: null)
+Error in testPort_whenEnvIsInvalidNumber_returnsZero(): line 57 : java.lang.IllegalStateException: Could not initialize plugin: interface org.mockito.plugins.MockMaker (alternate: null)

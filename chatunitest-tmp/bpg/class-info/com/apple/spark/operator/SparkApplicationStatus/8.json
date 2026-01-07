@@ -1,0 +1,18 @@
+{
+  "className": "SparkApplicationStatus",
+  "methodName": "getDriverInfo",
+  "brief": "public DriverInfo getDriverInfo(){}",
+  "methodSignature": "getDriverInfo()",
+  "sourceCode": "public DriverInfo getDriverInfo() {\n    return driverInfo;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public DriverInfo getDriverInfo() {\n    return driverInfo;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

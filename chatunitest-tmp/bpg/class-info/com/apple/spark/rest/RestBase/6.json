@@ -1,0 +1,48 @@
+{
+  "className": "RestBase",
+  "methodName": "getSparkApplicationResources",
+  "brief": "protected SparkApplicationResourceList getSparkApplicationResources(\n      AppConfig.SparkCluster sparkCluster){}",
+  "methodSignature": "getSparkApplicationResources(AppConfig.SparkCluster)",
+  "sourceCode": "protected SparkApplicationResourceList getSparkApplicationResources(\n      AppConfig.SparkCluster sparkCluster) {\n    com.codahale.metrics.Timer timer =\n        registry.timer(this.getClass().getSimpleName() + \".getSparkApplicationResources.k8s-time\");\n    try (DefaultKubernetesClient client = KubernetesHelper.getK8sClient(sparkCluster);\n        com.codahale.metrics.Timer.Context context = timer.time()) {\n      MixedOperation<SparkApplication, SparkApplicationResourceList, Resource<SparkApplication>>\n              sparkApplicationClient =\n              client.resources(SparkApplication.class, SparkApplicationResourceList.class);\n\n      SparkApplicationResourceList list =\n              sparkApplicationClient.inNamespace(sparkCluster.getSparkApplicationNamespace()).list();\n\n      context.stop();\n      if (list == null) {\n        return new SparkApplicationResourceList();\n      }\n      return list;\n    }\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "AppConfig.SparkCluster"
+  ],
+  "dependentMethods": {
+    "com.codahale.metrics.MetricRegistry": [
+      "timer(String)"
+    ],
+    "java.lang.Class": [
+      "getSimpleName()"
+    ],
+    "java.lang.Object": [
+      "getClass()"
+    ],
+    "com.apple.spark.core.KubernetesHelper": [
+      "getK8sClient(SparkCluster)"
+    ],
+    "com.codahale.metrics.Timer": [
+      "time()"
+    ],
+    "io.fabric8.kubernetes.client.NamespacedKubernetesClientAdapter": [
+      "resources(Class<T>, Class<L>)"
+    ],
+    "io.fabric8.kubernetes.client.dsl.Namespaceable": [
+      "inNamespace(String)"
+    ],
+    "com.apple.spark.AppConfig.SparkCluster": [
+      "getSparkApplicationNamespace()"
+    ],
+    "com.codahale.metrics.Timer.Context": [
+      "stop()"
+    ]
+  },
+  "full_method_info": "protected SparkApplicationResourceList getSparkApplicationResources(AppConfig.SparkCluster sparkCluster) {\n    com.codahale.metrics.Timer timer = registry.timer(this.getClass().getSimpleName() + \".getSparkApplicationResources.k8s-time\");\n    try (DefaultKubernetesClient client = KubernetesHelper.getK8sClient(sparkCluster);\n        com.codahale.metrics.Timer.Context context = timer.time()) {\n        MixedOperation<SparkApplication, SparkApplicationResourceList, Resource<SparkApplication>> sparkApplicationClient = client.resources(SparkApplication.class, SparkApplicationResourceList.class);\n        SparkApplicationResourceList list = sparkApplicationClient.inNamespace(sparkCluster.getSparkApplicationNamespace()).list();\n        context.stop();\n        if (list == null) {\n            return new SparkApplicationResourceList();\n        }\n        return list;\n    }\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

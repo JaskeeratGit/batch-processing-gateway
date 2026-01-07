@@ -1,0 +1,31 @@
+{
+  "className": "ApplicationSubmissionHelper",
+  "methodName": "getVolumes",
+  "brief": "public static List<Volume> getVolumes(\n      SubmitApplicationRequest request, AppConfig.SparkCluster sparkCluster){}",
+  "methodSignature": "getVolumes(SubmitApplicationRequest, AppConfig.SparkCluster)",
+  "sourceCode": "public static List<Volume> getVolumes(\n      SubmitApplicationRequest request, AppConfig.SparkCluster sparkCluster) {\n\n    // if there are volumes in the request, use that to populate spark spec\n    if (request.getVolumes() != null && !request.getVolumes().isEmpty()) {\n      return request.getVolumes();\n    }\n\n    // if there are volumes in the spark cluster, use that to populate spark spec\n    if (sparkCluster.getVolumes() != null && !sparkCluster.getVolumes().isEmpty()) {\n      return sparkCluster.getVolumes();\n    }\n\n    return null;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "SubmitApplicationRequest",
+    "AppConfig.SparkCluster"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.api.SubmitApplicationRequest": [
+      "getVolumes()"
+    ],
+    "java.util.List": [
+      "isEmpty()"
+    ],
+    "com.apple.spark.AppConfig.SparkCluster": [
+      "getVolumes()"
+    ]
+  },
+  "full_method_info": "public static List<Volume> getVolumes(SubmitApplicationRequest request, AppConfig.SparkCluster sparkCluster) {\n    // if there are volumes in the request, use that to populate spark spec\n    if (request.getVolumes() != null && !request.getVolumes().isEmpty()) {\n        return request.getVolumes();\n    }\n    // if there are volumes in the spark cluster, use that to populate spark spec\n    if (sparkCluster.getVolumes() != null && !sparkCluster.getVolumes().isEmpty()) {\n        return sparkCluster.getVolumes();\n    }\n    return null;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

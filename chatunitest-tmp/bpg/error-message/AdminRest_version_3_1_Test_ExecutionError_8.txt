@@ -1,0 +1,101 @@
+package com.apple.spark.rest;
+
+import com.apple.spark.AppConfig;
+import com.apple.spark.core.RestStreamingOutput;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
+import javax.ws.rs.core.Response;
+import com.apple.spark.core.Constants;
+import com.apple.spark.core.KubernetesHelper;
+import com.apple.spark.core.RestSubmissionsStreamingOutput;
+import com.apple.spark.operator.SparkApplicationResourceList;
+import com.apple.spark.security.User;
+import com.apple.spark.util.ConfigUtil;
+import com.apple.spark.util.ExceptionUtils;
+import com.apple.spark.util.VersionInfo;
+import com.codahale.metrics.annotation.Timed;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.dropwizard.auth.Auth;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import javax.annotation.security.PermitAll;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import static com.apple.spark.core.Constants.ADMIN_API;
+
+public class AdminRest_version_3_1_Test {
+
+    @Test
+    public void version_shouldReturn200AndWriteJsonAndNewline() throws Exception {
+        // Use a SimpleMeterRegistry to avoid Mockito initialization issues
+        MeterRegistry meterRegistry = new SimpleMeterRegistry();
+        AdminRest adminRest = new AdminRest(new AppConfig(), meterRegistry);
+        Response resp = adminRest.version();
+        assertNotNull(resp, "Response should not be null");
+        assertEquals(200, resp.getStatus(), "Response status should be 200");
+        Object entity = resp.getEntity();
+        assertNotNull(entity, "Response entity should not be null");
+        assertTrue(entity instanceof RestStreamingOutput, "Entity should be a RestStreamingOutput");
+        RestStreamingOutput streamingOutput = (RestStreamingOutput) entity;
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        // invoke the streaming output to write to our byte array stream
+        streamingOutput.write(baos);
+        String result = baos.toString(StandardCharsets.UTF_8.name());
+        assertNotNull(result, "Output should not be null");
+        assertFalse(result.isEmpty(), "Output should not be empty");
+        // should end with system newline because writeLine appends System.lineSeparator()
+        assertTrue(result.endsWith(System.lineSeparator()), "Output should end with a newline");
+        // Basic sanity: valid JSON object or empty JSON produced (we don't know VersionInfo shape)
+        String trimmed = result.trim();
+        assertTrue(trimmed.startsWith("{") || trimmed.startsWith("\"") || trimmed.equals("{}"), "Output should look like a JSON object or be empty JSON");
+    }
+
+    @Test
+    public void version_shouldHandleOutputStreamWriteFailuresGracefully() throws Exception {
+        // Use a SimpleMeterRegistry to avoid Mockito initialization issues
+        MeterRegistry meterRegistry = new SimpleMeterRegistry();
+        AdminRest adminRest = new AdminRest(new AppConfig(), meterRegistry);
+        Response resp = adminRest.version();
+        assertEquals(200, resp.getStatus());
+        Object entity = resp.getEntity();
+        assertTrue(entity instanceof RestStreamingOutput);
+        RestStreamingOutput streamingOutput = (RestStreamingOutput) entity;
+        // Create an OutputStream that throws on write to trigger the catch block in write()
+        OutputStream failingOutput = new OutputStream() {
+
+            @Override
+            public void write(int b) throws IOException {
+                throw new IOException("simulated write failure");
+            }
+        };
+        // The implementation catches Throwable internally and should not propagate an exception.
+        // If an exception is thrown here the test will fail.
+        streamingOutput.write(failingOutput);
+    }
+}
+
+--------------------------------------------
+Error in version_shouldReturn200AndWriteJsonAndNewline(): line 54 : java.lang.IllegalStateException: Default registry name has not been set.
+Error in version_shouldHandleOutputStreamWriteFailuresGracefully(): line 79 : java.lang.IllegalStateException: Default registry name has not been set.

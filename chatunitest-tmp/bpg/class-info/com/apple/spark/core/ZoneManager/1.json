@@ -1,0 +1,35 @@
+{
+  "className": "ZoneManager",
+  "methodName": "createZonePickerForQueue",
+  "brief": "private static ZonePicker createZonePickerForQueue(final QueueConfig queueConfig){}",
+  "methodSignature": "createZonePickerForQueue(QueueConfig)",
+  "sourceCode": "private static ZonePicker createZonePickerForQueue(final QueueConfig queueConfig) {\n    String zonePickerName = queueConfig.getZonePickerName();\n    if (zonePickerName == null) {\n      zonePickerName = ROUND_ROBIN_ZONE_PICKER_NAME;\n    }\n\n    ZonePicker zonePicker;\n    switch (zonePickerName) {\n      case ROUND_ROBIN_ZONE_PICKER_NAME:\n        zonePicker = new RoundRobinZonePicker();\n        break;\n      default:\n        zonePicker = new RoundRobinZonePicker();\n    }\n\n    zonePicker.update(queueConfig.getAllowedZones());\n    logger.info(\n        \"Creating {} ZonePicker for Queue {} with AllowedAvailabilityZones {}\",\n        zonePickerName,\n        queueConfig.getName(),\n        String.join(\",\", queueConfig.getAllowedZones()));\n    return zonePicker;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "QueueConfig"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.AppConfig.QueueConfig": [
+      "getAllowedZones()",
+      "getName()",
+      "getZonePickerName()"
+    ],
+    "com.apple.spark.core.ZonePicker": [
+      "update(String>)"
+    ],
+    "org.slf4j.Logger": [
+      "info(String, Object[])"
+    ],
+    "java.lang.String": [
+      "join(CharSequence, CharSequence>)"
+    ]
+  },
+  "full_method_info": "private static ZonePicker createZonePickerForQueue(final QueueConfig queueConfig) {\n    String zonePickerName = queueConfig.getZonePickerName();\n    if (zonePickerName == null) {\n        zonePickerName = ROUND_ROBIN_ZONE_PICKER_NAME;\n    }\n    ZonePicker zonePicker;\n    switch(zonePickerName) {\n        case ROUND_ROBIN_ZONE_PICKER_NAME:\n            zonePicker = new RoundRobinZonePicker();\n            break;\n        default:\n            zonePicker = new RoundRobinZonePicker();\n    }\n    zonePicker.update(queueConfig.getAllowedZones());\n    logger.info(\"Creating {} ZonePicker for Queue {} with AllowedAvailabilityZones {}\", zonePickerName, queueConfig.getName(), String.join(\",\", queueConfig.getAllowedZones()));\n    return zonePicker;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

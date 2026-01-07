@@ -1,0 +1,65 @@
+{
+  "className": "ConfigUtil",
+  "methodName": "getConfFromDB",
+  "brief": "public static List<SparkCluster> getConfFromDB(AppConfig config){}",
+  "methodSignature": "getConfFromDB(AppConfig)",
+  "sourceCode": "public static List<SparkCluster> getConfFromDB(AppConfig config) {\n    AppConfig.DBStorage dbconf = config.getDbStorageSOPS();\n    String connectionString = dbconf.getConnectionString();\n    String userId = dbconf.getUser();\n    String password = dbconf.getPasswordDecodedValue();\n    String queryConf = \"SELECT cid, conf FROM config\";\n\n    DBConnection dbConnection = new DBConnection(connectionString, userId, password);\n    List<SparkCluster> sparkClusters = new ArrayList<>();\n    ObjectMapper objectMapper = new ObjectMapper();\n\n    try {\n      Jdbi jdbi = Jdbi.create(dbConnection.getConnection());\n      List<Map<String, Object>> dbResults =\n          jdbi.withHandle(handle -> handle.createQuery(queryConf).mapToMap().list());\n\n      for (Map<String, Object> m : dbResults) {\n        String conf = (String) m.get(\"conf\");\n        SparkCluster sparkCluster = objectMapper.readValue(conf, SparkCluster.class);\n        if (sparkCluster != null) {\n          sparkClusters.add(sparkCluster);\n          logger.info(\n              \"Read configuration from db for spark cluster/namespace: {}\", sparkCluster.getId());\n        }\n      }\n    } catch (Exception e) {\n      logger.info(\"Error occurred fetching and parsing config from DB: {}.\", e.toString());\n    }\n\n    if (sparkClusters.isEmpty()) {\n      logger.info(\"No spark cluster configuration was read from DB.\");\n    }\n\n    return sparkClusters;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "AppConfig"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.AppConfig": [
+      "getDbStorageSOPS()"
+    ],
+    "com.apple.spark.AppConfig.DBStorage": [
+      "getUser()",
+      "getConnectionString()",
+      "getPasswordDecodedValue()"
+    ],
+    "org.jdbi.v3.core.Jdbi": [
+      "create(Connection)",
+      "withHandle(HandleCallback<R, X>)"
+    ],
+    "com.apple.spark.core.DBConnection": [
+      "getConnection()"
+    ],
+    "org.jdbi.v3.core.result.ResultIterable": [
+      "list()"
+    ],
+    "org.jdbi.v3.core.result.ResultBearing": [
+      "mapToMap()"
+    ],
+    "org.jdbi.v3.core.Handle": [
+      "createQuery(String)"
+    ],
+    "java.util.Map": [
+      "get(Object)"
+    ],
+    "com.fasterxml.jackson.databind.ObjectMapper": [
+      "readValue(String, Class<T>)"
+    ],
+    "java.util.List": [
+      "isEmpty()",
+      "add(E)"
+    ],
+    "org.slf4j.Logger": [
+      "info(String)",
+      "info(String, Object)"
+    ],
+    "com.apple.spark.AppConfig.SparkCluster": [
+      "getId()"
+    ],
+    "java.lang.Throwable": [
+      "toString()"
+    ]
+  },
+  "full_method_info": "public static List<SparkCluster> getConfFromDB(AppConfig config) {\n    AppConfig.DBStorage dbconf = config.getDbStorageSOPS();\n    String connectionString = dbconf.getConnectionString();\n    String userId = dbconf.getUser();\n    String password = dbconf.getPasswordDecodedValue();\n    String queryConf = \"SELECT cid, conf FROM config\";\n    DBConnection dbConnection = new DBConnection(connectionString, userId, password);\n    List<SparkCluster> sparkClusters = new ArrayList<>();\n    ObjectMapper objectMapper = new ObjectMapper();\n    try {\n        Jdbi jdbi = Jdbi.create(dbConnection.getConnection());\n        List<Map<String, Object>> dbResults = jdbi.withHandle(handle -> handle.createQuery(queryConf).mapToMap().list());\n        for (Map<String, Object> m : dbResults) {\n            String conf = (String) m.get(\"conf\");\n            SparkCluster sparkCluster = objectMapper.readValue(conf, SparkCluster.class);\n            if (sparkCluster != null) {\n                sparkClusters.add(sparkCluster);\n                logger.info(\"Read configuration from db for spark cluster/namespace: {}\", sparkCluster.getId());\n            }\n        }\n    } catch (Exception e) {\n        logger.info(\"Error occurred fetching and parsing config from DB: {}.\", e.toString());\n    }\n    if (sparkClusters.isEmpty()) {\n        logger.info(\"No spark cluster configuration was read from DB.\");\n    }\n    return sparkClusters;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

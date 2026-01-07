@@ -1,0 +1,58 @@
+{
+  "className": "LogDao",
+  "methodName": "logApplicationFinishedImpl",
+  "brief": "private void logApplicationFinishedImpl(\n      String submissionId,\n      String status,\n      Timestamp finishedTime,\n      Double vCoreSecondCost,\n      Double memoryMbSecondCost){}",
+  "methodSignature": "logApplicationFinishedImpl(String, String, Timestamp, Double, Double)",
+  "sourceCode": "private void logApplicationFinishedImpl(\n      String submissionId,\n      String status,\n      Timestamp finishedTime,\n      Double vCoreSecondCost,\n      Double memoryMbSecondCost) {\n    String sql =\n        String.format(\n            \"INSERT INTO %s.application_submission(submission_id, status, finished_time)\"\n                + \" VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE\"\n                + \" status=?,\"\n                + \" finished_time=?,\"\n                + \" cost=( (executor_memory_mb * number_executor + driver_memory_mb) * ? \"\n                + \" + (executor_core * number_executor + driver_core) * ? \"\n                + \")\"\n                + \" * (TIMESTAMPDIFF(second,start_time,finished_time))\",\n            dbName);\n    logger.info(\"Executing SQL: {}\", sql);\n    try (PreparedStatement statement = dbConnection.getConnection().prepareStatement(sql)) {\n      statement.setString(1, submissionId);\n      statement.setString(2, status);\n      statement.setTimestamp(3, finishedTime);\n      statement.setString(4, status);\n      statement.setTimestamp(5, finishedTime);\n      statement.setDouble(6, memoryMbSecondCost);\n      statement.setDouble(7, vCoreSecondCost);\n      statement.executeUpdate();\n    } catch (Throwable ex) {\n      logger.warn(\n          String.format(\n              \"Failed to log application finished for submission %s, status: %s, SQL: %s\",\n              submissionId, status, sql),\n          ex);\n      failureMetrics.increment(\n          DB_FAILURE_METRIC_NAME,\n          Tag.of(OPERATION_TAG, LOG_APP_FINISHED_OPERATION),\n          Tag.of(EXCEPTION_TAG, ex.getClass().getSimpleName()));\n    }\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String",
+    "String",
+    "Timestamp",
+    "Double",
+    "Double"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "format(String, Object[])"
+    ],
+    "java.sql.Timestamp": [],
+    "java.lang.Double": [],
+    "org.slf4j.Logger": [
+      "warn(String, Throwable)",
+      "info(String, Object)"
+    ],
+    "java.sql.Connection": [
+      "prepareStatement(String)"
+    ],
+    "com.apple.spark.core.DBConnection": [
+      "getConnection()"
+    ],
+    "java.sql.PreparedStatement": [
+      "setTimestamp(int, Timestamp)",
+      "setString(int, String)",
+      "executeUpdate()",
+      "setDouble(int, double)"
+    ],
+    "com.apple.spark.util.CounterMetricContainer": [
+      "increment(String, Tag[])"
+    ],
+    "io.micrometer.core.instrument.Tag": [
+      "of(String, String)"
+    ],
+    "java.lang.Class": [
+      "getSimpleName()"
+    ],
+    "java.lang.Object": [
+      "getClass()"
+    ]
+  },
+  "full_method_info": "private void logApplicationFinishedImpl(String submissionId, String status, Timestamp finishedTime, Double vCoreSecondCost, Double memoryMbSecondCost) {\n    String sql = String.format(\"INSERT INTO %s.application_submission(submission_id, status, finished_time)\" + \" VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE\" + \" status=?,\" + \" finished_time=?,\" + \" cost=( (executor_memory_mb * number_executor + driver_memory_mb) * ? \" + \" + (executor_core * number_executor + driver_core) * ? \" + \")\" + \" * (TIMESTAMPDIFF(second,start_time,finished_time))\", dbName);\n    logger.info(\"Executing SQL: {}\", sql);\n    try (PreparedStatement statement = dbConnection.getConnection().prepareStatement(sql)) {\n        statement.setString(1, submissionId);\n        statement.setString(2, status);\n        statement.setTimestamp(3, finishedTime);\n        statement.setString(4, status);\n        statement.setTimestamp(5, finishedTime);\n        statement.setDouble(6, memoryMbSecondCost);\n        statement.setDouble(7, vCoreSecondCost);\n        statement.executeUpdate();\n    } catch (Throwable ex) {\n        logger.warn(String.format(\"Failed to log application finished for submission %s, status: %s, SQL: %s\", submissionId, status, sql), ex);\n        failureMetrics.increment(DB_FAILURE_METRIC_NAME, Tag.of(OPERATION_TAG, LOG_APP_FINISHED_OPERATION), Tag.of(EXCEPTION_TAG, ex.getClass().getSimpleName()));\n    }\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

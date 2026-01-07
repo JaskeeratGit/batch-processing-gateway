@@ -1,0 +1,63 @@
+{
+  "className": "ApplicationSubmissionRest",
+  "methodName": "getDriverInfo",
+  "brief": "@GET()\n  @Path(\"{submissionId}/driver\")\n  @Timed\n  @ExceptionMetered(\n      name = \"WebApplicationException\",\n      absolute = true,\n      cause = WebApplicationException.class)\n  @Operation(\n      summary = \"Get Spark application driver information.\",\n      description = \"May return an empty object when the Spark application has not started yet.\",\n      tags = {\"Examination\"})\n  @ApiResponse(\n      responseCode = \"200\",\n      content =\n          @Content(\n              mediaType = \"application/json\",\n              schema = @Schema(implementation = GetDriverInfoResponse.class)),\n      description = \"OK\")\n  @ApiResponse(\n      responseCode = \"400\",\n      description = \"Bad request due to invalid submission ID or other issues\")\n  @ApiResponse(responseCode = \"500\", description = \"Internal server error\")\n  @Produces(MediaType.APPLICATION_JSON)\n  public GetDriverInfoResponse getDriverInfo(\n      @PathParam(\"submissionId\") String submissionId,\n      @Parameter(hidden = true) @DefaultValue(\"none\") @HeaderParam(\"Client-Version\")\n          String clientVersion,\n      @Parameter(hidden = true) @Auth User user){}",
+  "methodSignature": "getDriverInfo(String, String, User)",
+  "sourceCode": "@GET()\n  @Path(\"{submissionId}/driver\")\n  @Timed\n  @ExceptionMetered(\n      name = \"WebApplicationException\",\n      absolute = true,\n      cause = WebApplicationException.class)\n  @Operation(\n      summary = \"Get Spark application driver information.\",\n      description = \"May return an empty object when the Spark application has not started yet.\",\n      tags = {\"Examination\"})\n  @ApiResponse(\n      responseCode = \"200\",\n      content =\n          @Content(\n              mediaType = \"application/json\",\n              schema = @Schema(implementation = GetDriverInfoResponse.class)),\n      description = \"OK\")\n  @ApiResponse(\n      responseCode = \"400\",\n      description = \"Bad request due to invalid submission ID or other issues\")\n  @ApiResponse(responseCode = \"500\", description = \"Internal server error\")\n  @Produces(MediaType.APPLICATION_JSON)\n  public GetDriverInfoResponse getDriverInfo(\n      @PathParam(\"submissionId\") String submissionId,\n      @Parameter(hidden = true) @DefaultValue(\"none\") @HeaderParam(\"Client-Version\")\n          String clientVersion,\n      @Parameter(hidden = true) @Auth User user) {\n    logger.info(\n        \"LogClientInfo: user {}, {}, Client-Version {}\",\n        user.getName(),\n        \"getDriverInfo\",\n        clientVersion);\n    requestCounters.increment(\n        REQUEST_METRIC_NAME, Tag.of(\"name\", \"get_driver\"), Tag.of(\"user\", user.getName()));\n\n    AppConfig.SparkCluster sparkCluster = getSparkCluster(submissionId);\n    SparkApplication sparkApplicationResource = getSparkApplicationResource(submissionId);\n    if (sparkApplicationResource.getStatus() == null\n        || sparkApplicationResource.getStatus().getDriverInfo() == null) {\n      return new GetDriverInfoResponse();\n    }\n    DriverInfo driverInfo = sparkApplicationResource.getStatus().getDriverInfo();\n    if (driverInfo == null || driverInfo.getPodName() == null) {\n      return new GetDriverInfoResponse();\n    }\n\n    Pod pod = getPod(driverInfo.getPodName(), sparkCluster);\n    if (pod == null) {\n      return new GetDriverInfoResponse();\n    }\n    PodStatus podStatus = pod.getStatus();\n    if (podStatus == null) {\n      return new GetDriverInfoResponse();\n    }\n    String startTimeStr = podStatus.getStartTime();\n    Long startTimeMillis = DateTimeUtils.parseOrNull(startTimeStr);\n    GetDriverInfoResponse response = new GetDriverInfoResponse();\n    response.setPodName(driverInfo.getPodName());\n    response.setStartTime(startTimeMillis);\n\n    return response;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String",
+    "String",
+    "User"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [],
+    "com.apple.spark.security.User": [
+      "getName()"
+    ],
+    "org.slf4j.Logger": [
+      "info(String, Object[])"
+    ],
+    "com.apple.spark.util.CounterMetricContainer": [
+      "increment(String, Tag[])"
+    ],
+    "io.micrometer.core.instrument.Tag": [
+      "of(String, String)"
+    ],
+    "com.apple.spark.rest.RestBase": [
+      "getSparkApplicationResource(String)",
+      "getPod(String, SparkCluster)",
+      "getSparkCluster(String)"
+    ],
+    "com.apple.spark.operator.SparkApplication": [
+      "getStatus()"
+    ],
+    "com.apple.spark.operator.SparkApplicationStatus": [
+      "getDriverInfo()"
+    ],
+    "com.apple.spark.operator.DriverInfo": [
+      "getPodName()"
+    ],
+    "io.fabric8.kubernetes.api.model.Pod": [
+      "getStatus()"
+    ],
+    "io.fabric8.kubernetes.api.model.PodStatus": [
+      "getStartTime()"
+    ],
+    "com.apple.spark.util.DateTimeUtils": [
+      "parseOrNull(String)"
+    ],
+    "com.apple.spark.api.GetDriverInfoResponse": [
+      "setPodName(String)",
+      "setStartTime(Long)"
+    ]
+  },
+  "full_method_info": "@GET()\n@Path(\"{submissionId}/driver\")\n@Timed\n@ExceptionMetered(name = \"WebApplicationException\", absolute = true, cause = WebApplicationException.class)\n@Operation(summary = \"Get Spark application driver information.\", description = \"May return an empty object when the Spark application has not started yet.\", tags = { \"Examination\" })\n@ApiResponse(responseCode = \"200\", content = @Content(mediaType = \"application/json\", schema = @Schema(implementation = GetDriverInfoResponse.class)), description = \"OK\")\n@ApiResponse(responseCode = \"400\", description = \"Bad request due to invalid submission ID or other issues\")\n@ApiResponse(responseCode = \"500\", description = \"Internal server error\")\n@Produces(MediaType.APPLICATION_JSON)\npublic GetDriverInfoResponse getDriverInfo(@PathParam(\"submissionId\") String submissionId, @Parameter(hidden = true) @DefaultValue(\"none\") @HeaderParam(\"Client-Version\") String clientVersion, @Parameter(hidden = true) @Auth User user) {\n    logger.info(\"LogClientInfo: user {}, {}, Client-Version {}\", user.getName(), \"getDriverInfo\", clientVersion);\n    requestCounters.increment(REQUEST_METRIC_NAME, Tag.of(\"name\", \"get_driver\"), Tag.of(\"user\", user.getName()));\n    AppConfig.SparkCluster sparkCluster = getSparkCluster(submissionId);\n    SparkApplication sparkApplicationResource = getSparkApplicationResource(submissionId);\n    if (sparkApplicationResource.getStatus() == null || sparkApplicationResource.getStatus().getDriverInfo() == null) {\n        return new GetDriverInfoResponse();\n    }\n    DriverInfo driverInfo = sparkApplicationResource.getStatus().getDriverInfo();\n    if (driverInfo == null || driverInfo.getPodName() == null) {\n        return new GetDriverInfoResponse();\n    }\n    Pod pod = getPod(driverInfo.getPodName(), sparkCluster);\n    if (pod == null) {\n        return new GetDriverInfoResponse();\n    }\n    PodStatus podStatus = pod.getStatus();\n    if (podStatus == null) {\n        return new GetDriverInfoResponse();\n    }\n    String startTimeStr = podStatus.getStartTime();\n    Long startTimeMillis = DateTimeUtils.parseOrNull(startTimeStr);\n    GetDriverInfoResponse response = new GetDriverInfoResponse();\n    response.setPodName(driverInfo.getPodName());\n    response.setStartTime(startTimeMillis);\n    return response;\n}",
+  "method_comment": "",
+  "method_annotation": "@GET()\n@Path(\"{submissionId}/driver\")\n@Timed\n@ExceptionMetered(name = \"WebApplicationException\", absolute = true, cause = WebApplicationException.class)\n@Operation(summary = \"Get Spark application driver information.\", description = \"May return an empty object when the Spark application has not started yet.\", tags = { \"Examination\" })\n@ApiResponse(responseCode = \"200\", content = @Content(mediaType = \"application/json\", schema = @Schema(implementation = GetDriverInfoResponse.class)), description = \"OK\")\n@ApiResponse(responseCode = \"400\", description = \"Bad request due to invalid submission ID or other issues\")\n@ApiResponse(responseCode = \"500\", description = \"Internal server error\")\n@Produces(MediaType.APPLICATION_JSON)\n"
+}

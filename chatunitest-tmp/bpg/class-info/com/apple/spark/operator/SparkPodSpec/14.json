@@ -1,0 +1,20 @@
+{
+  "className": "SparkPodSpec",
+  "methodName": "setLabels",
+  "brief": "public void setLabels(Map<String, String> labels){}",
+  "methodSignature": "setLabels(Map)",
+  "sourceCode": "public void setLabels(Map<String, String> labels) {\n    this.labels = labels;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "Map<String,String>"
+  ],
+  "dependentMethods": {},
+  "full_method_info": "public void setLabels(Map<String, String> labels) {\n    this.labels = labels;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

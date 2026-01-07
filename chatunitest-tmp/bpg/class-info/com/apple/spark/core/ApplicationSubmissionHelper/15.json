@@ -1,0 +1,43 @@
+{
+  "className": "ApplicationSubmissionHelper",
+  "methodName": "getDriverCPUBufferForQueue",
+  "brief": "private static double getDriverCPUBufferForQueue(AppConfig appConfig, String queue){}",
+  "methodSignature": "getDriverCPUBufferForQueue(AppConfig, String)",
+  "sourceCode": "private static double getDriverCPUBufferForQueue(AppConfig appConfig, String queue) {\n    Optional<AppConfig.QueueConfig> queueConfigOptional =\n        appConfig.getQueues().stream().filter(t -> t.getName().equals(queue)).findFirst();\n\n    if (queueConfigOptional.isPresent()) {\n      AppConfig.QueueConfig queueConfig = queueConfigOptional.get();\n      if (queueConfig != null && queueConfig.getDriverCPUBufferRatio() != null) {\n        return queueConfig.getDriverCPUBufferRatio();\n      }\n    }\n    return DRIVER_CPU_BUFFER_RATIO;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "AppConfig",
+    "String"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.AppConfig": [
+      "getQueues()"
+    ],
+    "java.lang.String": [
+      "equals(Object)"
+    ],
+    "java.util.stream.Stream": [
+      "findFirst()",
+      "filter(Predicate<? super T>)"
+    ],
+    "java.util.Collection": [
+      "stream()"
+    ],
+    "com.apple.spark.AppConfig.QueueConfig": [
+      "getDriverCPUBufferRatio()",
+      "getName()"
+    ],
+    "java.util.Optional": [
+      "isPresent()",
+      "get()"
+    ]
+  },
+  "full_method_info": "private static double getDriverCPUBufferForQueue(AppConfig appConfig, String queue) {\n    Optional<AppConfig.QueueConfig> queueConfigOptional = appConfig.getQueues().stream().filter(t -> t.getName().equals(queue)).findFirst();\n    if (queueConfigOptional.isPresent()) {\n        AppConfig.QueueConfig queueConfig = queueConfigOptional.get();\n        if (queueConfig != null && queueConfig.getDriverCPUBufferRatio() != null) {\n            return queueConfig.getDriverCPUBufferRatio();\n        }\n    }\n    return DRIVER_CPU_BUFFER_RATIO;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

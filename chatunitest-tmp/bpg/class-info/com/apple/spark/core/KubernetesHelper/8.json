@@ -1,0 +1,39 @@
+{
+  "className": "KubernetesHelper",
+  "methodName": "normalizeLabelValue",
+  "brief": "public static String normalizeLabelValue(String str){}",
+  "methodSignature": "normalizeLabelValue(String)",
+  "sourceCode": "public static String normalizeLabelValue(String str) {\n    if (str == null) {\n      return str;\n    }\n    final char replacementChar = '0';\n    StringBuilder sb = new StringBuilder();\n    for (char ch : str.toCharArray()) {\n      if (sb.length() == 0) {\n        if (isLabelValueAlphanumericChar(ch)) {\n          sb.append(ch);\n        } else {\n          sb.append(replacementChar);\n        }\n      } else {\n        if (isLabelValueChar(ch)) {\n          sb.append(ch);\n        } else {\n          sb.append(replacementChar);\n        }\n      }\n      if (sb.length() >= MAX_LABEL_VALUE_LENGTH) {\n        break;\n      }\n    }\n\n    String labelValue = sb.toString();\n    if (labelValue.isEmpty()) {\n      return labelValue;\n    }\n\n    char lastChar = labelValue.charAt(labelValue.length() - 1);\n    if (!isLabelValueAlphanumericChar(lastChar)) {\n      labelValue = labelValue.substring(0, labelValue.length() - 1) + replacementChar;\n    }\n\n    return labelValue;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "isEmpty()",
+      "toCharArray()",
+      "substring(int, int)",
+      "length()",
+      "charAt(int)"
+    ],
+    "java.lang.AbstractStringBuilder": [
+      "length()"
+    ],
+    "com.apple.spark.core.KubernetesHelper": [
+      "isLabelValueChar(char)",
+      "isLabelValueAlphanumericChar(char)"
+    ],
+    "java.lang.StringBuilder": [
+      "append(char)",
+      "toString()"
+    ]
+  },
+  "full_method_info": "// Normalize a string value to make it valid for label value\n// https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/\n// Valid label value:\n// must be 63 characters or less (can be empty),\n// unless empty, must begin and end with an alphanumeric character ([a-z0-9A-Z]),\n// could contain dashes (-), underscores (_), dots (.), and alphanumerics between.\npublic static String normalizeLabelValue(String str) {\n    if (str == null) {\n        return str;\n    }\n    final char replacementChar = '0';\n    StringBuilder sb = new StringBuilder();\n    for (char ch : str.toCharArray()) {\n        if (sb.length() == 0) {\n            if (isLabelValueAlphanumericChar(ch)) {\n                sb.append(ch);\n            } else {\n                sb.append(replacementChar);\n            }\n        } else {\n            if (isLabelValueChar(ch)) {\n                sb.append(ch);\n            } else {\n                sb.append(replacementChar);\n            }\n        }\n        if (sb.length() >= MAX_LABEL_VALUE_LENGTH) {\n            break;\n        }\n    }\n    String labelValue = sb.toString();\n    if (labelValue.isEmpty()) {\n        return labelValue;\n    }\n    char lastChar = labelValue.charAt(labelValue.length() - 1);\n    if (!isLabelValueAlphanumericChar(lastChar)) {\n        labelValue = labelValue.substring(0, labelValue.length() - 1) + replacementChar;\n    }\n    return labelValue;\n}",
+  "method_comment": " could contain dashes (-), underscores (_), dots (.), and alphanumerics between.",
+  "method_annotation": ""
+}

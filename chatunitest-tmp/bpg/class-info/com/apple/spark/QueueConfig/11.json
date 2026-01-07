@@ -1,0 +1,18 @@
+{
+  "className": "QueueConfig",
+  "methodName": "getExecutorNodeLabelKey",
+  "brief": "public String getExecutorNodeLabelKey(){}",
+  "methodSignature": "getExecutorNodeLabelKey()",
+  "sourceCode": "public String getExecutorNodeLabelKey() {\n      return executorNodeLabelKey;\n    }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public String getExecutorNodeLabelKey() {\n    return executorNodeLabelKey;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

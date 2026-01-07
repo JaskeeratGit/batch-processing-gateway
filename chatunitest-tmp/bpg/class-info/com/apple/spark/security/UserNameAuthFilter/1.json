@@ -1,0 +1,22 @@
+{
+  "className": "UserNameAuthFilter",
+  "methodName": "getCredentials",
+  "brief": "@Nullable\n  private BasicCredentials getCredentials(String header){}",
+  "methodSignature": "getCredentials(String)",
+  "sourceCode": "@Nullable\n  private BasicCredentials getCredentials(String header) {\n    if (header == null) {\n      return null;\n    } else {\n      String username = header;\n      String password = \"\";\n      return new BasicCredentials(username, password);\n    }\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": []
+  },
+  "full_method_info": "@Nullable\nprivate BasicCredentials getCredentials(String header) {\n    if (header == null) {\n        return null;\n    } else {\n        String username = header;\n        String password = \"\";\n        return new BasicCredentials(username, password);\n    }\n}",
+  "method_comment": "",
+  "method_annotation": "@Nullable\n"
+}

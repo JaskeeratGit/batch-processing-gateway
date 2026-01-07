@@ -1,0 +1,47 @@
+{
+  "attempt0": {
+    "testClassName": "NamespaceAndName_hashCode_5_0_Test",
+    "fullName": "com.apple.spark.core.NamespaceAndName_hashCode_5_0_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/NamespaceAndName_hashCode_5_0_Test.java",
+    "className": "NamespaceAndName",
+    "packageName": "com.apple.spark.core",
+    "methodName": "hashCode",
+    "methodSig": "hashCode()"
+  },
+  "attempt1": {
+    "testClassName": "NamespaceAndName_hashCode_5_1_Test",
+    "fullName": "com.apple.spark.core.NamespaceAndName_hashCode_5_1_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/NamespaceAndName_hashCode_5_0_Test.java",
+    "className": "NamespaceAndName",
+    "packageName": "com.apple.spark.core",
+    "methodName": "hashCode",
+    "methodSig": "hashCode()"
+  },
+  "attempt2": {
+    "testClassName": "NamespaceAndName_hashCode_5_2_Test",
+    "fullName": "com.apple.spark.core.NamespaceAndName_hashCode_5_2_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/NamespaceAndName_hashCode_5_0_Test.java",
+    "className": "NamespaceAndName",
+    "packageName": "com.apple.spark.core",
+    "methodName": "hashCode",
+    "methodSig": "hashCode()"
+  },
+  "attempt3": {
+    "testClassName": "NamespaceAndName_hashCode_5_3_Test",
+    "fullName": "com.apple.spark.core.NamespaceAndName_hashCode_5_3_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/NamespaceAndName_hashCode_5_0_Test.java",
+    "className": "NamespaceAndName",
+    "packageName": "com.apple.spark.core",
+    "methodName": "hashCode",
+    "methodSig": "hashCode()"
+  },
+  "attempt4": {
+    "testClassName": "NamespaceAndName_hashCode_5_4_Test",
+    "fullName": "com.apple.spark.core.NamespaceAndName_hashCode_5_4_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/NamespaceAndName_hashCode_5_0_Test.java",
+    "className": "NamespaceAndName",
+    "packageName": "com.apple.spark.core",
+    "methodName": "hashCode",
+    "methodSig": "hashCode()"
+  }
+}

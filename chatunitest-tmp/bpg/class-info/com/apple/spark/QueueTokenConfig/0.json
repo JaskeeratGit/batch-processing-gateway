@@ -1,0 +1,18 @@
+{
+  "className": "QueueTokenConfig",
+  "methodName": "getSecrets",
+  "brief": "public List<String> getSecrets(){}",
+  "methodSignature": "getSecrets()",
+  "sourceCode": "public List<String> getSecrets() {\n      return secrets;\n    }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public List<String> getSecrets() {\n    return secrets;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

@@ -1,0 +1,18 @@
+{
+  "className": "SparkCluster",
+  "methodName": "getId",
+  "brief": "public String getId(){}",
+  "methodSignature": "getId()",
+  "sourceCode": "public String getId() {\n      return id;\n    }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public String getId() {\n    return id;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

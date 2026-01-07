@@ -1,0 +1,55 @@
+{
+  "className": "KubernetesHelper",
+  "methodName": "tryGetLogStream",
+  "brief": "public static InputStream tryGetLogStream(\n      DefaultKubernetesClient client, String namespace, String podName){}",
+  "methodSignature": "tryGetLogStream(DefaultKubernetesClient, String, String)",
+  "sourceCode": "public static InputStream tryGetLogStream(\n      DefaultKubernetesClient client, String namespace, String podName) {\n    PodResource podResource = client.pods().inNamespace(namespace).withName(podName);\n    if (podResource == null) {\n      logger.info(\"Cannot get pod resource {}\", podName);\n      return null;\n    }\n    Pod pod = podResource.get();\n    if (pod == null) {\n      logger.info(\"Cannot get pod {} from pod resource object\", podName);\n      return null;\n    }\n    String podPhase = pod.getStatus().getPhase();\n    if (podPhase.equalsIgnoreCase(SparkConstants.UNKNOWN_PHASE)\n        || podPhase.equalsIgnoreCase(SparkConstants.PENDING_PHASE)) {\n      logger.info(\"Cannot get log, pod {} in phase {}\", podName, podPhase);\n      return null;\n    }\n\n    LogWatch logWatch = podResource.watchLog();\n    if (logWatch == null) {\n      logger.info(\"Log watch is null for pod {}\", podName);\n      return null;\n    }\n\n    InputStream logStream = logWatch.getOutput();\n    logger.info(\"Got log stream for pod {}\", podName);\n\n    return new EndAwareInputStream(\n        logStream,\n        () -> {\n          closeQuietly(logWatch);\n          closeQuietly(client);\n        });\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "DefaultKubernetesClient",
+    "String",
+    "String"
+  ],
+  "dependentMethods": {
+    "io.fabric8.kubernetes.client.DefaultKubernetesClient": [],
+    "java.lang.String": [
+      "equalsIgnoreCase(String)"
+    ],
+    "io.fabric8.kubernetes.client.dsl.Namespaceable": [
+      "inNamespace(String)"
+    ],
+    "io.fabric8.kubernetes.client.NamespacedKubernetesClientAdapter": [
+      "pods()"
+    ],
+    "org.slf4j.Logger": [
+      "info(String, Object, Object)",
+      "info(String, Object)"
+    ],
+    "io.fabric8.kubernetes.client.dsl.Gettable": [
+      "get()"
+    ],
+    "io.fabric8.kubernetes.api.model.PodStatus": [
+      "getPhase()"
+    ],
+    "io.fabric8.kubernetes.api.model.Pod": [
+      "getStatus()"
+    ],
+    "io.fabric8.kubernetes.client.dsl.Loggable": [
+      "watchLog()"
+    ],
+    "io.fabric8.kubernetes.client.dsl.LogWatch": [
+      "getOutput()"
+    ],
+    "com.apple.spark.core.KubernetesHelper": [
+      "closeQuietly(Closeable)"
+    ]
+  },
+  "full_method_info": "public static InputStream tryGetLogStream(DefaultKubernetesClient client, String namespace, String podName) {\n    PodResource podResource = client.pods().inNamespace(namespace).withName(podName);\n    if (podResource == null) {\n        logger.info(\"Cannot get pod resource {}\", podName);\n        return null;\n    }\n    Pod pod = podResource.get();\n    if (pod == null) {\n        logger.info(\"Cannot get pod {} from pod resource object\", podName);\n        return null;\n    }\n    String podPhase = pod.getStatus().getPhase();\n    if (podPhase.equalsIgnoreCase(SparkConstants.UNKNOWN_PHASE) || podPhase.equalsIgnoreCase(SparkConstants.PENDING_PHASE)) {\n        logger.info(\"Cannot get log, pod {} in phase {}\", podName, podPhase);\n        return null;\n    }\n    LogWatch logWatch = podResource.watchLog();\n    if (logWatch == null) {\n        logger.info(\"Log watch is null for pod {}\", podName);\n        return null;\n    }\n    InputStream logStream = logWatch.getOutput();\n    logger.info(\"Got log stream for pod {}\", podName);\n    return new EndAwareInputStream(logStream, () -> {\n        closeQuietly(logWatch);\n        closeQuietly(client);\n    });\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

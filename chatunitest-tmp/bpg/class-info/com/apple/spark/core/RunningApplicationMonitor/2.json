@@ -1,0 +1,59 @@
+{
+  "className": "RunningApplicationMonitor",
+  "methodName": "deleteLongRunningApplications",
+  "brief": "public void deleteLongRunningApplications(){}",
+  "methodSignature": "deleteLongRunningApplications()",
+  "sourceCode": "public void deleteLongRunningApplications() {\n    List<NamespaceAndName> expiredApplications =\n        runningApplications.entrySet().stream()\n            .filter(t -> t.getValue().exceedMaxRunningTime())\n            .map(t -> t.getKey())\n            .collect(Collectors.toList());\n    for (NamespaceAndName app : expiredApplications) {\n      RunningAppInfo runningAppInfo = runningApplications.remove(app);\n      if (runningAppInfo != null) {\n        logger.info(\n            \"Killing application {}/{} due to running too long ({} milliseconds)\",\n            app.getNamespace(),\n            app.getName(),\n            System.currentTimeMillis() - runningAppInfo.getCreationTimeMillis());\n        try {\n          killApplication(app.getNamespace(), app.getName());\n        } catch (Throwable ex) {\n          logger.warn(\n              String.format(\"Failed to kill application %s/%s\", app.getNamespace(), app.getName()),\n              ex);\n        }\n      }\n    }\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {
+    "java.util.stream.Stream": [
+      "collect(Collector<? super T, A, R>)",
+      "filter(Predicate<? super T>)",
+      "map(Function<? super T, ? extends R>)"
+    ],
+    "java.util.Collection": [
+      "stream()"
+    ],
+    "java.util.concurrent.ConcurrentHashMap": [
+      "remove(Object)",
+      "entrySet()"
+    ],
+    "com.apple.spark.core.RunningApplicationMonitor.RunningAppInfo": [
+      "exceedMaxRunningTime()",
+      "getCreationTimeMillis()"
+    ],
+    "java.util.Map.Entry": [
+      "getValue()",
+      "getKey()"
+    ],
+    "java.util.stream.Collectors": [
+      "toList()"
+    ],
+    "org.slf4j.Logger": [
+      "warn(String, Throwable)",
+      "info(String, Object[])"
+    ],
+    "com.apple.spark.core.NamespaceAndName": [
+      "getName()",
+      "getNamespace()"
+    ],
+    "java.lang.System": [
+      "currentTimeMillis()"
+    ],
+    "com.apple.spark.core.RunningApplicationMonitor": [
+      "killApplication(String, String)"
+    ],
+    "java.lang.String": [
+      "format(String, Object[])"
+    ]
+  },
+  "full_method_info": "/**\n * Kill all the apps that have been running for too long.\n */\npublic void deleteLongRunningApplications() {\n    List<NamespaceAndName> expiredApplications = runningApplications.entrySet().stream().filter(t -> t.getValue().exceedMaxRunningTime()).map(t -> t.getKey()).collect(Collectors.toList());\n    for (NamespaceAndName app : expiredApplications) {\n        RunningAppInfo runningAppInfo = runningApplications.remove(app);\n        if (runningAppInfo != null) {\n            logger.info(\"Killing application {}/{} due to running too long ({} milliseconds)\", app.getNamespace(), app.getName(), System.currentTimeMillis() - runningAppInfo.getCreationTimeMillis());\n            try {\n                killApplication(app.getNamespace(), app.getName());\n            } catch (Throwable ex) {\n                logger.warn(String.format(\"Failed to kill application %s/%s\", app.getNamespace(), app.getName()), ex);\n            }\n        }\n    }\n}",
+  "method_comment": " Kill all the apps that have been running for too long. ",
+  "method_annotation": ""
+}

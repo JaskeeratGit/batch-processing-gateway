@@ -1,0 +1,35 @@
+{
+  "className": "JwtUtils",
+  "methodName": "verifyToken",
+  "brief": "public static DecodedJWT verifyToken(String token, String secret){}",
+  "methodSignature": "verifyToken(String, String)",
+  "sourceCode": "public static DecodedJWT verifyToken(String token, String secret) {\n    Algorithm algorithm = Algorithm.HMAC256(secret);\n    // TODO cache and reuse verifier to improve performance\n    JWTVerifier verifier = JWT.require(algorithm).build();\n    DecodedJWT jwt = verifier.verify(token);\n    return jwt;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String",
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [],
+    "com.auth0.jwt.algorithms.Algorithm": [
+      "HMAC256(String)"
+    ],
+    "com.auth0.jwt.interfaces.Verification": [
+      "build()"
+    ],
+    "com.auth0.jwt.JWT": [
+      "require(Algorithm)"
+    ],
+    "com.auth0.jwt.interfaces.JWTVerifier": [
+      "verify(String)"
+    ]
+  },
+  "full_method_info": "// will throw out JWTVerificationException on invalid token\npublic static DecodedJWT verifyToken(String token, String secret) {\n    Algorithm algorithm = Algorithm.HMAC256(secret);\n    // TODO cache and reuse verifier to improve performance\n    JWTVerifier verifier = JWT.require(algorithm).build();\n    DecodedJWT jwt = verifier.verify(token);\n    return jwt;\n}",
+  "method_comment": " will throw out JWTVerificationException on invalid token",
+  "method_annotation": ""
+}

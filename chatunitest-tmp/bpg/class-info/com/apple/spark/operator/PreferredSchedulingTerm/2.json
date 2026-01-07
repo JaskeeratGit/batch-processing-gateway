@@ -1,0 +1,18 @@
+{
+  "className": "PreferredSchedulingTerm",
+  "methodName": "getPreference",
+  "brief": "public NodeSelectorTerm getPreference(){}",
+  "methodSignature": "getPreference()",
+  "sourceCode": "public NodeSelectorTerm getPreference() {\n    return preference;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public NodeSelectorTerm getPreference() {\n    return preference;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

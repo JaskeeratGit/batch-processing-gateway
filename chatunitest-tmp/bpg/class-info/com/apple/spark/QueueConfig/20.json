@@ -1,0 +1,25 @@
+{
+  "className": "QueueConfig",
+  "methodName": "setDriverCPUBufferRatio",
+  "brief": "public void setDriverCPUBufferRatio(String driverCPUBufferRatio){}",
+  "methodSignature": "setDriverCPUBufferRatio(String)",
+  "sourceCode": "public void setDriverCPUBufferRatio(String driverCPUBufferRatio) {\n      this.driverCPUBufferRatio = Double.parseDouble(driverCPUBufferRatio);\n    }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [],
+    "java.lang.Double": [
+      "parseDouble(String)"
+    ]
+  },
+  "full_method_info": "public void setDriverCPUBufferRatio(String driverCPUBufferRatio) {\n    this.driverCPUBufferRatio = Double.parseDouble(driverCPUBufferRatio);\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

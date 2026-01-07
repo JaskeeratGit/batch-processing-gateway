@@ -1,0 +1,25 @@
+{
+  "className": "DateTimeUtils",
+  "methodName": "format",
+  "brief": "public static String format(Instant instant){}",
+  "methodSignature": "format(Instant)",
+  "sourceCode": "public static String format(Instant instant) {\n    return ISO_INSTANT.format(instant);\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "Instant"
+  ],
+  "dependentMethods": {
+    "java.time.Instant": [],
+    "java.time.format.DateTimeFormatter": [
+      "format(TemporalAccessor)"
+    ]
+  },
+  "full_method_info": "public static String format(Instant instant) {\n    return ISO_INSTANT.format(instant);\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

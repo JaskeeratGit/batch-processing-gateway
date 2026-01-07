@@ -1,0 +1,50 @@
+{
+  "className": "ThrowableExceptionMapper",
+  "methodName": "toResponse",
+  "brief": "@Override\n  public Response toResponse(Throwable throwable){}",
+  "methodSignature": "toResponse(Throwable)",
+  "sourceCode": "@Override\n  public Response toResponse(Throwable throwable) {\n    exceptions.mark();\n    logger.warn(\n        String.format(\"Hit exception: %s\", ExceptionUtils.getExceptionNameAndMessage(throwable)),\n        throwable);\n\n    if (throwable instanceof WebApplicationException) {\n      WebApplicationException webApplicationException = (WebApplicationException) throwable;\n      return Response.status(webApplicationException.getResponse().getStatus())\n          .type(MediaType.APPLICATION_JSON_TYPE)\n          .entity(\n              new ErrorMessage(\n                  webApplicationException.getResponse().getStatus(),\n                  ExceptionUtils.getExceptionNameAndMessage(webApplicationException)))\n          .build();\n    }\n\n    return Response.status(Response.Status.INTERNAL_SERVER_ERROR)\n        .type(MediaType.APPLICATION_JSON_TYPE)\n        .entity(\n            new ErrorMessage(\n                Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(),\n                ExceptionUtils.getExceptionNameAndMessage(throwable)))\n        .build();\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "Throwable"
+  ],
+  "dependentMethods": {
+    "java.lang.Throwable": [],
+    "com.codahale.metrics.Meter": [
+      "mark()"
+    ],
+    "org.slf4j.Logger": [
+      "warn(String, Throwable)"
+    ],
+    "java.lang.String": [
+      "format(String, Object[])"
+    ],
+    "com.apple.spark.util.ExceptionUtils": [
+      "getExceptionNameAndMessage(Throwable)"
+    ],
+    "javax.ws.rs.core.Response.ResponseBuilder": [
+      "entity(Object)",
+      "type(MediaType)",
+      "build()"
+    ],
+    "javax.ws.rs.core.Response": [
+      "status(Status)",
+      "status(int)",
+      "getStatus()"
+    ],
+    "javax.ws.rs.WebApplicationException": [
+      "getResponse()"
+    ],
+    "javax.ws.rs.core.Response.Status": [
+      "getStatusCode()"
+    ]
+  },
+  "full_method_info": "@Override\npublic Response toResponse(Throwable throwable) {\n    exceptions.mark();\n    logger.warn(String.format(\"Hit exception: %s\", ExceptionUtils.getExceptionNameAndMessage(throwable)), throwable);\n    if (throwable instanceof WebApplicationException) {\n        WebApplicationException webApplicationException = (WebApplicationException) throwable;\n        return Response.status(webApplicationException.getResponse().getStatus()).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(webApplicationException.getResponse().getStatus(), ExceptionUtils.getExceptionNameAndMessage(webApplicationException))).build();\n    }\n    return Response.status(Response.Status.INTERNAL_SERVER_ERROR).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), ExceptionUtils.getExceptionNameAndMessage(throwable))).build();\n}",
+  "method_comment": "",
+  "method_annotation": "@Override\n"
+}

@@ -1,0 +1,47 @@
+{
+  "attempt0": {
+    "testClassName": "UserUnauthorizedHandler_buildResponse_0_0_Test",
+    "fullName": "com.apple.spark.security.UserUnauthorizedHandler_buildResponse_0_0_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/security/UserUnauthorizedHandler_buildResponse_0_0_Test.java",
+    "className": "UserUnauthorizedHandler",
+    "packageName": "com.apple.spark.security",
+    "methodName": "buildResponse",
+    "methodSig": "buildResponse(String, String)"
+  },
+  "attempt1": {
+    "testClassName": "UserUnauthorizedHandler_buildResponse_0_1_Test",
+    "fullName": "com.apple.spark.security.UserUnauthorizedHandler_buildResponse_0_1_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/security/UserUnauthorizedHandler_buildResponse_0_0_Test.java",
+    "className": "UserUnauthorizedHandler",
+    "packageName": "com.apple.spark.security",
+    "methodName": "buildResponse",
+    "methodSig": "buildResponse(String, String)"
+  },
+  "attempt2": {
+    "testClassName": "UserUnauthorizedHandler_buildResponse_0_2_Test",
+    "fullName": "com.apple.spark.security.UserUnauthorizedHandler_buildResponse_0_2_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/security/UserUnauthorizedHandler_buildResponse_0_0_Test.java",
+    "className": "UserUnauthorizedHandler",
+    "packageName": "com.apple.spark.security",
+    "methodName": "buildResponse",
+    "methodSig": "buildResponse(String, String)"
+  },
+  "attempt3": {
+    "testClassName": "UserUnauthorizedHandler_buildResponse_0_3_Test",
+    "fullName": "com.apple.spark.security.UserUnauthorizedHandler_buildResponse_0_3_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/security/UserUnauthorizedHandler_buildResponse_0_0_Test.java",
+    "className": "UserUnauthorizedHandler",
+    "packageName": "com.apple.spark.security",
+    "methodName": "buildResponse",
+    "methodSig": "buildResponse(String, String)"
+  },
+  "attempt4": {
+    "testClassName": "UserUnauthorizedHandler_buildResponse_0_4_Test",
+    "fullName": "com.apple.spark.security.UserUnauthorizedHandler_buildResponse_0_4_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/security/UserUnauthorizedHandler_buildResponse_0_0_Test.java",
+    "className": "UserUnauthorizedHandler",
+    "packageName": "com.apple.spark.security",
+    "methodName": "buildResponse",
+    "methodSig": "buildResponse(String, String)"
+  }
+}

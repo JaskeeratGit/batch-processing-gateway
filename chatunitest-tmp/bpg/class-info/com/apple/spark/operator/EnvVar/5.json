@@ -1,0 +1,22 @@
+{
+  "className": "EnvVar",
+  "methodName": "setValueFrom",
+  "brief": "public void setValueFrom(EnvVarSource valueFrom){}",
+  "methodSignature": "setValueFrom(EnvVarSource)",
+  "sourceCode": "public void setValueFrom(EnvVarSource valueFrom) {\n    this.valueFrom = valueFrom;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "EnvVarSource"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.operator.EnvVarSource": []
+  },
+  "full_method_info": "public void setValueFrom(EnvVarSource valueFrom) {\n    this.valueFrom = valueFrom;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

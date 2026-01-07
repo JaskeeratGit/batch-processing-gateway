@@ -1,0 +1,18 @@
+{
+  "className": "KubernetesClusterAndNamespace",
+  "methodName": "getMasterUrl",
+  "brief": "public String getMasterUrl(){}",
+  "methodSignature": "getMasterUrl()",
+  "sourceCode": "public String getMasterUrl() {\n    return masterUrl;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public String getMasterUrl() {\n    return masterUrl;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

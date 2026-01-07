@@ -1,0 +1,60 @@
+package com.apple.spark.core;
+
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import io.micrometer.core.instrument.Clock;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.logging.LoggingMeterRegistry;
+import io.micrometer.statsd.StatsdConfig;
+import io.micrometer.statsd.StatsdFlavor;
+import io.micrometer.statsd.StatsdMeterRegistry;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class BPGStatsdConfig_host_4_0_Test {
+
+    @Test
+    public void testHostReturnsEnvValue() throws Exception {
+        try (MockedStatic<System> systemMock = mockStatic(System.class)) {
+            systemMock.when(() -> System.getenv("STATSD_SERVER_IP")).thenReturn("1.2.3.4");
+            java.lang.reflect.Method hostMethod = BPGStatsdConfig.class.getDeclaredMethod("host");
+            hostMethod.setAccessible(true);
+            Object returned = hostMethod.invoke(new BPGStatsdConfig());
+            assertTrue(returned instanceof String);
+            assertEquals("1.2.3.4", returned);
+        }
+    }
+
+    @Test
+    public void testHostReturnsNullWhenEnvNotSet() throws Exception {
+        try (MockedStatic<System> systemMock = mockStatic(System.class)) {
+            systemMock.when(() -> System.getenv("STATSD_SERVER_IP")).thenReturn(null);
+            java.lang.reflect.Method hostMethod = BPGStatsdConfig.class.getDeclaredMethod("host");
+            hostMethod.setAccessible(true);
+            Object returned = hostMethod.invoke(new BPGStatsdConfig());
+            assertNull(returned);
+        }
+    }
+
+    @Test
+    public void testHostReturnsEmptyStringWhenEnvEmpty() throws Exception {
+        try (MockedStatic<System> systemMock = mockStatic(System.class)) {
+            systemMock.when(() -> System.getenv("STATSD_SERVER_IP")).thenReturn("");
+            java.lang.reflect.Method hostMethod = BPGStatsdConfig.class.getDeclaredMethod("host");
+            hostMethod.setAccessible(true);
+            Object returned = hostMethod.invoke(new BPGStatsdConfig());
+            assertNotNull(returned);
+            assertEquals("", returned);
+        }
+    }
+}
+
+--------------------------------------------
+Error in testHostReturnsEnvValue(): line 23 : java.lang.IllegalStateException: Could not initialize plugin: interface org.mockito.plugins.MockMaker (alternate: null)
+Error in testHostReturnsEmptyStringWhenEnvEmpty(): line 46 : java.lang.IllegalStateException: Could not initialize plugin: interface org.mockito.plugins.MockMaker (alternate: null)
+Error in testHostReturnsNullWhenEnvNotSet(): line 35 : java.lang.IllegalStateException: Could not initialize plugin: interface org.mockito.plugins.MockMaker (alternate: null)

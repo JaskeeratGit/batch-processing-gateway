@@ -1,0 +1,69 @@
+{
+  "fullClassName": "com.apple.spark.operator.IngressTLS",
+  "className": "IngressTLS",
+  "index": 38,
+  "modifier": "[public ]",
+  "extend": "[]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.operator",
+  "packageDeclaration": "package com.apple.spark.operator;",
+  "classSignature": "@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class IngressTLS",
+  "hasConstructor": true,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import com.fasterxml.jackson.annotation.JsonIgnoreProperties;",
+    "import com.fasterxml.jackson.annotation.JsonInclude;",
+    "import java.util.ArrayList;",
+    "import java.util.List;"
+  ],
+  "fields": [
+    "private List<String> hosts;",
+    "private String secretName;"
+  ],
+  "superClasses": [],
+  "implementedTypes": [],
+  "methodSigs": {
+    "getHosts()": "0",
+    "setHosts(List)": "1",
+    "getSecretName()": "2",
+    "setSecretName(String)": "3",
+    "IngressTLS()": "4",
+    "IngressTLS(IngressTLS)": "5"
+  },
+  "methodsBrief": [
+    "public List<String> getHosts(){}",
+    "public void setHosts(List<String> hosts){}",
+    "public String getSecretName(){}",
+    "public void setSecretName(String secretName){}",
+    "public IngressTLS(){}",
+    "public IngressTLS(IngressTLS ingressTLS){}"
+  ],
+  "constructorSigs": [
+    "IngressTLS()",
+    "IngressTLS(IngressTLS)"
+  ],
+  "constructorBrief": [
+    "public IngressTLS(){}",
+    "public IngressTLS(IngressTLS ingressTLS){}"
+  ],
+  "getterSetterSigs": [
+    "getHosts()",
+    "setHosts(List)",
+    "getSecretName()",
+    "setSecretName(String)"
+  ],
+  "getterSetterBrief": [
+    "public List<String> getHosts(){}",
+    "public void setHosts(List<String> hosts){}",
+    "public String getSecretName(){}",
+    "public void setSecretName(String secretName){}"
+  ],
+  "constructorDeps": {
+    "com.apple.spark.operator.IngressTLS": []
+  },
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.operator;\n\nimport com.fasterxml.jackson.annotation.JsonIgnoreProperties;\nimport com.fasterxml.jackson.annotation.JsonInclude;\nimport java.util.ArrayList;\nimport java.util.List;\n\n@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class IngressTLS {\n\n    private List<String> hosts;\n\n    private String secretName;\n\n    public IngressTLS() {\n    }\n\n    public IngressTLS(IngressTLS ingressTLS) {\n        this.hosts = new ArrayList<>(ingressTLS.hosts);\n        this.secretName = ingressTLS.secretName;\n    }\n\n    public List<String> getHosts() {\n        return hosts;\n    }\n\n    public void setHosts(List<String> hosts) {\n        this.hosts = hosts;\n    }\n\n    public String getSecretName() {\n        return secretName;\n    }\n\n    public void setSecretName(String secretName) {\n        this.secretName = secretName;\n    }\n}\n",
+  "classDeclarationCode": "@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class IngressTLS {\n\n    private List<String> hosts;\n\n    private String secretName;\n\n    public IngressTLS() {\n    }\n\n    public IngressTLS(IngressTLS ingressTLS) {\n        this.hosts = new ArrayList<>(ingressTLS.hosts);\n        this.secretName = ingressTLS.secretName;\n    }\n\n    public List<String> getHosts() {\n        return hosts;\n    }\n\n    public void setHosts(List<String> hosts) {\n        this.hosts = hosts;\n    }\n\n    public String getSecretName() {\n        return secretName;\n    }\n\n    public void setSecretName(String secretName) {\n        this.secretName = secretName;\n    }\n}",
+  "subClasses": []
+}

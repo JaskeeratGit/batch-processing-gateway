@@ -1,0 +1,22 @@
+{
+  "className": "SubmissionSummary",
+  "methodName": "setUser",
+  "brief": "public void setUser(String user){}",
+  "methodSignature": "setUser(String)",
+  "sourceCode": "public void setUser(String user) {\n    this.user = user;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": []
+  },
+  "full_method_info": "public void setUser(String user) {\n    this.user = user;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

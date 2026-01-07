@@ -1,0 +1,22 @@
+{
+  "className": "DBStorage",
+  "methodName": "setDbName",
+  "brief": "public void setDbName(String dbName){}",
+  "methodSignature": "setDbName(String)",
+  "sourceCode": "public void setDbName(String dbName) {\n      this.dbName = dbName;\n    }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": []
+  },
+  "full_method_info": "public void setDbName(String dbName) {\n    this.dbName = dbName;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

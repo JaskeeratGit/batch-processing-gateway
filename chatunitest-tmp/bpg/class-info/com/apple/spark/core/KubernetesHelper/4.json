@@ -1,0 +1,24 @@
+{
+  "className": "KubernetesHelper",
+  "methodName": "getK8sClient",
+  "brief": "public static DefaultKubernetesClient getK8sClient(AppConfig.SparkCluster sparkCluster){}",
+  "methodSignature": "getK8sClient(AppConfig.SparkCluster)",
+  "sourceCode": "public static DefaultKubernetesClient getK8sClient(AppConfig.SparkCluster sparkCluster) {\n    return new DefaultKubernetesClient(getK8sConfig(sparkCluster));\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "AppConfig.SparkCluster"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.core.KubernetesHelper": [
+      "getK8sConfig(SparkCluster)"
+    ]
+  },
+  "full_method_info": "public static DefaultKubernetesClient getK8sClient(AppConfig.SparkCluster sparkCluster) {\n    return new DefaultKubernetesClient(getK8sConfig(sparkCluster));\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

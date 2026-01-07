@@ -1,0 +1,22 @@
+{
+  "className": "AppConfig",
+  "methodName": "setS3Folder",
+  "brief": "public void setS3Folder(String s3Folder){}",
+  "methodSignature": "setS3Folder(String)",
+  "sourceCode": "public void setS3Folder(String s3Folder) {\n    this.s3Folder = s3Folder;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": []
+  },
+  "full_method_info": "public void setS3Folder(String s3Folder) {\n    this.s3Folder = s3Folder;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

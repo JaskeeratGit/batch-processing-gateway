@@ -1,0 +1,18 @@
+{
+  "className": "SubmissionSummary",
+  "methodName": "getTotalMemoryGB",
+  "brief": "public Long getTotalMemoryGB(){}",
+  "methodSignature": "getTotalMemoryGB()",
+  "sourceCode": "public Long getTotalMemoryGB() {\n    return totalMemoryGB;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public Long getTotalMemoryGB() {\n    return totalMemoryGB;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

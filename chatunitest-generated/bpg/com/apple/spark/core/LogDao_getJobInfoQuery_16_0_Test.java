@@ -1,0 +1,151 @@
+package com.apple.spark.core;
+
+import static com.apple.spark.core.SparkConstants.RUNNING_STATE;
+import io.micrometer.core.instrument.logging.LoggingMeterRegistry;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Connection;
+import javax.sql.rowset.CachedRowSet;
+import javax.sql.rowset.RowSetProvider;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import static com.apple.spark.core.Constants.DEFAULT_DB_NAME;
+import static com.apple.spark.core.SparkConstants.SUBMITTED_STATE;
+import com.apple.spark.api.SubmitApplicationRequest;
+import com.apple.spark.util.CounterMetricContainer;
+import com.apple.spark.util.CustomSerDe;
+import com.apple.spark.util.TimerMetricContainer;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+@ExtendWith(MockitoExtension.class)
+public class LogDao_getJobInfoQuery_16_0_Test {
+
+    private LogDao dao;
+
+    private CachedRowSet emptyCachedRowSet;
+
+    // Proxy-backed objects and control flags
+    private volatile String lastPreparedSql;
+
+    private volatile boolean throwOnPrepare;
+
+    @BeforeEach
+    public void setUp() throws Exception {
+        emptyCachedRowSet = RowSetProvider.newFactory().createCachedRowSet();
+        // Create the LogDao instance (use the MeterRegistry constructor to avoid any DB init)
+        dao = new LogDao("", "user", "password", "testdb", new LoggingMeterRegistry());
+        // Prepare a PreparedStatement proxy that returns our emptyCachedRowSet for executeQuery()
+        Class<?> preparedStatementIface = PreparedStatement.class;
+        Object preparedStatementProxy = Proxy.newProxyInstance(preparedStatementIface.getClassLoader(), new Class[] { preparedStatementIface }, new InvocationHandler() {
+
+            @Override
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                String name = method.getName();
+                if ("executeQuery".equals(name) && (args == null || args.length == 0)) {
+                    return emptyCachedRowSet;
+                }
+                // For setters and close methods, do nothing / return defaults
+                if (method.getReturnType() == boolean.class) {
+                    return false;
+                }
+                if (method.getReturnType() == int.class) {
+                    return 0;
+                }
+                return null;
+            }
+        });
+        // Prepare a Connection proxy that records the SQL passed to prepareStatement
+        Class<?> connectionIface = Connection.class;
+        Object connectionProxy = Proxy.newProxyInstance(connectionIface.getClassLoader(), new Class[] { connectionIface }, new InvocationHandler() {
+
+            @Override
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                String name = method.getName();
+                if ("prepareStatement".equals(name) && args != null && args.length > 0 && args[0] instanceof String) {
+                    lastPreparedSql = (String) args[0];
+                    if (throwOnPrepare) {
+                        throw new SQLException("simulated prepareStatement failure");
+                    }
+                    return preparedStatementProxy;
+                }
+                // getMetaData, createStatement etc. are not used by our tests; return null or reasonable default
+                if (method.getReturnType() == boolean.class) {
+                    return false;
+                }
+                if (method.getReturnType() == int.class) {
+                    return 0;
+                }
+                return null;
+            }
+        });
+        // Prepare a DBConnection mock that returns our connection proxy via getConnection()
+        Field dbConnField = LogDao.class.getDeclaredField("dbConnection");
+        dbConnField.setAccessible(true);
+        // Create a Mockito mock of DBConnection (DBConnection is a concrete class in same package)
+        DBConnection dbConnMock = mock(DBConnection.class);
+        when(dbConnMock.getConnection()).thenReturn((Connection) connectionProxy);
+        // Inject our DBConnection mock into the private final field dbConnection
+        dbConnField.set(dao, dbConnMock);
+        // Reset test-controlled fields
+        lastPreparedSql = null;
+        throwOnPrepare = false;
+    }
+
+    @Test
+    public void testGetJobInfoQuery_userAll_runningState_executesStatementAndReturnsCachedRowSet() {
+        // Arrange
+        String status = RUNNING_STATE;
+        String user = "all";
+        int queryLimit = 10;
+        int numDaysToShow = 7;
+        // Act
+        ResultSet result = dao.getJobInfoQuery(status, user, queryLimit, numDaysToShow);
+        // Assert
+        assertSame(emptyCachedRowSet, result, "Expected the CachedRowSet returned from our PreparedStatement proxy");
+        assertNotNull(lastPreparedSql, "Expected prepareStatement to be invoked and SQL captured");
+    }
+
+    @Test
+    public void testGetJobInfoQuery_nonAll_nonRunningState_executesStatementWithUserAndReturnsCachedRowSet() {
+        // Arrange
+        String status = "FINISHED";
+        String user = "someUser";
+        int queryLimit = 5;
+        int numDaysToShow = 3;
+        // Act
+        ResultSet result = dao.getJobInfoQuery(status, user, queryLimit, numDaysToShow);
+        // Assert
+        assertSame(emptyCachedRowSet, result, "Expected the CachedRowSet returned from our PreparedStatement proxy");
+        assertNotNull(lastPreparedSql, "Expected prepareStatement to be invoked and SQL captured");
+    }
+
+    @Test
+    public void testGetJobInfoQuery_preparedStatementThrows_exceptionHandledAndReturnsNull() {
+        // Arrange
+        throwOnPrepare = true;
+        String status = "ANY";
+        String user = "user";
+        int queryLimit = 1;
+        int numDaysToShow = 1;
+        // Act
+        ResultSet result = dao.getJobInfoQuery(status, user, queryLimit, numDaysToShow);
+        // Assert
+        // When prepareStatement throws an SQLException, LogDao should handle it and return null (per original test expectation)
+        assertNull(result, "Expected null when prepareStatement throws SQLException");
+    }
+}

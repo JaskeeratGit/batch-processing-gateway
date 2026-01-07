@@ -1,0 +1,47 @@
+{
+  "attempt0": {
+    "testClassName": "JwtUtils_createToken_1_0_Test",
+    "fullName": "com.apple.spark.util.JwtUtils_createToken_1_0_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/util/JwtUtils_createToken_1_0_Test.java",
+    "className": "JwtUtils",
+    "packageName": "com.apple.spark.util",
+    "methodName": "createToken",
+    "methodSig": "createToken(String, String, String, String, List)"
+  },
+  "attempt1": {
+    "testClassName": "JwtUtils_createToken_1_1_Test",
+    "fullName": "com.apple.spark.util.JwtUtils_createToken_1_1_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/util/JwtUtils_createToken_1_0_Test.java",
+    "className": "JwtUtils",
+    "packageName": "com.apple.spark.util",
+    "methodName": "createToken",
+    "methodSig": "createToken(String, String, String, String, List)"
+  },
+  "attempt2": {
+    "testClassName": "JwtUtils_createToken_1_2_Test",
+    "fullName": "com.apple.spark.util.JwtUtils_createToken_1_2_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/util/JwtUtils_createToken_1_0_Test.java",
+    "className": "JwtUtils",
+    "packageName": "com.apple.spark.util",
+    "methodName": "createToken",
+    "methodSig": "createToken(String, String, String, String, List)"
+  },
+  "attempt3": {
+    "testClassName": "JwtUtils_createToken_1_3_Test",
+    "fullName": "com.apple.spark.util.JwtUtils_createToken_1_3_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/util/JwtUtils_createToken_1_0_Test.java",
+    "className": "JwtUtils",
+    "packageName": "com.apple.spark.util",
+    "methodName": "createToken",
+    "methodSig": "createToken(String, String, String, String, List)"
+  },
+  "attempt4": {
+    "testClassName": "JwtUtils_createToken_1_4_Test",
+    "fullName": "com.apple.spark.util.JwtUtils_createToken_1_4_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/util/JwtUtils_createToken_1_0_Test.java",
+    "className": "JwtUtils",
+    "packageName": "com.apple.spark.util",
+    "methodName": "createToken",
+    "methodSig": "createToken(String, String, String, String, List)"
+  }
+}

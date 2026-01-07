@@ -1,0 +1,47 @@
+{
+  "attempt0": {
+    "testClassName": "CustomSerDe_submitRequestToNonSensitiveJson_0_0_Test",
+    "fullName": "com.apple.spark.util.CustomSerDe_submitRequestToNonSensitiveJson_0_0_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/util/CustomSerDe_submitRequestToNonSensitiveJson_0_0_Test.java",
+    "className": "CustomSerDe",
+    "packageName": "com.apple.spark.util",
+    "methodName": "submitRequestToNonSensitiveJson",
+    "methodSig": "submitRequestToNonSensitiveJson(SubmitApplicationRequest)"
+  },
+  "attempt1": {
+    "testClassName": "CustomSerDe_submitRequestToNonSensitiveJson_0_1_Test",
+    "fullName": "com.apple.spark.util.CustomSerDe_submitRequestToNonSensitiveJson_0_1_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/util/CustomSerDe_submitRequestToNonSensitiveJson_0_0_Test.java",
+    "className": "CustomSerDe",
+    "packageName": "com.apple.spark.util",
+    "methodName": "submitRequestToNonSensitiveJson",
+    "methodSig": "submitRequestToNonSensitiveJson(SubmitApplicationRequest)"
+  },
+  "attempt2": {
+    "testClassName": "CustomSerDe_submitRequestToNonSensitiveJson_0_2_Test",
+    "fullName": "com.apple.spark.util.CustomSerDe_submitRequestToNonSensitiveJson_0_2_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/util/CustomSerDe_submitRequestToNonSensitiveJson_0_0_Test.java",
+    "className": "CustomSerDe",
+    "packageName": "com.apple.spark.util",
+    "methodName": "submitRequestToNonSensitiveJson",
+    "methodSig": "submitRequestToNonSensitiveJson(SubmitApplicationRequest)"
+  },
+  "attempt3": {
+    "testClassName": "CustomSerDe_submitRequestToNonSensitiveJson_0_3_Test",
+    "fullName": "com.apple.spark.util.CustomSerDe_submitRequestToNonSensitiveJson_0_3_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/util/CustomSerDe_submitRequestToNonSensitiveJson_0_0_Test.java",
+    "className": "CustomSerDe",
+    "packageName": "com.apple.spark.util",
+    "methodName": "submitRequestToNonSensitiveJson",
+    "methodSig": "submitRequestToNonSensitiveJson(SubmitApplicationRequest)"
+  },
+  "attempt4": {
+    "testClassName": "CustomSerDe_submitRequestToNonSensitiveJson_0_4_Test",
+    "fullName": "com.apple.spark.util.CustomSerDe_submitRequestToNonSensitiveJson_0_4_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/util/CustomSerDe_submitRequestToNonSensitiveJson_0_0_Test.java",
+    "className": "CustomSerDe",
+    "packageName": "com.apple.spark.util",
+    "methodName": "submitRequestToNonSensitiveJson",
+    "methodSig": "submitRequestToNonSensitiveJson(SubmitApplicationRequest)"
+  }
+}

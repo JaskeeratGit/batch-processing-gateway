@@ -1,0 +1,37 @@
+{
+  "fullClassName": "com.apple.spark.core.ZonePicker",
+  "className": "ZonePicker",
+  "index": 84,
+  "modifier": "[public ]",
+  "extend": "[]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.core",
+  "packageDeclaration": "package com.apple.spark.core;",
+  "classSignature": "public interface ZonePicker",
+  "hasConstructor": false,
+  "isPublic": true,
+  "isInterface": true,
+  "isAbstract": false,
+  "imports": [
+    "import java.util.List;"
+  ],
+  "fields": [],
+  "superClasses": [],
+  "implementedTypes": [],
+  "methodSigs": {
+    "update(List)": "0",
+    "pick()": "1"
+  },
+  "methodsBrief": [
+    "void update(List<String> allowedAvailabilityZones);",
+    "List<String> pick();"
+  ],
+  "constructorSigs": [],
+  "constructorBrief": [],
+  "getterSetterSigs": [],
+  "getterSetterBrief": [],
+  "constructorDeps": {},
+  "compilationUnitCode": "package com.apple.spark.core;\n\nimport java.util.List;\n\npublic interface ZonePicker {\n\n    void update(List<String> allowedAvailabilityZones);\n\n    // return a list of zone ids, order matters\n    List<String> pick();\n}\n",
+  "classDeclarationCode": "public interface ZonePicker {\n\n    void update(List<String> allowedAvailabilityZones);\n\n    // return a list of zone ids, order matters\n    List<String> pick();\n}",
+  "subClasses": []
+}

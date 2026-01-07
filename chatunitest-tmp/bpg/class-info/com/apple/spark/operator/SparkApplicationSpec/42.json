@@ -1,0 +1,18 @@
+{
+  "className": "SparkApplicationSpec",
+  "methodName": "getMemoryOverheadFactor",
+  "brief": "public String getMemoryOverheadFactor(){}",
+  "methodSignature": "getMemoryOverheadFactor()",
+  "sourceCode": "public String getMemoryOverheadFactor() {\n    return memoryOverheadFactor;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public String getMemoryOverheadFactor() {\n    return memoryOverheadFactor;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

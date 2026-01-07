@@ -1,0 +1,20 @@
+{
+  "className": "Dependencies",
+  "methodName": "setExcludePackages",
+  "brief": "public void setExcludePackages(List<String> excludePackages){}",
+  "methodSignature": "setExcludePackages(List)",
+  "sourceCode": "public void setExcludePackages(List<String> excludePackages) {\n    this.excludePackages = excludePackages;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "List<String>"
+  ],
+  "dependentMethods": {},
+  "full_method_info": "public void setExcludePackages(List<String> excludePackages) {\n    this.excludePackages = excludePackages;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

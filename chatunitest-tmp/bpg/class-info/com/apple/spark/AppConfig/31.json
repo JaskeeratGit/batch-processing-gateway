@@ -1,0 +1,18 @@
+{
+  "className": "AppConfig",
+  "methodName": "getDbStorageSOPS",
+  "brief": "public DBStorage getDbStorageSOPS(){}",
+  "methodSignature": "getDbStorageSOPS()",
+  "sourceCode": "public DBStorage getDbStorageSOPS() {\n    return dbStorageSOPS;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public DBStorage getDbStorageSOPS() {\n    return dbStorageSOPS;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

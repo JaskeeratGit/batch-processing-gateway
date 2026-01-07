@@ -1,0 +1,22 @@
+{
+  "className": "QueueConfig",
+  "methodName": "setMaxExecutorInstances",
+  "brief": "public void setMaxExecutorInstances(Integer maxExecutorInstances){}",
+  "methodSignature": "setMaxExecutorInstances(Integer)",
+  "sourceCode": "public void setMaxExecutorInstances(Integer maxExecutorInstances) {\n      this.maxExecutorInstances = maxExecutorInstances;\n    }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "Integer"
+  ],
+  "dependentMethods": {
+    "java.lang.Integer": []
+  },
+  "full_method_info": "public void setMaxExecutorInstances(Integer maxExecutorInstances) {\n    this.maxExecutorInstances = maxExecutorInstances;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

@@ -1,0 +1,80 @@
+{
+  "method0": {
+    "methodName": "read",
+    "signature": "read()",
+    "className": "EndAwareInputStream",
+    "packageName": "com.apple.spark.util"
+  },
+  "method1": {
+    "methodName": "read",
+    "signature": "read(byte[])",
+    "className": "EndAwareInputStream",
+    "packageName": "com.apple.spark.util"
+  },
+  "method10": {
+    "methodName": "executeWithoutResultValue",
+    "signature": "executeWithoutResultValue(RunnableWithIOException)",
+    "className": "EndAwareInputStream",
+    "packageName": "com.apple.spark.util"
+  },
+  "method11": {
+    "methodName": "executeEndingAction",
+    "signature": "executeEndingAction()",
+    "className": "EndAwareInputStream",
+    "packageName": "com.apple.spark.util"
+  },
+  "method12": {
+    "methodName": "EndAwareInputStream",
+    "signature": "EndAwareInputStream(InputStream, Runnable)",
+    "className": "EndAwareInputStream",
+    "packageName": "com.apple.spark.util"
+  },
+  "method2": {
+    "methodName": "read",
+    "signature": "read(byte[], int, int)",
+    "className": "EndAwareInputStream",
+    "packageName": "com.apple.spark.util"
+  },
+  "method3": {
+    "methodName": "skip",
+    "signature": "skip(long)",
+    "className": "EndAwareInputStream",
+    "packageName": "com.apple.spark.util"
+  },
+  "method4": {
+    "methodName": "available",
+    "signature": "available()",
+    "className": "EndAwareInputStream",
+    "packageName": "com.apple.spark.util"
+  },
+  "method5": {
+    "methodName": "close",
+    "signature": "close()",
+    "className": "EndAwareInputStream",
+    "packageName": "com.apple.spark.util"
+  },
+  "method6": {
+    "methodName": "mark",
+    "signature": "mark(int)",
+    "className": "EndAwareInputStream",
+    "packageName": "com.apple.spark.util"
+  },
+  "method7": {
+    "methodName": "reset",
+    "signature": "reset()",
+    "className": "EndAwareInputStream",
+    "packageName": "com.apple.spark.util"
+  },
+  "method8": {
+    "methodName": "markSupported",
+    "signature": "markSupported()",
+    "className": "EndAwareInputStream",
+    "packageName": "com.apple.spark.util"
+  },
+  "method9": {
+    "methodName": "executeWithResultValue",
+    "signature": "executeWithResultValue(CallableWithIOException)",
+    "className": "EndAwareInputStream",
+    "packageName": "com.apple.spark.util"
+  }
+}

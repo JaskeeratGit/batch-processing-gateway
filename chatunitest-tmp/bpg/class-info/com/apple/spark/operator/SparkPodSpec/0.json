@@ -1,0 +1,22 @@
+{
+  "className": "SparkPodSpec",
+  "methodName": "copyFrom",
+  "brief": "protected void copyFrom(SparkPodSpec another){}",
+  "methodSignature": "copyFrom(SparkPodSpec)",
+  "sourceCode": "protected void copyFrom(SparkPodSpec another) {\n    if (another.cores != null) {\n      this.cores = another.cores;\n    }\n    if (another.coreLimit != null) {\n      this.coreLimit = another.coreLimit;\n    }\n    if (another.memory != null) {\n      this.memory = another.memory;\n    }\n    if (another.memoryOverhead != null) {\n      this.memoryOverhead = another.memoryOverhead;\n    }\n    if (another.image != null) {\n      this.image = another.image;\n    }\n    if (another.env == null) {\n      this.env = null;\n    } else {\n      this.env = new ArrayList<>(another.env);\n    }\n    if (another.labels == null) {\n      this.labels = null;\n    } else {\n      this.labels = new HashMap<>(another.labels);\n    }\n    if (another.annotations == null) {\n      this.annotations = null;\n    } else {\n      this.annotations = new HashMap<>(another.annotations);\n    }\n    this.terminationGracePeriodSeconds = another.terminationGracePeriodSeconds;\n    this.serviceAccount = another.serviceAccount;\n    if (another.volumeMounts == null) {\n      this.volumeMounts = null;\n    } else {\n      this.volumeMounts = new ArrayList<>(another.volumeMounts);\n    }\n    this.securityContext = another.securityContext;\n    this.affinity = another.affinity;\n\n    this.coreRequest = another.coreRequest;\n    this.javaOptions = another.javaOptions;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "SparkPodSpec"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.operator.SparkPodSpec": []
+  },
+  "full_method_info": "protected void copyFrom(SparkPodSpec another) {\n    if (another.cores != null) {\n        this.cores = another.cores;\n    }\n    if (another.coreLimit != null) {\n        this.coreLimit = another.coreLimit;\n    }\n    if (another.memory != null) {\n        this.memory = another.memory;\n    }\n    if (another.memoryOverhead != null) {\n        this.memoryOverhead = another.memoryOverhead;\n    }\n    if (another.image != null) {\n        this.image = another.image;\n    }\n    if (another.env == null) {\n        this.env = null;\n    } else {\n        this.env = new ArrayList<>(another.env);\n    }\n    if (another.labels == null) {\n        this.labels = null;\n    } else {\n        this.labels = new HashMap<>(another.labels);\n    }\n    if (another.annotations == null) {\n        this.annotations = null;\n    } else {\n        this.annotations = new HashMap<>(another.annotations);\n    }\n    this.terminationGracePeriodSeconds = another.terminationGracePeriodSeconds;\n    this.serviceAccount = another.serviceAccount;\n    if (another.volumeMounts == null) {\n        this.volumeMounts = null;\n    } else {\n        this.volumeMounts = new ArrayList<>(another.volumeMounts);\n    }\n    this.securityContext = another.securityContext;\n    this.affinity = another.affinity;\n    this.coreRequest = another.coreRequest;\n    this.javaOptions = another.javaOptions;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

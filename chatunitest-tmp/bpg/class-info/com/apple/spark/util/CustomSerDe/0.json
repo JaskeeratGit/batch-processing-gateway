@@ -1,0 +1,34 @@
+{
+  "className": "CustomSerDe",
+  "methodName": "submitRequestToNonSensitiveJson",
+  "brief": "public static String submitRequestToNonSensitiveJson(SubmitApplicationRequest submitRequest)\n      throws JsonProcessingException{}",
+  "methodSignature": "submitRequestToNonSensitiveJson(SubmitApplicationRequest)",
+  "sourceCode": "public static String submitRequestToNonSensitiveJson(SubmitApplicationRequest submitRequest)\n      throws JsonProcessingException {\n    ObjectMapper mapper = new ObjectMapper();\n    SubmitApplicationRequest cloned =\n        new ObjectMapper()\n            .readValue(mapper.writeValueAsString(submitRequest), SubmitApplicationRequest.class);\n\n    // remove the driver env vars\n    if (cloned.getDriver() != null) {\n      cloned.getDriver().setEnv(null);\n    }\n\n    // remove the executor env vars\n    if (cloned.getExecutor() != null) {\n      cloned.getExecutor().setEnv(null);\n    }\n\n    // mask the queue token\n    if (cloned.getQueueToken() != null) {\n      cloned.setQueueToken(\"***\");\n    }\n\n    return mapper.writeValueAsString(cloned);\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "SubmitApplicationRequest"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.api.SubmitApplicationRequest": [
+      "getExecutor()",
+      "setQueueToken(String)",
+      "getQueueToken()",
+      "getDriver()"
+    ],
+    "com.fasterxml.jackson.databind.ObjectMapper": [
+      "writeValueAsString(Object)",
+      "readValue(String, Class<T>)"
+    ],
+    "com.apple.spark.operator.SparkPodSpec": [
+      "setEnv(EnvVar>)"
+    ]
+  },
+  "full_method_info": "/**\n * Given an application submission request, serialize it to a JSON string with sensitive\n * information removed/masked\n *\n * @param submitRequest\n * @return a serialized JSON string\n * @throws JsonProcessingException\n */\npublic static String submitRequestToNonSensitiveJson(SubmitApplicationRequest submitRequest) throws JsonProcessingException {\n    ObjectMapper mapper = new ObjectMapper();\n    SubmitApplicationRequest cloned = new ObjectMapper().readValue(mapper.writeValueAsString(submitRequest), SubmitApplicationRequest.class);\n    // remove the driver env vars\n    if (cloned.getDriver() != null) {\n        cloned.getDriver().setEnv(null);\n    }\n    // remove the executor env vars\n    if (cloned.getExecutor() != null) {\n        cloned.getExecutor().setEnv(null);\n    }\n    // mask the queue token\n    if (cloned.getQueueToken() != null) {\n        cloned.setQueueToken(\"***\");\n    }\n    return mapper.writeValueAsString(cloned);\n}",
+  "method_comment": "\n   * Given an application submission request, serialize it to a JSON string with sensitive\n   * information removed/masked\n   *\n   * @param submitRequest\n   * @return a serialized JSON string\n   * @throws JsonProcessingException\n   ",
+  "method_annotation": ""
+}

@@ -1,0 +1,29 @@
+{
+  "className": "BPGHealthCheck",
+  "methodName": "check",
+  "brief": "@Override\n  protected Result check() throws Exception{}",
+  "methodSignature": "check()",
+  "sourceCode": "@Override\n  protected Result check() throws Exception {\n    logger.info(\"healthcheck\");\n\n    if (sparkClusters == null || sparkClusters.isEmpty()) {\n      return Result.unhealthy(\"sparkClusters is empty\");\n    }\n    return Result.healthy();\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {
+    "org.slf4j.Logger": [
+      "info(String)"
+    ],
+    "java.util.List": [
+      "isEmpty()"
+    ],
+    "com.codahale.metrics.health.HealthCheck.Result": [
+      "healthy()",
+      "unhealthy(String)"
+    ]
+  },
+  "full_method_info": "@Override\nprotected Result check() throws Exception {\n    logger.info(\"healthcheck\");\n    if (sparkClusters == null || sparkClusters.isEmpty()) {\n        return Result.unhealthy(\"sparkClusters is empty\");\n    }\n    return Result.healthy();\n}",
+  "method_comment": "",
+  "method_annotation": "@Override\n"
+}

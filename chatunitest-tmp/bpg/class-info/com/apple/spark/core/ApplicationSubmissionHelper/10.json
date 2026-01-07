@@ -1,0 +1,53 @@
+{
+  "className": "ApplicationSubmissionHelper",
+  "methodName": "validateQueueToken",
+  "brief": "public static void validateQueueToken(String queue, String queueToken, AppConfig appConfig){}",
+  "methodSignature": "validateQueueToken(String, String, AppConfig)",
+  "sourceCode": "public static void validateQueueToken(String queue, String queueToken, AppConfig appConfig) {\n    if (appConfig.getQueues() != null) {\n      final String queueNameToFilter = queue;\n      Optional<AppConfig.QueueConfig> queueConfigOptional =\n          appConfig.getQueues().stream()\n              .filter(q -> q.getName().equalsIgnoreCase(queueNameToFilter))\n              .findFirst();\n      boolean queueSecure = false;\n      if (queueConfigOptional.isPresent()) {\n        AppConfig.QueueConfig queueConfig = queueConfigOptional.get();\n        if (queueConfig.getSecure() != null) {\n          queueSecure = queueConfig.getSecure();\n        }\n      }\n      if (queueSecure) {\n        if (queueToken == null || queueToken.isEmpty()) {\n          String errorMessage = String.format(\"Please specify queueToken for queue %s\", queue);\n          throw new WebApplicationException(errorMessage, Response.Status.BAD_REQUEST);\n        }\n\n        if (appConfig.getQueueTokenSOPS() == null) {\n          throw new WebApplicationException(\n              \"Server hit configuration error: no queue token configure\",\n              Response.Status.INTERNAL_SERVER_ERROR);\n        }\n\n        QueueTokenVerifier.verify(queueToken, appConfig.getQueueTokenSOPS().getSecrets(), queue);\n      }\n    }\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String",
+    "String",
+    "AppConfig"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "isEmpty()",
+      "format(String, Object[])",
+      "equalsIgnoreCase(String)"
+    ],
+    "com.apple.spark.AppConfig": [
+      "getQueueTokenSOPS()",
+      "getQueues()"
+    ],
+    "java.util.stream.Stream": [
+      "findFirst()",
+      "filter(Predicate<? super T>)"
+    ],
+    "java.util.Collection": [
+      "stream()"
+    ],
+    "com.apple.spark.AppConfig.QueueConfig": [
+      "getSecure()",
+      "getName()"
+    ],
+    "java.util.Optional": [
+      "isPresent()",
+      "get()"
+    ],
+    "com.apple.spark.core.QueueTokenVerifier": [
+      "verify(String, String>, String)"
+    ],
+    "com.apple.spark.AppConfig.QueueTokenConfig": [
+      "getSecrets()"
+    ]
+  },
+  "full_method_info": "public static void validateQueueToken(String queue, String queueToken, AppConfig appConfig) {\n    if (appConfig.getQueues() != null) {\n        final String queueNameToFilter = queue;\n        Optional<AppConfig.QueueConfig> queueConfigOptional = appConfig.getQueues().stream().filter(q -> q.getName().equalsIgnoreCase(queueNameToFilter)).findFirst();\n        boolean queueSecure = false;\n        if (queueConfigOptional.isPresent()) {\n            AppConfig.QueueConfig queueConfig = queueConfigOptional.get();\n            if (queueConfig.getSecure() != null) {\n                queueSecure = queueConfig.getSecure();\n            }\n        }\n        if (queueSecure) {\n            if (queueToken == null || queueToken.isEmpty()) {\n                String errorMessage = String.format(\"Please specify queueToken for queue %s\", queue);\n                throw new WebApplicationException(errorMessage, Response.Status.BAD_REQUEST);\n            }\n            if (appConfig.getQueueTokenSOPS() == null) {\n                throw new WebApplicationException(\"Server hit configuration error: no queue token configure\", Response.Status.INTERNAL_SERVER_ERROR);\n            }\n            QueueTokenVerifier.verify(queueToken, appConfig.getQueueTokenSOPS().getSecrets(), queue);\n        }\n    }\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

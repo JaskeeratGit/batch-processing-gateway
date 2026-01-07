@@ -1,0 +1,46 @@
+{
+  "className": "AdminRest",
+  "methodName": "version",
+  "brief": "@GET\n  @Path(\"version\")\n  @Timed\n  @Operation(\n      summary = \"Show the version\",\n      tags = {\"Admin\"})\n  @ApiResponse(\n          responseCode = \"200\",\n          content = @Content(mediaType = \"application/json\", schema = @Schema(type = \"string\")),\n          description = \"OK\")\n  public Response version(){}",
+  "methodSignature": "version()",
+  "sourceCode": "@GET\n  @Path(\"version\")\n  @Timed\n  @Operation(\n      summary = \"Show the version\",\n      tags = {\"Admin\"})\n  @ApiResponse(\n          responseCode = \"200\",\n          content = @Content(mediaType = \"application/json\", schema = @Schema(type = \"string\")),\n          description = \"OK\")\n  public Response version() {\n    VersionInfo verInfo = ConfigUtil.readVersion();\n    return Response.ok(\n            new RestStreamingOutput() {\n              @Override\n              public void write(OutputStream outputStream) throws WebApplicationException {\n                try {\n                  ObjectMapper mapper = new ObjectMapper();\n                  String verJson =\n                      mapper.writerWithDefaultPrettyPrinter().writeValueAsString(verInfo);\n                  writeLine(outputStream, verJson);\n\n                  outputStream.flush();\n                } catch (Throwable ex) {\n                  logger.warn(\"Failed to get version info\", ex);\n                  ExceptionUtils.meterException();\n                }\n              }\n            })\n        .build();\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {
+    "com.apple.spark.util.ConfigUtil": [
+      "readVersion()"
+    ],
+    "javax.ws.rs.core.Response.ResponseBuilder": [
+      "build()"
+    ],
+    "javax.ws.rs.core.Response": [
+      "ok(Object)"
+    ],
+    "com.fasterxml.jackson.databind.ObjectWriter": [
+      "writeValueAsString(Object)"
+    ],
+    "com.fasterxml.jackson.databind.ObjectMapper": [
+      "writerWithDefaultPrettyPrinter()"
+    ],
+    "com.apple.spark.core.RestStreamingOutput": [
+      "writeLine(OutputStream, String)"
+    ],
+    "java.io.OutputStream": [
+      "flush()"
+    ],
+    "org.slf4j.Logger": [
+      "warn(String, Throwable)"
+    ],
+    "com.apple.spark.util.ExceptionUtils": [
+      "meterException()"
+    ]
+  },
+  "full_method_info": "@GET\n@Path(\"version\")\n@Timed\n@Operation(summary = \"Show the version\", tags = { \"Admin\" })\n@ApiResponse(responseCode = \"200\", content = @Content(mediaType = \"application/json\", schema = @Schema(type = \"string\")), description = \"OK\")\npublic Response version() {\n    VersionInfo verInfo = ConfigUtil.readVersion();\n    return Response.ok(new RestStreamingOutput() {\n\n        @Override\n        public void write(OutputStream outputStream) throws WebApplicationException {\n            try {\n                ObjectMapper mapper = new ObjectMapper();\n                String verJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(verInfo);\n                writeLine(outputStream, verJson);\n                outputStream.flush();\n            } catch (Throwable ex) {\n                logger.warn(\"Failed to get version info\", ex);\n                ExceptionUtils.meterException();\n            }\n        }\n    }).build();\n}",
+  "method_comment": "",
+  "method_annotation": "@GET\n@Path(\"version\")\n@Timed\n@Operation(summary = \"Show the version\", tags = { \"Admin\" })\n@ApiResponse(responseCode = \"200\", content = @Content(mediaType = \"application/json\", schema = @Schema(type = \"string\")), description = \"OK\")\n"
+}

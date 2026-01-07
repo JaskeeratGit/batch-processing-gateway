@@ -1,0 +1,22 @@
+{
+  "className": "SparkApplication",
+  "methodName": "setStatus",
+  "brief": "public void setStatus(SparkApplicationStatus status){}",
+  "methodSignature": "setStatus(SparkApplicationStatus)",
+  "sourceCode": "public void setStatus(SparkApplicationStatus status) {\n    this.status = status;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "SparkApplicationStatus"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.operator.SparkApplicationStatus": []
+  },
+  "full_method_info": "public void setStatus(SparkApplicationStatus status) {\n    this.status = status;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

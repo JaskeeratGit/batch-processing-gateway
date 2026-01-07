@@ -1,0 +1,20 @@
+{
+  "className": "SubmissionSummary",
+  "methodName": "setDriverCores",
+  "brief": "public void setDriverCores(int driverCores){}",
+  "methodSignature": "setDriverCores(int)",
+  "sourceCode": "public void setDriverCores(int driverCores) {\n    this.driverCores = driverCores;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "int"
+  ],
+  "dependentMethods": {},
+  "full_method_info": "public void setDriverCores(int driverCores) {\n    this.driverCores = driverCores;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

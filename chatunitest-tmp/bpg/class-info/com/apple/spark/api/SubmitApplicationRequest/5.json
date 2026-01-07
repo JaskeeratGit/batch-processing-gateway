@@ -1,0 +1,22 @@
+{
+  "className": "SubmitApplicationRequest",
+  "methodName": "setOverheadFactor",
+  "brief": "public void setOverheadFactor(Double overheadFactor){}",
+  "methodSignature": "setOverheadFactor(Double)",
+  "sourceCode": "public void setOverheadFactor(Double overheadFactor) {\n    this.overheadFactor = overheadFactor;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "Double"
+  ],
+  "dependentMethods": {
+    "java.lang.Double": []
+  },
+  "full_method_info": "public void setOverheadFactor(Double overheadFactor) {\n    this.overheadFactor = overheadFactor;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

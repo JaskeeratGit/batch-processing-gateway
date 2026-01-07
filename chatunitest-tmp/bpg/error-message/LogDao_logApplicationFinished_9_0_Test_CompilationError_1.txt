@@ -1,0 +1,336 @@
+package com.apple.spark.core;
+
+import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.logging.LoggingMeterRegistry;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
+import com.apple.spark.util.TimerMetricContainer;
+import com.apple.spark.util.CounterMetricContainer;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import static com.apple.spark.core.Constants.DEFAULT_DB_NAME;
+import static com.apple.spark.core.SparkConstants.RUNNING_STATE;
+import static com.apple.spark.core.SparkConstants.SUBMITTED_STATE;
+import com.apple.spark.api.SubmitApplicationRequest;
+import com.apple.spark.util.CustomSerDe;
+import io.micrometer.core.instrument.MeterRegistry;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import javax.sql.rowset.CachedRowSet;
+import javax.sql.rowset.RowSetProvider;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class LogDao_logApplicationFinished_9_0_Test {
+
+    private static void setField(Object target, String fieldName, Object value) throws Exception {
+        Field f = findField(target.getClass(), fieldName);
+        f.setAccessible(true);
+        f.set(target, value);
+    }
+
+    private static Field findField(Class<?> clazz, String name) throws NoSuchFieldException {
+        Class<?> c = clazz;
+        while (c != null) {
+            try {
+                return c.getDeclaredField(name);
+            } catch (NoSuchFieldException e) {
+                c = c.getSuperclass();
+            }
+        }
+        throw new NoSuchFieldException(name);
+    }
+
+    // A simple proxy-based PreparedStatement spy that records parameters and execute calls.
+    private static class SpyPreparedStatementHandler implements InvocationHandler {
+
+        final Map<Integer, Object> params = new HashMap<>();
+
+        boolean executeCalled = false;
+
+        final boolean throwOnExecute;
+
+        SpyPreparedStatementHandler(boolean throwOnExecute) {
+            this.throwOnExecute = throwOnExecute;
+        }
+
+        @Override
+        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            String name = method.getName();
+            if ("setString".equals(name) && args.length == 2) {
+                params.put((Integer) args[0], args[1]);
+                return null;
+            }
+            if ("setTimestamp".equals(name) && args.length == 2) {
+                params.put((Integer) args[0], args[1]);
+                return null;
+            }
+            if ("setDouble".equals(name) && args.length == 2) {
+                params.put((Integer) args[0], args[1]);
+                return null;
+            }
+            if ("executeUpdate".equals(name) && (args == null || args.length == 0)) {
+                executeCalled = true;
+                if (throwOnExecute) {
+                    throw new SQLException("boom");
+                }
+                return 1;
+            }
+            // For close or other methods, just no-op or return default
+            if ("close".equals(name)) {
+                return null;
+            }
+            // default stub return
+            if (method.getReturnType().isPrimitive()) {
+                if (method.getReturnType() == boolean.class)
+                    return false;
+                if (method.getReturnType() == byte.class)
+                    return (byte) 0;
+                if (method.getReturnType() == short.class)
+                    return (short) 0;
+                if (method.getReturnType() == int.class)
+                    return 0;
+                if (method.getReturnType() == long.class)
+                    return 0L;
+                if (method.getReturnType() == float.class)
+                    return 0f;
+                if (method.getReturnType() == double.class)
+                    return 0d;
+                if (method.getReturnType() == char.class)
+                    return '\0';
+            }
+            return null;
+        }
+    }
+
+    // Connection proxy that returns the preparedStatement proxy for prepareStatement calls.
+    private static Connection createConnectionProxy(PreparedStatement psProxy) {
+        InvocationHandler handler = (proxy, method, args) -> {
+            String name = method.getName();
+            if ("prepareStatement".equals(name) && args != null && args.length >= 1) {
+                return psProxy;
+            }
+            if ("close".equals(name)) {
+                return null;
+            }
+            // default stub behavior
+            if (method.getReturnType().isPrimitive()) {
+                if (method.getReturnType() == boolean.class)
+                    return false;
+                if (method.getReturnType() == byte.class)
+                    return (byte) 0;
+                if (method.getReturnType() == short.class)
+                    return (short) 0;
+                if (method.getReturnType() == int.class)
+                    return 0;
+                if (method.getReturnType() == long.class)
+                    return 0L;
+                if (method.getReturnType() == float.class)
+                    return 0f;
+                if (method.getReturnType() == double.class)
+                    return 0d;
+                if (method.getReturnType() == char.class)
+                    return '\0';
+            }
+            return null;
+        };
+        return (Connection) Proxy.newProxyInstance(Connection.class.getClassLoader(), new Class[] { Connection.class }, handler);
+    }
+
+    @Test
+    public void testBypassLogDoesNothing() throws Exception {
+        // create instance with empty connection string -> bypassLog == true
+        LogDao dao = new LogDao("", "u", "p", "db", new LoggingMeterRegistry());
+        // replace the timerMetrics with a spy to assert it is not invoked
+        class SpyTimer extends TimerMetricContainer {
+
+            boolean recorded = false;
+
+            SpyTimer() {
+                super(new LoggingMeterRegistry());
+            }
+
+            @Override
+            public void record(Runnable runnable, String metricName, io.micrometer.core.instrument.Tag... tags) {
+                recorded = true;
+                // do not run runnable to be safe
+            }
+        }
+        SpyTimer spyTimer = new SpyTimer();
+        setField(dao, "timerMetrics", spyTimer);
+        // Call method; since bypassLog is true, timerMetrics.record should not be called
+        dao.logApplicationFinished("sub-1", "FINISHED", new Timestamp(System.currentTimeMillis()), 1.0, 2.0);
+        assertFalse(spyTimer.recorded, "Timer should not be recorded when bypassLog is true");
+    }
+
+    @Test
+    public void testLogApplicationFinishedSuccessfulExecutesStatement() throws Exception {
+        // create dao with empty connection string so it doesn't attempt real DB setup
+        LogDao dao = new LogDao("", "u", "p", "mydb", new LoggingMeterRegistry());
+        // Prepare a spy PreparedStatement (no exception on execute)
+        SpyPreparedStatementHandler psHandler = new SpyPreparedStatementHandler(false);
+        PreparedStatement psProxy = (PreparedStatement) Proxy.newProxyInstance(PreparedStatement.class.getClassLoader(), new Class[] { PreparedStatement.class }, psHandler);
+        // Connection proxy returning our PreparedStatement
+        Connection connProxy = createConnectionProxy(psProxy);
+        // DBConnection stub that returns our connection proxy
+        DBConnection dbConnStub = new DBConnection() {
+
+            @Override
+            public Connection getConnection() throws SQLException {
+                return connProxy;
+            }
+        };
+        // Replace dbConnection
+        setField(dao, "dbConnection", dbConnStub);
+        // Ensure bypassLog is false so logging will occur
+        setField(dao, "bypassLog", false);
+        // Replace timerMetrics with one that immediately runs the runnable
+        TimerMetricContainer immediateTimer = new TimerMetricContainer(new LoggingMeterRegistry()) {
+
+            @Override
+            public void record(Runnable runnable, String metricName, io.micrometer.core.instrument.Tag... tags) {
+                runnable.run();
+            }
+        };
+        setField(dao, "timerMetrics", immediateTimer);
+        // Replace failureMetrics with one that will record if called
+        class SpyFailureMetrics extends CounterMetricContainer {
+
+            boolean incremented = false;
+
+            String metricName;
+
+            io.micrometer.core.instrument.Tag[] tags;
+
+            SpyFailureMetrics() {
+                super(new LoggingMeterRegistry());
+            }
+
+            @Override
+            public void increment(String metricName, io.micrometer.core.instrument.Tag... tags) {
+                incremented = true;
+                this.metricName = metricName;
+                this.tags = tags;
+            }
+        }
+        SpyFailureMetrics spyFailure = new SpyFailureMetrics();
+        setField(dao, "failureMetrics", spyFailure);
+        // Call method with test data
+        String submissionId = "sub-123";
+        String status = "FINISHED";
+        Timestamp finishedTime = Timestamp.valueOf("2020-01-01 12:00:00");
+        Double vCoreCost = 3.14;
+        Double memCost = 6.28;
+        dao.logApplicationFinished(submissionId, status, finishedTime, vCoreCost, memCost);
+        // Verify that PreparedStatement methods were invoked as expected
+        assertTrue(psHandler.executeCalled, "executeUpdate should have been called");
+        // check parameters by index
+        assertEquals(submissionId, psHandler.params.get(1));
+        assertEquals(status, psHandler.params.get(2));
+        assertEquals(finishedTime, psHandler.params.get(3));
+        assertEquals(status, psHandler.params.get(4));
+        assertEquals(finishedTime, psHandler.params.get(5));
+        // note: stored numbers are Double via autoboxing
+        assertEquals(memCost, psHandler.params.get(6));
+        assertEquals(vCoreCost, psHandler.params.get(7));
+        // Ensure failure metric not incremented
+        assertFalse(spyFailure.incremented, "Failure metric should not be incremented on success");
+    }
+
+    @Test
+    public void testLogApplicationFinishedHandlesExceptionAndIncrementsFailureMetric() throws Exception {
+        LogDao dao = new LogDao("", "u", "p", "mydb", new LoggingMeterRegistry());
+        // Prepare a spy PreparedStatement that throws SQLException on executeUpdate
+        SpyPreparedStatementHandler psHandler = new SpyPreparedStatementHandler(true);
+        PreparedStatement psProxy = (PreparedStatement) Proxy.newProxyInstance(PreparedStatement.class.getClassLoader(), new Class[] { PreparedStatement.class }, psHandler);
+        Connection connProxy = createConnectionProxy(psProxy);
+        DBConnection dbConnStub = new DBConnection() {
+
+            @Override
+            public Connection getConnection() throws SQLException {
+                return connProxy;
+            }
+        };
+        setField(dao, "dbConnection", dbConnStub);
+        setField(dao, "bypassLog", false);
+        TimerMetricContainer immediateTimer = new TimerMetricContainer(new LoggingMeterRegistry()) {
+
+            @Override
+            public void record(Runnable runnable, String metricName, io.micrometer.core.instrument.Tag... tags) {
+                runnable.run();
+            }
+        };
+        setField(dao, "timerMetrics", immediateTimer);
+        // Spy failure metrics to capture increment call
+        class SpyFailureMetrics extends CounterMetricContainer {
+
+            boolean incremented = false;
+
+            String metricName;
+
+            io.micrometer.core.instrument.Tag[] tags;
+
+            SpyFailureMetrics() {
+                super(new LoggingMeterRegistry());
+            }
+
+            @Override
+            public void increment(String metricName, io.micrometer.core.instrument.Tag... tags) {
+                incremented = true;
+                this.metricName = metricName;
+                this.tags = tags;
+            }
+        }
+        SpyFailureMetrics spyFailure = new SpyFailureMetrics();
+        setField(dao, "failureMetrics", spyFailure);
+        // Invoke - should not throw despite underlying SQLException being thrown, since Dao likely catches it
+        dao.logApplicationFinished("sub-err", "FAILED", new Timestamp(System.currentTimeMillis()), 0.5, 0.5);
+        // Verify executeUpdate attempted
+        assertTrue(psHandler.executeCalled, "executeUpdate should have been attempted");
+        // Verify failureMetrics.increment was called
+        assertTrue(spyFailure.incremented, "failure metric should have been incremented on exception");
+        assertNotNull(spyFailure.metricName);
+        assertNotNull(spyFailure.tags);
+        boolean foundOperation = false;
+        boolean foundException = false;
+        for (Tag t : spyFailure.tags) {
+            if ("operation".equals(t.getKey()) && "log_app_finished".equals(t.getValue())) {
+                foundOperation = true;
+            }
+            if ("exception".equals(t.getKey()) && "SQLException".equals(t.getValue())) {
+                foundException = true;
+            }
+        }
+        assertTrue(foundOperation, "operation tag with log_app_finished should be present");
+        assertTrue(foundException, "exception tag with SQLException should be present");
+    }
+}
+
+--------------------------------------------
+Error in LogDao_logApplicationFinished_9_0_Test: line 189 : no suitable constructor found for DBConnection(no arguments)
+    constructor com.apple.spark.core.DBConnection.DBConnection(java.lang.String) is not applicable
+      (actual and formal argument lists differ in length)
+    constructor com.apple.spark.core.DBConnection.DBConnection(java.lang.String,java.lang.String,java.lang.String) is not applicable
+      (actual and formal argument lists differ in length)
+Error in LogDao_logApplicationFinished_9_0_Test: line 192 : getConnection() in <anonymous com.apple.spark.core.LogDao_logApplicationFinished_9_0_Test$1> cannot override getConnection() in com.apple.spark.core.DBConnection
+  overridden method does not throw java.sql.SQLException
+Error in LogDao_logApplicationFinished_9_0_Test: line 260 : no suitable constructor found for DBConnection(no arguments)
+    constructor com.apple.spark.core.DBConnection.DBConnection(java.lang.String) is not applicable
+      (actual and formal argument lists differ in length)
+    constructor com.apple.spark.core.DBConnection.DBConnection(java.lang.String,java.lang.String,java.lang.String) is not applicable
+      (actual and formal argument lists differ in length)
+Error in LogDao_logApplicationFinished_9_0_Test: line 263 : getConnection() in <anonymous com.apple.spark.core.LogDao_logApplicationFinished_9_0_Test$3> cannot override getConnection() in com.apple.spark.core.DBConnection
+  overridden method does not throw java.sql.SQLException

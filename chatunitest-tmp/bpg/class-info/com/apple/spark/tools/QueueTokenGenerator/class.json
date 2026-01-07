@@ -1,0 +1,38 @@
+{
+  "fullClassName": "com.apple.spark.tools.QueueTokenGenerator",
+  "className": "QueueTokenGenerator",
+  "index": 111,
+  "modifier": "[public ]",
+  "extend": "[]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.tools",
+  "packageDeclaration": "package com.apple.spark.tools;",
+  "classSignature": "public class QueueTokenGenerator",
+  "hasConstructor": false,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import com.apple.spark.core.QueueTokenVerifier;",
+    "import com.apple.spark.util.JwtUtils;"
+  ],
+  "fields": [],
+  "superClasses": [],
+  "implementedTypes": [],
+  "methodSigs": {
+    "main(String[])": "0",
+    "printArgumentExample()": "1"
+  },
+  "methodsBrief": [
+    "public static void main(String[] args){}",
+    "private static void printArgumentExample(){}"
+  ],
+  "constructorSigs": [],
+  "constructorBrief": [],
+  "getterSetterSigs": [],
+  "getterSetterBrief": [],
+  "constructorDeps": {},
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.tools;\n\nimport com.apple.spark.core.QueueTokenVerifier;\nimport com.apple.spark.util.JwtUtils;\n\n/**\n * This tool generates a queue token with given arguments.\n * Argument example for this program: -secret secret1 -subject queueToken1 -queue queue1\n */\npublic class QueueTokenGenerator {\n\n    public static void main(String[] args) {\n        String secret = null;\n        String subject = \"queueToken\";\n        String queue = null;\n        for (int i = 0; i < args.length; ) {\n            String argName = args[i++];\n            if (argName.equalsIgnoreCase(\"-secret\")) {\n                secret = args[i++];\n            } else if (argName.equalsIgnoreCase(\"-subject\")) {\n                subject = args[i++];\n            } else if (argName.equalsIgnoreCase(\"-queue\")) {\n                queue = args[i++];\n            } else {\n                System.err.println(String.format(\"Unsupported argument: %s\", argName));\n                printArgumentExample();\n                System.exit(-1);\n            }\n        }\n        if (secret == null || secret.isEmpty()) {\n            System.err.println(String.format(\"Argument missing: -secret\"));\n            printArgumentExample();\n            System.exit(-1);\n        }\n        if (subject == null || subject.isEmpty()) {\n            System.err.println(String.format(\"Argument missing: -subject\"));\n            printArgumentExample();\n            System.exit(-1);\n        }\n        if (queue == null || queue.isEmpty()) {\n            System.err.println(String.format(\"Argument missing: -queue\"));\n            printArgumentExample();\n            System.exit(-1);\n        }\n        String token = JwtUtils.createToken(secret, QueueTokenVerifier.ISSUER_ADMIN, subject, QueueTokenVerifier.CLAIM_ALLOWED_QUEUES, new String[] { queue });\n        System.out.println(token);\n    }\n\n    private static void printArgumentExample() {\n        System.out.println(\"Argument example for this program: -secret secret1 -subject queueToken1 -queue queue1\");\n    }\n}\n",
+  "classDeclarationCode": "/**\n * This tool generates a queue token with given arguments.\n * Argument example for this program: -secret secret1 -subject queueToken1 -queue queue1\n */\npublic class QueueTokenGenerator {\n\n    public static void main(String[] args) {\n        String secret = null;\n        String subject = \"queueToken\";\n        String queue = null;\n        for (int i = 0; i < args.length; ) {\n            String argName = args[i++];\n            if (argName.equalsIgnoreCase(\"-secret\")) {\n                secret = args[i++];\n            } else if (argName.equalsIgnoreCase(\"-subject\")) {\n                subject = args[i++];\n            } else if (argName.equalsIgnoreCase(\"-queue\")) {\n                queue = args[i++];\n            } else {\n                System.err.println(String.format(\"Unsupported argument: %s\", argName));\n                printArgumentExample();\n                System.exit(-1);\n            }\n        }\n        if (secret == null || secret.isEmpty()) {\n            System.err.println(String.format(\"Argument missing: -secret\"));\n            printArgumentExample();\n            System.exit(-1);\n        }\n        if (subject == null || subject.isEmpty()) {\n            System.err.println(String.format(\"Argument missing: -subject\"));\n            printArgumentExample();\n            System.exit(-1);\n        }\n        if (queue == null || queue.isEmpty()) {\n            System.err.println(String.format(\"Argument missing: -queue\"));\n            printArgumentExample();\n            System.exit(-1);\n        }\n        String token = JwtUtils.createToken(secret, QueueTokenVerifier.ISSUER_ADMIN, subject, QueueTokenVerifier.CLAIM_ALLOWED_QUEUES, new String[] { queue });\n        System.out.println(token);\n    }\n\n    private static void printArgumentExample() {\n        System.out.println(\"Argument example for this program: -secret secret1 -subject queueToken1 -queue queue1\");\n    }\n}",
+  "subClasses": []
+}

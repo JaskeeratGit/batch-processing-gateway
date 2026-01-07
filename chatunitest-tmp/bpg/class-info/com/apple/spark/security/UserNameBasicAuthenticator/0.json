@@ -1,0 +1,34 @@
+{
+  "className": "UserNameBasicAuthenticator",
+  "methodName": "authenticate",
+  "brief": "@Override\n  public Optional<User> authenticate(BasicCredentials credentials) throws AuthenticationException{}",
+  "methodSignature": "authenticate(BasicCredentials)",
+  "sourceCode": "@Override\n  public Optional<User> authenticate(BasicCredentials credentials) throws AuthenticationException {\n    if (blockedUsers.contains(credentials.getUsername())) {\n      logger.info(\"User {} is blocked\", credentials.getUsername());\n      return Optional.empty();\n    }\n\n    if (allowedUsers.contains(\"*\") || allowedUsers.contains(credentials.getUsername())) {\n      return Optional.of(new User(credentials.getUsername()));\n    }\n\n    return Optional.empty();\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "BasicCredentials"
+  ],
+  "dependentMethods": {
+    "io.dropwizard.auth.basic.BasicCredentials": [
+      "getUsername()"
+    ],
+    "java.util.Set": [
+      "contains(Object)"
+    ],
+    "org.slf4j.Logger": [
+      "info(String, Object)"
+    ],
+    "java.util.Optional": [
+      "empty()",
+      "of(T)"
+    ]
+  },
+  "full_method_info": "/**\n * Ensure the user is not in blocked users list, and in allowed users list (can be wildcard)\n */\n@Override\npublic Optional<User> authenticate(BasicCredentials credentials) throws AuthenticationException {\n    if (blockedUsers.contains(credentials.getUsername())) {\n        logger.info(\"User {} is blocked\", credentials.getUsername());\n        return Optional.empty();\n    }\n    if (allowedUsers.contains(\"*\") || allowedUsers.contains(credentials.getUsername())) {\n        return Optional.of(new User(credentials.getUsername()));\n    }\n    return Optional.empty();\n}",
+  "method_comment": " Ensure the user is not in blocked users list, and in allowed users list (can be wildcard) ",
+  "method_annotation": "@Override\n"
+}

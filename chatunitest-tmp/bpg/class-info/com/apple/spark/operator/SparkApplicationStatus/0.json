@@ -1,0 +1,18 @@
+{
+  "className": "SparkApplicationStatus",
+  "methodName": "getSparkApplicationId",
+  "brief": "public String getSparkApplicationId(){}",
+  "methodSignature": "getSparkApplicationId()",
+  "sourceCode": "public String getSparkApplicationId() {\n    return sparkApplicationId;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public String getSparkApplicationId() {\n    return sparkApplicationId;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

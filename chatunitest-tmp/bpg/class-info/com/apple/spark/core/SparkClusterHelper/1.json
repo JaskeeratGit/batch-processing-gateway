@@ -1,0 +1,73 @@
+{
+  "className": "SparkClusterHelper",
+  "methodName": "chooseSparkCluster",
+  "brief": "public static SparkCluster chooseSparkCluster(\n      AppConfig appConfig, SubmitApplicationRequest request, String user){}",
+  "methodSignature": "chooseSparkCluster(AppConfig, SubmitApplicationRequest, String)",
+  "sourceCode": "public static SparkCluster chooseSparkCluster(\n      AppConfig appConfig, SubmitApplicationRequest request, String user) {\n    // If a user provided a specific cluster id to execute request on, return that cluster if it\n    // exists and has the required version of Spark\n    if (!StringUtils.isEmpty(request.getClusterId())) {\n      Optional<SparkCluster> sparkClusterOptional;\n      sparkClusterOptional =\n          appConfig.getSparkClusters().stream()\n              .filter(t -> StringUtils.equals(t.getId(), request.getClusterId()))\n              .filter(t -> t.matchSparkVersion(request.getSparkVersion()))\n              .findFirst();\n      if (!sparkClusterOptional.isPresent()) {\n        throw new WebApplicationException(\n            String.format(\n                \"Cluster with id %s having Spark version %s not found\",\n                request.getClusterId(), request.getSparkVersion()),\n            Response.Status.BAD_REQUEST);\n      }\n      logger.info(\n          \"Found spark cluster {} based on cluster id {}\",\n          sparkClusterOptional.get().getId(),\n          request.getClusterId());\n      return sparkClusterOptional.get();\n    }\n\n    // Filter clusters by spark version\n    List<SparkCluster> sparkClusters =\n        appConfig.getSparkClusters().stream()\n            .filter(t -> t.getWeight() > 0 && t.matchSparkVersion(request.getSparkVersion()))\n            .collect(Collectors.toList());\n    if (sparkClusters.size() == 0) {\n      throw new WebApplicationException(\n          String.format(\"Spark version not supported: %s\", request.getSparkVersion()),\n          Response.Status.BAD_REQUEST);\n    }\n\n    String queue = getQueue(appConfig, request, user);\n\n    // Filter clusters by queue if necessary\n    if (queue != null) {\n      // Routing is based on parent queue\n      final String queueNameCopy = getParentQueue(queue);\n      sparkClusters =\n          sparkClusters.stream()\n              .filter(t -> t.matchQueue(queueNameCopy))\n              .collect(Collectors.toList());\n      if (sparkClusters.size() == 0) {\n        throw new WebApplicationException(\n            String.format(\n                \"Cluster with queue %s having Spark version %s not found\",\n                queue, request.getSparkVersion()),\n            Response.Status.BAD_REQUEST);\n      }\n      logger.info(\"Found {} spark clusters based on queue {}\", sparkClusters.size(), queue);\n    }\n\n    if (sparkClusters.size() > 1) {\n      // Use weight of each spark cluster to determine which cluster to use\n      List<Pair<SparkCluster, Double>> clusterWeightPairs =\n          sparkClusters.stream()\n              .map(cluster -> new Pair<>(cluster, (double) cluster.getWeight()))\n              .collect(Collectors.toList());\n      EnumeratedDistribution<SparkCluster> weightedDistribution =\n          new EnumeratedDistribution<>(clusterWeightPairs);\n      return weightedDistribution.sample();\n    }\n    return sparkClusters.get(0);\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "AppConfig",
+    "SubmitApplicationRequest",
+    "String"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.AppConfig": [
+      "getSparkClusters()"
+    ],
+    "com.apple.spark.api.SubmitApplicationRequest": [
+      "getClusterId()",
+      "getSparkVersion()"
+    ],
+    "java.lang.String": [
+      "format(String, Object[])"
+    ],
+    "org.apache.commons.lang3.StringUtils": [
+      "equals(CharSequence, CharSequence)",
+      "isEmpty(CharSequence)"
+    ],
+    "java.util.stream.Stream": [
+      "findFirst()",
+      "collect(Collector<? super T, A, R>)",
+      "filter(Predicate<? super T>)",
+      "map(Function<? super T, ? extends R>)"
+    ],
+    "java.util.Collection": [
+      "stream()"
+    ],
+    "com.apple.spark.AppConfig.SparkCluster": [
+      "getId()",
+      "matchQueue(String)",
+      "matchSparkVersion(String)",
+      "getWeight()"
+    ],
+    "java.util.Optional": [
+      "isPresent()",
+      "get()"
+    ],
+    "org.slf4j.Logger": [
+      "info(String, Object, Object)"
+    ],
+    "java.util.stream.Collectors": [
+      "toList()"
+    ],
+    "java.util.List": [
+      "get(int)",
+      "size()"
+    ],
+    "com.apple.spark.core.SparkClusterHelper": [
+      "getQueue(AppConfig, SubmitApplicationRequest, String)",
+      "getParentQueue(String)"
+    ],
+    "org.apache.commons.math3.distribution.EnumeratedDistribution": [
+      "sample()"
+    ]
+  },
+  "full_method_info": "/*\n  Note that each Spark \"cluster\" is a namespace. In other words, a K8s cluster may consist of one or more Spark clusters from gateway's perspective.\n  Each Spark cluster has an associated weight configured in the ConfigMap YAML file for the corresponding environment (dev, stg and prod).\n  The Spark cluster a job is routed to is determined stochastically by sampling from the following probability mass function:\n\n  Pr(c01) = weight(c01) / (weight(c01) + weight(c02) + ... + weight(c0n))\n  Pr(c02) = weight(c02) / (weight(c01) + weight(c02) + ... + weight(c0n))\n  ...\n  Pr(c0n) = weight(c0n) / (weight(c01) + weight(c02) + ... + weight(c0n))\n\n  For some examples of how sampling works, refer to the test chooseSparkCluster_weighting in SparkClusterHelperTest\n   */\npublic static SparkCluster chooseSparkCluster(AppConfig appConfig, SubmitApplicationRequest request, String user) {\n    // If a user provided a specific cluster id to execute request on, return that cluster if it\n    // exists and has the required version of Spark\n    if (!StringUtils.isEmpty(request.getClusterId())) {\n        Optional<SparkCluster> sparkClusterOptional;\n        sparkClusterOptional = appConfig.getSparkClusters().stream().filter(t -> StringUtils.equals(t.getId(), request.getClusterId())).filter(t -> t.matchSparkVersion(request.getSparkVersion())).findFirst();\n        if (!sparkClusterOptional.isPresent()) {\n            throw new WebApplicationException(String.format(\"Cluster with id %s having Spark version %s not found\", request.getClusterId(), request.getSparkVersion()), Response.Status.BAD_REQUEST);\n        }\n        logger.info(\"Found spark cluster {} based on cluster id {}\", sparkClusterOptional.get().getId(), request.getClusterId());\n        return sparkClusterOptional.get();\n    }\n    // Filter clusters by spark version\n    List<SparkCluster> sparkClusters = appConfig.getSparkClusters().stream().filter(t -> t.getWeight() > 0 && t.matchSparkVersion(request.getSparkVersion())).collect(Collectors.toList());\n    if (sparkClusters.size() == 0) {\n        throw new WebApplicationException(String.format(\"Spark version not supported: %s\", request.getSparkVersion()), Response.Status.BAD_REQUEST);\n    }\n    String queue = getQueue(appConfig, request, user);\n    // Filter clusters by queue if necessary\n    if (queue != null) {\n        // Routing is based on parent queue\n        final String queueNameCopy = getParentQueue(queue);\n        sparkClusters = sparkClusters.stream().filter(t -> t.matchQueue(queueNameCopy)).collect(Collectors.toList());\n        if (sparkClusters.size() == 0) {\n            throw new WebApplicationException(String.format(\"Cluster with queue %s having Spark version %s not found\", queue, request.getSparkVersion()), Response.Status.BAD_REQUEST);\n        }\n        logger.info(\"Found {} spark clusters based on queue {}\", sparkClusters.size(), queue);\n    }\n    if (sparkClusters.size() > 1) {\n        // Use weight of each spark cluster to determine which cluster to use\n        List<Pair<SparkCluster, Double>> clusterWeightPairs = sparkClusters.stream().map(cluster -> new Pair<>(cluster, (double) cluster.getWeight())).collect(Collectors.toList());\n        EnumeratedDistribution<SparkCluster> weightedDistribution = new EnumeratedDistribution<>(clusterWeightPairs);\n        return weightedDistribution.sample();\n    }\n    return sparkClusters.get(0);\n}",
+  "method_comment": "\n  Note that each Spark \"cluster\" is a namespace. In other words, a K8s cluster may consist of one or more Spark clusters from gateway's perspective.\n  Each Spark cluster has an associated weight configured in the ConfigMap YAML file for the corresponding environment (dev, stg and prod).\n  The Spark cluster a job is routed to is determined stochastically by sampling from the following probability mass function:\n\n  Pr(c01) = weight(c01) / (weight(c01) + weight(c02) + ... + weight(c0n))\n  Pr(c02) = weight(c02) / (weight(c01) + weight(c02) + ... + weight(c0n))\n  ...\n  Pr(c0n) = weight(c0n) / (weight(c01) + weight(c02) + ... + weight(c0n))\n\n  For some examples of how sampling works, refer to the test chooseSparkCluster_weighting in SparkClusterHelperTest\n   ",
+  "method_annotation": ""
+}

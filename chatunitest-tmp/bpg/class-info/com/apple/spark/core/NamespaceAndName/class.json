@@ -1,0 +1,72 @@
+{
+  "fullClassName": "com.apple.spark.core.NamespaceAndName",
+  "className": "NamespaceAndName",
+  "index": 100,
+  "modifier": "[public ]",
+  "extend": "[]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.core",
+  "packageDeclaration": "package com.apple.spark.core;",
+  "classSignature": "public class NamespaceAndName",
+  "hasConstructor": true,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import java.util.Objects;"
+  ],
+  "fields": [
+    "private String namespace;",
+    "private String name;"
+  ],
+  "superClasses": [],
+  "implementedTypes": [],
+  "methodSigs": {
+    "getNamespace()": "0",
+    "setNamespace(String)": "1",
+    "getName()": "2",
+    "setName(String)": "3",
+    "equals(Object)": "4",
+    "hashCode()": "5",
+    "toString()": "6",
+    "NamespaceAndName()": "7",
+    "NamespaceAndName(String, String)": "8"
+  },
+  "methodsBrief": [
+    "public String getNamespace(){}",
+    "public void setNamespace(String namespace){}",
+    "public String getName(){}",
+    "public void setName(String name){}",
+    "@Override\n  public boolean equals(Object o){}",
+    "@Override\n  public int hashCode(){}",
+    "@Override\n  public String toString(){}",
+    "public NamespaceAndName(){}",
+    "public NamespaceAndName(String namespace, String name){}"
+  ],
+  "constructorSigs": [
+    "NamespaceAndName()",
+    "NamespaceAndName(String, String)"
+  ],
+  "constructorBrief": [
+    "public NamespaceAndName(){}",
+    "public NamespaceAndName(String namespace, String name){}"
+  ],
+  "getterSetterSigs": [
+    "getNamespace()",
+    "setNamespace(String)",
+    "getName()",
+    "setName(String)"
+  ],
+  "getterSetterBrief": [
+    "public String getNamespace(){}",
+    "public void setNamespace(String namespace){}",
+    "public String getName(){}",
+    "public void setName(String name){}"
+  ],
+  "constructorDeps": {
+    "java.lang.String": []
+  },
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.core;\n\nimport java.util.Objects;\n\n/**\n * This class will uniquely identify a spark application name under a namespace.\n */\npublic class NamespaceAndName {\n\n    private String namespace;\n\n    private String name;\n\n    public NamespaceAndName() {\n    }\n\n    public NamespaceAndName(String namespace, String name) {\n        this.namespace = namespace;\n        this.name = name;\n    }\n\n    public String getNamespace() {\n        return namespace;\n    }\n\n    public void setNamespace(String namespace) {\n        this.namespace = namespace;\n    }\n\n    public String getName() {\n        return name;\n    }\n\n    public void setName(String name) {\n        this.name = name;\n    }\n\n    @Override\n    public boolean equals(Object o) {\n        if (this == o) {\n            return true;\n        }\n        if (o == null || getClass() != o.getClass()) {\n            return false;\n        }\n        NamespaceAndName that = (NamespaceAndName) o;\n        return Objects.equals(namespace, that.namespace) && Objects.equals(name, that.name);\n    }\n\n    @Override\n    public int hashCode() {\n        return Objects.hash(namespace, name);\n    }\n\n    @Override\n    public String toString() {\n        return \"{\" + \"namespace='\" + namespace + '\\'' + \", name='\" + name + '\\'' + '}';\n    }\n}\n",
+  "classDeclarationCode": "/**\n * This class will uniquely identify a spark application name under a namespace.\n */\npublic class NamespaceAndName {\n\n    private String namespace;\n\n    private String name;\n\n    public NamespaceAndName() {\n    }\n\n    public NamespaceAndName(String namespace, String name) {\n        this.namespace = namespace;\n        this.name = name;\n    }\n\n    public String getNamespace() {\n        return namespace;\n    }\n\n    public void setNamespace(String namespace) {\n        this.namespace = namespace;\n    }\n\n    public String getName() {\n        return name;\n    }\n\n    public void setName(String name) {\n        this.name = name;\n    }\n\n    @Override\n    public boolean equals(Object o) {\n        if (this == o) {\n            return true;\n        }\n        if (o == null || getClass() != o.getClass()) {\n            return false;\n        }\n        NamespaceAndName that = (NamespaceAndName) o;\n        return Objects.equals(namespace, that.namespace) && Objects.equals(name, that.name);\n    }\n\n    @Override\n    public int hashCode() {\n        return Objects.hash(namespace, name);\n    }\n\n    @Override\n    public String toString() {\n        return \"{\" + \"namespace='\" + namespace + '\\'' + \", name='\" + name + '\\'' + '}';\n    }\n}",
+  "subClasses": []
+}

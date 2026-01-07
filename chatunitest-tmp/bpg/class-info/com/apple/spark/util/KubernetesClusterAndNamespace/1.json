@@ -1,0 +1,18 @@
+{
+  "className": "KubernetesClusterAndNamespace",
+  "methodName": "getNamespace",
+  "brief": "public String getNamespace(){}",
+  "methodSignature": "getNamespace()",
+  "sourceCode": "public String getNamespace() {\n    return namespace;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public String getNamespace() {\n    return namespace;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

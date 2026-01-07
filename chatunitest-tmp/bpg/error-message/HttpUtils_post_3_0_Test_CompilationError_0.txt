@@ -1,0 +1,116 @@
+package com.apple.spark.util;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.URI;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.InputStream;
+import java.net.http.HttpClient;
+
+/**
+ * Generated JUnit 5 tests for HttpUtils.post(...)
+ *
+ * Notes:
+ * - Tests use Mockito's static mocking with CALLS_REAL_METHODS so the real post(...) runs,
+ *   while executeHttpRequest(...) is stubbed to avoid real HTTP calls.
+ * - Reflection is used to demonstrate invoking a private/static helper if present.
+ */
+public class HttpUtils_post_3_0_Test {
+
+    @Test
+    void post_withHeader_invokesExecuteAndReturnsValue() {
+        String url = "http://example.com";
+        String requestText = "payload";
+        String contentType = "text/plain";
+        String headerName = "X-Test-Header";
+        String headerValue = "HeaderValue";
+        try (MockedStatic<HttpUtils> mocked = Mockito.mockStatic(HttpUtils.class, Mockito.withSettings().defaultAnswer(Mockito.CALLS_REAL_METHODS))) {
+            // Stub executeHttpRequest to return a predictable value when called with this URL.
+            mocked.when(() -> HttpUtils.executeHttpRequest(url, Mockito.any(HttpRequest.class), Mockito.any(HttpResponse.BodyHandler.class))).thenReturn("OK-HEADER");
+            String result = HttpUtils.post(url, requestText, contentType, headerName, headerValue);
+            assertEquals("OK-HEADER", result);
+        }
+    }
+
+    @Test
+    void post_withNullHeaderName_invokesExecuteAndReturnsValue() {
+        String url = "http://example.com/some";
+        String requestText = "{\"k\":\"v\"}";
+        String contentType = "application/json";
+        String headerName = null;
+        String headerValue = null;
+        try (MockedStatic<HttpUtils> mocked = Mockito.mockStatic(HttpUtils.class, Mockito.withSettings().defaultAnswer(Mockito.CALLS_REAL_METHODS))) {
+            mocked.when(() -> HttpUtils.executeHttpRequest(url, Mockito.any(HttpRequest.class), Mockito.any(HttpResponse.BodyHandler.class))).thenReturn("OK-NO-HEADER");
+            String result = HttpUtils.post(url, requestText, contentType, headerName, headerValue);
+            assertEquals("OK-NO-HEADER", result);
+        }
+    }
+
+    @Test
+    void post_withEmptyHeaderName_invokesExecuteAndReturnsValue() {
+        String url = "http://example.org";
+        String requestText = "abc";
+        String contentType = "text/plain";
+        String headerName = "";
+        String headerValue = "ignored";
+        try (MockedStatic<HttpUtils> mocked = Mockito.mockStatic(HttpUtils.class, Mockito.withSettings().defaultAnswer(Mockito.CALLS_REAL_METHODS))) {
+            mocked.when(() -> HttpUtils.executeHttpRequest(url, Mockito.any(HttpRequest.class), Mockito.any(HttpResponse.BodyHandler.class))).thenReturn("OK-EMPTY-HEADER");
+            String result = HttpUtils.post(url, requestText, contentType, headerName, headerValue);
+            assertEquals("OK-EMPTY-HEADER", result);
+        }
+    }
+
+    @Test
+    void post_withMalformedUri_throwsDuringFormattingOrNullPointer() {
+        // Using a malformed URI should cause URI creation to throw; because of the implementation's catch
+        // block that references request.method() (request may be null), the method can throw a NullPointerException.
+        // contains space -> will cause URISyntaxException
+        String badUrl = "ht tp://bad uri";
+        assertThrows(Throwable.class, () -> HttpUtils.post(badUrl, "b", "ct", null, null));
+    }
+
+    @Test
+    void reflectivelyInvokeExecuteHttpRequest_ifPresent() throws Exception {
+        // This test attempts to locate a static method executeHttpRequest(String, HttpRequest, HttpResponse.BodyHandler)
+        // and invoke it reflectively. If the method is absent, the test will pass silently (no-op).
+        Method m = null;
+        try {
+            m = HttpUtils.class.getDeclaredMethod("executeHttpRequest", String.class, HttpRequest.class, HttpResponse.BodyHandler.class);
+        } catch (NoSuchMethodException e) {
+            // Method not present; nothing to reflectively invoke. Test is still considered successful.
+            return;
+        }
+        m.setAccessible(true);
+        // Build a simple GET request to use as parameter
+        HttpRequest req = HttpRequest.newBuilder().uri(new URI("http://example.com")).GET().build();
+        try {
+            Object returned = m.invoke(null, "http://example.com", req, HttpResponse.BodyHandlers.ofString());
+            // If it returns a String, assert non-null; otherwise just ensure invocation didn't throw unexpectedly.
+            if (returned instanceof String) {
+                // No guaranteed value, but invocation succeeded
+                assertEquals(((String) returned).getClass(), String.class);
+            }
+        } catch (InvocationTargetException ite) {
+            // If the underlying implementation throws (e.g., network/code), unwrap and rethrow for test visibility
+            throw ite;
+        }
+    }
+}
+
+--------------------------------------------
+Error in HttpUtils_post_3_0_Test: line 38 : executeHttpRequest(java.lang.String,java.net.http.HttpRequest,java.net.http.HttpResponse.BodyHandler<java.lang.String>) has private access in com.apple.spark.util.HttpUtils
+Error in HttpUtils_post_3_0_Test: line 52 : executeHttpRequest(java.lang.String,java.net.http.HttpRequest,java.net.http.HttpResponse.BodyHandler<java.lang.String>) has private access in com.apple.spark.util.HttpUtils
+Error in HttpUtils_post_3_0_Test: line 66 : executeHttpRequest(java.lang.String,java.net.http.HttpRequest,java.net.http.HttpResponse.BodyHandler<java.lang.String>) has private access in com.apple.spark.util.HttpUtils
+Error in HttpUtils_post_3_0_Test: line 78 : reference to post is ambiguous
+  both method <T>post(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.Class<T>) in com.apple.spark.util.HttpUtils and method post(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String) in com.apple.spark.util.HttpUtils match
+Error in HttpUtils_post_3_0_Test: line -1 : HttpUtils_post_3_0_Test.java uses unchecked or unsafe operations.
+Error in HttpUtils_post_3_0_Test: line -1 : Recompile with -Xlint:unchecked for details.

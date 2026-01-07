@@ -1,0 +1,47 @@
+{
+  "attempt0": {
+    "testClassName": "ApplicationSubmissionHelper_getImage_24_0_Test",
+    "fullName": "com.apple.spark.core.ApplicationSubmissionHelper_getImage_24_0_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/ApplicationSubmissionHelper_getImage_24_0_Test.java",
+    "className": "ApplicationSubmissionHelper",
+    "packageName": "com.apple.spark.core",
+    "methodName": "getImage",
+    "methodSig": "getImage(AppConfig, SubmitApplicationRequest, String, String, String)"
+  },
+  "attempt1": {
+    "testClassName": "ApplicationSubmissionHelper_getImage_24_1_Test",
+    "fullName": "com.apple.spark.core.ApplicationSubmissionHelper_getImage_24_1_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/ApplicationSubmissionHelper_getImage_24_0_Test.java",
+    "className": "ApplicationSubmissionHelper",
+    "packageName": "com.apple.spark.core",
+    "methodName": "getImage",
+    "methodSig": "getImage(AppConfig, SubmitApplicationRequest, String, String, String)"
+  },
+  "attempt2": {
+    "testClassName": "ApplicationSubmissionHelper_getImage_24_2_Test",
+    "fullName": "com.apple.spark.core.ApplicationSubmissionHelper_getImage_24_2_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/ApplicationSubmissionHelper_getImage_24_0_Test.java",
+    "className": "ApplicationSubmissionHelper",
+    "packageName": "com.apple.spark.core",
+    "methodName": "getImage",
+    "methodSig": "getImage(AppConfig, SubmitApplicationRequest, String, String, String)"
+  },
+  "attempt3": {
+    "testClassName": "ApplicationSubmissionHelper_getImage_24_3_Test",
+    "fullName": "com.apple.spark.core.ApplicationSubmissionHelper_getImage_24_3_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/ApplicationSubmissionHelper_getImage_24_0_Test.java",
+    "className": "ApplicationSubmissionHelper",
+    "packageName": "com.apple.spark.core",
+    "methodName": "getImage",
+    "methodSig": "getImage(AppConfig, SubmitApplicationRequest, String, String, String)"
+  },
+  "attempt4": {
+    "testClassName": "ApplicationSubmissionHelper_getImage_24_4_Test",
+    "fullName": "com.apple.spark.core.ApplicationSubmissionHelper_getImage_24_4_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/ApplicationSubmissionHelper_getImage_24_0_Test.java",
+    "className": "ApplicationSubmissionHelper",
+    "packageName": "com.apple.spark.core",
+    "methodName": "getImage",
+    "methodSig": "getImage(AppConfig, SubmitApplicationRequest, String, String, String)"
+  }
+}

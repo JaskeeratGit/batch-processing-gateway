@@ -1,0 +1,589 @@
+[ERROR] COMPILATION ERROR : 
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getSparkConf_3_0_Test_testGetSparkConf_mergingOrder_substitution_and_overrides.java:[135,8] class ApplicationSubmissionHelper is public, should be declared in a file named ApplicationSubmissionHelper.java
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelperTest.java:[38,8] duplicate class: com.apple.spark.core.ApplicationSubmissionHelperTest
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getImage_24_0_Test_testGetImage_usesResolvedImage_whenRequestImageIsNull.java:[19,1] cannot find symbol
+  symbol:   static CORE_LIMIT_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getImage_24_0_Test_testGetImage_usesResolvedImage_whenRequestImageIsNull.java:[20,1] cannot find symbol
+  symbol:   static DRIVER_CPU_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getImage_24_0_Test_testGetImage_usesResolvedImage_whenRequestImageIsNull.java:[21,1] cannot find symbol
+  symbol:   static DRIVER_MEM_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getImage_24_0_Test_testGetImage_usesResolvedImage_whenRequestImageIsNull.java:[22,1] cannot find symbol
+  symbol:   static EXECUTOR_CPU_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getImage_24_0_Test_testGetImage_usesResolvedImage_whenRequestImageIsNull.java:[23,1] cannot find symbol
+  symbol:   static EXECUTOR_MEM_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getSparkConf_3_0_Test_testGetSparkConf_mergingOrder_substitution_and_overrides.java:[23,1] com.apple.spark.core.AppConfig is already defined in this compilation unit
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getSparkConf_3_0_Test_testGetSparkConf_mergingOrder_substitution_and_overrides.java:[25,1] com.apple.spark.core.SubmitApplicationRequest is already defined in this compilation unit
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getSparkConf_3_0_Test_testGetSparkConf_mergingOrder_substitution_and_overrides.java:[50,1] com.apple.spark.core.StringUtils is already defined in this compilation unit
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getSparkConf_3_0_Test_testGetSparkConf_mergingOrder_substitution_and_overrides.java:[17,1] cannot find symbol
+  symbol:   static CORE_LIMIT_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getSparkConf_3_0_Test_testGetSparkConf_mergingOrder_substitution_and_overrides.java:[18,1] cannot find symbol
+  symbol:   static DRIVER_CPU_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getSparkConf_3_0_Test_testGetSparkConf_mergingOrder_substitution_and_overrides.java:[19,1] cannot find symbol
+  symbol:   static DRIVER_MEM_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getSparkConf_3_0_Test_testGetSparkConf_mergingOrder_substitution_and_overrides.java:[20,1] cannot find symbol
+  symbol:   static EXECUTOR_CPU_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getSparkConf_3_0_Test_testGetSparkConf_mergingOrder_substitution_and_overrides.java:[21,1] cannot find symbol
+  symbol:   static EXECUTOR_MEM_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_withEmptyClusterId.java:[17,1] cannot find symbol
+  symbol:   static CORE_LIMIT_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_withEmptyClusterId.java:[18,1] cannot find symbol
+  symbol:   static DRIVER_CPU_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_withEmptyClusterId.java:[19,1] cannot find symbol
+  symbol:   static DRIVER_MEM_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_withEmptyClusterId.java:[20,1] cannot find symbol
+  symbol:   static EXECUTOR_CPU_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_withEmptyClusterId.java:[21,1] cannot find symbol
+  symbol:   static EXECUTOR_MEM_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getImage_24_0_Test_testGetImage_usesResolvedImage_whenRequestImageIsEmpty.java:[19,1] cannot find symbol
+  symbol:   static CORE_LIMIT_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getImage_24_0_Test_testGetImage_usesResolvedImage_whenRequestImageIsEmpty.java:[20,1] cannot find symbol
+  symbol:   static DRIVER_CPU_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getImage_24_0_Test_testGetImage_usesResolvedImage_whenRequestImageIsEmpty.java:[21,1] cannot find symbol
+  symbol:   static DRIVER_MEM_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getImage_24_0_Test_testGetImage_usesResolvedImage_whenRequestImageIsEmpty.java:[22,1] cannot find symbol
+  symbol:   static EXECUTOR_CPU_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getImage_24_0_Test_testGetImage_usesResolvedImage_whenRequestImageIsEmpty.java:[23,1] cannot find symbol
+  symbol:   static EXECUTOR_MEM_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_uniquenessAcrossInvocations.java:[17,1] cannot find symbol
+  symbol:   static CORE_LIMIT_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_uniquenessAcrossInvocations.java:[18,1] cannot find symbol
+  symbol:   static DRIVER_CPU_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_uniquenessAcrossInvocations.java:[19,1] cannot find symbol
+  symbol:   static DRIVER_MEM_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_uniquenessAcrossInvocations.java:[20,1] cannot find symbol
+  symbol:   static EXECUTOR_CPU_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_uniquenessAcrossInvocations.java:[21,1] cannot find symbol
+  symbol:   static EXECUTOR_MEM_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_withNullClusterId.java:[17,1] cannot find symbol
+  symbol:   static CORE_LIMIT_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_withNullClusterId.java:[18,1] cannot find symbol
+  symbol:   static DRIVER_CPU_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_withNullClusterId.java:[19,1] cannot find symbol
+  symbol:   static DRIVER_MEM_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_withNullClusterId.java:[20,1] cannot find symbol
+  symbol:   static EXECUTOR_CPU_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_withNullClusterId.java:[21,1] cannot find symbol
+  symbol:   static EXECUTOR_MEM_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getClusterIdFromSubmissionId_9_0_Test_testGetClusterIdFromSubmissionId_null_throwsInvalidSubmissionIdException.java:[15,1] cannot find symbol
+  symbol:   static CORE_LIMIT_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getClusterIdFromSubmissionId_9_0_Test_testGetClusterIdFromSubmissionId_null_throwsInvalidSubmissionIdException.java:[16,1] cannot find symbol
+  symbol:   static DRIVER_CPU_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getClusterIdFromSubmissionId_9_0_Test_testGetClusterIdFromSubmissionId_null_throwsInvalidSubmissionIdException.java:[17,1] cannot find symbol
+  symbol:   static DRIVER_MEM_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getClusterIdFromSubmissionId_9_0_Test_testGetClusterIdFromSubmissionId_null_throwsInvalidSubmissionIdException.java:[18,1] cannot find symbol
+  symbol:   static EXECUTOR_CPU_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getClusterIdFromSubmissionId_9_0_Test_testGetClusterIdFromSubmissionId_null_throwsInvalidSubmissionIdException.java:[19,1] cannot find symbol
+  symbol:   static EXECUTOR_MEM_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getExecutorSpec_22_0_Test_testGetExecutorSpec_WithExistingCoreLimit_AdjustsCoreLimitOnly.java:[21,1] cannot find symbol
+  symbol:   static CORE_LIMIT_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getExecutorSpec_22_0_Test_testGetExecutorSpec_WithExistingCoreLimit_AdjustsCoreLimitOnly.java:[22,1] cannot find symbol
+  symbol:   static DRIVER_CPU_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getExecutorSpec_22_0_Test_testGetExecutorSpec_WithExistingCoreLimit_AdjustsCoreLimitOnly.java:[23,1] cannot find symbol
+  symbol:   static DRIVER_MEM_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getExecutorSpec_22_0_Test_testGetExecutorSpec_WithExistingCoreLimit_AdjustsCoreLimitOnly.java:[24,1] cannot find symbol
+  symbol:   static EXECUTOR_CPU_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getExecutorSpec_22_0_Test_testGetExecutorSpec_WithExistingCoreLimit_AdjustsCoreLimitOnly.java:[25,1] cannot find symbol
+  symbol:   static EXECUTOR_MEM_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getProxyUser_1_0_Test_testGetProxyUser_whenUserIsInAirflowAccountsDifferentEntry_returnsDagUser.java:[19,1] cannot find symbol
+  symbol:   static CORE_LIMIT_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getProxyUser_1_0_Test_testGetProxyUser_whenUserIsInAirflowAccountsDifferentEntry_returnsDagUser.java:[20,1] cannot find symbol
+  symbol:   static DRIVER_CPU_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getProxyUser_1_0_Test_testGetProxyUser_whenUserIsInAirflowAccountsDifferentEntry_returnsDagUser.java:[21,1] cannot find symbol
+  symbol:   static DRIVER_MEM_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getProxyUser_1_0_Test_testGetProxyUser_whenUserIsInAirflowAccountsDifferentEntry_returnsDagUser.java:[22,1] cannot find symbol
+  symbol:   static EXECUTOR_CPU_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getProxyUser_1_0_Test_testGetProxyUser_whenUserIsInAirflowAccountsDifferentEntry_returnsDagUser.java:[23,1] cannot find symbol
+  symbol:   static EXECUTOR_MEM_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getProxyUser_1_0_Test_testGetProxyUser_whenUserIsInAirflowAccounts_returnsDagUser.java:[19,1] cannot find symbol
+  symbol:   static CORE_LIMIT_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getProxyUser_1_0_Test_testGetProxyUser_whenUserIsInAirflowAccounts_returnsDagUser.java:[20,1] cannot find symbol
+  symbol:   static DRIVER_CPU_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getProxyUser_1_0_Test_testGetProxyUser_whenUserIsInAirflowAccounts_returnsDagUser.java:[21,1] cannot find symbol
+  symbol:   static DRIVER_MEM_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getProxyUser_1_0_Test_testGetProxyUser_whenUserIsInAirflowAccounts_returnsDagUser.java:[22,1] cannot find symbol
+  symbol:   static EXECUTOR_CPU_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getProxyUser_1_0_Test_testGetProxyUser_whenUserIsInAirflowAccounts_returnsDagUser.java:[23,1] cannot find symbol
+  symbol:   static EXECUTOR_MEM_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getDriverSpec_14_0_Test_test_privateMemParsingHelpers_viaReflection.java:[26,1] cannot find symbol
+  symbol:   static CORE_LIMIT_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getDriverSpec_14_0_Test_test_privateMemParsingHelpers_viaReflection.java:[27,1] cannot find symbol
+  symbol:   static DRIVER_CPU_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getDriverSpec_14_0_Test_test_privateMemParsingHelpers_viaReflection.java:[28,1] cannot find symbol
+  symbol:   static DRIVER_MEM_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getDriverSpec_14_0_Test_test_privateMemParsingHelpers_viaReflection.java:[29,1] cannot find symbol
+  symbol:   static EXECUTOR_CPU_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getDriverSpec_14_0_Test_test_privateMemParsingHelpers_viaReflection.java:[30,1] cannot find symbol
+  symbol:   static EXECUTOR_MEM_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getProxyUser_1_0_Test_testGetProxyUser_viaReflection_invocation.java:[19,1] cannot find symbol
+  symbol:   static CORE_LIMIT_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getProxyUser_1_0_Test_testGetProxyUser_viaReflection_invocation.java:[20,1] cannot find symbol
+  symbol:   static DRIVER_CPU_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getProxyUser_1_0_Test_testGetProxyUser_viaReflection_invocation.java:[21,1] cannot find symbol
+  symbol:   static DRIVER_MEM_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getProxyUser_1_0_Test_testGetProxyUser_viaReflection_invocation.java:[22,1] cannot find symbol
+  symbol:   static EXECUTOR_CPU_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getProxyUser_1_0_Test_testGetProxyUser_viaReflection_invocation.java:[23,1] cannot find symbol
+  symbol:   static EXECUTOR_MEM_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getDriverSpec_14_0_Test_test_getDriverSpec_requestVolumesPriority_and_coreLimitNull_and_serviceAccountDefaulting.java:[26,1] cannot find symbol
+  symbol:   static CORE_LIMIT_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getDriverSpec_14_0_Test_test_getDriverSpec_requestVolumesPriority_and_coreLimitNull_and_serviceAccountDefaulting.java:[27,1] cannot find symbol
+  symbol:   static DRIVER_CPU_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getDriverSpec_14_0_Test_test_getDriverSpec_requestVolumesPriority_and_coreLimitNull_and_serviceAccountDefaulting.java:[28,1] cannot find symbol
+  symbol:   static DRIVER_MEM_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getDriverSpec_14_0_Test_test_getDriverSpec_requestVolumesPriority_and_coreLimitNull_and_serviceAccountDefaulting.java:[29,1] cannot find symbol
+  symbol:   static EXECUTOR_CPU_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getDriverSpec_14_0_Test_test_getDriverSpec_requestVolumesPriority_and_coreLimitNull_and_serviceAccountDefaulting.java:[30,1] cannot find symbol
+  symbol:   static EXECUTOR_MEM_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_withNormalClusterId.java:[17,1] cannot find symbol
+  symbol:   static CORE_LIMIT_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_withNormalClusterId.java:[18,1] cannot find symbol
+  symbol:   static DRIVER_CPU_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_withNormalClusterId.java:[19,1] cannot find symbol
+  symbol:   static DRIVER_MEM_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_withNormalClusterId.java:[20,1] cannot find symbol
+  symbol:   static EXECUTOR_CPU_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_withNormalClusterId.java:[21,1] cannot find symbol
+  symbol:   static EXECUTOR_MEM_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getImage_24_0_Test_testGetImage_throwsBadRequest_whenNoResolvedImageFound.java:[19,1] cannot find symbol
+  symbol:   static CORE_LIMIT_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getImage_24_0_Test_testGetImage_throwsBadRequest_whenNoResolvedImageFound.java:[20,1] cannot find symbol
+  symbol:   static DRIVER_CPU_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getImage_24_0_Test_testGetImage_throwsBadRequest_whenNoResolvedImageFound.java:[21,1] cannot find symbol
+  symbol:   static DRIVER_MEM_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getImage_24_0_Test_testGetImage_throwsBadRequest_whenNoResolvedImageFound.java:[22,1] cannot find symbol
+  symbol:   static EXECUTOR_CPU_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getImage_24_0_Test_testGetImage_throwsBadRequest_whenNoResolvedImageFound.java:[23,1] cannot find symbol
+  symbol:   static EXECUTOR_MEM_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getClusterIdFromSubmissionId_9_0_Test_testGetClusterIdFromSubmissionId_dashAtEnd_returnsPrefix.java:[15,1] cannot find symbol
+  symbol:   static CORE_LIMIT_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getClusterIdFromSubmissionId_9_0_Test_testGetClusterIdFromSubmissionId_dashAtEnd_returnsPrefix.java:[16,1] cannot find symbol
+  symbol:   static DRIVER_CPU_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getClusterIdFromSubmissionId_9_0_Test_testGetClusterIdFromSubmissionId_dashAtEnd_returnsPrefix.java:[17,1] cannot find symbol
+  symbol:   static DRIVER_MEM_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getClusterIdFromSubmissionId_9_0_Test_testGetClusterIdFromSubmissionId_dashAtEnd_returnsPrefix.java:[18,1] cannot find symbol
+  symbol:   static EXECUTOR_CPU_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getClusterIdFromSubmissionId_9_0_Test_testGetClusterIdFromSubmissionId_dashAtEnd_returnsPrefix.java:[19,1] cannot find symbol
+  symbol:   static EXECUTOR_MEM_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_8_0_Test_testGenerateSubmissionId_withNullSuffix.java:[16,1] cannot find symbol
+  symbol:   static CORE_LIMIT_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_8_0_Test_testGenerateSubmissionId_withNullSuffix.java:[17,1] cannot find symbol
+  symbol:   static DRIVER_CPU_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_8_0_Test_testGenerateSubmissionId_withNullSuffix.java:[18,1] cannot find symbol
+  symbol:   static DRIVER_MEM_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_8_0_Test_testGenerateSubmissionId_withNullSuffix.java:[19,1] cannot find symbol
+  symbol:   static EXECUTOR_CPU_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_8_0_Test_testGenerateSubmissionId_withNullSuffix.java:[20,1] cannot find symbol
+  symbol:   static EXECUTOR_MEM_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getClusterIdFromSubmissionId_9_0_Test_testGetClusterIdFromSubmissionId_validSimple_returnsClusterId.java:[15,1] cannot find symbol
+  symbol:   static CORE_LIMIT_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getClusterIdFromSubmissionId_9_0_Test_testGetClusterIdFromSubmissionId_validSimple_returnsClusterId.java:[16,1] cannot find symbol
+  symbol:   static DRIVER_CPU_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getClusterIdFromSubmissionId_9_0_Test_testGetClusterIdFromSubmissionId_validSimple_returnsClusterId.java:[17,1] cannot find symbol
+  symbol:   static DRIVER_MEM_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getClusterIdFromSubmissionId_9_0_Test_testGetClusterIdFromSubmissionId_validSimple_returnsClusterId.java:[18,1] cannot find symbol
+  symbol:   static EXECUTOR_CPU_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getClusterIdFromSubmissionId_9_0_Test_testGetClusterIdFromSubmissionId_validSimple_returnsClusterId.java:[19,1] cannot find symbol
+  symbol:   static EXECUTOR_MEM_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getExecutorSpec_22_0_Test_testGetExecutorSpec_AdjustsCoresCoreLimitMemoryAndSetsAnnotationsAndDnsConfig.java:[21,1] cannot find symbol
+  symbol:   static CORE_LIMIT_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getExecutorSpec_22_0_Test_testGetExecutorSpec_AdjustsCoresCoreLimitMemoryAndSetsAnnotationsAndDnsConfig.java:[22,1] cannot find symbol
+  symbol:   static DRIVER_CPU_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getExecutorSpec_22_0_Test_testGetExecutorSpec_AdjustsCoresCoreLimitMemoryAndSetsAnnotationsAndDnsConfig.java:[23,1] cannot find symbol
+  symbol:   static DRIVER_MEM_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getExecutorSpec_22_0_Test_testGetExecutorSpec_AdjustsCoresCoreLimitMemoryAndSetsAnnotationsAndDnsConfig.java:[24,1] cannot find symbol
+  symbol:   static EXECUTOR_CPU_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getExecutorSpec_22_0_Test_testGetExecutorSpec_AdjustsCoresCoreLimitMemoryAndSetsAnnotationsAndDnsConfig.java:[25,1] cannot find symbol
+  symbol:   static EXECUTOR_MEM_BUFFER_RATIO
+  location: class com.apple.spark.core.SparkConstants
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.8.1:testCompile (default-testCompile) on project bpg: Compilation failure: Compilation failure: 
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getSparkConf_3_0_Test_testGetSparkConf_mergingOrder_substitution_and_overrides.java:[135,8] class ApplicationSubmissionHelper is public, should be declared in a file named ApplicationSubmissionHelper.java
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelperTest.java:[38,8] duplicate class: com.apple.spark.core.ApplicationSubmissionHelperTest
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getImage_24_0_Test_testGetImage_usesResolvedImage_whenRequestImageIsNull.java:[19,1] cannot find symbol
+[ERROR]   symbol:   static CORE_LIMIT_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getImage_24_0_Test_testGetImage_usesResolvedImage_whenRequestImageIsNull.java:[20,1] cannot find symbol
+[ERROR]   symbol:   static DRIVER_CPU_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getImage_24_0_Test_testGetImage_usesResolvedImage_whenRequestImageIsNull.java:[21,1] cannot find symbol
+[ERROR]   symbol:   static DRIVER_MEM_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getImage_24_0_Test_testGetImage_usesResolvedImage_whenRequestImageIsNull.java:[22,1] cannot find symbol
+[ERROR]   symbol:   static EXECUTOR_CPU_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getImage_24_0_Test_testGetImage_usesResolvedImage_whenRequestImageIsNull.java:[23,1] cannot find symbol
+[ERROR]   symbol:   static EXECUTOR_MEM_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getSparkConf_3_0_Test_testGetSparkConf_mergingOrder_substitution_and_overrides.java:[23,1] com.apple.spark.core.AppConfig is already defined in this compilation unit
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getSparkConf_3_0_Test_testGetSparkConf_mergingOrder_substitution_and_overrides.java:[25,1] com.apple.spark.core.SubmitApplicationRequest is already defined in this compilation unit
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getSparkConf_3_0_Test_testGetSparkConf_mergingOrder_substitution_and_overrides.java:[50,1] com.apple.spark.core.StringUtils is already defined in this compilation unit
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getSparkConf_3_0_Test_testGetSparkConf_mergingOrder_substitution_and_overrides.java:[17,1] cannot find symbol
+[ERROR]   symbol:   static CORE_LIMIT_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getSparkConf_3_0_Test_testGetSparkConf_mergingOrder_substitution_and_overrides.java:[18,1] cannot find symbol
+[ERROR]   symbol:   static DRIVER_CPU_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getSparkConf_3_0_Test_testGetSparkConf_mergingOrder_substitution_and_overrides.java:[19,1] cannot find symbol
+[ERROR]   symbol:   static DRIVER_MEM_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getSparkConf_3_0_Test_testGetSparkConf_mergingOrder_substitution_and_overrides.java:[20,1] cannot find symbol
+[ERROR]   symbol:   static EXECUTOR_CPU_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getSparkConf_3_0_Test_testGetSparkConf_mergingOrder_substitution_and_overrides.java:[21,1] cannot find symbol
+[ERROR]   symbol:   static EXECUTOR_MEM_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_withEmptyClusterId.java:[17,1] cannot find symbol
+[ERROR]   symbol:   static CORE_LIMIT_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_withEmptyClusterId.java:[18,1] cannot find symbol
+[ERROR]   symbol:   static DRIVER_CPU_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_withEmptyClusterId.java:[19,1] cannot find symbol
+[ERROR]   symbol:   static DRIVER_MEM_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_withEmptyClusterId.java:[20,1] cannot find symbol
+[ERROR]   symbol:   static EXECUTOR_CPU_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_withEmptyClusterId.java:[21,1] cannot find symbol
+[ERROR]   symbol:   static EXECUTOR_MEM_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getImage_24_0_Test_testGetImage_usesResolvedImage_whenRequestImageIsEmpty.java:[19,1] cannot find symbol
+[ERROR]   symbol:   static CORE_LIMIT_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getImage_24_0_Test_testGetImage_usesResolvedImage_whenRequestImageIsEmpty.java:[20,1] cannot find symbol
+[ERROR]   symbol:   static DRIVER_CPU_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getImage_24_0_Test_testGetImage_usesResolvedImage_whenRequestImageIsEmpty.java:[21,1] cannot find symbol
+[ERROR]   symbol:   static DRIVER_MEM_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getImage_24_0_Test_testGetImage_usesResolvedImage_whenRequestImageIsEmpty.java:[22,1] cannot find symbol
+[ERROR]   symbol:   static EXECUTOR_CPU_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getImage_24_0_Test_testGetImage_usesResolvedImage_whenRequestImageIsEmpty.java:[23,1] cannot find symbol
+[ERROR]   symbol:   static EXECUTOR_MEM_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_uniquenessAcrossInvocations.java:[17,1] cannot find symbol
+[ERROR]   symbol:   static CORE_LIMIT_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_uniquenessAcrossInvocations.java:[18,1] cannot find symbol
+[ERROR]   symbol:   static DRIVER_CPU_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_uniquenessAcrossInvocations.java:[19,1] cannot find symbol
+[ERROR]   symbol:   static DRIVER_MEM_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_uniquenessAcrossInvocations.java:[20,1] cannot find symbol
+[ERROR]   symbol:   static EXECUTOR_CPU_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_uniquenessAcrossInvocations.java:[21,1] cannot find symbol
+[ERROR]   symbol:   static EXECUTOR_MEM_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_withNullClusterId.java:[17,1] cannot find symbol
+[ERROR]   symbol:   static CORE_LIMIT_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_withNullClusterId.java:[18,1] cannot find symbol
+[ERROR]   symbol:   static DRIVER_CPU_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_withNullClusterId.java:[19,1] cannot find symbol
+[ERROR]   symbol:   static DRIVER_MEM_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_withNullClusterId.java:[20,1] cannot find symbol
+[ERROR]   symbol:   static EXECUTOR_CPU_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_withNullClusterId.java:[21,1] cannot find symbol
+[ERROR]   symbol:   static EXECUTOR_MEM_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getClusterIdFromSubmissionId_9_0_Test_testGetClusterIdFromSubmissionId_null_throwsInvalidSubmissionIdException.java:[15,1] cannot find symbol
+[ERROR]   symbol:   static CORE_LIMIT_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getClusterIdFromSubmissionId_9_0_Test_testGetClusterIdFromSubmissionId_null_throwsInvalidSubmissionIdException.java:[16,1] cannot find symbol
+[ERROR]   symbol:   static DRIVER_CPU_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getClusterIdFromSubmissionId_9_0_Test_testGetClusterIdFromSubmissionId_null_throwsInvalidSubmissionIdException.java:[17,1] cannot find symbol
+[ERROR]   symbol:   static DRIVER_MEM_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getClusterIdFromSubmissionId_9_0_Test_testGetClusterIdFromSubmissionId_null_throwsInvalidSubmissionIdException.java:[18,1] cannot find symbol
+[ERROR]   symbol:   static EXECUTOR_CPU_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getClusterIdFromSubmissionId_9_0_Test_testGetClusterIdFromSubmissionId_null_throwsInvalidSubmissionIdException.java:[19,1] cannot find symbol
+[ERROR]   symbol:   static EXECUTOR_MEM_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getExecutorSpec_22_0_Test_testGetExecutorSpec_WithExistingCoreLimit_AdjustsCoreLimitOnly.java:[21,1] cannot find symbol
+[ERROR]   symbol:   static CORE_LIMIT_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getExecutorSpec_22_0_Test_testGetExecutorSpec_WithExistingCoreLimit_AdjustsCoreLimitOnly.java:[22,1] cannot find symbol
+[ERROR]   symbol:   static DRIVER_CPU_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getExecutorSpec_22_0_Test_testGetExecutorSpec_WithExistingCoreLimit_AdjustsCoreLimitOnly.java:[23,1] cannot find symbol
+[ERROR]   symbol:   static DRIVER_MEM_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getExecutorSpec_22_0_Test_testGetExecutorSpec_WithExistingCoreLimit_AdjustsCoreLimitOnly.java:[24,1] cannot find symbol
+[ERROR]   symbol:   static EXECUTOR_CPU_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getExecutorSpec_22_0_Test_testGetExecutorSpec_WithExistingCoreLimit_AdjustsCoreLimitOnly.java:[25,1] cannot find symbol
+[ERROR]   symbol:   static EXECUTOR_MEM_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getProxyUser_1_0_Test_testGetProxyUser_whenUserIsInAirflowAccountsDifferentEntry_returnsDagUser.java:[19,1] cannot find symbol
+[ERROR]   symbol:   static CORE_LIMIT_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getProxyUser_1_0_Test_testGetProxyUser_whenUserIsInAirflowAccountsDifferentEntry_returnsDagUser.java:[20,1] cannot find symbol
+[ERROR]   symbol:   static DRIVER_CPU_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getProxyUser_1_0_Test_testGetProxyUser_whenUserIsInAirflowAccountsDifferentEntry_returnsDagUser.java:[21,1] cannot find symbol
+[ERROR]   symbol:   static DRIVER_MEM_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getProxyUser_1_0_Test_testGetProxyUser_whenUserIsInAirflowAccountsDifferentEntry_returnsDagUser.java:[22,1] cannot find symbol
+[ERROR]   symbol:   static EXECUTOR_CPU_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getProxyUser_1_0_Test_testGetProxyUser_whenUserIsInAirflowAccountsDifferentEntry_returnsDagUser.java:[23,1] cannot find symbol
+[ERROR]   symbol:   static EXECUTOR_MEM_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getProxyUser_1_0_Test_testGetProxyUser_whenUserIsInAirflowAccounts_returnsDagUser.java:[19,1] cannot find symbol
+[ERROR]   symbol:   static CORE_LIMIT_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getProxyUser_1_0_Test_testGetProxyUser_whenUserIsInAirflowAccounts_returnsDagUser.java:[20,1] cannot find symbol
+[ERROR]   symbol:   static DRIVER_CPU_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getProxyUser_1_0_Test_testGetProxyUser_whenUserIsInAirflowAccounts_returnsDagUser.java:[21,1] cannot find symbol
+[ERROR]   symbol:   static DRIVER_MEM_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getProxyUser_1_0_Test_testGetProxyUser_whenUserIsInAirflowAccounts_returnsDagUser.java:[22,1] cannot find symbol
+[ERROR]   symbol:   static EXECUTOR_CPU_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getProxyUser_1_0_Test_testGetProxyUser_whenUserIsInAirflowAccounts_returnsDagUser.java:[23,1] cannot find symbol
+[ERROR]   symbol:   static EXECUTOR_MEM_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getDriverSpec_14_0_Test_test_privateMemParsingHelpers_viaReflection.java:[26,1] cannot find symbol
+[ERROR]   symbol:   static CORE_LIMIT_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getDriverSpec_14_0_Test_test_privateMemParsingHelpers_viaReflection.java:[27,1] cannot find symbol
+[ERROR]   symbol:   static DRIVER_CPU_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getDriverSpec_14_0_Test_test_privateMemParsingHelpers_viaReflection.java:[28,1] cannot find symbol
+[ERROR]   symbol:   static DRIVER_MEM_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getDriverSpec_14_0_Test_test_privateMemParsingHelpers_viaReflection.java:[29,1] cannot find symbol
+[ERROR]   symbol:   static EXECUTOR_CPU_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getDriverSpec_14_0_Test_test_privateMemParsingHelpers_viaReflection.java:[30,1] cannot find symbol
+[ERROR]   symbol:   static EXECUTOR_MEM_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getProxyUser_1_0_Test_testGetProxyUser_viaReflection_invocation.java:[19,1] cannot find symbol
+[ERROR]   symbol:   static CORE_LIMIT_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getProxyUser_1_0_Test_testGetProxyUser_viaReflection_invocation.java:[20,1] cannot find symbol
+[ERROR]   symbol:   static DRIVER_CPU_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getProxyUser_1_0_Test_testGetProxyUser_viaReflection_invocation.java:[21,1] cannot find symbol
+[ERROR]   symbol:   static DRIVER_MEM_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getProxyUser_1_0_Test_testGetProxyUser_viaReflection_invocation.java:[22,1] cannot find symbol
+[ERROR]   symbol:   static EXECUTOR_CPU_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getProxyUser_1_0_Test_testGetProxyUser_viaReflection_invocation.java:[23,1] cannot find symbol
+[ERROR]   symbol:   static EXECUTOR_MEM_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getDriverSpec_14_0_Test_test_getDriverSpec_requestVolumesPriority_and_coreLimitNull_and_serviceAccountDefaulting.java:[26,1] cannot find symbol
+[ERROR]   symbol:   static CORE_LIMIT_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getDriverSpec_14_0_Test_test_getDriverSpec_requestVolumesPriority_and_coreLimitNull_and_serviceAccountDefaulting.java:[27,1] cannot find symbol
+[ERROR]   symbol:   static DRIVER_CPU_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getDriverSpec_14_0_Test_test_getDriverSpec_requestVolumesPriority_and_coreLimitNull_and_serviceAccountDefaulting.java:[28,1] cannot find symbol
+[ERROR]   symbol:   static DRIVER_MEM_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getDriverSpec_14_0_Test_test_getDriverSpec_requestVolumesPriority_and_coreLimitNull_and_serviceAccountDefaulting.java:[29,1] cannot find symbol
+[ERROR]   symbol:   static EXECUTOR_CPU_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getDriverSpec_14_0_Test_test_getDriverSpec_requestVolumesPriority_and_coreLimitNull_and_serviceAccountDefaulting.java:[30,1] cannot find symbol
+[ERROR]   symbol:   static EXECUTOR_MEM_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_withNormalClusterId.java:[17,1] cannot find symbol
+[ERROR]   symbol:   static CORE_LIMIT_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_withNormalClusterId.java:[18,1] cannot find symbol
+[ERROR]   symbol:   static DRIVER_CPU_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_withNormalClusterId.java:[19,1] cannot find symbol
+[ERROR]   symbol:   static DRIVER_MEM_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_withNormalClusterId.java:[20,1] cannot find symbol
+[ERROR]   symbol:   static EXECUTOR_CPU_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_7_0_Test_testGenerateSubmissionId_withNormalClusterId.java:[21,1] cannot find symbol
+[ERROR]   symbol:   static EXECUTOR_MEM_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getImage_24_0_Test_testGetImage_throwsBadRequest_whenNoResolvedImageFound.java:[19,1] cannot find symbol
+[ERROR]   symbol:   static CORE_LIMIT_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getImage_24_0_Test_testGetImage_throwsBadRequest_whenNoResolvedImageFound.java:[20,1] cannot find symbol
+[ERROR]   symbol:   static DRIVER_CPU_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getImage_24_0_Test_testGetImage_throwsBadRequest_whenNoResolvedImageFound.java:[21,1] cannot find symbol
+[ERROR]   symbol:   static DRIVER_MEM_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getImage_24_0_Test_testGetImage_throwsBadRequest_whenNoResolvedImageFound.java:[22,1] cannot find symbol
+[ERROR]   symbol:   static EXECUTOR_CPU_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getImage_24_0_Test_testGetImage_throwsBadRequest_whenNoResolvedImageFound.java:[23,1] cannot find symbol
+[ERROR]   symbol:   static EXECUTOR_MEM_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getClusterIdFromSubmissionId_9_0_Test_testGetClusterIdFromSubmissionId_dashAtEnd_returnsPrefix.java:[15,1] cannot find symbol
+[ERROR]   symbol:   static CORE_LIMIT_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getClusterIdFromSubmissionId_9_0_Test_testGetClusterIdFromSubmissionId_dashAtEnd_returnsPrefix.java:[16,1] cannot find symbol
+[ERROR]   symbol:   static DRIVER_CPU_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getClusterIdFromSubmissionId_9_0_Test_testGetClusterIdFromSubmissionId_dashAtEnd_returnsPrefix.java:[17,1] cannot find symbol
+[ERROR]   symbol:   static DRIVER_MEM_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getClusterIdFromSubmissionId_9_0_Test_testGetClusterIdFromSubmissionId_dashAtEnd_returnsPrefix.java:[18,1] cannot find symbol
+[ERROR]   symbol:   static EXECUTOR_CPU_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getClusterIdFromSubmissionId_9_0_Test_testGetClusterIdFromSubmissionId_dashAtEnd_returnsPrefix.java:[19,1] cannot find symbol
+[ERROR]   symbol:   static EXECUTOR_MEM_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_8_0_Test_testGenerateSubmissionId_withNullSuffix.java:[16,1] cannot find symbol
+[ERROR]   symbol:   static CORE_LIMIT_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_8_0_Test_testGenerateSubmissionId_withNullSuffix.java:[17,1] cannot find symbol
+[ERROR]   symbol:   static DRIVER_CPU_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_8_0_Test_testGenerateSubmissionId_withNullSuffix.java:[18,1] cannot find symbol
+[ERROR]   symbol:   static DRIVER_MEM_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_8_0_Test_testGenerateSubmissionId_withNullSuffix.java:[19,1] cannot find symbol
+[ERROR]   symbol:   static EXECUTOR_CPU_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_generateSubmissionId_8_0_Test_testGenerateSubmissionId_withNullSuffix.java:[20,1] cannot find symbol
+[ERROR]   symbol:   static EXECUTOR_MEM_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getClusterIdFromSubmissionId_9_0_Test_testGetClusterIdFromSubmissionId_validSimple_returnsClusterId.java:[15,1] cannot find symbol
+[ERROR]   symbol:   static CORE_LIMIT_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getClusterIdFromSubmissionId_9_0_Test_testGetClusterIdFromSubmissionId_validSimple_returnsClusterId.java:[16,1] cannot find symbol
+[ERROR]   symbol:   static DRIVER_CPU_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getClusterIdFromSubmissionId_9_0_Test_testGetClusterIdFromSubmissionId_validSimple_returnsClusterId.java:[17,1] cannot find symbol
+[ERROR]   symbol:   static DRIVER_MEM_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getClusterIdFromSubmissionId_9_0_Test_testGetClusterIdFromSubmissionId_validSimple_returnsClusterId.java:[18,1] cannot find symbol
+[ERROR]   symbol:   static EXECUTOR_CPU_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getClusterIdFromSubmissionId_9_0_Test_testGetClusterIdFromSubmissionId_validSimple_returnsClusterId.java:[19,1] cannot find symbol
+[ERROR]   symbol:   static EXECUTOR_MEM_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getExecutorSpec_22_0_Test_testGetExecutorSpec_AdjustsCoresCoreLimitMemoryAndSetsAnnotationsAndDnsConfig.java:[21,1] cannot find symbol
+[ERROR]   symbol:   static CORE_LIMIT_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getExecutorSpec_22_0_Test_testGetExecutorSpec_AdjustsCoresCoreLimitMemoryAndSetsAnnotationsAndDnsConfig.java:[22,1] cannot find symbol
+[ERROR]   symbol:   static DRIVER_CPU_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getExecutorSpec_22_0_Test_testGetExecutorSpec_AdjustsCoresCoreLimitMemoryAndSetsAnnotationsAndDnsConfig.java:[23,1] cannot find symbol
+[ERROR]   symbol:   static DRIVER_MEM_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getExecutorSpec_22_0_Test_testGetExecutorSpec_AdjustsCoresCoreLimitMemoryAndSetsAnnotationsAndDnsConfig.java:[24,1] cannot find symbol
+[ERROR]   symbol:   static EXECUTOR_CPU_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/ApplicationSubmissionHelper_getExecutorSpec_22_0_Test_testGetExecutorSpec_AdjustsCoresCoreLimitMemoryAndSetsAnnotationsAndDnsConfig.java:[25,1] cannot find symbol
+[ERROR]   symbol:   static EXECUTOR_MEM_BUFFER_RATIO
+[ERROR]   location: class com.apple.spark.core.SparkConstants
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

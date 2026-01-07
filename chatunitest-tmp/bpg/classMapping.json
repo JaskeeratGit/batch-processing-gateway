@@ -1,0 +1,786 @@
+{
+  "class41": {
+    "className": "AdminRest",
+    "packageName": "com.apple.spark.rest",
+    "modifier": "[public ]",
+    "extend": "[RestBase]",
+    "implement": "[]"
+  },
+  "class40": {
+    "className": "ApplicationGetLogRest",
+    "packageName": "com.apple.spark.rest",
+    "modifier": "[public ]",
+    "extend": "[RestBase]",
+    "implement": "[]"
+  },
+  "class43": {
+    "className": "ApplicationSubmissionRest",
+    "packageName": "com.apple.spark.rest",
+    "modifier": "[public ]",
+    "extend": "[RestBase]",
+    "implement": "[]"
+  },
+  "class42": {
+    "className": "AwsConstants",
+    "packageName": "com.apple.spark.rest",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class45": {
+    "className": "GetSubmissionStatusResponseCacheValue",
+    "packageName": "com.apple.spark.rest",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class44": {
+    "className": "CloudStorageRest",
+    "packageName": "com.apple.spark.rest",
+    "modifier": "[public ]",
+    "extend": "[RestBase]",
+    "implement": "[]"
+  },
+  "class47": {
+    "className": "User",
+    "packageName": "com.apple.spark.security",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[Principal]"
+  },
+  "class46": {
+    "className": "RestBase",
+    "packageName": "com.apple.spark.rest",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class49": {
+    "className": "UserUnauthorizedHandler",
+    "packageName": "com.apple.spark.security",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[UnauthorizedHandler]"
+  },
+  "class48": {
+    "className": "UserNameBasicAuthenticator",
+    "packageName": "com.apple.spark.security",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[Authenticator<BasicCredentials, User>]"
+  },
+  "class30": {
+    "className": "PreferredSchedulingTerm",
+    "packageName": "com.apple.spark.operator",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class32": {
+    "className": "VolumeMount",
+    "packageName": "com.apple.spark.operator",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class31": {
+    "className": "RestartPolicy",
+    "packageName": "com.apple.spark.operator",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class34": {
+    "className": "RequiredDuringSchedulingIgnoredDuringExecutionTerm",
+    "packageName": "com.apple.spark.operator",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class104": {
+    "className": "Constants",
+    "packageName": "com.apple.spark.core",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class33": {
+    "className": "ConfigMapVolumeSource",
+    "packageName": "com.apple.spark.operator",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class103": {
+    "className": "ZoneManager",
+    "packageName": "com.apple.spark.core",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class36": {
+    "className": "Builder",
+    "packageName": "com.apple.spark.operator",
+    "modifier": "[public , static ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class106": {
+    "className": "BPGApplication",
+    "packageName": "com.apple.spark",
+    "modifier": "[public ]",
+    "extend": "[Application<AppConfig>]",
+    "implement": "[]"
+  },
+  "class35": {
+    "className": "SparkApplicationSpec",
+    "packageName": "com.apple.spark.operator",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class105": {
+    "className": "SparkClusterHelper",
+    "packageName": "com.apple.spark.core",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class38": {
+    "className": "IngressTLS",
+    "packageName": "com.apple.spark.operator",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class100": {
+    "className": "NamespaceAndName",
+    "packageName": "com.apple.spark.core",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class37": {
+    "className": "ObjectFieldSelector",
+    "packageName": "com.apple.spark.operator",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class102": {
+    "className": "RunningAppInfo",
+    "packageName": "com.apple.spark.core",
+    "modifier": "[public , static ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class39": {
+    "className": "HealthcheckRest",
+    "packageName": "com.apple.spark.rest",
+    "modifier": "[public ]",
+    "extend": "[RestBase]",
+    "implement": "[]"
+  },
+  "class101": {
+    "className": "RunningApplicationMonitor",
+    "packageName": "com.apple.spark.core",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class19": {
+    "className": "EnvVarSource",
+    "packageName": "com.apple.spark.operator",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class21": {
+    "className": "ExecutorSpec",
+    "packageName": "com.apple.spark.operator",
+    "modifier": "[public ]",
+    "extend": "[SparkPodSpec]",
+    "implement": "[]"
+  },
+  "class20": {
+    "className": "BatchSchedulerConfiguration",
+    "packageName": "com.apple.spark.operator",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class23": {
+    "className": "SecurityContext",
+    "packageName": "com.apple.spark.operator",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class22": {
+    "className": "NodeSelectorOperator",
+    "packageName": "com.apple.spark.operator",
+    "modifier": "[public ]",
+    "extend": "",
+    "implement": "[]"
+  },
+  "class25": {
+    "className": "DriverInfo",
+    "packageName": "com.apple.spark.operator",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class24": {
+    "className": "SparkApplicationResourceList",
+    "packageName": "com.apple.spark.operator",
+    "modifier": "[public ]",
+    "extend": "[CustomResourceList<SparkApplication>]",
+    "implement": "[]"
+  },
+  "class27": {
+    "className": "PrometheusSpec",
+    "packageName": "com.apple.spark.operator",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class26": {
+    "className": "EnvVar",
+    "packageName": "com.apple.spark.operator",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class29": {
+    "className": "SparkApplication",
+    "packageName": "com.apple.spark.operator",
+    "modifier": "[public ]",
+    "extend": "[CustomResource]",
+    "implement": "[]"
+  },
+  "class28": {
+    "className": "NodeAffinity",
+    "packageName": "com.apple.spark.operator",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class90": {
+    "className": "SparkPodNodeAffinityHelper",
+    "packageName": "com.apple.spark.core",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class92": {
+    "className": "SparkConstants",
+    "packageName": "com.apple.spark.core",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class91": {
+    "className": "QueueTokenVerifier",
+    "packageName": "com.apple.spark.core",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class94": {
+    "className": "InvalidSubmissionIdException",
+    "packageName": "com.apple.spark.core",
+    "modifier": "[public ]",
+    "extend": "[RuntimeException]",
+    "implement": "[]"
+  },
+  "class93": {
+    "className": "RestStreamingOutput",
+    "packageName": "com.apple.spark.core",
+    "modifier": "[public , abstract ]",
+    "extend": "[]",
+    "implement": "[StreamingOutput]"
+  },
+  "class96": {
+    "className": "BatchSchedulerConstants",
+    "packageName": "com.apple.spark.core",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class95": {
+    "className": "ApplicationSubmissionHelper",
+    "packageName": "com.apple.spark.core",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class10": {
+    "className": "DynamicAllocation",
+    "packageName": "com.apple.spark.operator",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class98": {
+    "className": "KubernetesHelper",
+    "packageName": "com.apple.spark.core",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class97": {
+    "className": "BPGStatsdConfig",
+    "packageName": "com.apple.spark.core",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[StatsdConfig]"
+  },
+  "class12": {
+    "className": "SparkPodSpec",
+    "packageName": "com.apple.spark.operator",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class11": {
+    "className": "SparkApplicationStatus",
+    "packageName": "com.apple.spark.operator",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class99": {
+    "className": "RoundRobinZonePicker",
+    "packageName": "com.apple.spark.core",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[ZonePicker]"
+  },
+  "class14": {
+    "className": "SparkUIConfiguration",
+    "packageName": "com.apple.spark.operator",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class13": {
+    "className": "HostPathVolumeSource",
+    "packageName": "com.apple.spark.operator",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class16": {
+    "className": "Dependencies",
+    "packageName": "com.apple.spark.operator",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class15": {
+    "className": "Affinity",
+    "packageName": "com.apple.spark.operator",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class18": {
+    "className": "Volume",
+    "packageName": "com.apple.spark.operator",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class17": {
+    "className": "MonitoringSpec",
+    "packageName": "com.apple.spark.operator",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class81": {
+    "className": "ThrowableExceptionMapper",
+    "packageName": "com.apple.spark.core",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[ExceptionMapper<Throwable>]"
+  },
+  "class80": {
+    "className": "ConfigValue",
+    "packageName": "com.apple.spark.core",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class83": {
+    "className": "DBConnection",
+    "packageName": "com.apple.spark.core",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class82": {
+    "className": "LogDao",
+    "packageName": "com.apple.spark.core",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class85": {
+    "className": "RestSubmissionsStreamingOutput",
+    "packageName": "com.apple.spark.core",
+    "modifier": "[public , abstract ]",
+    "extend": "[RestStreamingOutput]",
+    "implement": "[]"
+  },
+  "class84": {
+    "className": "ZonePicker",
+    "packageName": "com.apple.spark.core",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class87": {
+    "className": "ApplicationUpdateEvent",
+    "packageName": "com.apple.spark.core",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class86": {
+    "className": "ApplicationMonitor",
+    "packageName": "com.apple.spark.core",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[AutoCloseable]"
+  },
+  "class89": {
+    "className": "SparkSpecHelper",
+    "packageName": "com.apple.spark.core",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class88": {
+    "className": "SparkApplicationResourceHelper",
+    "packageName": "com.apple.spark.core",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class7": {
+    "className": "DriverSpec",
+    "packageName": "com.apple.spark.operator",
+    "modifier": "[public ]",
+    "extend": "[SparkPodSpec]",
+    "implement": "[]"
+  },
+  "class70": {
+    "className": "CustomSerDe",
+    "packageName": "com.apple.spark.util",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class6": {
+    "className": "NodeSelectorRequirement",
+    "packageName": "com.apple.spark.operator",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class5": {
+    "className": "DBStorage",
+    "packageName": "com.apple.spark",
+    "modifier": "[public , static ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class72": {
+    "className": "EndAwareInputStream",
+    "packageName": "com.apple.spark.util",
+    "modifier": "[public ]",
+    "extend": "[InputStream]",
+    "implement": "[]"
+  },
+  "class4": {
+    "className": "QueueTokenConfig",
+    "packageName": "com.apple.spark",
+    "modifier": "[public , static ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class71": {
+    "className": "KubernetesClusterAndNamespace",
+    "packageName": "com.apple.spark.util",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class3": {
+    "className": "QueueConfig",
+    "packageName": "com.apple.spark",
+    "modifier": "[public , static ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class74": {
+    "className": "RunnableWithIOException",
+    "packageName": "com.apple.spark.util",
+    "modifier": "[private ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class2": {
+    "className": "SparkImage",
+    "packageName": "com.apple.spark",
+    "modifier": "[public , static ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class73": {
+    "className": "CallableWithIOException",
+    "packageName": "com.apple.spark.util",
+    "modifier": "[private ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class1": {
+    "className": "SparkCluster",
+    "packageName": "com.apple.spark",
+    "modifier": "[public , static ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class76": {
+    "className": "MetricId",
+    "packageName": "com.apple.spark.util",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class0": {
+    "className": "AppConfig",
+    "packageName": "com.apple.spark",
+    "modifier": "[public ]",
+    "extend": "[Configuration]",
+    "implement": "[]"
+  },
+  "class75": {
+    "className": "DateTimeUtils",
+    "packageName": "com.apple.spark.util",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class78": {
+    "className": "TimerMetricContainer",
+    "packageName": "com.apple.spark.util",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class77": {
+    "className": "JwtUtils",
+    "packageName": "com.apple.spark.util",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class79": {
+    "className": "GetJobEnvironmentResponse",
+    "packageName": "com.apple.spark.clients.sparkhistory",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class108": {
+    "className": "SparkClusterTest",
+    "packageName": "com.apple.spark.tools",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class107": {
+    "className": "DeleteApplications",
+    "packageName": "com.apple.spark.tools",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class109": {
+    "className": "LoadTest",
+    "packageName": "com.apple.spark.tools",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class9": {
+    "className": "ApplicationState",
+    "packageName": "com.apple.spark.operator",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class8": {
+    "className": "NodeSelectorTerm",
+    "packageName": "com.apple.spark.operator",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class61": {
+    "className": "HealthcheckResponse",
+    "packageName": "com.apple.spark.api",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class60": {
+    "className": "SubmissionStatus",
+    "packageName": "com.apple.spark.api",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class63": {
+    "className": "BPGHealthCheck",
+    "packageName": "com.apple.spark.health",
+    "modifier": "[public ]",
+    "extend": "[HealthCheck]",
+    "implement": "[]"
+  },
+  "class62": {
+    "className": "BuildInfo",
+    "packageName": "com.apple.spark",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class65": {
+    "className": "VersionInfo",
+    "packageName": "com.apple.spark.util",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class64": {
+    "className": "ExceptionUtils",
+    "packageName": "com.apple.spark.util",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class67": {
+    "className": "GaugeMetricContainer",
+    "packageName": "com.apple.spark.util",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class66": {
+    "className": "CounterMetricContainer",
+    "packageName": "com.apple.spark.util",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class69": {
+    "className": "ConfigUtil",
+    "packageName": "com.apple.spark.util",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class68": {
+    "className": "HttpUtils",
+    "packageName": "com.apple.spark.util",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class111": {
+    "className": "QueueTokenGenerator",
+    "packageName": "com.apple.spark.tools",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class110": {
+    "className": "TestApplicationInfo",
+    "packageName": "com.apple.spark.tools",
+    "modifier": "[private , static ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class50": {
+    "className": "UserNameAuthFilter",
+    "packageName": "com.apple.spark.security",
+    "modifier": "[public ]",
+    "extend": "[AuthFilter<BasicCredentials, P>]",
+    "implement": "[]"
+  },
+  "class52": {
+    "className": "GetMySubmissionsResponse",
+    "packageName": "com.apple.spark.api",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class51": {
+    "className": "Builder",
+    "packageName": "com.apple.spark.security",
+    "modifier": "[public , static ]",
+    "extend": "[AuthFilterBuilder<BasicCredentials, P, UserNameAuthFilter<P>>]",
+    "implement": "[]"
+  },
+  "class54": {
+    "className": "SubmissionSummary",
+    "packageName": "com.apple.spark.api",
+    "modifier": "[public ]",
+    "extend": "[SubmissionStatus]",
+    "implement": "[]"
+  },
+  "class53": {
+    "className": "DeleteSubmissionResponse",
+    "packageName": "com.apple.spark.api",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class56": {
+    "className": "SubmitApplicationRequest",
+    "packageName": "com.apple.spark.api",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class55": {
+    "className": "UploadS3Response",
+    "packageName": "com.apple.spark.api",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class58": {
+    "className": "GetDriverInfoResponse",
+    "packageName": "com.apple.spark.api",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  },
+  "class57": {
+    "className": "GetSubmissionStatusResponse",
+    "packageName": "com.apple.spark.api",
+    "modifier": "[public ]",
+    "extend": "[SubmissionStatus]",
+    "implement": "[]"
+  },
+  "class59": {
+    "className": "SubmitApplicationResponse",
+    "packageName": "com.apple.spark.api",
+    "modifier": "[public ]",
+    "extend": "[]",
+    "implement": "[]"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "className": "HttpUtils",
+  "methodName": "post",
+  "brief": "public static <T> T post(\n          String url, String requestJson, String headerName, String headerValue, Class<T> clazz){}",
+  "methodSignature": "post(String, String, String, String, Class)",
+  "sourceCode": "public static <T> T post(\n          String url, String requestJson, String headerName, String headerValue, Class<T> clazz) {\n    return post(url, requestJson, \"application/json\", headerName, headerValue, clazz);\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String",
+    "String",
+    "String",
+    "String",
+    "Class<T>"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [],
+    "com.apple.spark.util.HttpUtils": [
+      "post(String, String, String, String, String, Class<T>)"
+    ]
+  },
+  "full_method_info": "public static <T> T post(String url, String requestJson, String headerName, String headerValue, Class<T> clazz) {\n    return post(url, requestJson, \"application/json\", headerName, headerValue, clazz);\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

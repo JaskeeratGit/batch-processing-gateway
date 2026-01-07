@@ -1,0 +1,50 @@
+{
+  "fullClassName": "com.apple.spark.health.BPGHealthCheck",
+  "className": "BPGHealthCheck",
+  "index": 63,
+  "modifier": "[public ]",
+  "extend": "[HealthCheck]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.health",
+  "packageDeclaration": "package com.apple.spark.health;",
+  "classSignature": "public class BPGHealthCheck",
+  "hasConstructor": true,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import com.apple.spark.AppConfig;",
+    "import com.codahale.metrics.health.HealthCheck;",
+    "import java.util.List;",
+    "import org.slf4j.Logger;",
+    "import org.slf4j.LoggerFactory;"
+  ],
+  "fields": [
+    "private static final Logger logger = LoggerFactory.getLogger(BPGHealthCheck.class);",
+    "private final List<AppConfig.SparkCluster> sparkClusters;"
+  ],
+  "superClasses": [
+    "HealthCheck"
+  ],
+  "implementedTypes": [],
+  "methodSigs": {
+    "check()": "0",
+    "BPGHealthCheck(List)": "1"
+  },
+  "methodsBrief": [
+    "@Override\n  protected Result check() throws Exception{}",
+    "public BPGHealthCheck(List<AppConfig.SparkCluster> sparkClusters){}"
+  ],
+  "constructorSigs": [
+    "BPGHealthCheck(List)"
+  ],
+  "constructorBrief": [
+    "public BPGHealthCheck(List<AppConfig.SparkCluster> sparkClusters){}"
+  ],
+  "getterSetterSigs": [],
+  "getterSetterBrief": [],
+  "constructorDeps": {},
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.health;\n\nimport com.apple.spark.AppConfig;\nimport com.codahale.metrics.health.HealthCheck;\nimport java.util.List;\nimport org.slf4j.Logger;\nimport org.slf4j.LoggerFactory;\n\npublic class BPGHealthCheck extends HealthCheck {\n\n    private static final Logger logger = LoggerFactory.getLogger(BPGHealthCheck.class);\n\n    private final List<AppConfig.SparkCluster> sparkClusters;\n\n    public BPGHealthCheck(List<AppConfig.SparkCluster> sparkClusters) {\n        this.sparkClusters = sparkClusters;\n    }\n\n    @Override\n    protected Result check() throws Exception {\n        logger.info(\"healthcheck\");\n        if (sparkClusters == null || sparkClusters.isEmpty()) {\n            return Result.unhealthy(\"sparkClusters is empty\");\n        }\n        return Result.healthy();\n    }\n}\n",
+  "classDeclarationCode": "public class BPGHealthCheck extends HealthCheck {\n\n    private static final Logger logger = LoggerFactory.getLogger(BPGHealthCheck.class);\n\n    private final List<AppConfig.SparkCluster> sparkClusters;\n\n    public BPGHealthCheck(List<AppConfig.SparkCluster> sparkClusters) {\n        this.sparkClusters = sparkClusters;\n    }\n\n    @Override\n    protected Result check() throws Exception {\n        logger.info(\"healthcheck\");\n        if (sparkClusters == null || sparkClusters.isEmpty()) {\n            return Result.unhealthy(\"sparkClusters is empty\");\n        }\n        return Result.healthy();\n    }\n}",
+  "subClasses": []
+}

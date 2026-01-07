@@ -1,0 +1,27 @@
+{
+  "className": "EndAwareInputStream",
+  "methodName": "executeWithResultValue",
+  "brief": "private <T> T executeWithResultValue(CallableWithIOException<T> callable) throws IOException{}",
+  "methodSignature": "executeWithResultValue(CallableWithIOException)",
+  "sourceCode": "private <T> T executeWithResultValue(CallableWithIOException<T> callable) throws IOException {\n    try {\n      return callable.call();\n    } catch (IOException ex) {\n      executeEndingAction();\n      throw ex;\n    }\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "CallableWithIOException<T>"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.util.EndAwareInputStream.CallableWithIOException": [
+      "call()"
+    ],
+    "com.apple.spark.util.EndAwareInputStream": [
+      "executeEndingAction()"
+    ]
+  },
+  "full_method_info": "private <T> T executeWithResultValue(CallableWithIOException<T> callable) throws IOException {\n    try {\n        return callable.call();\n    } catch (IOException ex) {\n        executeEndingAction();\n        throw ex;\n    }\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

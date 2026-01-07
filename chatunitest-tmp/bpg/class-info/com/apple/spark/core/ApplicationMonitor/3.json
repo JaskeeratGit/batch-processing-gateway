@@ -1,0 +1,136 @@
+{
+  "className": "ApplicationMonitor",
+  "methodName": "onUpdateImpl_logApplication",
+  "brief": "private void onUpdateImpl_logApplication(\n      AppConfig.SparkCluster sparkCluster,\n      SparkApplication prevCRDState,\n      SparkApplication currCRDState){}",
+  "methodSignature": "onUpdateImpl_logApplication(AppConfig.SparkCluster, SparkApplication, SparkApplication)",
+  "sourceCode": "private void onUpdateImpl_logApplication(\n      AppConfig.SparkCluster sparkCluster,\n      SparkApplication prevCRDState,\n      SparkApplication currCRDState) {\n    String submissionId = currCRDState.getMetadata().getName();\n    String newState = SparkApplicationResourceHelper.getState(currCRDState);\n    String oldState = SparkApplicationResourceHelper.getState(prevCRDState);\n    int driverCore = 0;\n    int driverMemoryMb = 0;\n    int executorInstances = 0;\n    int executorCore = 0;\n    int executorMemoryMb = 0;\n    String dagName = \"\";\n    String taskName = \"\";\n    String appName = \"\";\n\n    if (newState != null && !newState.equals(oldState)) {\n      logger.info(\n          \"Got event for submission {}, state changed: {} -> {}\", submissionId, oldState, newState);\n      logDao.logApplicationStatus(submissionId, newState);\n\n      Timestamp startTime = null;\n      if (!driverInfoCollectedSubIds.contains(submissionId)\n          && newState.equals(SparkConstants.RUNNING_STATE)) {\n        try (KubernetesClient client = KubernetesHelper.getK8sClient(sparkCluster)) {\n          String driverStartTime;\n          SparkApplicationSpec spec = currCRDState.getSpec();\n          DriverSpec driverSpec = null;\n          ExecutorSpec executorSpec = null;\n          Map<String, String> driverSparkConf = null;\n          Map<String, String> driverSparkConfLabels = null;\n\n          if (spec != null) {\n            driverSpec = spec.getDriver();\n            executorSpec = spec.getExecutor();\n            driverSparkConf = spec.getSparkConf();\n            if (driverSpec != null) {\n              driverSparkConfLabels = driverSpec.getLabels();\n              if (driverSparkConfLabels != null) {\n                dagName = driverSparkConfLabels.get(\"dag_name\");\n                taskName = driverSparkConfLabels.get(\"task_name\");\n              }\n            }\n            if (driverSparkConf != null) {\n              appName =\n                  currCRDState.getSpec().getSparkConf().get(SparkConstants.SPARK_APP_NAME_LABEL);\n            }\n            if (executorSpec != null) {\n              executorInstances = executorSpec.getInstances();\n            }\n          }\n\n          Pod driver_pod;\n          try {\n            driver_pod =\n                client\n                    .pods()\n                    .inNamespace(sparkCluster.getSparkApplicationNamespace())\n                    .withName(submissionId + \"-driver\")\n                    .get();\n            if (driver_pod != null) {\n              try {\n                driverStartTime = driver_pod.getStatus().getStartTime();\n                driverCore =\n                    Integer.parseInt(\n                        driver_pod\n                            .getSpec()\n                            .getContainers()\n                            .get(0)\n                            .getResources()\n                            .getRequests()\n                            .get(\"cpu\")\n                            .getAmount());\n                driverMemoryMb =\n                    Integer.valueOf(\n                        driver_pod\n                            .getSpec()\n                            .getContainers()\n                            .get(0)\n                            .getResources()\n                            .getRequests()\n                            .get(\"memory\")\n                            .getAmount());\n                if (StringUtils.isNotEmpty(driverStartTime)\n                    && driverCore != 0\n                    && driverMemoryMb != 0\n                    && executorInstances != 0) {\n                  startTime = new Timestamp(DateTimeUtils.parseOrNull(driverStartTime));\n                  // only add the submission_id into the hashset when the info is successfully\n                  // updated into database\n                  if (logDao.updateJobInfo(\n                      submissionId,\n                      startTime,\n                      driverCore,\n                      driverMemoryMb,\n                      executorInstances,\n                      dagName,\n                      taskName,\n                      appName)) {\n                    driverInfoCollectedSubIds.add(submissionId);\n                  }\n                }\n              } catch (Exception e) {\n                logger.warn(\n                    String.format(\n                        \"Failed to get driver info from driver pod for submissionId %s\",\n                        submissionId),\n                    e);\n              }\n            }\n          } catch (Exception e) {\n            logger.warn(\n                String.format(\"Failed to get driver pod for submissionId %s\", submissionId), e);\n          }\n        } catch (Exception e) {\n          logger.warn(\n              String.format(\"Failed to update driver info for submissionId %s\", submissionId), e);\n        }\n      }\n\n      if (currCRDState.getStatus() != null\n          && currCRDState.getStatus().getSparkApplicationId() != null) {\n        String appId = currCRDState.getStatus().getSparkApplicationId();\n        logger.info(\"Got event for submission {}, application id: {}\", submissionId, appId);\n        logDao.logApplicationId(submissionId, appId);\n      }\n      if (SparkConstants.isApplicationStopped(newState)) {\n        Timestamp finishedTime = null;\n        if (currCRDState.getStatus() != null\n            && currCRDState.getStatus().getTerminationTime() != null) {\n          Long millis = DateTimeUtils.parseOrNull(currCRDState.getStatus().getTerminationTime());\n          finishedTime = new Timestamp(millis);\n        }\n        logDao.logApplicationFinished(\n            submissionId,\n            newState,\n            finishedTime,\n            appConfig.getvCoreSecondCost(),\n            appConfig.getMemoryMbSecondCost());\n        driverInfoCollectedSubIds.remove(submissionId);\n        String user = currCRDState.getMetadata().getLabels().get(Constants.PROXY_USER_LABEL);\n        if (user == null) {\n          user = \"\";\n        }\n        String sparkVersion = currCRDState.getSpec().getSparkVersion();\n        if (sparkVersion == null) {\n          sparkVersion = \"\";\n        }\n        requestCounters.increment(\n            APPLICATION_FINISH_METRIC_NAME,\n            Tag.of(\"status\", newState),\n            Tag.of(\"user\", user),\n            Tag.of(\"spark_version\", sparkVersion),\n            Tag.of(\n                \"spark_cluster\",\n                ApplicationSubmissionHelper.getClusterIdFromSubmissionId(submissionId)));\n      }\n    }\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "AppConfig.SparkCluster",
+    "SparkApplication",
+    "SparkApplication"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.operator.SparkApplication": [
+      "getStatus()",
+      "getSpec()"
+    ],
+    "io.fabric8.kubernetes.api.model.ObjectMeta": [
+      "getName()",
+      "getLabels()"
+    ],
+    "io.fabric8.kubernetes.client.CustomResource": [
+      "getMetadata()"
+    ],
+    "com.apple.spark.core.SparkApplicationResourceHelper": [
+      "getState(SparkApplication)"
+    ],
+    "java.lang.String": [
+      "equals(Object)",
+      "format(String, Object[])"
+    ],
+    "org.slf4j.Logger": [
+      "warn(String, Throwable)",
+      "info(String, Object, Object)",
+      "info(String, Object[])"
+    ],
+    "com.apple.spark.core.LogDao": [
+      "logApplicationId(String, String)",
+      "logApplicationStatus(String, String)",
+      "logApplicationFinished(String, String, Timestamp, Double, Double)",
+      "updateJobInfo(String, Timestamp, int, int, int, String, String, String)"
+    ],
+    "java.util.HashSet": [
+      "remove(Object)",
+      "contains(Object)",
+      "add(E)"
+    ],
+    "com.apple.spark.core.KubernetesHelper": [
+      "getK8sClient(SparkCluster)"
+    ],
+    "com.apple.spark.operator.SparkApplicationSpec": [
+      "getExecutor()",
+      "getSparkConf()",
+      "getSparkVersion()",
+      "getDriver()"
+    ],
+    "com.apple.spark.operator.SparkPodSpec": [
+      "getLabels()"
+    ],
+    "java.util.Map": [
+      "get(Object)"
+    ],
+    "com.apple.spark.operator.ExecutorSpec": [
+      "getInstances()"
+    ],
+    "io.fabric8.kubernetes.client.dsl.Namespaceable": [
+      "inNamespace(String)"
+    ],
+    "io.fabric8.kubernetes.client.KubernetesClient": [
+      "pods()"
+    ],
+    "com.apple.spark.AppConfig.SparkCluster": [
+      "getSparkApplicationNamespace()"
+    ],
+    "io.fabric8.kubernetes.api.model.PodStatus": [
+      "getStartTime()"
+    ],
+    "io.fabric8.kubernetes.api.model.Pod": [
+      "getStatus()",
+      "getSpec()"
+    ],
+    "java.lang.Integer": [
+      "valueOf(String)",
+      "parseInt(String)"
+    ],
+    "io.fabric8.kubernetes.api.model.Quantity": [
+      "getAmount()"
+    ],
+    "io.fabric8.kubernetes.api.model.ResourceRequirements": [
+      "getRequests()"
+    ],
+    "io.fabric8.kubernetes.api.model.Container": [
+      "getResources()"
+    ],
+    "java.util.List": [
+      "get(int)"
+    ],
+    "io.fabric8.kubernetes.api.model.PodSpec": [
+      "getContainers()"
+    ],
+    "org.apache.commons.lang3.StringUtils": [
+      "isNotEmpty(CharSequence)"
+    ],
+    "com.apple.spark.util.DateTimeUtils": [
+      "parseOrNull(String)"
+    ],
+    "com.apple.spark.operator.SparkApplicationStatus": [
+      "getSparkApplicationId()",
+      "getTerminationTime()"
+    ],
+    "com.apple.spark.core.SparkConstants": [
+      "isApplicationStopped(String)"
+    ],
+    "com.apple.spark.AppConfig": [
+      "getMemoryMbSecondCost()",
+      "getvCoreSecondCost()"
+    ],
+    "com.apple.spark.util.CounterMetricContainer": [
+      "increment(String, Tag[])"
+    ],
+    "io.micrometer.core.instrument.Tag": [
+      "of(String, String)"
+    ],
+    "com.apple.spark.core.ApplicationSubmissionHelper": [
+      "getClusterIdFromSubmissionId(String)"
+    ]
+  },
+  "full_method_info": "/**\n * Update DB with a new resource object, including job status, metadata and applicationId. Using\n * the submissionId hashset to reduce unnecessary updates.\n *\n * @param sparkCluster Spark cluster\n * @param prevCRDState the old resource object\n * @param currCRDState the new resource object\n */\nprivate void onUpdateImpl_logApplication(AppConfig.SparkCluster sparkCluster, SparkApplication prevCRDState, SparkApplication currCRDState) {\n    String submissionId = currCRDState.getMetadata().getName();\n    String newState = SparkApplicationResourceHelper.getState(currCRDState);\n    String oldState = SparkApplicationResourceHelper.getState(prevCRDState);\n    int driverCore = 0;\n    int driverMemoryMb = 0;\n    int executorInstances = 0;\n    int executorCore = 0;\n    int executorMemoryMb = 0;\n    String dagName = \"\";\n    String taskName = \"\";\n    String appName = \"\";\n    if (newState != null && !newState.equals(oldState)) {\n        logger.info(\"Got event for submission {}, state changed: {} -> {}\", submissionId, oldState, newState);\n        logDao.logApplicationStatus(submissionId, newState);\n        Timestamp startTime = null;\n        if (!driverInfoCollectedSubIds.contains(submissionId) && newState.equals(SparkConstants.RUNNING_STATE)) {\n            try (KubernetesClient client = KubernetesHelper.getK8sClient(sparkCluster)) {\n                String driverStartTime;\n                SparkApplicationSpec spec = currCRDState.getSpec();\n                DriverSpec driverSpec = null;\n                ExecutorSpec executorSpec = null;\n                Map<String, String> driverSparkConf = null;\n                Map<String, String> driverSparkConfLabels = null;\n                if (spec != null) {\n                    driverSpec = spec.getDriver();\n                    executorSpec = spec.getExecutor();\n                    driverSparkConf = spec.getSparkConf();\n                    if (driverSpec != null) {\n                        driverSparkConfLabels = driverSpec.getLabels();\n                        if (driverSparkConfLabels != null) {\n                            dagName = driverSparkConfLabels.get(\"dag_name\");\n                            taskName = driverSparkConfLabels.get(\"task_name\");\n                        }\n                    }\n                    if (driverSparkConf != null) {\n                        appName = currCRDState.getSpec().getSparkConf().get(SparkConstants.SPARK_APP_NAME_LABEL);\n                    }\n                    if (executorSpec != null) {\n                        executorInstances = executorSpec.getInstances();\n                    }\n                }\n                Pod driver_pod;\n                try {\n                    driver_pod = client.pods().inNamespace(sparkCluster.getSparkApplicationNamespace()).withName(submissionId + \"-driver\").get();\n                    if (driver_pod != null) {\n                        try {\n                            driverStartTime = driver_pod.getStatus().getStartTime();\n                            driverCore = Integer.parseInt(driver_pod.getSpec().getContainers().get(0).getResources().getRequests().get(\"cpu\").getAmount());\n                            driverMemoryMb = Integer.valueOf(driver_pod.getSpec().getContainers().get(0).getResources().getRequests().get(\"memory\").getAmount());\n                            if (StringUtils.isNotEmpty(driverStartTime) && driverCore != 0 && driverMemoryMb != 0 && executorInstances != 0) {\n                                startTime = new Timestamp(DateTimeUtils.parseOrNull(driverStartTime));\n                                // only add the submission_id into the hashset when the info is successfully\n                                // updated into database\n                                if (logDao.updateJobInfo(submissionId, startTime, driverCore, driverMemoryMb, executorInstances, dagName, taskName, appName)) {\n                                    driverInfoCollectedSubIds.add(submissionId);\n                                }\n                            }\n                        } catch (Exception e) {\n                            logger.warn(String.format(\"Failed to get driver info from driver pod for submissionId %s\", submissionId), e);\n                        }\n                    }\n                } catch (Exception e) {\n                    logger.warn(String.format(\"Failed to get driver pod for submissionId %s\", submissionId), e);\n                }\n            } catch (Exception e) {\n                logger.warn(String.format(\"Failed to update driver info for submissionId %s\", submissionId), e);\n            }\n        }\n        if (currCRDState.getStatus() != null && currCRDState.getStatus().getSparkApplicationId() != null) {\n            String appId = currCRDState.getStatus().getSparkApplicationId();\n            logger.info(\"Got event for submission {}, application id: {}\", submissionId, appId);\n            logDao.logApplicationId(submissionId, appId);\n        }\n        if (SparkConstants.isApplicationStopped(newState)) {\n            Timestamp finishedTime = null;\n            if (currCRDState.getStatus() != null && currCRDState.getStatus().getTerminationTime() != null) {\n                Long millis = DateTimeUtils.parseOrNull(currCRDState.getStatus().getTerminationTime());\n                finishedTime = new Timestamp(millis);\n            }\n            logDao.logApplicationFinished(submissionId, newState, finishedTime, appConfig.getvCoreSecondCost(), appConfig.getMemoryMbSecondCost());\n            driverInfoCollectedSubIds.remove(submissionId);\n            String user = currCRDState.getMetadata().getLabels().get(Constants.PROXY_USER_LABEL);\n            if (user == null) {\n                user = \"\";\n            }\n            String sparkVersion = currCRDState.getSpec().getSparkVersion();\n            if (sparkVersion == null) {\n                sparkVersion = \"\";\n            }\n            requestCounters.increment(APPLICATION_FINISH_METRIC_NAME, Tag.of(\"status\", newState), Tag.of(\"user\", user), Tag.of(\"spark_version\", sparkVersion), Tag.of(\"spark_cluster\", ApplicationSubmissionHelper.getClusterIdFromSubmissionId(submissionId)));\n        }\n    }\n}",
+  "method_comment": "\n   * Update DB with a new resource object, including job status, metadata and applicationId. Using\n   * the submissionId hashset to reduce unnecessary updates.\n   *\n   * @param sparkCluster Spark cluster\n   * @param prevCRDState the old resource object\n   * @param currCRDState the new resource object\n   ",
+  "method_annotation": ""
+}

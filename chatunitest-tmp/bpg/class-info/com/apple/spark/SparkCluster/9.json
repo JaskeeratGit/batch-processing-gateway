@@ -1,0 +1,22 @@
+{
+  "className": "SparkCluster",
+  "methodName": "setCaCertDataSOPS",
+  "brief": "public void setCaCertDataSOPS(String caCertDataSOPS){}",
+  "methodSignature": "setCaCertDataSOPS(String)",
+  "sourceCode": "public void setCaCertDataSOPS(String caCertDataSOPS) {\n      this.caCertDataSOPS = caCertDataSOPS;\n    }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": []
+  },
+  "full_method_info": "public void setCaCertDataSOPS(String caCertDataSOPS) {\n    this.caCertDataSOPS = caCertDataSOPS;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

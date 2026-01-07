@@ -1,0 +1,18 @@
+{
+  "className": "SparkApplicationSpec",
+  "methodName": "getTimeToLiveSeconds",
+  "brief": "public Long getTimeToLiveSeconds(){}",
+  "methodSignature": "getTimeToLiveSeconds()",
+  "sourceCode": "public Long getTimeToLiveSeconds() {\n    return timeToLiveSeconds;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public Long getTimeToLiveSeconds() {\n    return timeToLiveSeconds;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

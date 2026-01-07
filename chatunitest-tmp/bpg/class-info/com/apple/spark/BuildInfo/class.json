@@ -1,0 +1,37 @@
+{
+  "fullClassName": "com.apple.spark.BuildInfo",
+  "className": "BuildInfo",
+  "index": 62,
+  "modifier": "[public ]",
+  "extend": "[]",
+  "implement": "[]",
+  "packageName": "com.apple.spark",
+  "packageDeclaration": "package com.apple.spark;",
+  "classSignature": "public class BuildInfo",
+  "hasConstructor": false,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import java.io.InputStream;",
+    "import java.util.Properties;"
+  ],
+  "fields": [
+    "public static String UNKNOWN = \"(unknown)\";",
+    "public static String Version;",
+    "public static String Revision;"
+  ],
+  "superClasses": [],
+  "implementedTypes": [],
+  "methodSigs": {},
+  "methodsBrief": [],
+  "constructorSigs": [],
+  "constructorBrief": [],
+  "getterSetterSigs": [],
+  "getterSetterBrief": [],
+  "constructorDeps": {},
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark;\n\nimport java.io.InputStream;\nimport java.util.Properties;\n\npublic class BuildInfo {\n\n    public static String UNKNOWN = \"(unknown)\";\n\n    public static String Version;\n\n    public static String Revision;\n\n    static {\n        String fileName = \"build-info.properties\";\n        try (InputStream resourceStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName)) {\n            if (resourceStream == null) {\n                Version = UNKNOWN;\n                Revision = UNKNOWN;\n            } else {\n                Properties props = new Properties();\n                props.load(resourceStream);\n                Version = props.getProperty(\"version\", UNKNOWN);\n                Revision = props.getProperty(\"revision\", UNKNOWN);\n            }\n        } catch (Throwable e) {\n            Version = UNKNOWN;\n            Revision = UNKNOWN;\n        }\n    }\n}\n",
+  "classDeclarationCode": "public class BuildInfo {\n\n    public static String UNKNOWN = \"(unknown)\";\n\n    public static String Version;\n\n    public static String Revision;\n\n    static {\n        String fileName = \"build-info.properties\";\n        try (InputStream resourceStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName)) {\n            if (resourceStream == null) {\n                Version = UNKNOWN;\n                Revision = UNKNOWN;\n            } else {\n                Properties props = new Properties();\n                props.load(resourceStream);\n                Version = props.getProperty(\"version\", UNKNOWN);\n                Revision = props.getProperty(\"revision\", UNKNOWN);\n            }\n        } catch (Throwable e) {\n            Version = UNKNOWN;\n            Revision = UNKNOWN;\n        }\n    }\n}",
+  "initializerCode": "static {\n    String fileName = \"build-info.properties\";\n    try (InputStream resourceStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName)) {\n        if (resourceStream == null) {\n            Version = UNKNOWN;\n            Revision = UNKNOWN;\n        } else {\n            Properties props = new Properties();\n            props.load(resourceStream);\n            Version = props.getProperty(\"version\", UNKNOWN);\n            Revision = props.getProperty(\"revision\", UNKNOWN);\n        }\n    } catch (Throwable e) {\n        Version = UNKNOWN;\n        Revision = UNKNOWN;\n    }\n}",
+  "subClasses": []
+}

@@ -1,0 +1,44 @@
+{
+  "method0": {
+    "methodName": "getMaxRunningMillis",
+    "signature": "getMaxRunningMillis(SparkApplication)",
+    "className": "RunningApplicationMonitor",
+    "packageName": "com.apple.spark.core"
+  },
+  "method1": {
+    "methodName": "onUpdate",
+    "signature": "onUpdate(SparkApplication, SparkApplication)",
+    "className": "RunningApplicationMonitor",
+    "packageName": "com.apple.spark.core"
+  },
+  "method2": {
+    "methodName": "deleteLongRunningApplications",
+    "signature": "deleteLongRunningApplications()",
+    "className": "RunningApplicationMonitor",
+    "packageName": "com.apple.spark.core"
+  },
+  "method3": {
+    "methodName": "getApplicationCount",
+    "signature": "getApplicationCount()",
+    "className": "RunningApplicationMonitor",
+    "packageName": "com.apple.spark.core"
+  },
+  "method4": {
+    "methodName": "killApplication",
+    "signature": "killApplication(String, String)",
+    "className": "RunningApplicationMonitor",
+    "packageName": "com.apple.spark.core"
+  },
+  "method5": {
+    "methodName": "RunningApplicationMonitor",
+    "signature": "RunningApplicationMonitor(AppConfig.SparkCluster, Timer, MeterRegistry)",
+    "className": "RunningApplicationMonitor",
+    "packageName": "com.apple.spark.core"
+  },
+  "method6": {
+    "methodName": "RunningApplicationMonitor",
+    "signature": "RunningApplicationMonitor(AppConfig.SparkCluster, Timer, long, MeterRegistry)",
+    "className": "RunningApplicationMonitor",
+    "packageName": "com.apple.spark.core"
+  }
+}

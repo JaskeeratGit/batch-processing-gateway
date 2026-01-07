@@ -1,0 +1,43 @@
+{
+  "className": "CounterMetricContainer",
+  "methodName": "increment",
+  "brief": "public void increment(String metricName, Collection<Tag> tags){}",
+  "methodSignature": "increment(String, Collection)",
+  "sourceCode": "public void increment(String metricName, Collection<Tag> tags) {\n    List<String> tagValues = tags.stream().map(Tag::getValue).collect(Collectors.toList());\n    MetricId metricId = new MetricId(metricName, tagValues);\n    Counter counter = counters.get(metricId);\n    if (counter == null) {\n      counter =\n          counters.computeIfAbsent(\n              metricId, k -> Counter.builder(metricName).tags(tags).register(meterRegistry));\n    }\n    counter.increment();\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String",
+    "Collection<Tag>"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [],
+    "java.util.stream.Stream": [
+      "map(Function<? super T, ? extends R>)"
+    ],
+    "java.util.Collection": [
+      "stream()"
+    ],
+    "java.util.stream.Collectors": [
+      "toList()"
+    ],
+    "java.util.concurrent.ConcurrentHashMap": [
+      "get(Object)",
+      "computeIfAbsent(K, Function<? super K, ? extends V>)"
+    ],
+    "io.micrometer.core.instrument.Counter.Builder": [
+      "tags(Tag>)"
+    ],
+    "io.micrometer.core.instrument.Counter": [
+      "increment()",
+      "builder(String)"
+    ]
+  },
+  "full_method_info": "public void increment(String metricName, Collection<Tag> tags) {\n    List<String> tagValues = tags.stream().map(Tag::getValue).collect(Collectors.toList());\n    MetricId metricId = new MetricId(metricName, tagValues);\n    Counter counter = counters.get(metricId);\n    if (counter == null) {\n        counter = counters.computeIfAbsent(metricId, k -> Counter.builder(metricName).tags(tags).register(meterRegistry));\n    }\n    counter.increment();\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

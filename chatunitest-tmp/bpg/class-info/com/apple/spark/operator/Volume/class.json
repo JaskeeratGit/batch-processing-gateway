@@ -1,0 +1,77 @@
+{
+  "fullClassName": "com.apple.spark.operator.Volume",
+  "className": "Volume",
+  "index": 18,
+  "modifier": "[public ]",
+  "extend": "[]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.operator",
+  "packageDeclaration": "package com.apple.spark.operator;",
+  "classSignature": "@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class Volume",
+  "hasConstructor": true,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import com.fasterxml.jackson.annotation.JsonIgnoreProperties;",
+    "import com.fasterxml.jackson.annotation.JsonInclude;"
+  ],
+  "fields": [
+    "private String name;",
+    "private HostPathVolumeSource hostPath;",
+    "private ConfigMapVolumeSource configMap;"
+  ],
+  "superClasses": [],
+  "implementedTypes": [],
+  "methodSigs": {
+    "getName()": "0",
+    "setName(String)": "1",
+    "getHostPath()": "2",
+    "setHostPath(HostPathVolumeSource)": "3",
+    "getConfigMap()": "4",
+    "setConfigMap(ConfigMapVolumeSource)": "5",
+    "Volume()": "6",
+    "Volume(String, HostPathVolumeSource)": "7"
+  },
+  "methodsBrief": [
+    "public String getName(){}",
+    "public void setName(String name){}",
+    "public HostPathVolumeSource getHostPath(){}",
+    "public void setHostPath(HostPathVolumeSource hostPath){}",
+    "public ConfigMapVolumeSource getConfigMap(){}",
+    "public void setConfigMap(ConfigMapVolumeSource configMap){}",
+    "public Volume(){}",
+    "public Volume(String name, HostPathVolumeSource hostPath){}"
+  ],
+  "constructorSigs": [
+    "Volume()",
+    "Volume(String, HostPathVolumeSource)"
+  ],
+  "constructorBrief": [
+    "public Volume(){}",
+    "public Volume(String name, HostPathVolumeSource hostPath){}"
+  ],
+  "getterSetterSigs": [
+    "getName()",
+    "setName(String)",
+    "getHostPath()",
+    "setHostPath(HostPathVolumeSource)",
+    "getConfigMap()",
+    "setConfigMap(ConfigMapVolumeSource)"
+  ],
+  "getterSetterBrief": [
+    "public String getName(){}",
+    "public void setName(String name){}",
+    "public HostPathVolumeSource getHostPath(){}",
+    "public void setHostPath(HostPathVolumeSource hostPath){}",
+    "public ConfigMapVolumeSource getConfigMap(){}",
+    "public void setConfigMap(ConfigMapVolumeSource configMap){}"
+  ],
+  "constructorDeps": {
+    "java.lang.String": [],
+    "com.apple.spark.operator.HostPathVolumeSource": []
+  },
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.operator;\n\nimport com.fasterxml.jackson.annotation.JsonIgnoreProperties;\nimport com.fasterxml.jackson.annotation.JsonInclude;\n\n@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class Volume {\n\n    private String name;\n\n    private HostPathVolumeSource hostPath;\n\n    private ConfigMapVolumeSource configMap;\n\n    public Volume() {\n    }\n\n    public Volume(String name, HostPathVolumeSource hostPath) {\n        this.name = name;\n        this.hostPath = hostPath;\n    }\n\n    public String getName() {\n        return name;\n    }\n\n    public void setName(String name) {\n        this.name = name;\n    }\n\n    public HostPathVolumeSource getHostPath() {\n        return hostPath;\n    }\n\n    public void setHostPath(HostPathVolumeSource hostPath) {\n        this.hostPath = hostPath;\n    }\n\n    public ConfigMapVolumeSource getConfigMap() {\n        return configMap;\n    }\n\n    public void setConfigMap(ConfigMapVolumeSource configMap) {\n        this.configMap = configMap;\n    }\n}\n",
+  "classDeclarationCode": "@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class Volume {\n\n    private String name;\n\n    private HostPathVolumeSource hostPath;\n\n    private ConfigMapVolumeSource configMap;\n\n    public Volume() {\n    }\n\n    public Volume(String name, HostPathVolumeSource hostPath) {\n        this.name = name;\n        this.hostPath = hostPath;\n    }\n\n    public String getName() {\n        return name;\n    }\n\n    public void setName(String name) {\n        this.name = name;\n    }\n\n    public HostPathVolumeSource getHostPath() {\n        return hostPath;\n    }\n\n    public void setHostPath(HostPathVolumeSource hostPath) {\n        this.hostPath = hostPath;\n    }\n\n    public ConfigMapVolumeSource getConfigMap() {\n        return configMap;\n    }\n\n    public void setConfigMap(ConfigMapVolumeSource configMap) {\n        this.configMap = configMap;\n    }\n}",
+  "subClasses": []
+}

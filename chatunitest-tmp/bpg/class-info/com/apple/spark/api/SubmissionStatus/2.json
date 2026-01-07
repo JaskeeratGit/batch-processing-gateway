@@ -1,0 +1,22 @@
+{
+  "className": "SubmissionStatus",
+  "methodName": "setCreationTime",
+  "brief": "public void setCreationTime(Long creationTime){}",
+  "methodSignature": "setCreationTime(Long)",
+  "sourceCode": "public void setCreationTime(Long creationTime) {\n    this.creationTime = creationTime;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "Long"
+  ],
+  "dependentMethods": {
+    "java.lang.Long": []
+  },
+  "full_method_info": "public void setCreationTime(Long creationTime) {\n    this.creationTime = creationTime;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

@@ -1,0 +1,25 @@
+{
+  "className": "HttpUtils",
+  "methodName": "get",
+  "brief": "public static String get(String url){}",
+  "methodSignature": "get(String)",
+  "sourceCode": "public static String get(String url) {\n    return get(url, null, null);\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [],
+    "com.apple.spark.util.HttpUtils": [
+      "get(String, String, String)"
+    ]
+  },
+  "full_method_info": "public static String get(String url) {\n    return get(url, null, null);\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

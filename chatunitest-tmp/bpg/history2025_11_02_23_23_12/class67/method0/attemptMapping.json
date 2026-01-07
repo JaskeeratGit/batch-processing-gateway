@@ -1,0 +1,47 @@
+{
+  "attempt0": {
+    "testClassName": "GaugeMetricContainer_register_0_0_Test",
+    "fullName": "com.apple.spark.util.GaugeMetricContainer_register_0_0_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/util/GaugeMetricContainer_register_0_0_Test.java",
+    "className": "GaugeMetricContainer",
+    "packageName": "com.apple.spark.util",
+    "methodName": "register",
+    "methodSig": "register(String, Supplier, Tag[])"
+  },
+  "attempt1": {
+    "testClassName": "GaugeMetricContainer_register_0_1_Test",
+    "fullName": "com.apple.spark.util.GaugeMetricContainer_register_0_1_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/util/GaugeMetricContainer_register_0_0_Test.java",
+    "className": "GaugeMetricContainer",
+    "packageName": "com.apple.spark.util",
+    "methodName": "register",
+    "methodSig": "register(String, Supplier, Tag[])"
+  },
+  "attempt2": {
+    "testClassName": "GaugeMetricContainer_register_0_2_Test",
+    "fullName": "com.apple.spark.util.GaugeMetricContainer_register_0_2_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/util/GaugeMetricContainer_register_0_0_Test.java",
+    "className": "GaugeMetricContainer",
+    "packageName": "com.apple.spark.util",
+    "methodName": "register",
+    "methodSig": "register(String, Supplier, Tag[])"
+  },
+  "attempt3": {
+    "testClassName": "GaugeMetricContainer_register_0_3_Test",
+    "fullName": "com.apple.spark.util.GaugeMetricContainer_register_0_3_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/util/GaugeMetricContainer_register_0_0_Test.java",
+    "className": "GaugeMetricContainer",
+    "packageName": "com.apple.spark.util",
+    "methodName": "register",
+    "methodSig": "register(String, Supplier, Tag[])"
+  },
+  "attempt4": {
+    "testClassName": "GaugeMetricContainer_register_0_4_Test",
+    "fullName": "com.apple.spark.util.GaugeMetricContainer_register_0_4_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/util/GaugeMetricContainer_register_0_0_Test.java",
+    "className": "GaugeMetricContainer",
+    "packageName": "com.apple.spark.util",
+    "methodName": "register",
+    "methodSig": "register(String, Supplier, Tag[])"
+  }
+}

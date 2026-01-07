@@ -1,0 +1,64 @@
+{
+  "fullClassName": "com.apple.spark.rest.GetSubmissionStatusResponseCacheValue",
+  "className": "GetSubmissionStatusResponseCacheValue",
+  "index": 45,
+  "modifier": "[public ]",
+  "extend": "[]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.rest",
+  "packageDeclaration": "package com.apple.spark.rest;",
+  "classSignature": "public class GetSubmissionStatusResponseCacheValue",
+  "hasConstructor": true,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import com.apple.spark.api.GetSubmissionStatusResponse;"
+  ],
+  "fields": [
+    "private final long createdTimeMillis = System.currentTimeMillis();",
+    "private final GetSubmissionStatusResponse response;",
+    "private final Throwable exception;"
+  ],
+  "superClasses": [],
+  "implementedTypes": [],
+  "methodSigs": {
+    "getResponse()": "0",
+    "getException()": "1",
+    "getCreatedTimeMillis()": "2",
+    "GetSubmissionStatusResponseCacheValue(GetSubmissionStatusResponse)": "3",
+    "GetSubmissionStatusResponseCacheValue(Throwable)": "4"
+  },
+  "methodsBrief": [
+    "public GetSubmissionStatusResponse getResponse(){}",
+    "public Throwable getException(){}",
+    "public long getCreatedTimeMillis(){}",
+    "public GetSubmissionStatusResponseCacheValue(GetSubmissionStatusResponse response){}",
+    "public GetSubmissionStatusResponseCacheValue(Throwable exception){}"
+  ],
+  "constructorSigs": [
+    "GetSubmissionStatusResponseCacheValue(GetSubmissionStatusResponse)",
+    "GetSubmissionStatusResponseCacheValue(Throwable)"
+  ],
+  "constructorBrief": [
+    "public GetSubmissionStatusResponseCacheValue(GetSubmissionStatusResponse response){}",
+    "public GetSubmissionStatusResponseCacheValue(Throwable exception){}"
+  ],
+  "getterSetterSigs": [
+    "getResponse()",
+    "getException()",
+    "getCreatedTimeMillis()"
+  ],
+  "getterSetterBrief": [
+    "public GetSubmissionStatusResponse getResponse(){}",
+    "public Throwable getException(){}",
+    "public long getCreatedTimeMillis(){}"
+  ],
+  "constructorDeps": {
+    "com.apple.spark.api.GetSubmissionStatusResponse": [],
+    "java.lang.Throwable": []
+  },
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.rest;\n\nimport com.apple.spark.api.GetSubmissionStatusResponse;\n\npublic class GetSubmissionStatusResponseCacheValue {\n\n    private final long createdTimeMillis = System.currentTimeMillis();\n\n    private final GetSubmissionStatusResponse response;\n\n    private final Throwable exception;\n\n    public GetSubmissionStatusResponseCacheValue(GetSubmissionStatusResponse response) {\n        this.response = response;\n        this.exception = null;\n    }\n\n    public GetSubmissionStatusResponseCacheValue(Throwable exception) {\n        this.response = null;\n        this.exception = exception;\n    }\n\n    public GetSubmissionStatusResponse getResponse() {\n        return response;\n    }\n\n    public Throwable getException() {\n        return exception;\n    }\n\n    public long getCreatedTimeMillis() {\n        return createdTimeMillis;\n    }\n}\n",
+  "classDeclarationCode": "public class GetSubmissionStatusResponseCacheValue {\n\n    private final long createdTimeMillis = System.currentTimeMillis();\n\n    private final GetSubmissionStatusResponse response;\n\n    private final Throwable exception;\n\n    public GetSubmissionStatusResponseCacheValue(GetSubmissionStatusResponse response) {\n        this.response = response;\n        this.exception = null;\n    }\n\n    public GetSubmissionStatusResponseCacheValue(Throwable exception) {\n        this.response = null;\n        this.exception = exception;\n    }\n\n    public GetSubmissionStatusResponse getResponse() {\n        return response;\n    }\n\n    public Throwable getException() {\n        return exception;\n    }\n\n    public long getCreatedTimeMillis() {\n        return createdTimeMillis;\n    }\n}",
+  "subClasses": []
+}

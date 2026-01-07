@@ -1,0 +1,92 @@
+{
+  "className": "ApplicationSubmissionHelper",
+  "methodName": "getDriverSpec",
+  "brief": "public static DriverSpec getDriverSpec(\n      SubmitApplicationRequest request,\n      AppConfig appConfig,\n      String parentQueue,\n      SparkCluster sparkCluster){}",
+  "methodSignature": "getDriverSpec(SubmitApplicationRequest, AppConfig, String, SparkCluster)",
+  "sourceCode": "public static DriverSpec getDriverSpec(\n      SubmitApplicationRequest request,\n      AppConfig appConfig,\n      String parentQueue,\n      SparkCluster sparkCluster) {\n    DriverSpec driverSpec = new DriverSpec();\n\n    if (request.getDriver() != null) {\n      driverSpec.copyFrom(request.getDriver());\n\n      Map<String, String> driverLabels = request.getDriver().getLabels();\n      if (driverLabels != null) {\n        Map<String, String> labels = new HashMap<>();\n        if (driverLabels.containsKey(DAG_NAME_LABEL)) {\n          labels.put(\n              DAG_NAME_LABEL,\n              KubernetesHelper.normalizeLabelValue(driverLabels.get(DAG_NAME_LABEL)));\n        }\n        if (driverLabels.containsKey(TASK_NAME_LABEL)) {\n          labels.put(\n              TASK_NAME_LABEL,\n              KubernetesHelper.normalizeLabelValue(driverLabels.get(TASK_NAME_LABEL)));\n        }\n        driverLabels.putAll(labels);\n        driverSpec.setLabels(driverLabels);\n      }\n    }\n\n    // if there's any volumes and volume mounts specified, add them to driver spec\n    // mounts specified in requests have higher priority\n    if (request.getDriver() != null\n        && request.getVolumes() != null\n        && !request.getVolumes().isEmpty()) {\n      driverSpec.setVolumeMounts(request.getDriver().getVolumeMounts());\n    } else if (sparkCluster.getDriver() != null\n        && sparkCluster.getVolumes() != null\n        && !sparkCluster.getVolumes().isEmpty()) {\n      driverSpec.setVolumeMounts(sparkCluster.getDriver().getVolumeMounts());\n    }\n\n    double driverCpuBufferRatioQueue = getDriverCPUBufferForQueue(appConfig, parentQueue);\n    double driverMemBufferRatioQueue = getDriverMemBufferForQueue(appConfig, parentQueue);\n    if (driverSpec.getServiceAccount() == null || driverSpec.getServiceAccount().isEmpty()) {\n      driverSpec.setServiceAccount(sparkCluster.getSparkServiceAccount());\n    }\n\n    int originalDriverCores = driverSpec.getCores();\n    long adjustedDriverCores = Math.round(originalDriverCores * driverCpuBufferRatioQueue);\n    driverSpec.setCores((int) adjustedDriverCores);\n    logger.info(\"Setting driver core to {}\", adjustedDriverCores);\n\n    if (driverSpec.getCoreLimit() == null || driverSpec.getCoreLimit().isEmpty()) {\n      driverSpec.setCoreLimit(\n          String.format(\n              \"%sm\",\n              Math.ceil(driverSpec.getCores() * CORE_LIMIT_RATIO * driverCpuBufferRatioQueue)));\n    } else {\n      long originalDriverCoreLimit = Long.parseLong(driverSpec.getCoreLimit());\n      long adjustedDriverCoreLimit =\n          Math.round(originalDriverCoreLimit * driverCpuBufferRatioQueue);\n      driverSpec.setCoreLimit(String.valueOf(adjustedDriverCoreLimit));\n      logger.info(\"Setting driver core limits to {}\", adjustedDriverCoreLimit);\n    }\n\n    long originalDriverMem = getMemNumFromRequestStr(driverSpec.getMemory());\n    long adjustedDriverMem = (long) Math.ceil(originalDriverMem * driverMemBufferRatioQueue);\n    String memUnit = getMemUnitFromRequestStr(driverSpec.getMemory());\n    driverSpec.setMemory(adjustedDriverMem + memUnit);\n    logger.info(\"Setting driver memory to {}{}\", adjustedDriverMem, memUnit);\n\n    // set annotations to driver pod to avoid scale-in from KubeC\n    Map<String, String> driverAnnotations =\n        driverSpec.getAnnotations() == null ? new HashMap<>() : driverSpec.getAnnotations();\n    driverAnnotations.put(\n        KUBE_CLUSTER_AUTOSCALER_SCALE_IN_ANNOTATION_KEY,\n        KUBE_CLUSTER_AUTOSCALER_SCALE_IN_ANNOTATION_VALUE);\n    driverSpec.setAnnotations(driverAnnotations);\n\n    // Driver affinity is for all drivers to share the same node group, with only scaling up\n    // this is to prevent driver pods from being killed when nodes are being scaling down\n    if (driverSpec.getAffinity() == null) {\n      NodeAffinity nodeAffinityOnDriver =\n          createNodeAffinityForSparkPods(request, appConfig, parentQueue, sparkCluster, true);\n      if (nodeAffinityOnDriver != null) {\n        driverSpec.setAffinity(new Affinity(nodeAffinityOnDriver));\n      }\n    }\n\n    return driverSpec;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "SubmitApplicationRequest",
+    "AppConfig",
+    "String",
+    "SparkCluster"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.api.SubmitApplicationRequest": [
+      "getVolumes()",
+      "getDriver()"
+    ],
+    "com.apple.spark.AppConfig": [],
+    "java.lang.String": [
+      "isEmpty()",
+      "format(String, Object[])",
+      "valueOf(long)"
+    ],
+    "com.apple.spark.AppConfig.SparkCluster": [
+      "getVolumes()",
+      "getSparkServiceAccount()",
+      "getDriver()"
+    ],
+    "com.apple.spark.operator.DriverSpec": [
+      "copyFrom(DriverSpec)"
+    ],
+    "com.apple.spark.operator.SparkPodSpec": [
+      "getCoreLimit()",
+      "getServiceAccount()",
+      "getLabels()",
+      "setServiceAccount(String)",
+      "getCores()",
+      "setAnnotations(String>)",
+      "getAffinity()",
+      "setLabels(String>)",
+      "getVolumeMounts()",
+      "getAnnotations()",
+      "setMemory(String)",
+      "setVolumeMounts(VolumeMount>)",
+      "setAffinity(Affinity)",
+      "setCoreLimit(String)",
+      "getMemory()",
+      "setCores(Integer)"
+    ],
+    "java.util.Map": [
+      "get(Object)",
+      "putAll(Map<? extends K, ? extends V>)",
+      "put(K, V)",
+      "containsKey(Object)"
+    ],
+    "com.apple.spark.core.KubernetesHelper": [
+      "normalizeLabelValue(String)"
+    ],
+    "java.util.List": [
+      "isEmpty()"
+    ],
+    "com.apple.spark.core.ApplicationSubmissionHelper": [
+      "getDriverCPUBufferForQueue(AppConfig, String)",
+      "getDriverMemBufferForQueue(AppConfig, String)",
+      "getMemUnitFromRequestStr(String)",
+      "getMemNumFromRequestStr(String)"
+    ],
+    "java.lang.Math": [
+      "ceil(double)",
+      "round(double)"
+    ],
+    "org.slf4j.Logger": [
+      "info(String, Object, Object)",
+      "info(String, Object)"
+    ],
+    "java.lang.Long": [
+      "parseLong(String)"
+    ],
+    "com.apple.spark.core.SparkPodNodeAffinityHelper": [
+      "createNodeAffinityForSparkPods(SubmitApplicationRequest, AppConfig, String, SparkCluster, boolean)"
+    ]
+  },
+  "full_method_info": "public static DriverSpec getDriverSpec(SubmitApplicationRequest request, AppConfig appConfig, String parentQueue, SparkCluster sparkCluster) {\n    DriverSpec driverSpec = new DriverSpec();\n    if (request.getDriver() != null) {\n        driverSpec.copyFrom(request.getDriver());\n        Map<String, String> driverLabels = request.getDriver().getLabels();\n        if (driverLabels != null) {\n            Map<String, String> labels = new HashMap<>();\n            if (driverLabels.containsKey(DAG_NAME_LABEL)) {\n                labels.put(DAG_NAME_LABEL, KubernetesHelper.normalizeLabelValue(driverLabels.get(DAG_NAME_LABEL)));\n            }\n            if (driverLabels.containsKey(TASK_NAME_LABEL)) {\n                labels.put(TASK_NAME_LABEL, KubernetesHelper.normalizeLabelValue(driverLabels.get(TASK_NAME_LABEL)));\n            }\n            driverLabels.putAll(labels);\n            driverSpec.setLabels(driverLabels);\n        }\n    }\n    // if there's any volumes and volume mounts specified, add them to driver spec\n    // mounts specified in requests have higher priority\n    if (request.getDriver() != null && request.getVolumes() != null && !request.getVolumes().isEmpty()) {\n        driverSpec.setVolumeMounts(request.getDriver().getVolumeMounts());\n    } else if (sparkCluster.getDriver() != null && sparkCluster.getVolumes() != null && !sparkCluster.getVolumes().isEmpty()) {\n        driverSpec.setVolumeMounts(sparkCluster.getDriver().getVolumeMounts());\n    }\n    double driverCpuBufferRatioQueue = getDriverCPUBufferForQueue(appConfig, parentQueue);\n    double driverMemBufferRatioQueue = getDriverMemBufferForQueue(appConfig, parentQueue);\n    if (driverSpec.getServiceAccount() == null || driverSpec.getServiceAccount().isEmpty()) {\n        driverSpec.setServiceAccount(sparkCluster.getSparkServiceAccount());\n    }\n    int originalDriverCores = driverSpec.getCores();\n    long adjustedDriverCores = Math.round(originalDriverCores * driverCpuBufferRatioQueue);\n    driverSpec.setCores((int) adjustedDriverCores);\n    logger.info(\"Setting driver core to {}\", adjustedDriverCores);\n    if (driverSpec.getCoreLimit() == null || driverSpec.getCoreLimit().isEmpty()) {\n        driverSpec.setCoreLimit(String.format(\"%sm\", Math.ceil(driverSpec.getCores() * CORE_LIMIT_RATIO * driverCpuBufferRatioQueue)));\n    } else {\n        long originalDriverCoreLimit = Long.parseLong(driverSpec.getCoreLimit());\n        long adjustedDriverCoreLimit = Math.round(originalDriverCoreLimit * driverCpuBufferRatioQueue);\n        driverSpec.setCoreLimit(String.valueOf(adjustedDriverCoreLimit));\n        logger.info(\"Setting driver core limits to {}\", adjustedDriverCoreLimit);\n    }\n    long originalDriverMem = getMemNumFromRequestStr(driverSpec.getMemory());\n    long adjustedDriverMem = (long) Math.ceil(originalDriverMem * driverMemBufferRatioQueue);\n    String memUnit = getMemUnitFromRequestStr(driverSpec.getMemory());\n    driverSpec.setMemory(adjustedDriverMem + memUnit);\n    logger.info(\"Setting driver memory to {}{}\", adjustedDriverMem, memUnit);\n    // set annotations to driver pod to avoid scale-in from KubeC\n    Map<String, String> driverAnnotations = driverSpec.getAnnotations() == null ? new HashMap<>() : driverSpec.getAnnotations();\n    driverAnnotations.put(KUBE_CLUSTER_AUTOSCALER_SCALE_IN_ANNOTATION_KEY, KUBE_CLUSTER_AUTOSCALER_SCALE_IN_ANNOTATION_VALUE);\n    driverSpec.setAnnotations(driverAnnotations);\n    // Driver affinity is for all drivers to share the same node group, with only scaling up\n    // this is to prevent driver pods from being killed when nodes are being scaling down\n    if (driverSpec.getAffinity() == null) {\n        NodeAffinity nodeAffinityOnDriver = createNodeAffinityForSparkPods(request, appConfig, parentQueue, sparkCluster, true);\n        if (nodeAffinityOnDriver != null) {\n            driverSpec.setAffinity(new Affinity(nodeAffinityOnDriver));\n        }\n    }\n    return driverSpec;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

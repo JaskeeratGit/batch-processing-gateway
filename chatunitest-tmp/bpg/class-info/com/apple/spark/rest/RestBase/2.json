@@ -1,0 +1,47 @@
+{
+  "className": "RestBase",
+  "methodName": "getSparkCluster",
+  "brief": "protected AppConfig.SparkCluster getSparkCluster(String submissionId){}",
+  "methodSignature": "getSparkCluster(String)",
+  "sourceCode": "protected AppConfig.SparkCluster getSparkCluster(String submissionId) {\n    String clusterId;\n    try {\n      clusterId = ApplicationSubmissionHelper.getClusterIdFromSubmissionId(submissionId);\n    } catch (Throwable ex) {\n      throw new WebApplicationException(\n          String.format(\"submissionId %s is invalid\", submissionId), Response.Status.BAD_REQUEST);\n    }\n\n    Optional<AppConfig.SparkCluster> sparkClusterOptional =\n        appConfig.getSparkClusters().stream()\n            .filter(t -> StringUtils.equals(t.getId(), clusterId))\n            .findFirst();\n    if (!sparkClusterOptional.isPresent()) {\n      throw new WebApplicationException(\n          String.format(\"Cluster %s (in submissionId: %s) not exists\", clusterId, submissionId),\n          Response.Status.BAD_REQUEST);\n    }\n    return sparkClusterOptional.get();\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "format(String, Object[])"
+    ],
+    "com.apple.spark.core.ApplicationSubmissionHelper": [
+      "getClusterIdFromSubmissionId(String)"
+    ],
+    "java.util.stream.Stream": [
+      "findFirst()",
+      "filter(Predicate<? super T>)"
+    ],
+    "java.util.Collection": [
+      "stream()"
+    ],
+    "com.apple.spark.AppConfig": [
+      "getSparkClusters()"
+    ],
+    "org.apache.commons.lang3.StringUtils": [
+      "equals(CharSequence, CharSequence)"
+    ],
+    "com.apple.spark.AppConfig.SparkCluster": [
+      "getId()"
+    ],
+    "java.util.Optional": [
+      "isPresent()",
+      "get()"
+    ]
+  },
+  "full_method_info": "protected AppConfig.SparkCluster getSparkCluster(String submissionId) {\n    String clusterId;\n    try {\n        clusterId = ApplicationSubmissionHelper.getClusterIdFromSubmissionId(submissionId);\n    } catch (Throwable ex) {\n        throw new WebApplicationException(String.format(\"submissionId %s is invalid\", submissionId), Response.Status.BAD_REQUEST);\n    }\n    Optional<AppConfig.SparkCluster> sparkClusterOptional = appConfig.getSparkClusters().stream().filter(t -> StringUtils.equals(t.getId(), clusterId)).findFirst();\n    if (!sparkClusterOptional.isPresent()) {\n        throw new WebApplicationException(String.format(\"Cluster %s (in submissionId: %s) not exists\", clusterId, submissionId), Response.Status.BAD_REQUEST);\n    }\n    return sparkClusterOptional.get();\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

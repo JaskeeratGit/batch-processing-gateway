@@ -1,0 +1,221 @@
+package com.apple.spark.core;
+
+import org.slf4j.Logger;
+import java.io.Closeable;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.lang.reflect.Proxy;
+import com.apple.spark.core.KubernetesHelper;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import com.apple.spark.AppConfig;
+import com.apple.spark.util.EndAwareInputStream;
+import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.client.*;
+import io.fabric8.kubernetes.client.dsl.LogWatch;
+import io.fabric8.kubernetes.client.dsl.PodResource;
+import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
+import org.slf4j.LoggerFactory;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+/**
+ * JUnit 5 tests for KubernetesHelper.closeQuietly(Closeable)
+ */
+public class KubernetesHelper_closeQuietly_7_0_Test {
+
+    private Field loggerField;
+
+    private Logger originalLogger;
+
+    private Logger testLoggerProxy;
+
+    private TestLoggerHandler handler;
+
+    @BeforeEach
+    public void setUp() throws Throwable {
+        // Use reflection to replace the private static final logger field with a proxy logger
+        loggerField = KubernetesHelper.class.getDeclaredField("logger");
+        loggerField.setAccessible(true);
+        originalLogger = (Logger) loggerField.get(null);
+        handler = new TestLoggerHandler();
+        testLoggerProxy = (Logger) Proxy.newProxyInstance(Logger.class.getClassLoader(), new Class[] { Logger.class }, handler);
+        // Remove final modifier and set new value
+        try {
+            Field modifiersField = Field.class.getDeclaredField("modifiers");
+            modifiersField.setAccessible(true);
+            modifiersField.setInt(loggerField, loggerField.getModifiers() & ~Modifier.FINAL);
+        } catch (NoSuchFieldException ignored) {
+            // Some JVMs may not allow modifying modifiers field; try direct set anyway
+        }
+        loggerField.set(null, testLoggerProxy);
+    }
+
+    @AfterEach
+    public void tearDown() throws Throwable {
+        // Restore original logger
+        if (loggerField != null && originalLogger != null) {
+            loggerField.set(null, originalLogger);
+        }
+    }
+
+    @Test
+    public void testCloseQuietly_closesSuccessfully_noWarning() {
+        class C implements Closeable {
+
+            boolean closed = false;
+
+            @Override
+            public void close() {
+                closed = true;
+            }
+
+            @Override
+            public String toString() {
+                return "C";
+            }
+        }
+        C c = new C();
+        KubernetesHelper.closeQuietly(c);
+        assertTrue(c.closed, "Closeable should have been closed");
+        assertEquals(0, handler.getWarnCount(), "No warnings should be logged when close succeeds");
+        assertNull(handler.getLastThrowable());
+    }
+
+    @Test
+    public void testCloseQuietly_nullArgument_logsAndNoThrow() {
+        // Should not throw; should log a warning with NullPointerException
+        KubernetesHelper.closeQuietly(null);
+        assertEquals(1, handler.getWarnCount(), "A warning should be logged when close is attempted on null");
+        assertEquals("Failed to close null", handler.getLastMessage());
+        assertNotNull(handler.getLastThrowable());
+        assertTrue(handler.getLastThrowable() instanceof NullPointerException);
+    }
+
+    @Test
+    public void testCloseQuietly_logsWhenCloseThrowsIOException() {
+        Closeable c = new Closeable() {
+
+            @Override
+            public void close() throws IOException {
+                throw new IOException("io-error");
+            }
+
+            @Override
+            public String toString() {
+                return "ioCloseable";
+            }
+        };
+        KubernetesHelper.closeQuietly(c);
+        assertEquals(1, handler.getWarnCount(), "A warning should be logged when close throws IOException");
+        assertEquals("Failed to close ioCloseable", handler.getLastMessage());
+        assertNotNull(handler.getLastThrowable());
+        assertTrue(handler.getLastThrowable() instanceof IOException);
+        assertEquals("io-error", handler.getLastThrowable().getMessage());
+    }
+
+    @Test
+    public void testCloseQuietly_logsWhenCloseThrowsError() {
+        Closeable c = new Closeable() {
+
+            @Override
+            public void close() {
+                throw new Error("serious");
+            }
+
+            @Override
+            public String toString() {
+                return "errorCloseable";
+            }
+        };
+        KubernetesHelper.closeQuietly(c);
+        assertEquals(1, handler.getWarnCount(), "A warning should be logged when close throws Error");
+        assertEquals("Failed to close errorCloseable", handler.getLastMessage());
+        assertNotNull(handler.getLastThrowable());
+        assertTrue(handler.getLastThrowable() instanceof Error);
+        assertEquals("serious", handler.getLastThrowable().getMessage());
+    }
+
+    // InvocationHandler that records warn(...) calls
+    private static class TestLoggerHandler implements InvocationHandler {
+
+        private int warnCount = 0;
+
+        private String lastMessage = null;
+
+        private Throwable lastThrowable = null;
+
+        @Override
+        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            String name = method.getName();
+            if ("warn".equals(name)) {
+                // try to extract message and throwable in common signatures
+                if (args != null) {
+                    // warn(String msg, Throwable t)
+                    if (args.length == 2 && args[0] instanceof String && args[1] instanceof Throwable) {
+                        warnCount++;
+                        lastMessage = (String) args[0];
+                        lastThrowable = (Throwable) args[1];
+                        return null;
+                    }
+                    // warn(String msg)
+                    if (args.length == 1 && args[0] instanceof String) {
+                        warnCount++;
+                        lastMessage = (String) args[0];
+                        lastThrowable = null;
+                        return null;
+                    }
+                    // warn(String format, Object... args)
+                    if (args.length >= 1 && args[0] instanceof String) {
+                        warnCount++;
+                        lastMessage = (String) args[0];
+                        // try to find throwable in varargs if last arg is throwable
+                        Object lastArg = args[args.length - 1];
+                        if (lastArg instanceof Throwable) {
+                            lastThrowable = (Throwable) lastArg;
+                        } else {
+                            lastThrowable = null;
+                        }
+                        return null;
+                    }
+                }
+            }
+            // For other methods, return sensible defaults
+            Class<?> returnType = method.getReturnType();
+            if (returnType == boolean.class) {
+                return false;
+            }
+            if (returnType == int.class) {
+                return 0;
+            }
+            return null;
+        }
+
+        int getWarnCount() {
+            return warnCount;
+        }
+
+        String getLastMessage() {
+            return lastMessage;
+        }
+
+        Throwable getLastThrowable() {
+            return lastThrowable;
+        }
+    }
+}
+
+--------------------------------------------
+Error in testCloseQuietly_logsWhenCloseThrowsIOException(): line 60 : java.lang.IllegalAccessException: Can not set static final org.slf4j.Logger field com.apple.spark.core.KubernetesHelper.logger to jdk.proxy2.$Proxy135
+Error in testCloseQuietly_logsWhenCloseThrowsError(): line 60 : java.lang.IllegalAccessException: Can not set static final org.slf4j.Logger field com.apple.spark.core.KubernetesHelper.logger to jdk.proxy2.$Proxy135
+Error in testCloseQuietly_nullArgument_logsAndNoThrow(): line 60 : java.lang.IllegalAccessException: Can not set static final org.slf4j.Logger field com.apple.spark.core.KubernetesHelper.logger to jdk.proxy2.$Proxy135
+Error in testCloseQuietly_closesSuccessfully_noWarning(): line 60 : java.lang.IllegalAccessException: Can not set static final org.slf4j.Logger field com.apple.spark.core.KubernetesHelper.logger to jdk.proxy2.$Proxy135

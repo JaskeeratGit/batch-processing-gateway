@@ -1,0 +1,26 @@
+{
+  "className": "ApplicationSubmissionHelper",
+  "methodName": "getClusterIdFromSubmissionId",
+  "brief": "public static String getClusterIdFromSubmissionId(String submissionId){}",
+  "methodSignature": "getClusterIdFromSubmissionId(String)",
+  "sourceCode": "public static String getClusterIdFromSubmissionId(String submissionId) {\n    if (submissionId == null) {\n      throw new InvalidSubmissionIdException(\"submissionId is null\");\n    }\n    // submissionId is like c01-xxx, get cluster id before '-' character\n    int index = submissionId.indexOf('-');\n    if (index <= 0) {\n      throw new InvalidSubmissionIdException(\n          String.format(\"Invalid submission id: %s\", submissionId));\n    }\n    return submissionId.substring(0, index);\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "substring(int, int)",
+      "format(String, Object[])",
+      "indexOf(int)"
+    ]
+  },
+  "full_method_info": "public static String getClusterIdFromSubmissionId(String submissionId) {\n    if (submissionId == null) {\n        throw new InvalidSubmissionIdException(\"submissionId is null\");\n    }\n    // submissionId is like c01-xxx, get cluster id before '-' character\n    int index = submissionId.indexOf('-');\n    if (index <= 0) {\n        throw new InvalidSubmissionIdException(String.format(\"Invalid submission id: %s\", submissionId));\n    }\n    return submissionId.substring(0, index);\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

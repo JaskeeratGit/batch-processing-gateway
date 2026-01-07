@@ -1,0 +1,22 @@
+{
+  "className": "ExceptionUtils",
+  "methodName": "meterRuntimeException",
+  "brief": "public static void meterRuntimeException(){}",
+  "methodSignature": "meterRuntimeException()",
+  "sourceCode": "public static void meterRuntimeException() {\n    runtimeExceptionMeter.mark();\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {
+    "com.codahale.metrics.Meter": [
+      "mark()"
+    ]
+  },
+  "full_method_info": "public static void meterRuntimeException() {\n    runtimeExceptionMeter.mark();\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

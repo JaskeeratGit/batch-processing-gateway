@@ -1,0 +1,83 @@
+{
+  "fullClassName": "com.apple.spark.operator.SparkUIConfiguration",
+  "className": "SparkUIConfiguration",
+  "index": 14,
+  "modifier": "[public ]",
+  "extend": "[]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.operator",
+  "packageDeclaration": "package com.apple.spark.operator;",
+  "classSignature": "@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class SparkUIConfiguration",
+  "hasConstructor": true,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import com.fasterxml.jackson.annotation.JsonIgnoreProperties;",
+    "import com.fasterxml.jackson.annotation.JsonInclude;",
+    "import java.util.ArrayList;",
+    "import java.util.HashMap;",
+    "import java.util.List;",
+    "import java.util.Map;"
+  ],
+  "fields": [
+    "private Integer servicePort;",
+    "private Map<String, String> ingressAnnotations;",
+    "private List<IngressTLS> ingressTLS;"
+  ],
+  "superClasses": [],
+  "implementedTypes": [],
+  "methodSigs": {
+    "getServicePort()": "0",
+    "setServicePort(Integer)": "1",
+    "getIngressAnnotations()": "2",
+    "setIngressAnnotations(Map)": "3",
+    "getIngressTLS()": "4",
+    "setIngressTLS(List)": "5",
+    "SparkUIConfiguration()": "6",
+    "SparkUIConfiguration(SparkUIConfiguration)": "7"
+  },
+  "methodsBrief": [
+    "public Integer getServicePort(){}",
+    "public void setServicePort(Integer servicePort){}",
+    "public Map<String, String> getIngressAnnotations(){}",
+    "public void setIngressAnnotations(Map<String, String> ingressAnnotations){}",
+    "public List<IngressTLS> getIngressTLS(){}",
+    "public void setIngressTLS(List<IngressTLS> ingressTLS){}",
+    "public SparkUIConfiguration(){}",
+    "public SparkUIConfiguration(SparkUIConfiguration configuration){}"
+  ],
+  "constructorSigs": [
+    "SparkUIConfiguration()",
+    "SparkUIConfiguration(SparkUIConfiguration)"
+  ],
+  "constructorBrief": [
+    "public SparkUIConfiguration(){}",
+    "public SparkUIConfiguration(SparkUIConfiguration configuration){}"
+  ],
+  "getterSetterSigs": [
+    "getServicePort()",
+    "setServicePort(Integer)",
+    "getIngressAnnotations()",
+    "setIngressAnnotations(Map)",
+    "getIngressTLS()",
+    "setIngressTLS(List)"
+  ],
+  "getterSetterBrief": [
+    "public Integer getServicePort(){}",
+    "public void setServicePort(Integer servicePort){}",
+    "public Map<String, String> getIngressAnnotations(){}",
+    "public void setIngressAnnotations(Map<String, String> ingressAnnotations){}",
+    "public List<IngressTLS> getIngressTLS(){}",
+    "public void setIngressTLS(List<IngressTLS> ingressTLS){}"
+  ],
+  "constructorDeps": {
+    "com.apple.spark.operator.SparkUIConfiguration": [],
+    "java.util.List": [
+      "add(E)"
+    ]
+  },
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.operator;\n\nimport com.fasterxml.jackson.annotation.JsonIgnoreProperties;\nimport com.fasterxml.jackson.annotation.JsonInclude;\nimport java.util.ArrayList;\nimport java.util.HashMap;\nimport java.util.List;\nimport java.util.Map;\n\n@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class SparkUIConfiguration {\n\n    private Integer servicePort;\n\n    private Map<String, String> ingressAnnotations;\n\n    private List<IngressTLS> ingressTLS;\n\n    public SparkUIConfiguration() {\n    }\n\n    public SparkUIConfiguration(SparkUIConfiguration configuration) {\n        this.servicePort = configuration.servicePort;\n        this.ingressAnnotations = null;\n        if (configuration.ingressAnnotations != null) {\n            this.ingressAnnotations = new HashMap<>(configuration.ingressAnnotations);\n        }\n        this.ingressTLS = null;\n        if (configuration.ingressTLS != null) {\n            this.ingressTLS = new ArrayList<>();\n            for (IngressTLS entry : configuration.ingressTLS) {\n                this.ingressTLS.add(new IngressTLS(entry));\n            }\n        }\n    }\n\n    public Integer getServicePort() {\n        return servicePort;\n    }\n\n    public void setServicePort(Integer servicePort) {\n        this.servicePort = servicePort;\n    }\n\n    public Map<String, String> getIngressAnnotations() {\n        return ingressAnnotations;\n    }\n\n    public void setIngressAnnotations(Map<String, String> ingressAnnotations) {\n        this.ingressAnnotations = ingressAnnotations;\n    }\n\n    public List<IngressTLS> getIngressTLS() {\n        return ingressTLS;\n    }\n\n    public void setIngressTLS(List<IngressTLS> ingressTLS) {\n        this.ingressTLS = ingressTLS;\n    }\n}\n",
+  "classDeclarationCode": "@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class SparkUIConfiguration {\n\n    private Integer servicePort;\n\n    private Map<String, String> ingressAnnotations;\n\n    private List<IngressTLS> ingressTLS;\n\n    public SparkUIConfiguration() {\n    }\n\n    public SparkUIConfiguration(SparkUIConfiguration configuration) {\n        this.servicePort = configuration.servicePort;\n        this.ingressAnnotations = null;\n        if (configuration.ingressAnnotations != null) {\n            this.ingressAnnotations = new HashMap<>(configuration.ingressAnnotations);\n        }\n        this.ingressTLS = null;\n        if (configuration.ingressTLS != null) {\n            this.ingressTLS = new ArrayList<>();\n            for (IngressTLS entry : configuration.ingressTLS) {\n                this.ingressTLS.add(new IngressTLS(entry));\n            }\n        }\n    }\n\n    public Integer getServicePort() {\n        return servicePort;\n    }\n\n    public void setServicePort(Integer servicePort) {\n        this.servicePort = servicePort;\n    }\n\n    public Map<String, String> getIngressAnnotations() {\n        return ingressAnnotations;\n    }\n\n    public void setIngressAnnotations(Map<String, String> ingressAnnotations) {\n        this.ingressAnnotations = ingressAnnotations;\n    }\n\n    public List<IngressTLS> getIngressTLS() {\n        return ingressTLS;\n    }\n\n    public void setIngressTLS(List<IngressTLS> ingressTLS) {\n        this.ingressTLS = ingressTLS;\n    }\n}",
+  "subClasses": []
+}

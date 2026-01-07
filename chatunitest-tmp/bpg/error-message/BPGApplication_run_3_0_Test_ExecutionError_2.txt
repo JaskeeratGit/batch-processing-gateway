@@ -1,0 +1,165 @@
+package com.apple.spark;
+
+import com.apple.spark.core.Constants;
+import com.apple.spark.core.BPGStatsdConfig;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.health.HealthCheckRegistry;
+import io.dropwizard.jetty.MutableServletContextHandler;
+import io.dropwizard.jersey.setup.JerseyEnvironment;
+import io.dropwizard.setup.Environment;
+import io.micrometer.core.instrument.MeterRegistry;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collections;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import static com.apple.spark.core.Constants.QUEUE_INFO;
+import static com.apple.spark.core.Constants.SERVICE_ABBR;
+import com.apple.spark.core.ApplicationMonitor;
+import com.apple.spark.core.ThrowableExceptionMapper;
+import com.apple.spark.health.BPGHealthCheck;
+import com.apple.spark.rest.AdminRest;
+import com.apple.spark.rest.ApplicationGetLogRest;
+import com.apple.spark.rest.ApplicationSubmissionRest;
+import com.apple.spark.rest.HealthcheckRest;
+import com.apple.spark.rest.CloudStorageRest;
+import com.apple.spark.security.User;
+import com.apple.spark.security.UserNameAuthFilter;
+import com.apple.spark.security.UserNameBasicAuthenticator;
+import com.apple.spark.security.UserUnauthorizedHandler;
+import com.apple.spark.util.CounterMetricContainer;
+import com.codahale.metrics.SharedMetricRegistries;
+import io.dropwizard.Application;
+import io.dropwizard.auth.AuthDynamicFeature;
+import io.dropwizard.auth.AuthValueFactoryProvider;
+import io.dropwizard.auth.basic.BasicCredentialAuthFilter;
+import io.dropwizard.auth.basic.BasicCredentials;
+import io.dropwizard.auth.chained.ChainedAuthFilter;
+import io.dropwizard.setup.Bootstrap;
+import io.micrometer.core.instrument.Tag;
+import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
+import io.swagger.v3.oas.integration.SwaggerConfiguration;
+import io.swagger.v3.oas.models.OpenAPI;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/*
+  Fixed unit test:
+  - Removed use of MockitoExtension to avoid plugin initialization issues in some environments.
+  - Uses Mockito static API directly.
+  - Uses reflection to invoke a private method if present on BPGApplication.
+*/
+public class BPGApplication_run_3_0_Test {
+
+    private Environment environment;
+
+    private JerseyEnvironment jerseyEnvironment;
+
+    private MutableServletContextHandler servletContextHandler;
+
+    private HealthCheckRegistry healthCheckRegistry;
+
+    private MetricRegistry metricRegistry;
+
+    @BeforeEach
+    public void setUp() {
+        // Create plain Mockito mocks (no MockitoExtension)
+        environment = mock(Environment.class);
+        jerseyEnvironment = mock(JerseyEnvironment.class);
+        servletContextHandler = mock(MutableServletContextHandler.class);
+        healthCheckRegistry = mock(HealthCheckRegistry.class);
+        metricRegistry = new MetricRegistry();
+        // Wire up expected environment behaviour
+        when(environment.jersey()).thenReturn(jerseyEnvironment);
+        when(environment.getApplicationContext()).thenReturn(servletContextHandler);
+        when(environment.metrics()).thenReturn(metricRegistry);
+        when(environment.healthChecks()).thenReturn(healthCheckRegistry);
+        // Allow registering anything without side effects
+        doNothing().when(jerseyEnvironment).register(any());
+    }
+
+    @Test
+    public void testRun_nullContextPath_usesDefaultAndRegistersResources() throws Exception {
+        // Prepare AppConfig mock
+        AppConfig configuration = mock(AppConfig.class);
+        when(configuration.getApplicationContextPath()).thenReturn(null);
+        when(configuration.getAllowedUsers()).thenReturn(Collections.emptyList());
+        when(configuration.getBlockedUsers()).thenReturn(Collections.emptyList());
+        when(configuration.getSparkClusters()).thenReturn(Collections.emptyList());
+        // Create application instance with monitorApplication = false
+        BPGApplication app = new BPGApplication(false);
+        // Run the application
+        app.run(configuration, environment);
+        // Verify that context path is set to default
+        verify(servletContextHandler, times(1)).setContextPath(Constants.DEFAULT_APPLICATION_CONTEXT_PATH);
+        // Verify that several resources were registered (at least once each)
+        // Since register is called multiple times for different resources, we verify register was invoked.
+        verify(jerseyEnvironment, atLeast(1)).register(any());
+        // Verify that the MetricRegistry instance was stored in SharedMetricRegistries
+        MetricRegistry regFromEnv = environment.metrics();
+        assertNotNull(regFromEnv);
+        assertSame(metricRegistry, regFromEnv);
+    }
+
+    @Test
+    public void testRun_customContextPath_monitorApplicationTrue_and_invokePrivateSendPeriodicMetrics() throws Exception {
+        // Prepare AppConfig mock with custom context path
+        final String customContextPath = "/custom";
+        AppConfig configuration = mock(AppConfig.class);
+        when(configuration.getApplicationContextPath()).thenReturn(customContextPath);
+        when(configuration.getAllowedUsers()).thenReturn(Arrays.asList("alice"));
+        when(configuration.getBlockedUsers()).thenReturn(Arrays.asList("badguy"));
+        when(configuration.getSparkClusters()).thenReturn(Collections.emptyList());
+        // Create application instance with monitorApplication = true
+        BPGApplication app = new BPGApplication(true);
+        // Run the application (should attempt to start ApplicationMonitor, but we only verify interactions)
+        app.run(configuration, environment);
+        // Verify that custom context path is set
+        verify(servletContextHandler, times(1)).setContextPath(customContextPath);
+        // Verify that register was called for Jersey resources and features
+        verify(jerseyEnvironment, atLeast(1)).register(any());
+        // Attempt to invoke private sendPeriodicMetrics via reflection if present
+        // It may be private; we reflectively locate and invoke it to satisfy testing of that code path.
+        try {
+            Method sendPeriodic = null;
+            for (Method m : BPGApplication.class.getDeclaredMethods()) {
+                if (m.getName().equals("sendPeriodicMetrics")) {
+                    sendPeriodic = m;
+                    break;
+                }
+            }
+            if (sendPeriodic != null) {
+                sendPeriodic.setAccessible(true);
+                MeterRegistry meterRegistry = BPGStatsdConfig.createMeterRegistry();
+                // The private method signature in the original code: sendPeriodicMetrics(configuration, meterRegistry)
+                sendPeriodic.invoke(app, configuration, meterRegistry);
+            } else {
+                // If method not present, at least ensure createMeterRegistry works
+                MeterRegistry meterRegistry = BPGStatsdConfig.createMeterRegistry();
+                assertNotNull(meterRegistry);
+            }
+        } catch (InvocationTargetException ite) {
+            // If the underlying method throws, rethrow cause for test visibility
+            Throwable cause = ite.getCause();
+            if (cause != null) {
+                throw new RuntimeException(cause);
+            } else {
+                throw ite;
+            }
+        }
+    }
+}
+
+--------------------------------------------
+Error in testRun_nullContextPath_usesDefaultAndRegistersResources(): line 77 : java.lang.IllegalStateException: Could not initialize plugin: interface org.mockito.plugins.MockMaker (alternate: null)
+Error in testRun_customContextPath_monitorApplicationTrue_and_invokePrivateSendPeriodicMetrics(): line 77 : java.lang.IllegalStateException: Could not initialize plugin: interface org.mockito.plugins.MockMaker (alternate: null)

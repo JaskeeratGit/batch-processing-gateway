@@ -1,0 +1,18 @@
+{
+  "className": "SubmitApplicationRequest",
+  "methodName": "getClusterId",
+  "brief": "public String getClusterId(){}",
+  "methodSignature": "getClusterId()",
+  "sourceCode": "public String getClusterId() {\n    return clusterId;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public String getClusterId() {\n    return clusterId;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

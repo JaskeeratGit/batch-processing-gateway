@@ -1,0 +1,60 @@
+{
+  "className": "LogDao",
+  "methodName": "getKeyListImpl",
+  "brief": "private ArrayList<String> getKeyListImpl(String podPrefix, String execId){}",
+  "methodSignature": "getKeyListImpl(String, String)",
+  "sourceCode": "private ArrayList<String> getKeyListImpl(String podPrefix, String execId) {\n    ArrayList<String> keyList = new ArrayList<String>();\n    String containerId = \"\";\n    String key = \"\";\n    if (execId.isEmpty() || execId.endsWith(\"driver\")) {\n      containerId = podPrefix + \"-driver\";\n    } else {\n      containerId = podPrefix + \"-exec-\" + execId;\n    }\n    String sql =\n        String.format(\n            \"SELECT logs3key from %s.logindex where containerId = ? ORDER BY logs3key\", dbName);\n\n    try (PreparedStatement statement = dbConnection.getConnection().prepareStatement(sql)) {\n      statement.setString(1, containerId);\n      logger.info(\"Executing SQL: {}\", sql);\n\n      try (ResultSet resultSet = statement.executeQuery()) {\n        while (resultSet.next()) {\n          key = resultSet.getString(1);\n          keyList.add(key);\n        }\n      }\n    } catch (Throwable ex) {\n      logger.warn(String.format(\"Failed to execute SQL query: %s\", sql), ex);\n      failureMetrics.increment(\n          DB_FAILURE_METRIC_NAME,\n          Tag.of(OPERATION_TAG, QUERY_LOGINDEX_OPERATION),\n          Tag.of(EXCEPTION_TAG, ex.getClass().getSimpleName()));\n    }\n    return keyList;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String",
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "isEmpty()",
+      "format(String, Object[])",
+      "endsWith(String)"
+    ],
+    "java.sql.Connection": [
+      "prepareStatement(String)"
+    ],
+    "com.apple.spark.core.DBConnection": [
+      "getConnection()"
+    ],
+    "java.sql.PreparedStatement": [
+      "setString(int, String)",
+      "executeQuery()"
+    ],
+    "org.slf4j.Logger": [
+      "warn(String, Throwable)",
+      "info(String, Object)"
+    ],
+    "java.sql.ResultSet": [
+      "next()",
+      "getString(int)"
+    ],
+    "java.util.ArrayList": [
+      "add(E)"
+    ],
+    "com.apple.spark.util.CounterMetricContainer": [
+      "increment(String, Tag[])"
+    ],
+    "io.micrometer.core.instrument.Tag": [
+      "of(String, String)"
+    ],
+    "java.lang.Class": [
+      "getSimpleName()"
+    ],
+    "java.lang.Object": [
+      "getClass()"
+    ]
+  },
+  "full_method_info": "// get log key list upon given a subId and execId(empty execId means driver)\nprivate ArrayList<String> getKeyListImpl(String podPrefix, String execId) {\n    ArrayList<String> keyList = new ArrayList<String>();\n    String containerId = \"\";\n    String key = \"\";\n    if (execId.isEmpty() || execId.endsWith(\"driver\")) {\n        containerId = podPrefix + \"-driver\";\n    } else {\n        containerId = podPrefix + \"-exec-\" + execId;\n    }\n    String sql = String.format(\"SELECT logs3key from %s.logindex where containerId = ? ORDER BY logs3key\", dbName);\n    try (PreparedStatement statement = dbConnection.getConnection().prepareStatement(sql)) {\n        statement.setString(1, containerId);\n        logger.info(\"Executing SQL: {}\", sql);\n        try (ResultSet resultSet = statement.executeQuery()) {\n            while (resultSet.next()) {\n                key = resultSet.getString(1);\n                keyList.add(key);\n            }\n        }\n    } catch (Throwable ex) {\n        logger.warn(String.format(\"Failed to execute SQL query: %s\", sql), ex);\n        failureMetrics.increment(DB_FAILURE_METRIC_NAME, Tag.of(OPERATION_TAG, QUERY_LOGINDEX_OPERATION), Tag.of(EXCEPTION_TAG, ex.getClass().getSimpleName()));\n    }\n    return keyList;\n}",
+  "method_comment": " get log key list upon given a subId and execId(empty execId means driver)",
+  "method_annotation": ""
+}

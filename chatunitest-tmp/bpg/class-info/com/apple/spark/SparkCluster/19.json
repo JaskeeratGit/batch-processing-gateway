@@ -1,0 +1,22 @@
+{
+  "className": "SparkCluster",
+  "methodName": "setHttpsProxy",
+  "brief": "public void setHttpsProxy(String httpsProxy){}",
+  "methodSignature": "setHttpsProxy(String)",
+  "sourceCode": "public void setHttpsProxy(String httpsProxy) {\n      this.httpsProxy = httpsProxy;\n    }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": []
+  },
+  "full_method_info": "public void setHttpsProxy(String httpsProxy) {\n    this.httpsProxy = httpsProxy;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

@@ -1,0 +1,18 @@
+{
+  "className": "SparkPodSpec",
+  "methodName": "getMemoryOverhead",
+  "brief": "public String getMemoryOverhead(){}",
+  "methodSignature": "getMemoryOverhead()",
+  "sourceCode": "public String getMemoryOverhead() {\n    return memoryOverhead;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public String getMemoryOverhead() {\n    return memoryOverhead;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

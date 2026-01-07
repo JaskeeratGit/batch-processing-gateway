@@ -1,0 +1,43 @@
+{
+  "className": "ApplicationSubmissionHelper",
+  "methodName": "getExecutorMemBufferForQueue",
+  "brief": "private static double getExecutorMemBufferForQueue(AppConfig appConfig, String queue){}",
+  "methodSignature": "getExecutorMemBufferForQueue(AppConfig, String)",
+  "sourceCode": "private static double getExecutorMemBufferForQueue(AppConfig appConfig, String queue) {\n    Optional<AppConfig.QueueConfig> queueConfigOptional =\n        appConfig.getQueues().stream().filter(t -> t.getName().equals(queue)).findFirst();\n\n    if (queueConfigOptional.isPresent()) {\n      AppConfig.QueueConfig queueConfig = queueConfigOptional.get();\n      if (queueConfig != null && queueConfig.getExecutorMemBufferRatio() != null) {\n        return queueConfig.getExecutorMemBufferRatio();\n      }\n    }\n    return EXECUTOR_MEM_BUFFER_RATIO;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "AppConfig",
+    "String"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.AppConfig": [
+      "getQueues()"
+    ],
+    "java.lang.String": [
+      "equals(Object)"
+    ],
+    "java.util.stream.Stream": [
+      "findFirst()",
+      "filter(Predicate<? super T>)"
+    ],
+    "java.util.Collection": [
+      "stream()"
+    ],
+    "com.apple.spark.AppConfig.QueueConfig": [
+      "getName()",
+      "getExecutorMemBufferRatio()"
+    ],
+    "java.util.Optional": [
+      "isPresent()",
+      "get()"
+    ]
+  },
+  "full_method_info": "private static double getExecutorMemBufferForQueue(AppConfig appConfig, String queue) {\n    Optional<AppConfig.QueueConfig> queueConfigOptional = appConfig.getQueues().stream().filter(t -> t.getName().equals(queue)).findFirst();\n    if (queueConfigOptional.isPresent()) {\n        AppConfig.QueueConfig queueConfig = queueConfigOptional.get();\n        if (queueConfig != null && queueConfig.getExecutorMemBufferRatio() != null) {\n            return queueConfig.getExecutorMemBufferRatio();\n        }\n    }\n    return EXECUTOR_MEM_BUFFER_RATIO;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

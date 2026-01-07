@@ -1,0 +1,22 @@
+{
+  "className": "SparkPodSpec",
+  "methodName": "setJavaOptions",
+  "brief": "public void setJavaOptions(String javaOptions){}",
+  "methodSignature": "setJavaOptions(String)",
+  "sourceCode": "public void setJavaOptions(String javaOptions) {\n    this.javaOptions = javaOptions;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": []
+  },
+  "full_method_info": "public void setJavaOptions(String javaOptions) {\n    this.javaOptions = javaOptions;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

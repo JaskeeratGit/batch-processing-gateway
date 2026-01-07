@@ -1,0 +1,22 @@
+{
+  "className": "GetSubmissionStatusResponseCacheValue",
+  "methodName": "GetSubmissionStatusResponseCacheValue",
+  "brief": "public GetSubmissionStatusResponseCacheValue(Throwable exception){}",
+  "methodSignature": "GetSubmissionStatusResponseCacheValue(Throwable)",
+  "sourceCode": "public GetSubmissionStatusResponseCacheValue(Throwable exception) {\n    this.response = null;\n    this.exception = exception;\n  }",
+  "useField": true,
+  "isConstructor": true,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "Throwable"
+  ],
+  "dependentMethods": {
+    "java.lang.Throwable": []
+  },
+  "full_method_info": "public GetSubmissionStatusResponseCacheValue(Throwable exception) {\n    this.response = null;\n    this.exception = exception;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

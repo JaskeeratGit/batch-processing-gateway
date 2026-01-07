@@ -1,0 +1,55 @@
+{
+  "className": "RunningApplicationMonitor",
+  "methodName": "onUpdate",
+  "brief": "public void onUpdate(\n          SparkApplication prevCRDState, SparkApplication currCRDState){}",
+  "methodSignature": "onUpdate(SparkApplication, SparkApplication)",
+  "sourceCode": "public void onUpdate(\n          SparkApplication prevCRDState, SparkApplication currCRDState) {\n    String newState = SparkApplicationResourceHelper.getState(currCRDState);\n    if (SparkConstants.RUNNING_STATE.equalsIgnoreCase(newState)) {\n      String name = currCRDState.getMetadata().getName();\n      if (name == null) {\n        logger.warn(\"Did not get name for spark application\");\n        return;\n      }\n      String creationTimeStr = currCRDState.getMetadata().getCreationTimestamp();\n      if (creationTimeStr == null) {\n        logger.warn(\"Did not get creation timestamp for {}\", name);\n        return;\n      }\n      Long creationTime = DateTimeUtils.parseOrNull(creationTimeStr);\n      if (creationTime == null) {\n        logger.warn(\"Failed to parse creation timestamp {} for {}\", creationTimeStr, name);\n        return;\n      }\n      String namespace = currCRDState.getMetadata().getNamespace();\n      if (namespace == null) {\n        logger.warn(\"Did not get namespace for {}\", name);\n        return;\n      }\n\n      NamespaceAndName namespaceAndName = new NamespaceAndName(namespace, name);\n      if (SparkConstants.isApplicationStopped(newState)) {\n        runningApplications.remove(namespaceAndName);\n      } else {\n        long maxRunningTime = getMaxRunningMillis(currCRDState);\n        runningApplications.put(namespaceAndName, new RunningAppInfo(creationTime, maxRunningTime));\n      }\n    }\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "SparkApplication",
+    "SparkApplication"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.operator.SparkApplication": [],
+    "com.apple.spark.core.SparkApplicationResourceHelper": [
+      "getState(SparkApplication)"
+    ],
+    "java.lang.String": [
+      "equalsIgnoreCase(String)"
+    ],
+    "io.fabric8.kubernetes.api.model.ObjectMeta": [
+      "getName()",
+      "getCreationTimestamp()",
+      "getNamespace()"
+    ],
+    "io.fabric8.kubernetes.client.CustomResource": [
+      "getMetadata()"
+    ],
+    "org.slf4j.Logger": [
+      "warn(String)",
+      "warn(String, Object)",
+      "warn(String, Object, Object)"
+    ],
+    "com.apple.spark.util.DateTimeUtils": [
+      "parseOrNull(String)"
+    ],
+    "com.apple.spark.core.SparkConstants": [
+      "isApplicationStopped(String)"
+    ],
+    "java.util.concurrent.ConcurrentHashMap": [
+      "remove(Object)",
+      "put(K, V)"
+    ],
+    "com.apple.spark.core.RunningApplicationMonitor": [
+      "getMaxRunningMillis(SparkApplication)"
+    ]
+  },
+  "full_method_info": "/**\n * Notify the monitor instance about an application CRD update. The monitor instance relies on\n * this function to keep its hashmap updated.\n *\n * @param prevCRDState the previous CRD state\n * @param currCRDState the current CRD state\n */\npublic void onUpdate(SparkApplication prevCRDState, SparkApplication currCRDState) {\n    String newState = SparkApplicationResourceHelper.getState(currCRDState);\n    if (SparkConstants.RUNNING_STATE.equalsIgnoreCase(newState)) {\n        String name = currCRDState.getMetadata().getName();\n        if (name == null) {\n            logger.warn(\"Did not get name for spark application\");\n            return;\n        }\n        String creationTimeStr = currCRDState.getMetadata().getCreationTimestamp();\n        if (creationTimeStr == null) {\n            logger.warn(\"Did not get creation timestamp for {}\", name);\n            return;\n        }\n        Long creationTime = DateTimeUtils.parseOrNull(creationTimeStr);\n        if (creationTime == null) {\n            logger.warn(\"Failed to parse creation timestamp {} for {}\", creationTimeStr, name);\n            return;\n        }\n        String namespace = currCRDState.getMetadata().getNamespace();\n        if (namespace == null) {\n            logger.warn(\"Did not get namespace for {}\", name);\n            return;\n        }\n        NamespaceAndName namespaceAndName = new NamespaceAndName(namespace, name);\n        if (SparkConstants.isApplicationStopped(newState)) {\n            runningApplications.remove(namespaceAndName);\n        } else {\n            long maxRunningTime = getMaxRunningMillis(currCRDState);\n            runningApplications.put(namespaceAndName, new RunningAppInfo(creationTime, maxRunningTime));\n        }\n    }\n}",
+  "method_comment": "\n   * Notify the monitor instance about an application CRD update. The monitor instance relies on\n   * this function to keep its hashmap updated.\n   *\n   * @param prevCRDState the previous CRD state\n   * @param currCRDState the current CRD state\n   ",
+  "method_annotation": ""
+}

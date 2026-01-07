@@ -1,0 +1,52 @@
+{
+  "className": "ApplicationSubmissionHelper",
+  "methodName": "getSparkConf",
+  "brief": "public static Map<String, String> getSparkConf(\n      String submissionId,\n      SubmitApplicationRequest request,\n      AppConfig appConfig,\n      AppConfig.SparkCluster sparkCluster){}",
+  "methodSignature": "getSparkConf(String, SubmitApplicationRequest, AppConfig, AppConfig.SparkCluster)",
+  "sourceCode": "public static Map<String, String> getSparkConf(\n      String submissionId,\n      SubmitApplicationRequest request,\n      AppConfig appConfig,\n      AppConfig.SparkCluster sparkCluster) {\n\n    Map<String, String> sparkConf = null;\n    Map<String, String> defaultSparkConf = appConfig.getDefaultSparkConf();\n    Map<String, String> fixedSparkConf = appConfig.getFixedSparkConf();\n\n    if (defaultSparkConf != null) {\n      if (sparkConf == null) {\n        sparkConf = new HashMap<>();\n      }\n      Map<String, String> filteredDefaultSparkConf = applyFeatureGate(request, defaultSparkConf);\n\n      for (Map.Entry<String, String> entry : filteredDefaultSparkConf.entrySet()) {\n        sparkConf.put(entry.getKey(), substitutionSparkConfigValue(entry.getValue(), submissionId));\n      }\n    }\n\n    if (sparkCluster.getSparkConf() != null) {\n      if (sparkConf == null) {\n        sparkConf = new HashMap<>();\n      }\n      for (Map.Entry<String, String> entry : sparkCluster.getSparkConf().entrySet()) {\n        sparkConf.put(entry.getKey(), substitutionSparkConfigValue(entry.getValue(), submissionId));\n      }\n    }\n\n    if (request.getSparkConf() != null) {\n      if (sparkConf == null) {\n        sparkConf = new HashMap<>();\n      }\n      for (Map.Entry<String, String> entry : request.getSparkConf().entrySet()) {\n        sparkConf.put(entry.getKey(), entry.getValue());\n      }\n    }\n\n    if (fixedSparkConf != null) {\n      if (sparkConf == null) {\n        sparkConf = new HashMap<>();\n      }\n      sparkConf.putAll(fixedSparkConf);\n    }\n\n    if (!StringUtils.isEmpty(request.getApplicationName())) {\n      if (sparkConf == null) {\n        sparkConf = new HashMap<>();\n      }\n      sparkConf.put(SparkConstants.SPARK_APP_NAME_CONFIG, request.getApplicationName());\n    }\n\n    return sparkConf;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String",
+    "SubmitApplicationRequest",
+    "AppConfig",
+    "AppConfig.SparkCluster"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [],
+    "com.apple.spark.api.SubmitApplicationRequest": [
+      "getApplicationName()",
+      "getSparkConf()"
+    ],
+    "com.apple.spark.AppConfig": [
+      "getFixedSparkConf()",
+      "getDefaultSparkConf()"
+    ],
+    "com.apple.spark.core.ApplicationSubmissionHelper": [
+      "substitutionSparkConfigValue(String, String)",
+      "applyFeatureGate(SubmitApplicationRequest, String>)"
+    ],
+    "java.util.Map": [
+      "entrySet()",
+      "putAll(Map<? extends K, ? extends V>)",
+      "put(K, V)"
+    ],
+    "java.util.Map.Entry": [
+      "getValue()",
+      "getKey()"
+    ],
+    "com.apple.spark.AppConfig.SparkCluster": [
+      "getSparkConf()"
+    ],
+    "org.apache.commons.lang3.StringUtils": [
+      "isEmpty(CharSequence)"
+    ]
+  },
+  "full_method_info": "public static Map<String, String> getSparkConf(String submissionId, SubmitApplicationRequest request, AppConfig appConfig, AppConfig.SparkCluster sparkCluster) {\n    Map<String, String> sparkConf = null;\n    Map<String, String> defaultSparkConf = appConfig.getDefaultSparkConf();\n    Map<String, String> fixedSparkConf = appConfig.getFixedSparkConf();\n    if (defaultSparkConf != null) {\n        if (sparkConf == null) {\n            sparkConf = new HashMap<>();\n        }\n        Map<String, String> filteredDefaultSparkConf = applyFeatureGate(request, defaultSparkConf);\n        for (Map.Entry<String, String> entry : filteredDefaultSparkConf.entrySet()) {\n            sparkConf.put(entry.getKey(), substitutionSparkConfigValue(entry.getValue(), submissionId));\n        }\n    }\n    if (sparkCluster.getSparkConf() != null) {\n        if (sparkConf == null) {\n            sparkConf = new HashMap<>();\n        }\n        for (Map.Entry<String, String> entry : sparkCluster.getSparkConf().entrySet()) {\n            sparkConf.put(entry.getKey(), substitutionSparkConfigValue(entry.getValue(), submissionId));\n        }\n    }\n    if (request.getSparkConf() != null) {\n        if (sparkConf == null) {\n            sparkConf = new HashMap<>();\n        }\n        for (Map.Entry<String, String> entry : request.getSparkConf().entrySet()) {\n            sparkConf.put(entry.getKey(), entry.getValue());\n        }\n    }\n    if (fixedSparkConf != null) {\n        if (sparkConf == null) {\n            sparkConf = new HashMap<>();\n        }\n        sparkConf.putAll(fixedSparkConf);\n    }\n    if (!StringUtils.isEmpty(request.getApplicationName())) {\n        if (sparkConf == null) {\n            sparkConf = new HashMap<>();\n        }\n        sparkConf.put(SparkConstants.SPARK_APP_NAME_CONFIG, request.getApplicationName());\n    }\n    return sparkConf;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

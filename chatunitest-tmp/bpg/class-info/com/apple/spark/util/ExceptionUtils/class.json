@@ -1,0 +1,55 @@
+{
+  "fullClassName": "com.apple.spark.util.ExceptionUtils",
+  "className": "ExceptionUtils",
+  "index": 64,
+  "modifier": "[public ]",
+  "extend": "[]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.util",
+  "packageDeclaration": "package com.apple.spark.util;",
+  "classSignature": "public class ExceptionUtils",
+  "hasConstructor": false,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import com.apple.spark.core.Constants;",
+    "import com.codahale.metrics.Meter;",
+    "import com.codahale.metrics.MetricRegistry;",
+    "import com.codahale.metrics.SharedMetricRegistries;"
+  ],
+  "fields": [
+    "private static final MetricRegistry registry;",
+    "private static final Meter jsonProcessingExceptionMeter;",
+    "private static final Meter ioExceptionMeter;",
+    "private static final Meter runtimeExceptionMeter;",
+    "private static final Meter exceptionMeter;"
+  ],
+  "superClasses": [],
+  "implementedTypes": [],
+  "methodSigs": {
+    "getExceptionNameAndMessage(Throwable)": "0",
+    "isTooManyRequest(Throwable)": "1",
+    "meterJsonProcessingException()": "2",
+    "meterException()": "3",
+    "meterIOException()": "4",
+    "meterRuntimeException()": "5"
+  },
+  "methodsBrief": [
+    "public static String getExceptionNameAndMessage(Throwable ex){}",
+    "public static boolean isTooManyRequest(Throwable ex){}",
+    "public static void meterJsonProcessingException(){}",
+    "public static void meterException(){}",
+    "public static void meterIOException(){}",
+    "public static void meterRuntimeException(){}"
+  ],
+  "constructorSigs": [],
+  "constructorBrief": [],
+  "getterSetterSigs": [],
+  "getterSetterBrief": [],
+  "constructorDeps": {},
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.util;\n\nimport com.apple.spark.core.Constants;\nimport com.codahale.metrics.Meter;\nimport com.codahale.metrics.MetricRegistry;\nimport com.codahale.metrics.SharedMetricRegistries;\n\npublic class ExceptionUtils {\n\n    private static final MetricRegistry registry;\n\n    private static final Meter jsonProcessingExceptionMeter;\n\n    private static final Meter ioExceptionMeter;\n\n    private static final Meter runtimeExceptionMeter;\n\n    private static final Meter exceptionMeter;\n\n    static {\n        registry = SharedMetricRegistries.getOrCreate(Constants.DEFAULT_METRIC_REGISTRY);\n        jsonProcessingExceptionMeter = registry.meter(Constants.JSON_PROCESSING_EXCEPTION_METER);\n        exceptionMeter = registry.meter(Constants.EXCEPTION_METER);\n        ioExceptionMeter = registry.meter(Constants.IO_EXCEPTION_METER);\n        runtimeExceptionMeter = registry.meter(Constants.RUNTIME_EXCEPTION_METER);\n    }\n\n    public static String getExceptionNameAndMessage(Throwable ex) {\n        if (ex == null) {\n            return \"\";\n        } else {\n            return String.format(\"%s: %s\", ex.getClass().getName(), ex.getMessage());\n        }\n    }\n\n    public static boolean isTooManyRequest(Throwable ex) {\n        while (ex != null) {\n            if (ex.getMessage() != null && ex.getMessage().toLowerCase().contains(\"too many request\")) {\n                return true;\n            }\n            ex = ex.getCause();\n        }\n        return false;\n    }\n\n    public static void meterJsonProcessingException() {\n        jsonProcessingExceptionMeter.mark();\n    }\n\n    public static void meterException() {\n        exceptionMeter.mark();\n    }\n\n    public static void meterIOException() {\n        ioExceptionMeter.mark();\n    }\n\n    public static void meterRuntimeException() {\n        runtimeExceptionMeter.mark();\n    }\n}\n",
+  "classDeclarationCode": "public class ExceptionUtils {\n\n    private static final MetricRegistry registry;\n\n    private static final Meter jsonProcessingExceptionMeter;\n\n    private static final Meter ioExceptionMeter;\n\n    private static final Meter runtimeExceptionMeter;\n\n    private static final Meter exceptionMeter;\n\n    static {\n        registry = SharedMetricRegistries.getOrCreate(Constants.DEFAULT_METRIC_REGISTRY);\n        jsonProcessingExceptionMeter = registry.meter(Constants.JSON_PROCESSING_EXCEPTION_METER);\n        exceptionMeter = registry.meter(Constants.EXCEPTION_METER);\n        ioExceptionMeter = registry.meter(Constants.IO_EXCEPTION_METER);\n        runtimeExceptionMeter = registry.meter(Constants.RUNTIME_EXCEPTION_METER);\n    }\n\n    public static String getExceptionNameAndMessage(Throwable ex) {\n        if (ex == null) {\n            return \"\";\n        } else {\n            return String.format(\"%s: %s\", ex.getClass().getName(), ex.getMessage());\n        }\n    }\n\n    public static boolean isTooManyRequest(Throwable ex) {\n        while (ex != null) {\n            if (ex.getMessage() != null && ex.getMessage().toLowerCase().contains(\"too many request\")) {\n                return true;\n            }\n            ex = ex.getCause();\n        }\n        return false;\n    }\n\n    public static void meterJsonProcessingException() {\n        jsonProcessingExceptionMeter.mark();\n    }\n\n    public static void meterException() {\n        exceptionMeter.mark();\n    }\n\n    public static void meterIOException() {\n        ioExceptionMeter.mark();\n    }\n\n    public static void meterRuntimeException() {\n        runtimeExceptionMeter.mark();\n    }\n}",
+  "initializerCode": "static {\n    registry = SharedMetricRegistries.getOrCreate(Constants.DEFAULT_METRIC_REGISTRY);\n    jsonProcessingExceptionMeter = registry.meter(Constants.JSON_PROCESSING_EXCEPTION_METER);\n    exceptionMeter = registry.meter(Constants.EXCEPTION_METER);\n    ioExceptionMeter = registry.meter(Constants.IO_EXCEPTION_METER);\n    runtimeExceptionMeter = registry.meter(Constants.RUNTIME_EXCEPTION_METER);\n}",
+  "subClasses": []
+}

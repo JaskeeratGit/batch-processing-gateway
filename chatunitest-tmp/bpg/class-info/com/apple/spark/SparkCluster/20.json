@@ -1,0 +1,18 @@
+{
+  "className": "SparkCluster",
+  "methodName": "getSparkApplicationNamespace",
+  "brief": "public String getSparkApplicationNamespace(){}",
+  "methodSignature": "getSparkApplicationNamespace()",
+  "sourceCode": "public String getSparkApplicationNamespace() {\n      return sparkApplicationNamespace;\n    }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public String getSparkApplicationNamespace() {\n    return sparkApplicationNamespace;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

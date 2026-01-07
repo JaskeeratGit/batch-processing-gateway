@@ -1,0 +1,18 @@
+{
+  "className": "SparkCluster",
+  "methodName": "getSparkVersions",
+  "brief": "public List<String> getSparkVersions(){}",
+  "methodSignature": "getSparkVersions()",
+  "sourceCode": "public List<String> getSparkVersions() {\n      return sparkVersions;\n    }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public List<String> getSparkVersions() {\n    return sparkVersions;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

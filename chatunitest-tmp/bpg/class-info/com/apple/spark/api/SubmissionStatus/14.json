@@ -1,0 +1,22 @@
+{
+  "className": "SubmissionStatus",
+  "methodName": "setDuration",
+  "brief": "public void setDuration(Long duration){}",
+  "methodSignature": "setDuration(Long)",
+  "sourceCode": "public void setDuration(Long duration) {\n    this.duration = duration;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "Long"
+  ],
+  "dependentMethods": {
+    "java.lang.Long": []
+  },
+  "full_method_info": "public void setDuration(Long duration) {\n    this.duration = duration;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

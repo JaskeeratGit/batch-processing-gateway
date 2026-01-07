@@ -1,0 +1,38 @@
+{
+  "fullClassName": "com.apple.spark.core.SparkSpecHelper",
+  "className": "SparkSpecHelper",
+  "index": 89,
+  "modifier": "[public ]",
+  "extend": "[]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.core",
+  "packageDeclaration": "package com.apple.spark.core;",
+  "classSignature": "public class SparkSpecHelper",
+  "hasConstructor": false,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import com.apple.spark.operator.EnvVar;",
+    "import java.util.HashMap;",
+    "import java.util.List;",
+    "import java.util.Map;"
+  ],
+  "fields": [],
+  "superClasses": [],
+  "implementedTypes": [],
+  "methodSigs": {
+    "copyEnv(List, List)": "0"
+  },
+  "methodsBrief": [
+    "public static void copyEnv(List<EnvVar> source, List<EnvVar> destination){}"
+  ],
+  "constructorSigs": [],
+  "constructorBrief": [],
+  "getterSetterSigs": [],
+  "getterSetterBrief": [],
+  "constructorDeps": {},
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.core;\n\nimport com.apple.spark.operator.EnvVar;\nimport java.util.HashMap;\nimport java.util.List;\nimport java.util.Map;\n\npublic class SparkSpecHelper {\n\n    // Copy environment variables from source to destination, with proper overwriting\n    public static void copyEnv(List<EnvVar> source, List<EnvVar> destination) {\n        Map<String, Integer> destinationEnvIndex = new HashMap<>();\n        for (int i = 0; i < destination.size(); i++) {\n            destinationEnvIndex.put(destination.get(i).getName(), i);\n        }\n        for (EnvVar sourceEnvEntry : source) {\n            Integer indexInDestinationEnv = destinationEnvIndex.get(sourceEnvEntry.getName());\n            if (indexInDestinationEnv == null) {\n                destination.add(sourceEnvEntry);\n            } else {\n                destination.set(indexInDestinationEnv, sourceEnvEntry);\n            }\n        }\n    }\n}\n",
+  "classDeclarationCode": "public class SparkSpecHelper {\n\n    // Copy environment variables from source to destination, with proper overwriting\n    public static void copyEnv(List<EnvVar> source, List<EnvVar> destination) {\n        Map<String, Integer> destinationEnvIndex = new HashMap<>();\n        for (int i = 0; i < destination.size(); i++) {\n            destinationEnvIndex.put(destination.get(i).getName(), i);\n        }\n        for (EnvVar sourceEnvEntry : source) {\n            Integer indexInDestinationEnv = destinationEnvIndex.get(sourceEnvEntry.getName());\n            if (indexInDestinationEnv == null) {\n                destination.add(sourceEnvEntry);\n            } else {\n                destination.set(indexInDestinationEnv, sourceEnvEntry);\n            }\n        }\n    }\n}",
+  "subClasses": []
+}

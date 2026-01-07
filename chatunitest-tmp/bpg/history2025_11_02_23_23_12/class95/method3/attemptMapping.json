@@ -1,0 +1,47 @@
+{
+  "attempt0": {
+    "testClassName": "ApplicationSubmissionHelper_getSparkConf_3_0_Test",
+    "fullName": "com.apple.spark.core.ApplicationSubmissionHelper_getSparkConf_3_0_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/ApplicationSubmissionHelper_getSparkConf_3_0_Test.java",
+    "className": "ApplicationSubmissionHelper",
+    "packageName": "com.apple.spark.core",
+    "methodName": "getSparkConf",
+    "methodSig": "getSparkConf(String, SubmitApplicationRequest, AppConfig, AppConfig.SparkCluster)"
+  },
+  "attempt1": {
+    "testClassName": "ApplicationSubmissionHelper_getSparkConf_3_1_Test",
+    "fullName": "com.apple.spark.core.ApplicationSubmissionHelper_getSparkConf_3_1_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/ApplicationSubmissionHelper_getSparkConf_3_0_Test.java",
+    "className": "ApplicationSubmissionHelper",
+    "packageName": "com.apple.spark.core",
+    "methodName": "getSparkConf",
+    "methodSig": "getSparkConf(String, SubmitApplicationRequest, AppConfig, AppConfig.SparkCluster)"
+  },
+  "attempt2": {
+    "testClassName": "ApplicationSubmissionHelper_getSparkConf_3_2_Test",
+    "fullName": "com.apple.spark.core.ApplicationSubmissionHelper_getSparkConf_3_2_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/ApplicationSubmissionHelper_getSparkConf_3_0_Test.java",
+    "className": "ApplicationSubmissionHelper",
+    "packageName": "com.apple.spark.core",
+    "methodName": "getSparkConf",
+    "methodSig": "getSparkConf(String, SubmitApplicationRequest, AppConfig, AppConfig.SparkCluster)"
+  },
+  "attempt3": {
+    "testClassName": "ApplicationSubmissionHelper_getSparkConf_3_3_Test",
+    "fullName": "com.apple.spark.core.ApplicationSubmissionHelper_getSparkConf_3_3_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/ApplicationSubmissionHelper_getSparkConf_3_0_Test.java",
+    "className": "ApplicationSubmissionHelper",
+    "packageName": "com.apple.spark.core",
+    "methodName": "getSparkConf",
+    "methodSig": "getSparkConf(String, SubmitApplicationRequest, AppConfig, AppConfig.SparkCluster)"
+  },
+  "attempt4": {
+    "testClassName": "ApplicationSubmissionHelper_getSparkConf_3_4_Test",
+    "fullName": "com.apple.spark.core.ApplicationSubmissionHelper_getSparkConf_3_4_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/ApplicationSubmissionHelper_getSparkConf_3_0_Test.java",
+    "className": "ApplicationSubmissionHelper",
+    "packageName": "com.apple.spark.core",
+    "methodName": "getSparkConf",
+    "methodSig": "getSparkConf(String, SubmitApplicationRequest, AppConfig, AppConfig.SparkCluster)"
+  }
+}

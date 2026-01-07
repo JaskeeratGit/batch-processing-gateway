@@ -1,0 +1,47 @@
+{
+  "attempt0": {
+    "testClassName": "SparkSpecHelper_copyEnv_0_0_Test",
+    "fullName": "com.apple.spark.core.SparkSpecHelper_copyEnv_0_0_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/SparkSpecHelper_copyEnv_0_0_Test.java",
+    "className": "SparkSpecHelper",
+    "packageName": "com.apple.spark.core",
+    "methodName": "copyEnv",
+    "methodSig": "copyEnv(List, List)"
+  },
+  "attempt1": {
+    "testClassName": "SparkSpecHelper_copyEnv_0_1_Test",
+    "fullName": "com.apple.spark.core.SparkSpecHelper_copyEnv_0_1_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/SparkSpecHelper_copyEnv_0_0_Test.java",
+    "className": "SparkSpecHelper",
+    "packageName": "com.apple.spark.core",
+    "methodName": "copyEnv",
+    "methodSig": "copyEnv(List, List)"
+  },
+  "attempt2": {
+    "testClassName": "SparkSpecHelper_copyEnv_0_2_Test",
+    "fullName": "com.apple.spark.core.SparkSpecHelper_copyEnv_0_2_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/SparkSpecHelper_copyEnv_0_0_Test.java",
+    "className": "SparkSpecHelper",
+    "packageName": "com.apple.spark.core",
+    "methodName": "copyEnv",
+    "methodSig": "copyEnv(List, List)"
+  },
+  "attempt3": {
+    "testClassName": "SparkSpecHelper_copyEnv_0_3_Test",
+    "fullName": "com.apple.spark.core.SparkSpecHelper_copyEnv_0_3_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/SparkSpecHelper_copyEnv_0_0_Test.java",
+    "className": "SparkSpecHelper",
+    "packageName": "com.apple.spark.core",
+    "methodName": "copyEnv",
+    "methodSig": "copyEnv(List, List)"
+  },
+  "attempt4": {
+    "testClassName": "SparkSpecHelper_copyEnv_0_4_Test",
+    "fullName": "com.apple.spark.core.SparkSpecHelper_copyEnv_0_4_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/SparkSpecHelper_copyEnv_0_0_Test.java",
+    "className": "SparkSpecHelper",
+    "packageName": "com.apple.spark.core",
+    "methodName": "copyEnv",
+    "methodSig": "copyEnv(List, List)"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "className": "SparkApplicationSpec",
+  "methodName": "setMonitoring",
+  "brief": "public void setMonitoring(MonitoringSpec monitoring){}",
+  "methodSignature": "setMonitoring(MonitoringSpec)",
+  "sourceCode": "public void setMonitoring(MonitoringSpec monitoring) {\n    this.monitoring = monitoring;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "MonitoringSpec"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.operator.MonitoringSpec": []
+  },
+  "full_method_info": "public void setMonitoring(MonitoringSpec monitoring) {\n    this.monitoring = monitoring;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

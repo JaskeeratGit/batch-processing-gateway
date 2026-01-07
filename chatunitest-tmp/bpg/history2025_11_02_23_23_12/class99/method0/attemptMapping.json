@@ -1,0 +1,47 @@
+{
+  "attempt0": {
+    "testClassName": "RoundRobinZonePicker_update_0_0_Test",
+    "fullName": "com.apple.spark.core.RoundRobinZonePicker_update_0_0_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/RoundRobinZonePicker_update_0_0_Test.java",
+    "className": "RoundRobinZonePicker",
+    "packageName": "com.apple.spark.core",
+    "methodName": "update",
+    "methodSig": "update(List)"
+  },
+  "attempt1": {
+    "testClassName": "RoundRobinZonePicker_update_0_1_Test",
+    "fullName": "com.apple.spark.core.RoundRobinZonePicker_update_0_1_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/RoundRobinZonePicker_update_0_0_Test.java",
+    "className": "RoundRobinZonePicker",
+    "packageName": "com.apple.spark.core",
+    "methodName": "update",
+    "methodSig": "update(List)"
+  },
+  "attempt2": {
+    "testClassName": "RoundRobinZonePicker_update_0_2_Test",
+    "fullName": "com.apple.spark.core.RoundRobinZonePicker_update_0_2_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/RoundRobinZonePicker_update_0_0_Test.java",
+    "className": "RoundRobinZonePicker",
+    "packageName": "com.apple.spark.core",
+    "methodName": "update",
+    "methodSig": "update(List)"
+  },
+  "attempt3": {
+    "testClassName": "RoundRobinZonePicker_update_0_3_Test",
+    "fullName": "com.apple.spark.core.RoundRobinZonePicker_update_0_3_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/RoundRobinZonePicker_update_0_0_Test.java",
+    "className": "RoundRobinZonePicker",
+    "packageName": "com.apple.spark.core",
+    "methodName": "update",
+    "methodSig": "update(List)"
+  },
+  "attempt4": {
+    "testClassName": "RoundRobinZonePicker_update_0_4_Test",
+    "fullName": "com.apple.spark.core.RoundRobinZonePicker_update_0_4_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/RoundRobinZonePicker_update_0_0_Test.java",
+    "className": "RoundRobinZonePicker",
+    "packageName": "com.apple.spark.core",
+    "methodName": "update",
+    "methodSig": "update(List)"
+  }
+}

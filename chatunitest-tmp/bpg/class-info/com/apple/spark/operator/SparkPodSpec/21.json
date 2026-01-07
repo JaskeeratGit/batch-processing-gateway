@@ -1,0 +1,18 @@
+{
+  "className": "SparkPodSpec",
+  "methodName": "getServiceAccount",
+  "brief": "public String getServiceAccount(){}",
+  "methodSignature": "getServiceAccount()",
+  "sourceCode": "public String getServiceAccount() {\n    return serviceAccount;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public String getServiceAccount() {\n    return serviceAccount;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

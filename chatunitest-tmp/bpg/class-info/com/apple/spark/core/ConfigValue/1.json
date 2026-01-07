@@ -1,0 +1,32 @@
+{
+  "className": "ConfigValue",
+  "methodName": "tryGetEncodedSecretValueFromEnvVar",
+  "brief": "private static String tryGetEncodedSecretValueFromEnvVar(String value){}",
+  "methodSignature": "tryGetEncodedSecretValueFromEnvVar(String)",
+  "sourceCode": "private static String tryGetEncodedSecretValueFromEnvVar(String value) {\n    logger.info(String.format(\"tryGetEncodedSecretValueFromEnvVar: %s\", value));\n    String envVarName = value.substring(LOCALHOST_ENV_PREFIX.length());\n    String envValue = System.getenv(envVarName);\n    if (envValue == null) {\n      logger.info(String.format(\"Did not find env variable: %s\", envVarName));\n      return value;\n    } else {\n      return envValue;\n    }\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "substring(int)",
+      "format(String, Object[])",
+      "length()"
+    ],
+    "org.slf4j.Logger": [
+      "info(String)"
+    ],
+    "java.lang.System": [
+      "getenv(String)"
+    ]
+  },
+  "full_method_info": "private static String tryGetEncodedSecretValueFromEnvVar(String value) {\n    logger.info(String.format(\"tryGetEncodedSecretValueFromEnvVar: %s\", value));\n    String envVarName = value.substring(LOCALHOST_ENV_PREFIX.length());\n    String envValue = System.getenv(envVarName);\n    if (envValue == null) {\n        logger.info(String.format(\"Did not find env variable: %s\", envVarName));\n        return value;\n    } else {\n        return envValue;\n    }\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

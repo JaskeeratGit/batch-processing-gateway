@@ -1,0 +1,23 @@
+{
+  "className": "EndAwareInputStream",
+  "methodName": "read",
+  "brief": "@Override\n  public int read() throws IOException{}",
+  "methodSignature": "read()",
+  "sourceCode": "@Override\n  public int read() throws IOException {\n    int result = executeWithResultValue(inputStream::read);\n    if (result == -1) {\n      executeEndingAction();\n    }\n    return result;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {
+    "com.apple.spark.util.EndAwareInputStream": [
+      "executeWithResultValue(CallableWithIOException<T>)",
+      "executeEndingAction()"
+    ]
+  },
+  "full_method_info": "@Override\npublic int read() throws IOException {\n    int result = executeWithResultValue(inputStream::read);\n    if (result == -1) {\n        executeEndingAction();\n    }\n    return result;\n}",
+  "method_comment": "",
+  "method_annotation": "@Override\n"
+}

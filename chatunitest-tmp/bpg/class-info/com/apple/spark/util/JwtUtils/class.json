@@ -1,0 +1,43 @@
+{
+  "fullClassName": "com.apple.spark.util.JwtUtils",
+  "className": "JwtUtils",
+  "index": 77,
+  "modifier": "[public ]",
+  "extend": "[]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.util",
+  "packageDeclaration": "package com.apple.spark.util;",
+  "classSignature": "public class JwtUtils",
+  "hasConstructor": false,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import com.auth0.jwt.JWT;",
+    "import com.auth0.jwt.algorithms.Algorithm;",
+    "import com.auth0.jwt.interfaces.DecodedJWT;",
+    "import com.auth0.jwt.interfaces.JWTVerifier;",
+    "import java.util.List;"
+  ],
+  "fields": [],
+  "superClasses": [],
+  "implementedTypes": [],
+  "methodSigs": {
+    "createToken(String, String, String, String, String[])": "0",
+    "createToken(String, String, String, String, List)": "1",
+    "verifyToken(String, String)": "2"
+  },
+  "methodsBrief": [
+    "public static String createToken(\n      String secret, String issuer, String subject, String claimName, String[] claimItems){}",
+    "public static String createToken(\n      String secret, String issuer, String subject, String claimName, List<String> claimItems){}",
+    "public static DecodedJWT verifyToken(String token, String secret){}"
+  ],
+  "constructorSigs": [],
+  "constructorBrief": [],
+  "getterSetterSigs": [],
+  "getterSetterBrief": [],
+  "constructorDeps": {},
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.util;\n\nimport com.auth0.jwt.JWT;\nimport com.auth0.jwt.algorithms.Algorithm;\nimport com.auth0.jwt.interfaces.DecodedJWT;\nimport com.auth0.jwt.interfaces.JWTVerifier;\nimport java.util.List;\n\npublic class JwtUtils {\n\n    public static String createToken(String secret, String issuer, String subject, String claimName, String[] claimItems) {\n        Algorithm algorithm = Algorithm.HMAC256(secret);\n        return JWT.create().withIssuer(issuer).withSubject(subject).withArrayClaim(claimName, claimItems).sign(algorithm);\n    }\n\n    public static String createToken(String secret, String issuer, String subject, String claimName, List<String> claimItems) {\n        Algorithm algorithm = Algorithm.HMAC256(secret);\n        return JWT.create().withIssuer(issuer).withSubject(subject).withClaim(claimName, claimItems).sign(algorithm);\n    }\n\n    // will throw out JWTVerificationException on invalid token\n    public static DecodedJWT verifyToken(String token, String secret) {\n        Algorithm algorithm = Algorithm.HMAC256(secret);\n        // TODO cache and reuse verifier to improve performance\n        JWTVerifier verifier = JWT.require(algorithm).build();\n        DecodedJWT jwt = verifier.verify(token);\n        return jwt;\n    }\n}\n",
+  "classDeclarationCode": "public class JwtUtils {\n\n    public static String createToken(String secret, String issuer, String subject, String claimName, String[] claimItems) {\n        Algorithm algorithm = Algorithm.HMAC256(secret);\n        return JWT.create().withIssuer(issuer).withSubject(subject).withArrayClaim(claimName, claimItems).sign(algorithm);\n    }\n\n    public static String createToken(String secret, String issuer, String subject, String claimName, List<String> claimItems) {\n        Algorithm algorithm = Algorithm.HMAC256(secret);\n        return JWT.create().withIssuer(issuer).withSubject(subject).withClaim(claimName, claimItems).sign(algorithm);\n    }\n\n    // will throw out JWTVerificationException on invalid token\n    public static DecodedJWT verifyToken(String token, String secret) {\n        Algorithm algorithm = Algorithm.HMAC256(secret);\n        // TODO cache and reuse verifier to improve performance\n        JWTVerifier verifier = JWT.require(algorithm).build();\n        DecodedJWT jwt = verifier.verify(token);\n        return jwt;\n    }\n}",
+  "subClasses": []
+}

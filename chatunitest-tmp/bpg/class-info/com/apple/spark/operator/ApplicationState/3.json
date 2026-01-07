@@ -1,0 +1,22 @@
+{
+  "className": "ApplicationState",
+  "methodName": "setErrorMessage",
+  "brief": "public void setErrorMessage(String errorMessage){}",
+  "methodSignature": "setErrorMessage(String)",
+  "sourceCode": "public void setErrorMessage(String errorMessage) {\n    this.errorMessage = errorMessage;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": []
+  },
+  "full_method_info": "public void setErrorMessage(String errorMessage) {\n    this.errorMessage = errorMessage;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

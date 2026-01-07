@@ -1,0 +1,22 @@
+{
+  "className": "AppConfig",
+  "methodName": "setDbStorageSOPS",
+  "brief": "public void setDbStorageSOPS(DBStorage dbStorageSOPS){}",
+  "methodSignature": "setDbStorageSOPS(DBStorage)",
+  "sourceCode": "public void setDbStorageSOPS(DBStorage dbStorageSOPS) {\n    this.dbStorageSOPS = dbStorageSOPS;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "DBStorage"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.AppConfig.DBStorage": []
+  },
+  "full_method_info": "public void setDbStorageSOPS(DBStorage dbStorageSOPS) {\n    this.dbStorageSOPS = dbStorageSOPS;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

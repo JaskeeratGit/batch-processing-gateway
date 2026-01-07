@@ -1,0 +1,28 @@
+{
+  "className": "LogDao",
+  "methodName": "createApplicationSubmissionTable",
+  "brief": "private void createApplicationSubmissionTable(){}",
+  "methodSignature": "createApplicationSubmissionTable()",
+  "sourceCode": "private void createApplicationSubmissionTable() {\n    if (bypassLog) {\n      return;\n    }\n\n    String sql =\n        String.format(\n            \"CREATE TABLE IF NOT EXISTS %s.application_submission (\\n\"\n                + \"    submission_id VARCHAR(255) NOT NULL PRIMARY KEY,\\n\"\n                + \"    `user` VARCHAR(255) NULL,\\n\"\n                + \"    app_name VARCHAR(255) NULL,\\n\"\n                + \"    dag_name VARCHAR(255) NULL,\\n\"\n                + \"    task_name VARCHAR(255) NULL,\\n\"\n                + \"    spark_version VARCHAR(255) NULL,\\n\"\n                + \"    queue VARCHAR(255) NULL,\\n\"\n                + \"    status VARCHAR(255) NULL,\\n\"\n                + \"    app_id VARCHAR(255) NULL,\\n\"\n                + \"    request_body TEXT NULL,\\n\"\n                + \"    created_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\\n\"\n                + \"    finished_time TIMESTAMP NULL,\\n\"\n                + \"    start_time TIMESTAMP NULL,\\n\"\n                + \"    driver_core SMALLINT,\\n\"\n                + \"    driver_memory_mb INT ,\\n\"\n                + \"    number_executor SMALLINT,\\n\"\n                + \"    executor_core SMALLINT,\\n\"\n                + \"    executor_memory_mb INT,\\n\"\n                + \"    cost DECIMAL(10,2)\\n\"\n                + \");\",\n            dbName);\n    try {\n      dbConnection.executeSql(sql);\n    } catch (Throwable ex) {\n      logger.warn(String.format(\"Failed to create table: %s\", sql), ex);\n      bypassLog = true;\n    }\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {
+    "java.lang.String": [
+      "format(String, Object[])"
+    ],
+    "com.apple.spark.core.DBConnection": [
+      "executeSql(String)"
+    ],
+    "org.slf4j.Logger": [
+      "warn(String, Throwable)"
+    ]
+  },
+  "full_method_info": "private void createApplicationSubmissionTable() {\n    if (bypassLog) {\n        return;\n    }\n    String sql = String.format(\"CREATE TABLE IF NOT EXISTS %s.application_submission (\\n\" + \"    submission_id VARCHAR(255) NOT NULL PRIMARY KEY,\\n\" + \"    `user` VARCHAR(255) NULL,\\n\" + \"    app_name VARCHAR(255) NULL,\\n\" + \"    dag_name VARCHAR(255) NULL,\\n\" + \"    task_name VARCHAR(255) NULL,\\n\" + \"    spark_version VARCHAR(255) NULL,\\n\" + \"    queue VARCHAR(255) NULL,\\n\" + \"    status VARCHAR(255) NULL,\\n\" + \"    app_id VARCHAR(255) NULL,\\n\" + \"    request_body TEXT NULL,\\n\" + \"    created_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\\n\" + \"    finished_time TIMESTAMP NULL,\\n\" + \"    start_time TIMESTAMP NULL,\\n\" + \"    driver_core SMALLINT,\\n\" + \"    driver_memory_mb INT ,\\n\" + \"    number_executor SMALLINT,\\n\" + \"    executor_core SMALLINT,\\n\" + \"    executor_memory_mb INT,\\n\" + \"    cost DECIMAL(10,2)\\n\" + \");\", dbName);\n    try {\n        dbConnection.executeSql(sql);\n    } catch (Throwable ex) {\n        logger.warn(String.format(\"Failed to create table: %s\", sql), ex);\n        bypassLog = true;\n    }\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

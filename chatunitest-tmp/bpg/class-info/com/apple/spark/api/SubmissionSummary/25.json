@@ -1,0 +1,22 @@
+{
+  "className": "SubmissionSummary",
+  "methodName": "setDriverMemoryGB",
+  "brief": "public void setDriverMemoryGB(Long driverMemoryGB){}",
+  "methodSignature": "setDriverMemoryGB(Long)",
+  "sourceCode": "public void setDriverMemoryGB(Long driverMemoryGB) {\n    this.driverMemoryGB = driverMemoryGB;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "Long"
+  ],
+  "dependentMethods": {
+    "java.lang.Long": []
+  },
+  "full_method_info": "public void setDriverMemoryGB(Long driverMemoryGB) {\n    this.driverMemoryGB = driverMemoryGB;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

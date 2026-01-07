@@ -1,0 +1,18 @@
+{
+  "className": "RestBase",
+  "methodName": "getAppConfig",
+  "brief": "protected AppConfig getAppConfig(){}",
+  "methodSignature": "getAppConfig()",
+  "sourceCode": "protected AppConfig getAppConfig() {\n    return appConfig;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "protected AppConfig getAppConfig() {\n    return appConfig;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

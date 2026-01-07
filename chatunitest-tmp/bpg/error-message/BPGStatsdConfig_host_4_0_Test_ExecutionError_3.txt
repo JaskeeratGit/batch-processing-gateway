@@ -1,0 +1,120 @@
+package com.apple.spark.core;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.Map;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import io.micrometer.core.instrument.Clock;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.logging.LoggingMeterRegistry;
+import io.micrometer.statsd.StatsdConfig;
+import io.micrometer.statsd.StatsdFlavor;
+import io.micrometer.statsd.StatsdMeterRegistry;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class BPGStatsdConfig_host_4_0_Test {
+
+    private static void setEnv(String key, String value) throws Exception {
+        try {
+            // For most JVMs the map returned by System.getenv() is a java.util.Collections$UnmodifiableMap
+            Map<String, String> env = System.getenv();
+            Class<?> cl = env.getClass();
+            Field field = cl.getDeclaredField("m");
+            field.setAccessible(true);
+            @SuppressWarnings("unchecked")
+            Map<String, String> writableEnv = (Map<String, String>) field.get(env);
+            if (value == null) {
+                writableEnv.remove(key);
+            } else {
+                writableEnv.put(key, value);
+            }
+        } catch (NoSuchFieldException e) {
+            // Fallback for other JVMs (e.g., older Oracle/OpenJDK internals)
+            Class<?> processEnvironment = Class.forName("java.lang.ProcessEnvironment");
+            Field theEnvironmentField = processEnvironment.getDeclaredField("theEnvironment");
+            theEnvironmentField.setAccessible(true);
+            @SuppressWarnings("unchecked")
+            Map<String, String> env = (Map<String, String>) theEnvironmentField.get(null);
+            if (value == null) {
+                env.remove(key);
+            } else {
+                env.put(key, value);
+            }
+            try {
+                Field theCaseInsensitiveEnvironmentField = processEnvironment.getDeclaredField("theCaseInsensitiveEnvironment");
+                theCaseInsensitiveEnvironmentField.setAccessible(true);
+                @SuppressWarnings("unchecked")
+                Map<String, String> cienv = (Map<String, String>) theCaseInsensitiveEnvironmentField.get(null);
+                if (value == null) {
+                    cienv.remove(key);
+                } else {
+                    cienv.put(key, value);
+                }
+            } catch (NoSuchFieldException ignored) {
+                // ignore if not present
+            }
+        }
+    }
+
+    @Test
+    public void testHostReturnsEnvValue() throws Exception {
+        String envKey = "STATSD_SERVER_IP";
+        String original = System.getenv(envKey);
+        try {
+            setEnv(envKey, "1.2.3.4");
+            Method hostMethod = BPGStatsdConfig.class.getDeclaredMethod("host");
+            hostMethod.setAccessible(true);
+            Object returned = hostMethod.invoke(new BPGStatsdConfig());
+            assertTrue(returned instanceof String);
+            assertEquals("1.2.3.4", returned);
+        } finally {
+            setEnv(envKey, original);
+        }
+    }
+
+    @Test
+    public void testHostReturnsNullWhenEnvNotSet() throws Exception {
+        String envKey = "STATSD_SERVER_IP";
+        String original = System.getenv(envKey);
+        try {
+            setEnv(envKey, null);
+            Method hostMethod = BPGStatsdConfig.class.getDeclaredMethod("host");
+            hostMethod.setAccessible(true);
+            Object returned = hostMethod.invoke(new BPGStatsdConfig());
+            assertNull(returned);
+        } finally {
+            setEnv(envKey, original);
+        }
+    }
+
+    @Test
+    public void testHostReturnsEmptyStringWhenEnvEmpty() throws Exception {
+        String envKey = "STATSD_SERVER_IP";
+        String original = System.getenv(envKey);
+        try {
+            setEnv(envKey, "");
+            Method hostMethod = BPGStatsdConfig.class.getDeclaredMethod("host");
+            hostMethod.setAccessible(true);
+            Object returned = hostMethod.invoke(new BPGStatsdConfig());
+            assertNotNull(returned);
+            assertEquals("", returned);
+        } finally {
+            setEnv(envKey, original);
+        }
+    }
+}
+
+--------------------------------------------
+Error in testHostReturnsEnvValue(): line 30 : java.lang.reflect.InaccessibleObjectException: Unable to make field private final java.util.Map java.util.Collections$UnmodifiableMap.m accessible: module java.base does not "opens java.util" to unnamed module @27419a90
+Error in testHostReturnsEnvValue(): line 78 : java.lang.reflect.InaccessibleObjectException: Unable to make field private final java.util.Map java.util.Collections$UnmodifiableMap.m accessible: module java.base does not "opens java.util" to unnamed module @27419a90
+Error in testHostReturnsEmptyStringWhenEnvEmpty(): line 30 : java.lang.reflect.InaccessibleObjectException: Unable to make field private final java.util.Map java.util.Collections$UnmodifiableMap.m accessible: module java.base does not "opens java.util" to unnamed module @27419a90
+Error in testHostReturnsEmptyStringWhenEnvEmpty(): line 109 : java.lang.reflect.InaccessibleObjectException: Unable to make field private final java.util.Map java.util.Collections$UnmodifiableMap.m accessible: module java.base does not "opens java.util" to unnamed module @27419a90
+Error in testHostReturnsNullWhenEnvNotSet(): line 30 : java.lang.reflect.InaccessibleObjectException: Unable to make field private final java.util.Map java.util.Collections$UnmodifiableMap.m accessible: module java.base does not "opens java.util" to unnamed module @27419a90
+Error in testHostReturnsNullWhenEnvNotSet(): line 93 : java.lang.reflect.InaccessibleObjectException: Unable to make field private final java.util.Map java.util.Collections$UnmodifiableMap.m accessible: module java.base does not "opens java.util" to unnamed module @27419a90

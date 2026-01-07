@@ -1,0 +1,35 @@
+{
+  "className": "HttpUtils",
+  "methodName": "checkResponseOK",
+  "brief": "private static void checkResponseOK(String url, HttpResponse<?> response){}",
+  "methodSignature": "checkResponseOK(String, HttpResponse)",
+  "sourceCode": "private static void checkResponseOK(String url, HttpResponse<?> response) {\n    if (response.statusCode() < 200 || response.statusCode() >= 300) {\n      String responseBodyStr;\n      try {\n        responseBodyStr = response.body().toString(); // TODO modify this\n      } catch (Throwable e) {\n        responseBodyStr =\n                String.format(\n                        \"(Failed to get response body, exception: %s)\",\n                        ExceptionUtils.getExceptionNameAndMessage(e));\n      }\n      throw new RuntimeException(\n              String.format(\n                      \"Response for %s is not OK: %s. Response body: %s\",\n                      url, response.statusCode(), responseBodyStr));\n    }\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String",
+    "HttpResponse<?>"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "format(String, Object[])"
+    ],
+    "java.net.http.HttpResponse": [
+      "body()",
+      "statusCode()"
+    ],
+    "java.lang.Object": [
+      "toString()"
+    ],
+    "com.apple.spark.util.ExceptionUtils": [
+      "getExceptionNameAndMessage(Throwable)"
+    ]
+  },
+  "full_method_info": "private static void checkResponseOK(String url, HttpResponse<?> response) {\n    if (response.statusCode() < 200 || response.statusCode() >= 300) {\n        String responseBodyStr;\n        try {\n            // TODO modify this\n            responseBodyStr = response.body().toString();\n        } catch (Throwable e) {\n            responseBodyStr = String.format(\"(Failed to get response body, exception: %s)\", ExceptionUtils.getExceptionNameAndMessage(e));\n        }\n        throw new RuntimeException(String.format(\"Response for %s is not OK: %s. Response body: %s\", url, response.statusCode(), responseBodyStr));\n    }\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

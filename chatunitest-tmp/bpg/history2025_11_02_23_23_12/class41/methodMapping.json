@@ -1,0 +1,32 @@
+{
+  "method0": {
+    "methodName": "listSubmissions",
+    "signature": "listSubmissions(String, String, User)",
+    "className": "AdminRest",
+    "packageName": "com.apple.spark.rest"
+  },
+  "method1": {
+    "methodName": "listAllSubmissions",
+    "signature": "listAllSubmissions(User)",
+    "className": "AdminRest",
+    "packageName": "com.apple.spark.rest"
+  },
+  "method2": {
+    "methodName": "listSubmissionsByApplicationName",
+    "signature": "listSubmissionsByApplicationName(String, User)",
+    "className": "AdminRest",
+    "packageName": "com.apple.spark.rest"
+  },
+  "method3": {
+    "methodName": "version",
+    "signature": "version()",
+    "className": "AdminRest",
+    "packageName": "com.apple.spark.rest"
+  },
+  "method4": {
+    "methodName": "AdminRest",
+    "signature": "AdminRest(AppConfig, MeterRegistry)",
+    "className": "AdminRest",
+    "packageName": "com.apple.spark.rest"
+  }
+}

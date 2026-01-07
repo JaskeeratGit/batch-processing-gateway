@@ -1,0 +1,40 @@
+{
+  "fullClassName": "com.apple.spark.util.CustomSerDe",
+  "className": "CustomSerDe",
+  "index": 70,
+  "modifier": "[public ]",
+  "extend": "[]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.util",
+  "packageDeclaration": "package com.apple.spark.util;",
+  "classSignature": "public class CustomSerDe",
+  "hasConstructor": false,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import com.apple.spark.api.SubmitApplicationRequest;",
+    "import com.apple.spark.operator.SparkApplicationSpec;",
+    "import com.fasterxml.jackson.core.JsonProcessingException;",
+    "import com.fasterxml.jackson.databind.ObjectMapper;"
+  ],
+  "fields": [],
+  "superClasses": [],
+  "implementedTypes": [],
+  "methodSigs": {
+    "submitRequestToNonSensitiveJson(SubmitApplicationRequest)": "0",
+    "sparkSpecToNonSensitiveJson(SparkApplicationSpec)": "1"
+  },
+  "methodsBrief": [
+    "public static String submitRequestToNonSensitiveJson(SubmitApplicationRequest submitRequest)\n      throws JsonProcessingException{}",
+    "public static String sparkSpecToNonSensitiveJson(SparkApplicationSpec sparkSpec)\n      throws JsonProcessingException{}"
+  ],
+  "constructorSigs": [],
+  "constructorBrief": [],
+  "getterSetterSigs": [],
+  "getterSetterBrief": [],
+  "constructorDeps": {},
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.util;\n\nimport com.apple.spark.api.SubmitApplicationRequest;\nimport com.apple.spark.operator.SparkApplicationSpec;\nimport com.fasterxml.jackson.core.JsonProcessingException;\nimport com.fasterxml.jackson.databind.ObjectMapper;\n\npublic class CustomSerDe {\n\n    /**\n     * Given an application submission request, serialize it to a JSON string with sensitive\n     * information removed/masked\n     *\n     * @param submitRequest\n     * @return a serialized JSON string\n     * @throws JsonProcessingException\n     */\n    public static String submitRequestToNonSensitiveJson(SubmitApplicationRequest submitRequest) throws JsonProcessingException {\n        ObjectMapper mapper = new ObjectMapper();\n        SubmitApplicationRequest cloned = new ObjectMapper().readValue(mapper.writeValueAsString(submitRequest), SubmitApplicationRequest.class);\n        // remove the driver env vars\n        if (cloned.getDriver() != null) {\n            cloned.getDriver().setEnv(null);\n        }\n        // remove the executor env vars\n        if (cloned.getExecutor() != null) {\n            cloned.getExecutor().setEnv(null);\n        }\n        // mask the queue token\n        if (cloned.getQueueToken() != null) {\n            cloned.setQueueToken(\"***\");\n        }\n        return mapper.writeValueAsString(cloned);\n    }\n\n    /**\n     * Given a Spark application spec, serialize it to a JSON string with sensitive information\n     * removed/masked\n     *\n     * @param sparkSpec\n     * @return a serialized JSON string\n     * @throws JsonProcessingException\n     */\n    public static String sparkSpecToNonSensitiveJson(SparkApplicationSpec sparkSpec) throws JsonProcessingException {\n        ObjectMapper mapper = new ObjectMapper();\n        SparkApplicationSpec cloned = new ObjectMapper().readValue(mapper.writeValueAsString(sparkSpec), SparkApplicationSpec.class);\n        // remove the driver env vars\n        if (cloned.getDriver() != null) {\n            cloned.getDriver().setEnv(null);\n        }\n        // remove the executor env vars\n        if (cloned.getExecutor() != null) {\n            cloned.getExecutor().setEnv(null);\n        }\n        return mapper.writeValueAsString(cloned);\n    }\n}\n",
+  "classDeclarationCode": "public class CustomSerDe {\n\n    /**\n     * Given an application submission request, serialize it to a JSON string with sensitive\n     * information removed/masked\n     *\n     * @param submitRequest\n     * @return a serialized JSON string\n     * @throws JsonProcessingException\n     */\n    public static String submitRequestToNonSensitiveJson(SubmitApplicationRequest submitRequest) throws JsonProcessingException {\n        ObjectMapper mapper = new ObjectMapper();\n        SubmitApplicationRequest cloned = new ObjectMapper().readValue(mapper.writeValueAsString(submitRequest), SubmitApplicationRequest.class);\n        // remove the driver env vars\n        if (cloned.getDriver() != null) {\n            cloned.getDriver().setEnv(null);\n        }\n        // remove the executor env vars\n        if (cloned.getExecutor() != null) {\n            cloned.getExecutor().setEnv(null);\n        }\n        // mask the queue token\n        if (cloned.getQueueToken() != null) {\n            cloned.setQueueToken(\"***\");\n        }\n        return mapper.writeValueAsString(cloned);\n    }\n\n    /**\n     * Given a Spark application spec, serialize it to a JSON string with sensitive information\n     * removed/masked\n     *\n     * @param sparkSpec\n     * @return a serialized JSON string\n     * @throws JsonProcessingException\n     */\n    public static String sparkSpecToNonSensitiveJson(SparkApplicationSpec sparkSpec) throws JsonProcessingException {\n        ObjectMapper mapper = new ObjectMapper();\n        SparkApplicationSpec cloned = new ObjectMapper().readValue(mapper.writeValueAsString(sparkSpec), SparkApplicationSpec.class);\n        // remove the driver env vars\n        if (cloned.getDriver() != null) {\n            cloned.getDriver().setEnv(null);\n        }\n        // remove the executor env vars\n        if (cloned.getExecutor() != null) {\n            cloned.getExecutor().setEnv(null);\n        }\n        return mapper.writeValueAsString(cloned);\n    }\n}",
+  "subClasses": []
+}

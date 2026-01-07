@@ -1,0 +1,23 @@
+{
+  "className": "PreferredSchedulingTerm",
+  "methodName": "PreferredSchedulingTerm",
+  "brief": "public PreferredSchedulingTerm(int weight, NodeSelectorTerm preference){}",
+  "methodSignature": "PreferredSchedulingTerm(int, NodeSelectorTerm)",
+  "sourceCode": "public PreferredSchedulingTerm(int weight, NodeSelectorTerm preference) {\n    this.weight = weight;\n    this.preference = preference;\n  }",
+  "useField": true,
+  "isConstructor": true,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "int",
+    "NodeSelectorTerm"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.operator.NodeSelectorTerm": []
+  },
+  "full_method_info": "public PreferredSchedulingTerm(int weight, NodeSelectorTerm preference) {\n    this.weight = weight;\n    this.preference = preference;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

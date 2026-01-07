@@ -1,0 +1,62 @@
+{
+  "className": "DeleteApplications",
+  "methodName": "main",
+  "brief": "public static void main(String[] args){}",
+  "methodSignature": "main(String[])",
+  "sourceCode": "public static void main(String[] args) {\n    String submissionIdSuffix = \"loadtest\";\n    for (int i = 0; i < args.length; ) {\n      String argName = args[i++];\n      if (argName.equalsIgnoreCase(\"-submissionIdSuffix\")) {\n        submissionIdSuffix = args[i++];\n      } else {\n        throw new RuntimeException(String.format(\"Unsupported argument: %s\", argName));\n      }\n    }\n\n    GetMySubmissionsResponse getMySubmissionsResponse =\n        HttpUtils.get(\n            getSubmissionsUrl, authHeaderName, authHeaderValue, GetMySubmissionsResponse.class);\n\n    final String submissionIdSuffixFinal = submissionIdSuffix;\n    List<String> submissionIds =\n        getMySubmissionsResponse.getSubmissions().stream()\n            .filter(t -> t.getSubmissionId().endsWith(submissionIdSuffixFinal))\n            .map(t -> t.getSubmissionId())\n            .collect(Collectors.toList());\n\n    final int totalCount = submissionIds.size();\n    final AtomicInteger deletedIds = new AtomicInteger(0);\n    submissionIds.parallelStream()\n        .forEach(\n            id -> {\n              logger.info(\"Deleting submission {}\", id);\n              String deleteUrl = String.format(deleteUrlFormat, id);\n              HttpUtils.delete(deleteUrl, authHeaderName, authHeaderValue);\n              int currentDeletedCount = deletedIds.incrementAndGet();\n              logger.info(\n                  \"Deleted submission {}, total deleted {} out of {}\",\n                  id,\n                  currentDeletedCount,\n                  totalCount);\n            });\n\n    System.exit(0);\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String[]"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "format(String, Object[])",
+      "equalsIgnoreCase(String)",
+      "endsWith(String)"
+    ],
+    "com.apple.spark.util.HttpUtils": [
+      "get(String, String, String, Class<T>)",
+      "delete(String, String, String)"
+    ],
+    "java.util.stream.Stream": [
+      "collect(Collector<? super T, A, R>)",
+      "forEach(Consumer<? super T>)",
+      "filter(Predicate<? super T>)",
+      "map(Function<? super T, ? extends R>)"
+    ],
+    "java.util.Collection": [
+      "parallelStream()",
+      "stream()"
+    ],
+    "com.apple.spark.api.GetMySubmissionsResponse": [
+      "getSubmissions()"
+    ],
+    "com.apple.spark.api.SubmissionSummary": [
+      "getSubmissionId()"
+    ],
+    "java.util.stream.Collectors": [
+      "toList()"
+    ],
+    "java.util.List": [
+      "size()"
+    ],
+    "org.slf4j.Logger": [
+      "info(String, Object[])",
+      "info(String, Object)"
+    ],
+    "java.util.concurrent.atomic.AtomicInteger": [
+      "incrementAndGet()"
+    ],
+    "java.lang.System": [
+      "exit(int)"
+    ]
+  },
+  "full_method_info": "public static void main(String[] args) {\n    String submissionIdSuffix = \"loadtest\";\n    for (int i = 0; i < args.length; ) {\n        String argName = args[i++];\n        if (argName.equalsIgnoreCase(\"-submissionIdSuffix\")) {\n            submissionIdSuffix = args[i++];\n        } else {\n            throw new RuntimeException(String.format(\"Unsupported argument: %s\", argName));\n        }\n    }\n    GetMySubmissionsResponse getMySubmissionsResponse = HttpUtils.get(getSubmissionsUrl, authHeaderName, authHeaderValue, GetMySubmissionsResponse.class);\n    final String submissionIdSuffixFinal = submissionIdSuffix;\n    List<String> submissionIds = getMySubmissionsResponse.getSubmissions().stream().filter(t -> t.getSubmissionId().endsWith(submissionIdSuffixFinal)).map(t -> t.getSubmissionId()).collect(Collectors.toList());\n    final int totalCount = submissionIds.size();\n    final AtomicInteger deletedIds = new AtomicInteger(0);\n    submissionIds.parallelStream().forEach(id -> {\n        logger.info(\"Deleting submission {}\", id);\n        String deleteUrl = String.format(deleteUrlFormat, id);\n        HttpUtils.delete(deleteUrl, authHeaderName, authHeaderValue);\n        int currentDeletedCount = deletedIds.incrementAndGet();\n        logger.info(\"Deleted submission {}, total deleted {} out of {}\", id, currentDeletedCount, totalCount);\n    });\n    System.exit(0);\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

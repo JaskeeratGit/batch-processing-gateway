@@ -1,0 +1,39 @@
+{
+  "className": "SparkPodNodeAffinityHelper",
+  "methodName": "applyAvailabilityZoneExpression",
+  "brief": "@VisibleForTesting\n  protected static void applyAvailabilityZoneExpression(\n      final List<NodeSelectorRequirement> matchExpressions,\n      final SubmitApplicationRequest request){}",
+  "methodSignature": "applyAvailabilityZoneExpression(List, SubmitApplicationRequest)",
+  "sourceCode": "@VisibleForTesting\n  protected static void applyAvailabilityZoneExpression(\n      final List<NodeSelectorRequirement> matchExpressions,\n      final SubmitApplicationRequest request) {\n\n    if (request == null\n        || request.getSparkConf() == null\n        || !request.getSparkConf().containsKey(CONFIG_PICKED_ZONES)\n        || request.getSparkConf().get(CONFIG_PICKED_ZONES) == null\n        || request.getSparkConf().get(CONFIG_PICKED_ZONES).isEmpty()) {\n      return;\n    }\n\n    String[] pickedZone =\n        request.getSparkConf().get(CONFIG_PICKED_ZONES).split(PICKED_ZONES_DELIMITER);\n    if (pickedZone.length == 0) {\n      return;\n    }\n\n    matchExpressions.add(\n        new NodeSelectorRequirement(\n            K8S_ZONE_LABEL, NodeSelectorOperator.NodeSelectorOpIn.toString(), pickedZone));\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "List<NodeSelectorRequirement>",
+    "SubmitApplicationRequest"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.api.SubmitApplicationRequest": [
+      "getSparkConf()"
+    ],
+    "java.util.Map": [
+      "get(Object)",
+      "containsKey(Object)"
+    ],
+    "java.lang.String": [
+      "isEmpty()",
+      "split(String)"
+    ],
+    "java.util.List": [
+      "add(E)"
+    ],
+    "com.apple.spark.operator.NodeSelectorOperator": [
+      "toString()"
+    ]
+  },
+  "full_method_info": "@VisibleForTesting\nprotected static void applyAvailabilityZoneExpression(final List<NodeSelectorRequirement> matchExpressions, final SubmitApplicationRequest request) {\n    if (request == null || request.getSparkConf() == null || !request.getSparkConf().containsKey(CONFIG_PICKED_ZONES) || request.getSparkConf().get(CONFIG_PICKED_ZONES) == null || request.getSparkConf().get(CONFIG_PICKED_ZONES).isEmpty()) {\n        return;\n    }\n    String[] pickedZone = request.getSparkConf().get(CONFIG_PICKED_ZONES).split(PICKED_ZONES_DELIMITER);\n    if (pickedZone.length == 0) {\n        return;\n    }\n    matchExpressions.add(new NodeSelectorRequirement(K8S_ZONE_LABEL, NodeSelectorOperator.NodeSelectorOpIn.toString(), pickedZone));\n}",
+  "method_comment": "",
+  "method_annotation": "@VisibleForTesting\n"
+}

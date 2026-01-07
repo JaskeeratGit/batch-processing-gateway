@@ -1,0 +1,40 @@
+{
+  "className": "RestSubmissionsStreamingOutput",
+  "methodName": "writeSubmissions",
+  "brief": "protected void writeSubmissions(\n      OutputStream outputStream,\n      SparkApplicationResourceList list,\n      AppConfig.SparkCluster sparkCluster,\n      AppConfig appConfig)\n      throws IOException{}",
+  "methodSignature": "writeSubmissions(OutputStream, SparkApplicationResourceList, AppConfig.SparkCluster, AppConfig)",
+  "sourceCode": "protected void writeSubmissions(\n      OutputStream outputStream,\n      SparkApplicationResourceList list,\n      AppConfig.SparkCluster sparkCluster,\n      AppConfig appConfig)\n      throws IOException {\n    if (list == null) {\n      return;\n    }\n    List<SparkApplication> sparkApplicationResources = list.getItems();\n    if (sparkApplicationResources == null) {\n      return;\n    }\n    ObjectMapper objectMapper = new ObjectMapper();\n    for (SparkApplication sparkApplicationResource : sparkApplicationResources) {\n      SubmissionSummary submission = new SubmissionSummary();\n      submission.copyFrom(sparkApplicationResource, sparkCluster, appConfig);\n      String str = objectMapper.writeValueAsString(submission);\n      writeLine(outputStream, str);\n    }\n    outputStream.flush();\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "OutputStream",
+    "SparkApplicationResourceList",
+    "AppConfig.SparkCluster",
+    "AppConfig"
+  ],
+  "dependentMethods": {
+    "java.io.OutputStream": [
+      "flush()"
+    ],
+    "com.apple.spark.AppConfig": [],
+    "io.fabric8.kubernetes.api.model.DefaultKubernetesResourceList": [
+      "getItems()"
+    ],
+    "com.apple.spark.api.SubmissionSummary": [
+      "copyFrom(SparkApplication, SparkCluster, AppConfig)"
+    ],
+    "com.fasterxml.jackson.databind.ObjectMapper": [
+      "writeValueAsString(Object)"
+    ],
+    "com.apple.spark.core.RestStreamingOutput": [
+      "writeLine(OutputStream, String)"
+    ]
+  },
+  "full_method_info": "protected void writeSubmissions(OutputStream outputStream, SparkApplicationResourceList list, AppConfig.SparkCluster sparkCluster, AppConfig appConfig) throws IOException {\n    if (list == null) {\n        return;\n    }\n    List<SparkApplication> sparkApplicationResources = list.getItems();\n    if (sparkApplicationResources == null) {\n        return;\n    }\n    ObjectMapper objectMapper = new ObjectMapper();\n    for (SparkApplication sparkApplicationResource : sparkApplicationResources) {\n        SubmissionSummary submission = new SubmissionSummary();\n        submission.copyFrom(sparkApplicationResource, sparkCluster, appConfig);\n        String str = objectMapper.writeValueAsString(submission);\n        writeLine(outputStream, str);\n    }\n    outputStream.flush();\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

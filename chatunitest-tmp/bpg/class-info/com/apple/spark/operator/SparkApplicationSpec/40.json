@@ -1,0 +1,18 @@
+{
+  "className": "SparkApplicationSpec",
+  "methodName": "getPythonVersion",
+  "brief": "public String getPythonVersion(){}",
+  "methodSignature": "getPythonVersion()",
+  "sourceCode": "public String getPythonVersion() {\n    return pythonVersion;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public String getPythonVersion() {\n    return pythonVersion;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

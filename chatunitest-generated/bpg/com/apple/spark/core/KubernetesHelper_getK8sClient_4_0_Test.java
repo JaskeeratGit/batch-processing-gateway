@@ -1,0 +1,430 @@
+package com.apple.spark.core;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import com.apple.spark.AppConfig;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import com.apple.spark.util.EndAwareInputStream;
+import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.client.dsl.LogWatch;
+import io.fabric8.kubernetes.client.dsl.PodResource;
+import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import java.io.Closeable;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import io.fabric8.kubernetes.client.*;
+
+/*
+ Fixed unit tests for KubernetesHelper.getK8sClient and private getK8sConfig.
+ The original tests passed null to the methods, but the implementation expects a non-null
+ AppConfig.SparkCluster and calls methods/fields on it, causing NPEs.
+ These tests now construct an AppConfig.SparkCluster instance (using reflection) and
+ configure required properties (master URL, timeout, user token and caCertData) via available setters or fields.
+*/
+public class KubernetesHelper_getK8sClient_4_0_Test {
+
+    private static final long DEFAULT_TIMEOUT = 30000L;
+
+    private static final String DEFAULT_TOKEN = "dummy-token-abcdefghijklmnopqrstuvwxyz";
+
+    private Object createAndConfigureSparkCluster(Class<?> sparkClusterClass) throws Exception {
+        // Instantiate (try public no-arg, then private)
+        Object instance;
+        try {
+            instance = sparkClusterClass.getDeclaredConstructor().newInstance();
+        } catch (NoSuchMethodException nsme) {
+            Constructor<?> ctor = sparkClusterClass.getDeclaredConstructors()[0];
+            ctor.setAccessible(true);
+            // build suitable args: for safety, try zero-arg, otherwise default primitives/nulls for params
+            Class<?>[] params = ctor.getParameterTypes();
+            Object[] args = new Object[params.length];
+            for (int i = 0; i < params.length; i++) {
+                args[i] = getDefaultValueForType(params[i]);
+            }
+            instance = ctor.newInstance(args);
+        }
+        // Try to set master URL and timeout via setter methods first, then fields
+        boolean masterSet = setMasterUrlViaSetter(sparkClusterClass, instance, KubernetesHelper.LOCAL_API_SERVER_URL);
+        if (!masterSet) {
+            masterSet = setMasterUrlViaField(sparkClusterClass, instance, KubernetesHelper.LOCAL_API_SERVER_URL);
+        }
+        boolean timeoutSet = setTimeoutViaSetter(sparkClusterClass, instance, DEFAULT_TIMEOUT);
+        if (!timeoutSet) {
+            timeoutSet = setTimeoutViaField(sparkClusterClass, instance, DEFAULT_TIMEOUT);
+        }
+        // Ensure user token is set to avoid NPEs in getK8sConfig
+        boolean tokenSet = setUserTokenViaSetter(sparkClusterClass, instance, DEFAULT_TOKEN);
+        if (!tokenSet) {
+            tokenSet = setUserTokenViaField(sparkClusterClass, instance, DEFAULT_TOKEN);
+        }
+        // Ensure caCertData is non-null to avoid caCertData.length() NPEs inside fabric8 config handling
+        boolean caSet = setCaCertDataViaSetter(sparkClusterClass, instance, "");
+        if (!caSet) {
+            caSet = setCaCertDataViaField(sparkClusterClass, instance, "");
+        }
+        return instance;
+    }
+
+    private Object getDefaultValueForType(Class<?> cls) {
+        if (!cls.isPrimitive())
+            return null;
+        if (cls == boolean.class)
+            return false;
+        if (cls == byte.class)
+            return (byte) 0;
+        if (cls == char.class)
+            return (char) 0;
+        if (cls == short.class)
+            return (short) 0;
+        if (cls == int.class)
+            return 0;
+        if (cls == long.class)
+            return 0L;
+        if (cls == float.class)
+            return 0f;
+        if (cls == double.class)
+            return 0d;
+        return null;
+    }
+
+    private boolean setMasterUrlViaSetter(Class<?> cls, Object instance, String url) {
+        for (Method m : cls.getMethods()) {
+            String name = m.getName().toLowerCase();
+            if ((name.contains("set") && name.contains("master") && name.contains("url")) || (name.contains("set") && name.contains("master"))) {
+                Class<?>[] p = m.getParameterTypes();
+                if (p.length == 1 && (p[0] == String.class || p[0] == Object.class)) {
+                    try {
+                        m.invoke(instance, url);
+                        return true;
+                    } catch (Exception e) {
+                        // ignore and continue
+                    }
+                }
+            }
+        }
+        for (Method m : cls.getDeclaredMethods()) {
+            String name = m.getName().toLowerCase();
+            if ((name.contains("set") && name.contains("master") && name.contains("url")) || (name.contains("set") && name.contains("master"))) {
+                Class<?>[] p = m.getParameterTypes();
+                if (p.length == 1 && (p[0] == String.class || p[0] == Object.class)) {
+                    try {
+                        m.setAccessible(true);
+                        m.invoke(instance, url);
+                        return true;
+                    } catch (Exception e) {
+                        // ignore
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean setMasterUrlViaField(Class<?> cls, Object instance, String url) {
+        for (Field f : cls.getDeclaredFields()) {
+            String name = f.getName().toLowerCase();
+            if ((name.contains("master") && name.contains("url")) || name.contains("masterurl") || name.equals("master")) {
+                try {
+                    f.setAccessible(true);
+                    if (f.getType() == String.class) {
+                        f.set(instance, url);
+                        return true;
+                    }
+                } catch (Exception e) {
+                    // ignore
+                }
+            }
+        }
+        Class<?> s = cls.getSuperclass();
+        while (s != null && s != Object.class) {
+            for (Field f : s.getDeclaredFields()) {
+                String name = f.getName().toLowerCase();
+                if ((name.contains("master") && name.contains("url")) || name.contains("masterurl") || name.equals("master")) {
+                    try {
+                        f.setAccessible(true);
+                        if (f.getType() == String.class) {
+                            f.set(instance, url);
+                            return true;
+                        }
+                    } catch (Exception e) {
+                        // ignore
+                    }
+                }
+            }
+            s = s.getSuperclass();
+        }
+        return false;
+    }
+
+    private boolean setTimeoutViaSetter(Class<?> cls, Object instance, long timeout) {
+        for (Method m : cls.getMethods()) {
+            String name = m.getName().toLowerCase();
+            if ((name.contains("set") && name.contains("timeout")) || name.contains("settimeout")) {
+                Class<?>[] p = m.getParameterTypes();
+                if (p.length == 1 && (p[0] == long.class || p[0] == Long.class || p[0] == int.class || p[0] == Integer.class)) {
+                    try {
+                        if (p[0] == long.class || p[0] == Long.class) {
+                            m.invoke(instance, timeout);
+                        } else {
+                            m.invoke(instance, (int) timeout);
+                        }
+                        return true;
+                    } catch (Exception e) {
+                        // ignore
+                    }
+                }
+            }
+        }
+        for (Method m : cls.getDeclaredMethods()) {
+            String name = m.getName().toLowerCase();
+            if ((name.contains("set") && name.contains("timeout")) || name.contains("settimeout")) {
+                Class<?>[] p = m.getParameterTypes();
+                if (p.length == 1 && (p[0] == long.class || p[0] == Long.class || p[0] == int.class || p[0] == Integer.class)) {
+                    try {
+                        m.setAccessible(true);
+                        if (p[0] == long.class || p[0] == Long.class) {
+                            m.invoke(instance, timeout);
+                        } else {
+                            m.invoke(instance, (int) timeout);
+                        }
+                        return true;
+                    } catch (Exception e) {
+                        // ignore
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean setTimeoutViaField(Class<?> cls, Object instance, long timeout) {
+        for (Field f : cls.getDeclaredFields()) {
+            String name = f.getName().toLowerCase();
+            if (name.contains("timeout") || name.contains("timemillis") || name.contains("timeoutmillis")) {
+                try {
+                    f.setAccessible(true);
+                    Class<?> t = f.getType();
+                    if (t == long.class || t == Long.class) {
+                        f.set(instance, timeout);
+                        return true;
+                    } else if (t == int.class || t == Integer.class) {
+                        f.set(instance, (int) timeout);
+                        return true;
+                    }
+                } catch (Exception e) {
+                    // ignore
+                }
+            }
+        }
+        Class<?> s = cls.getSuperclass();
+        while (s != null && s != Object.class) {
+            for (Field f : s.getDeclaredFields()) {
+                String name = f.getName().toLowerCase();
+                if (name.contains("timeout") || name.contains("timemillis") || name.contains("timeoutmillis")) {
+                    try {
+                        f.setAccessible(true);
+                        Class<?> t = f.getType();
+                        if (t == long.class || t == Long.class) {
+                            f.set(instance, timeout);
+                            return true;
+                        } else if (t == int.class || t == Integer.class) {
+                            f.set(instance, (int) timeout);
+                            return true;
+                        }
+                    } catch (Exception e) {
+                        // ignore
+                    }
+                }
+            }
+            s = s.getSuperclass();
+        }
+        return false;
+    }
+
+    private boolean setUserTokenViaSetter(Class<?> cls, Object instance, String token) {
+        for (Method m : cls.getMethods()) {
+            String name = m.getName().toLowerCase();
+            if ((name.contains("set") && name.contains("token")) || (name.contains("set") && name.contains("usertoken")) || (name.contains("set") && name.contains("bearer"))) {
+                Class<?>[] p = m.getParameterTypes();
+                if (p.length == 1 && (p[0] == String.class || p[0] == Object.class)) {
+                    try {
+                        m.invoke(instance, token);
+                        return true;
+                    } catch (Exception e) {
+                        // ignore and continue
+                    }
+                }
+            }
+        }
+        for (Method m : cls.getDeclaredMethods()) {
+            String name = m.getName().toLowerCase();
+            if ((name.contains("set") && name.contains("token")) || (name.contains("set") && name.contains("usertoken")) || (name.contains("set") && name.contains("bearer"))) {
+                Class<?>[] p = m.getParameterTypes();
+                if (p.length == 1 && (p[0] == String.class || p[0] == Object.class)) {
+                    try {
+                        m.setAccessible(true);
+                        m.invoke(instance, token);
+                        return true;
+                    } catch (Exception e) {
+                        // ignore
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean setUserTokenViaField(Class<?> cls, Object instance, String token) {
+        for (Field f : cls.getDeclaredFields()) {
+            String name = f.getName().toLowerCase();
+            if (name.contains("token") || name.contains("usertoken") || name.contains("bearer") || name.contains("serviceaccounttoken")) {
+                try {
+                    f.setAccessible(true);
+                    if (f.getType() == String.class) {
+                        f.set(instance, token);
+                        return true;
+                    }
+                } catch (Exception e) {
+                    // ignore
+                }
+            }
+        }
+        Class<?> s = cls.getSuperclass();
+        while (s != null && s != Object.class) {
+            for (Field f : s.getDeclaredFields()) {
+                String name = f.getName().toLowerCase();
+                if (name.contains("token") || name.contains("usertoken") || name.contains("bearer") || name.contains("serviceaccounttoken")) {
+                    try {
+                        f.setAccessible(true);
+                        if (f.getType() == String.class) {
+                            f.set(instance, token);
+                            return true;
+                        }
+                    } catch (Exception e) {
+                        // ignore
+                    }
+                }
+            }
+            s = s.getSuperclass();
+        }
+        return false;
+    }
+
+    private boolean setCaCertDataViaSetter(Class<?> cls, Object instance, String data) {
+        for (Method m : cls.getMethods()) {
+            String name = m.getName().toLowerCase();
+            if (name.contains("set") && (name.contains("cacert") || (name.contains("ca") && name.contains("cert")) || name.contains("cacertdata") || name.contains("ca_cert"))) {
+                Class<?>[] p = m.getParameterTypes();
+                if (p.length == 1 && (p[0] == String.class || p[0] == Object.class)) {
+                    try {
+                        m.invoke(instance, data);
+                        return true;
+                    } catch (Exception e) {
+                        // ignore and continue
+                    }
+                }
+            }
+        }
+        for (Method m : cls.getDeclaredMethods()) {
+            String name = m.getName().toLowerCase();
+            if (name.contains("set") && (name.contains("cacert") || (name.contains("ca") && name.contains("cert")) || name.contains("cacertdata") || name.contains("ca_cert"))) {
+                Class<?>[] p = m.getParameterTypes();
+                if (p.length == 1 && (p[0] == String.class || p[0] == Object.class)) {
+                    try {
+                        m.setAccessible(true);
+                        m.invoke(instance, data);
+                        return true;
+                    } catch (Exception e) {
+                        // ignore
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean setCaCertDataViaField(Class<?> cls, Object instance, String data) {
+        for (Field f : cls.getDeclaredFields()) {
+            String name = f.getName().toLowerCase();
+            if (name.contains("cacert") || (name.contains("ca") && name.contains("cert")) || name.contains("cacertdata") || name.contains("ca_cert") || name.contains("cacertpem") || name.contains("certdata")) {
+                try {
+                    f.setAccessible(true);
+                    if (f.getType() == String.class) {
+                        f.set(instance, data);
+                        return true;
+                    }
+                } catch (Exception e) {
+                    // ignore
+                }
+            }
+        }
+        Class<?> s = cls.getSuperclass();
+        while (s != null && s != Object.class) {
+            for (Field f : s.getDeclaredFields()) {
+                String name = f.getName().toLowerCase();
+                if (name.contains("cacert") || (name.contains("ca") && name.contains("cert")) || name.contains("cacertdata") || name.contains("ca_cert") || name.contains("cacertpem") || name.contains("certdata")) {
+                    try {
+                        f.setAccessible(true);
+                        if (f.getType() == String.class) {
+                            f.set(instance, data);
+                            return true;
+                        }
+                    } catch (Exception e) {
+                        // ignore
+                    }
+                }
+            }
+            s = s.getSuperclass();
+        }
+        return false;
+    }
+
+    @Test
+    public void testGetK8sClient_withConfiguredSparkCluster_returnsClient() throws Exception {
+        Class<?> sparkClusterClass = Class.forName("com.apple.spark.AppConfig$SparkCluster");
+        Object sparkClusterInstance = createAndConfigureSparkCluster(sparkClusterClass);
+        Method getK8sClientMethod = KubernetesHelper.class.getDeclaredMethod("getK8sClient", sparkClusterClass);
+        getK8sClientMethod.setAccessible(true);
+        Object client = getK8sClientMethod.invoke(null, sparkClusterInstance);
+        assertNotNull(client, "getK8sClient(sparkCluster) should not return null");
+        assertEquals("io.fabric8.kubernetes.client.DefaultKubernetesClient", client.getClass().getName(), "Expected a DefaultKubernetesClient instance");
+    }
+
+    @Test
+    public void testGetK8sClient_withConstructedSparkCluster_returnsClient() throws Exception {
+        Class<?> sparkClusterClass;
+        try {
+            sparkClusterClass = Class.forName("com.apple.spark.AppConfig$SparkCluster");
+        } catch (ClassNotFoundException e) {
+            // If the nested SparkCluster class is not present, nothing more to test for this branch.
+            return;
+        }
+        Object sparkClusterInstance = createAndConfigureSparkCluster(sparkClusterClass);
+        Method getK8sClientMethod = KubernetesHelper.class.getDeclaredMethod("getK8sClient", sparkClusterClass);
+        getK8sClientMethod.setAccessible(true);
+        Object client = getK8sClientMethod.invoke(null, sparkClusterInstance);
+        assertNotNull(client, "getK8sClient(sparkCluster) should not return null");
+        assertEquals("io.fabric8.kubernetes.client.DefaultKubernetesClient", client.getClass().getName(), "Expected a DefaultKubernetesClient instance");
+    }
+
+    @Test
+    public void testPrivateGetK8sConfig_withConfiguredInstance_returnsConfig() throws Exception {
+        Class<?> sparkClusterClass = Class.forName("com.apple.spark.AppConfig$SparkCluster");
+        Method getK8sConfigMethod = KubernetesHelper.class.getDeclaredMethod("getK8sConfig", sparkClusterClass);
+        getK8sConfigMethod.setAccessible(true);
+        Object sparkClusterInstance = createAndConfigureSparkCluster(sparkClusterClass);
+        Object configInstance = getK8sConfigMethod.invoke(null, sparkClusterInstance);
+        assertNotNull(configInstance, "getK8sConfig(sparkCluster) should not return null");
+        assertEquals("io.fabric8.kubernetes.client.Config", configInstance.getClass().getName(), "Expected a fabric8 Config instance");
+    }
+}

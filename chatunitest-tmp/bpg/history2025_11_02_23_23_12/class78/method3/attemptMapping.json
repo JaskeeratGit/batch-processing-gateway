@@ -1,0 +1,47 @@
+{
+  "attempt0": {
+    "testClassName": "TimerMetricContainer_record_3_0_Test",
+    "fullName": "com.apple.spark.util.TimerMetricContainer_record_3_0_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/util/TimerMetricContainer_record_3_0_Test.java",
+    "className": "TimerMetricContainer",
+    "packageName": "com.apple.spark.util",
+    "methodName": "record",
+    "methodSig": "record(Supplier, String, Collection)"
+  },
+  "attempt1": {
+    "testClassName": "TimerMetricContainer_record_3_1_Test",
+    "fullName": "com.apple.spark.util.TimerMetricContainer_record_3_1_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/util/TimerMetricContainer_record_3_0_Test.java",
+    "className": "TimerMetricContainer",
+    "packageName": "com.apple.spark.util",
+    "methodName": "record",
+    "methodSig": "record(Supplier, String, Collection)"
+  },
+  "attempt2": {
+    "testClassName": "TimerMetricContainer_record_3_2_Test",
+    "fullName": "com.apple.spark.util.TimerMetricContainer_record_3_2_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/util/TimerMetricContainer_record_3_0_Test.java",
+    "className": "TimerMetricContainer",
+    "packageName": "com.apple.spark.util",
+    "methodName": "record",
+    "methodSig": "record(Supplier, String, Collection)"
+  },
+  "attempt3": {
+    "testClassName": "TimerMetricContainer_record_3_3_Test",
+    "fullName": "com.apple.spark.util.TimerMetricContainer_record_3_3_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/util/TimerMetricContainer_record_3_0_Test.java",
+    "className": "TimerMetricContainer",
+    "packageName": "com.apple.spark.util",
+    "methodName": "record",
+    "methodSig": "record(Supplier, String, Collection)"
+  },
+  "attempt4": {
+    "testClassName": "TimerMetricContainer_record_3_4_Test",
+    "fullName": "com.apple.spark.util.TimerMetricContainer_record_3_4_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/util/TimerMetricContainer_record_3_0_Test.java",
+    "className": "TimerMetricContainer",
+    "packageName": "com.apple.spark.util",
+    "methodName": "record",
+    "methodSig": "record(Supplier, String, Collection)"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "className": "NodeSelectorRequirement",
+  "methodName": "setOperator",
+  "brief": "public void setOperator(String operator){}",
+  "methodSignature": "setOperator(String)",
+  "sourceCode": "public void setOperator(String operator) {\n    this.operator = operator;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": []
+  },
+  "full_method_info": "public void setOperator(String operator) {\n    this.operator = operator;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

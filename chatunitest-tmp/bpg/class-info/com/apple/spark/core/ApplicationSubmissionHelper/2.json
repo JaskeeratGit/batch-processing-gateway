@@ -1,0 +1,25 @@
+{
+  "className": "ApplicationSubmissionHelper",
+  "methodName": "looksLikeFilePath",
+  "brief": "public static boolean looksLikeFilePath(String requestBody){}",
+  "methodSignature": "looksLikeFilePath(String)",
+  "sourceCode": "public static boolean looksLikeFilePath(String requestBody) {\n    return Pattern.matches(FILE_PATH_REGEX, requestBody);\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [],
+    "java.util.regex.Pattern": [
+      "matches(String, CharSequence)"
+    ]
+  },
+  "full_method_info": "/**\n * examine a request body and see if the request body looks like a file path\n */\npublic static boolean looksLikeFilePath(String requestBody) {\n    return Pattern.matches(FILE_PATH_REGEX, requestBody);\n}",
+  "method_comment": " examine a request body and see if the request body looks like a file path ",
+  "method_annotation": ""
+}

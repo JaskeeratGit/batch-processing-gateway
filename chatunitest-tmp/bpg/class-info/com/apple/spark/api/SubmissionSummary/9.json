@@ -1,0 +1,77 @@
+{
+  "className": "SubmissionSummary",
+  "methodName": "copyFrom",
+  "brief": "@Override\n  public void copyFrom(SparkApplication sparkApplicationResource){}",
+  "methodSignature": "copyFrom(SparkApplication)",
+  "sourceCode": "@Override\n  public void copyFrom(SparkApplication sparkApplicationResource) {\n    super.copyFrom(sparkApplicationResource);\n    setSubmissionId(sparkApplicationResource.getMetadata().getName());\n    if (sparkApplicationResource.getMetadata().getLabels() != null) {\n      String user =\n          sparkApplicationResource.getMetadata().getLabels().get(Constants.PROXY_USER_LABEL);\n      String queue = \"\";\n      if (sparkApplicationResource.getMetadata().getLabels().containsKey(Constants.QUEUE_LABEL)) {\n        queue = sparkApplicationResource.getMetadata().getLabels().get(Constants.QUEUE_LABEL);\n      }\n      String dagName = \"\";\n\n      int driverCores = 1;\n      Long driverMemoryGB = 0L;\n      int executorInstances = 1;\n      int executorCores = 1;\n      Long executorMemoryGB = 0L;\n\n      if (sparkApplicationResource.getSpec().getDriver().getLabels() != null) {\n        if (sparkApplicationResource\n            .getSpec()\n            .getDriver()\n            .getLabels()\n            .containsKey(Constants.DAG_NAME_LABEL)) {\n          dagName =\n              sparkApplicationResource\n                  .getSpec()\n                  .getDriver()\n                  .getLabels()\n                  .get(Constants.DAG_NAME_LABEL);\n        }\n      }\n      if (sparkApplicationResource.getSpec().getDriver().getMemory() != null) {\n        try {\n          driverMemoryGB =\n              byteStringAsGb(sparkApplicationResource.getSpec().getDriver().getMemory());\n        } catch (Exception e) {\n          logger.info(\n              \"Cannot convert Driver memory size string to Gb for {}, {}.\",\n              submissionId,\n              e.toString());\n        }\n      }\n      if (sparkApplicationResource.getSpec().getDriver().getCores() != null) {\n        driverCores = sparkApplicationResource.getSpec().getDriver().getCores();\n      }\n      if (sparkApplicationResource.getSpec().getExecutor().getCores() != null) {\n        executorCores = sparkApplicationResource.getSpec().getExecutor().getCores();\n      }\n      if (sparkApplicationResource.getSpec().getExecutor().getInstances() != null) {\n        executorInstances = sparkApplicationResource.getSpec().getExecutor().getInstances();\n      }\n      if (sparkApplicationResource.getSpec().getExecutor().getMemory() != null) {\n        try {\n          executorMemoryGB =\n              byteStringAsGb(sparkApplicationResource.getSpec().getExecutor().getMemory());\n        } catch (Exception e) {\n          logger.info(\n              \"Cannot convert Executor memory size string to Gb for {}, {}.\",\n              submissionId,\n              e.toString());\n        }\n      }\n\n      setDriverMemoryGB(driverMemoryGB);\n      setDriverCores(driverCores);\n      setExecutorInstances(executorInstances);\n      setExecutorMemoryGB(executorMemoryGB);\n      setExecutorCores(executorCores);\n      setTotalMemoryGB(executorInstances * executorMemoryGB + driverMemoryGB);\n      setTotalCores(executorInstances * executorCores + driverCores);\n\n      if (user != null) {\n        setUser(user);\n      }\n      if (queue != null) {\n        setQueue(queue);\n      }\n      if (dagName != null) {\n        setDagName(dagName);\n      }\n    }\n    SparkApplicationSpec spec = sparkApplicationResource.getSpec();\n    if (spec != null) {\n      setSparkVersion(spec.getSparkVersion());\n      setApplicationArguments(spec.getArguments());\n      if (spec.getSparkConf() != null) {\n        String appNameConfigValue = spec.getSparkConf().get(SparkConstants.SPARK_APP_NAME_CONFIG);\n        if (appNameConfigValue != null) {\n          setApplicationName(appNameConfigValue);\n        }\n      }\n    }\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "SparkApplication"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.operator.SparkApplication": [
+      "getSpec()"
+    ],
+    "com.apple.spark.api.SubmissionStatus": [
+      "copyFrom(SparkApplication)"
+    ],
+    "com.apple.spark.api.SubmissionSummary": [
+      "setUser(String)",
+      "setDriverMemoryGB(Long)",
+      "setExecutorMemoryGB(Long)",
+      "setExecutorInstances(int)",
+      "setApplicationArguments(String>)",
+      "setDriverCores(int)",
+      "setSparkVersion(String)",
+      "setTotalCores(int)",
+      "setSubmissionId(String)",
+      "setDagName(String)",
+      "setExecutorCores(int)",
+      "setQueue(String)",
+      "setApplicationName(String)"
+    ],
+    "io.fabric8.kubernetes.api.model.ObjectMeta": [
+      "getName()",
+      "getLabels()"
+    ],
+    "io.fabric8.kubernetes.client.CustomResource": [
+      "getMetadata()"
+    ],
+    "java.util.Map": [
+      "get(Object)",
+      "containsKey(Object)"
+    ],
+    "com.apple.spark.operator.SparkPodSpec": [
+      "getLabels()",
+      "getMemory()",
+      "getCores()"
+    ],
+    "com.apple.spark.operator.SparkApplicationSpec": [
+      "getExecutor()",
+      "getArguments()",
+      "getSparkVersion()",
+      "getSparkConf()",
+      "getDriver()"
+    ],
+    "org.apache.spark.network.util.JavaUtils": [
+      "byteStringAsGb(String)"
+    ],
+    "org.slf4j.Logger": [
+      "info(String, Object, Object)"
+    ],
+    "java.lang.Throwable": [
+      "toString()"
+    ],
+    "com.apple.spark.operator.ExecutorSpec": [
+      "getInstances()"
+    ]
+  },
+  "full_method_info": "@Override\npublic void copyFrom(SparkApplication sparkApplicationResource) {\n    super.copyFrom(sparkApplicationResource);\n    setSubmissionId(sparkApplicationResource.getMetadata().getName());\n    if (sparkApplicationResource.getMetadata().getLabels() != null) {\n        String user = sparkApplicationResource.getMetadata().getLabels().get(Constants.PROXY_USER_LABEL);\n        String queue = \"\";\n        if (sparkApplicationResource.getMetadata().getLabels().containsKey(Constants.QUEUE_LABEL)) {\n            queue = sparkApplicationResource.getMetadata().getLabels().get(Constants.QUEUE_LABEL);\n        }\n        String dagName = \"\";\n        int driverCores = 1;\n        Long driverMemoryGB = 0L;\n        int executorInstances = 1;\n        int executorCores = 1;\n        Long executorMemoryGB = 0L;\n        if (sparkApplicationResource.getSpec().getDriver().getLabels() != null) {\n            if (sparkApplicationResource.getSpec().getDriver().getLabels().containsKey(Constants.DAG_NAME_LABEL)) {\n                dagName = sparkApplicationResource.getSpec().getDriver().getLabels().get(Constants.DAG_NAME_LABEL);\n            }\n        }\n        if (sparkApplicationResource.getSpec().getDriver().getMemory() != null) {\n            try {\n                driverMemoryGB = byteStringAsGb(sparkApplicationResource.getSpec().getDriver().getMemory());\n            } catch (Exception e) {\n                logger.info(\"Cannot convert Driver memory size string to Gb for {}, {}.\", submissionId, e.toString());\n            }\n        }\n        if (sparkApplicationResource.getSpec().getDriver().getCores() != null) {\n            driverCores = sparkApplicationResource.getSpec().getDriver().getCores();\n        }\n        if (sparkApplicationResource.getSpec().getExecutor().getCores() != null) {\n            executorCores = sparkApplicationResource.getSpec().getExecutor().getCores();\n        }\n        if (sparkApplicationResource.getSpec().getExecutor().getInstances() != null) {\n            executorInstances = sparkApplicationResource.getSpec().getExecutor().getInstances();\n        }\n        if (sparkApplicationResource.getSpec().getExecutor().getMemory() != null) {\n            try {\n                executorMemoryGB = byteStringAsGb(sparkApplicationResource.getSpec().getExecutor().getMemory());\n            } catch (Exception e) {\n                logger.info(\"Cannot convert Executor memory size string to Gb for {}, {}.\", submissionId, e.toString());\n            }\n        }\n        setDriverMemoryGB(driverMemoryGB);\n        setDriverCores(driverCores);\n        setExecutorInstances(executorInstances);\n        setExecutorMemoryGB(executorMemoryGB);\n        setExecutorCores(executorCores);\n        setTotalMemoryGB(executorInstances * executorMemoryGB + driverMemoryGB);\n        setTotalCores(executorInstances * executorCores + driverCores);\n        if (user != null) {\n            setUser(user);\n        }\n        if (queue != null) {\n            setQueue(queue);\n        }\n        if (dagName != null) {\n            setDagName(dagName);\n        }\n    }\n    SparkApplicationSpec spec = sparkApplicationResource.getSpec();\n    if (spec != null) {\n        setSparkVersion(spec.getSparkVersion());\n        setApplicationArguments(spec.getArguments());\n        if (spec.getSparkConf() != null) {\n            String appNameConfigValue = spec.getSparkConf().get(SparkConstants.SPARK_APP_NAME_CONFIG);\n            if (appNameConfigValue != null) {\n                setApplicationName(appNameConfigValue);\n            }\n        }\n    }\n}",
+  "method_comment": "",
+  "method_annotation": "@Override\n"
+}

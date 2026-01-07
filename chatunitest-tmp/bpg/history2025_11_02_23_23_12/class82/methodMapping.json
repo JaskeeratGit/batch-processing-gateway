@@ -1,0 +1,158 @@
+{
+  "method0": {
+    "methodName": "verifyDBName",
+    "signature": "verifyDBName(String)",
+    "className": "LogDao",
+    "packageName": "com.apple.spark.core"
+  },
+  "method1": {
+    "methodName": "getSubmissionIdFromAppId",
+    "signature": "getSubmissionIdFromAppId(String)",
+    "className": "LogDao",
+    "packageName": "com.apple.spark.core"
+  },
+  "method10": {
+    "methodName": "logApplicationFinishedImpl",
+    "signature": "logApplicationFinishedImpl(String, String, Timestamp, Double, Double)",
+    "className": "LogDao",
+    "packageName": "com.apple.spark.core"
+  },
+  "method11": {
+    "methodName": "createDatabase",
+    "signature": "createDatabase()",
+    "className": "LogDao",
+    "packageName": "com.apple.spark.core"
+  },
+  "method12": {
+    "methodName": "updateJobInfo",
+    "signature": "updateJobInfo(String, Timestamp, int, int, int, String, String, String)",
+    "className": "LogDao",
+    "packageName": "com.apple.spark.core"
+  },
+  "method13": {
+    "methodName": "updateJobInfoImpl",
+    "signature": "updateJobInfoImpl(String, Timestamp, int, int, int, String, String, String)",
+    "className": "LogDao",
+    "packageName": "com.apple.spark.core"
+  },
+  "method14": {
+    "methodName": "createApplicationSubmissionTable",
+    "signature": "createApplicationSubmissionTable()",
+    "className": "LogDao",
+    "packageName": "com.apple.spark.core"
+  },
+  "method15": {
+    "methodName": "createLogIndexTable",
+    "signature": "createLogIndexTable()",
+    "className": "LogDao",
+    "packageName": "com.apple.spark.core"
+  },
+  "method16": {
+    "methodName": "getJobInfoQuery",
+    "signature": "getJobInfoQuery(String, String, int, int)",
+    "className": "LogDao",
+    "packageName": "com.apple.spark.core"
+  },
+  "method17": {
+    "methodName": "getJobInfoQueryImpl",
+    "signature": "getJobInfoQueryImpl(String, String, int, int)",
+    "className": "LogDao",
+    "packageName": "com.apple.spark.core"
+  },
+  "method18": {
+    "methodName": "updateExecutorInfo",
+    "signature": "updateExecutorInfo(String, int, int)",
+    "className": "LogDao",
+    "packageName": "com.apple.spark.core"
+  },
+  "method19": {
+    "methodName": "updateExecutorInfoImpl",
+    "signature": "updateExecutorInfoImpl(String, int, int)",
+    "className": "LogDao",
+    "packageName": "com.apple.spark.core"
+  },
+  "method2": {
+    "methodName": "getSubmissionIdFromAppIdImpl",
+    "signature": "getSubmissionIdFromAppIdImpl(String)",
+    "className": "LogDao",
+    "packageName": "com.apple.spark.core"
+  },
+  "method20": {
+    "methodName": "getKeyList",
+    "signature": "getKeyList(String, String)",
+    "className": "LogDao",
+    "packageName": "com.apple.spark.core"
+  },
+  "method21": {
+    "methodName": "getKeyListImpl",
+    "signature": "getKeyListImpl(String, String)",
+    "className": "LogDao",
+    "packageName": "com.apple.spark.core"
+  },
+  "method22": {
+    "methodName": "dbQuery",
+    "signature": "dbQuery(String)",
+    "className": "LogDao",
+    "packageName": "com.apple.spark.core"
+  },
+  "method23": {
+    "methodName": "dbQueryImpl",
+    "signature": "dbQueryImpl(String)",
+    "className": "LogDao",
+    "packageName": "com.apple.spark.core"
+  },
+  "method24": {
+    "methodName": "LogDao",
+    "signature": "LogDao(String, String, String, String)",
+    "className": "LogDao",
+    "packageName": "com.apple.spark.core"
+  },
+  "method25": {
+    "methodName": "LogDao",
+    "signature": "LogDao(String, String, String, String, MeterRegistry)",
+    "className": "LogDao",
+    "packageName": "com.apple.spark.core"
+  },
+  "method3": {
+    "methodName": "logApplicationSubmission",
+    "signature": "logApplicationSubmission(String, String, SubmitApplicationRequest)",
+    "className": "LogDao",
+    "packageName": "com.apple.spark.core"
+  },
+  "method4": {
+    "methodName": "logApplicationSubmissionImpl",
+    "signature": "logApplicationSubmissionImpl(String, String, SubmitApplicationRequest, String)",
+    "className": "LogDao",
+    "packageName": "com.apple.spark.core"
+  },
+  "method5": {
+    "methodName": "logApplicationId",
+    "signature": "logApplicationId(String, String)",
+    "className": "LogDao",
+    "packageName": "com.apple.spark.core"
+  },
+  "method6": {
+    "methodName": "logApplicationIdImpl",
+    "signature": "logApplicationIdImpl(String, String)",
+    "className": "LogDao",
+    "packageName": "com.apple.spark.core"
+  },
+  "method7": {
+    "methodName": "logApplicationStatus",
+    "signature": "logApplicationStatus(String, String)",
+    "className": "LogDao",
+    "packageName": "com.apple.spark.core"
+  },
+  "method8": {
+    "methodName": "logApplicationStatusImpl",
+    "signature": "logApplicationStatusImpl(String, String)",
+    "className": "LogDao",
+    "packageName": "com.apple.spark.core"
+  },
+  "method9": {
+    "methodName": "logApplicationFinished",
+    "signature": "logApplicationFinished(String, String, Timestamp, Double, Double)",
+    "className": "LogDao",
+    "packageName": "com.apple.spark.core"
+  }
+}

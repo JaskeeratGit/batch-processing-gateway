@@ -1,0 +1,103 @@
+package com.apple.spark.core;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import com.apple.spark.api.SubmitApplicationRequest;
+import com.apple.spark.util.CounterMetricContainer;
+import com.apple.spark.util.CustomSerDe;
+import com.apple.spark.util.TimerMetricContainer;
+import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.logging.LoggingMeterRegistry;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import static com.apple.spark.core.Constants.DEFAULT_DB_NAME;
+import static com.apple.spark.core.SparkConstants.RUNNING_STATE;
+import static com.apple.spark.core.SparkConstants.SUBMITTED_STATE;
+import io.micrometer.core.instrument.MeterRegistry;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import javax.sql.rowset.CachedRowSet;
+import javax.sql.rowset.RowSetProvider;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class LogDao_logApplicationSubmission_3_0_Test {
+
+    @Test
+    public void testBypassLog_doesNotCallCustomSerDe() {
+        // create LogDao with empty connection string -> bypassLog == true
+        LogDao dao = new LogDao("", "user", "pass", "dbName", new LoggingMeterRegistry());
+        // mock static CustomSerDe to ensure it is not called
+        try (MockedStatic<CustomSerDe> mocked = Mockito.mockStatic(CustomSerDe.class)) {
+            // call focal method
+            dao.logApplicationSubmission("submission-1", "alice", new SubmitApplicationRequest());
+            // verify no interactions occurred with CustomSerDe static methods
+            mocked.verifyNoInteractions();
+        }
+    }
+
+    @Test
+    public void testLogApplicationSubmission_whenSerDeThrows_timerStillRuns_andNoExceptionPropagates() throws Exception {
+        // create instance with bypass true, then flip bypassLog to false via reflection
+        LogDao dao = new LogDao("", "user", "pass", "dbName", new LoggingMeterRegistry());
+        // set bypassLog = false via reflection to exercise logging path without real DB connection
+        Field bypassField = LogDao.class.getDeclaredField("bypassLog");
+        bypassField.setAccessible(true);
+        bypassField.setBoolean(dao, false);
+        // replace timerMetrics with a stub that immediately runs the runnable
+        TimerMetricContainer stubTimer = new TimerMetricContainer(new LoggingMeterRegistry()) {
+
+            @Override
+            public void record(Runnable runnable, String metricName, io.micrometer.core.instrument.Tag... tags) {
+                // run immediately to invoke logApplicationSubmissionImpl
+                runnable.run();
+            }
+        };
+        Field timerField = LogDao.class.getDeclaredField("timerMetrics");
+        timerField.setAccessible(true);
+        timerField.set(dao, stubTimer);
+        // mock CustomSerDe to throw when serializing
+        try (MockedStatic<CustomSerDe> mocked = Mockito.mockStatic(CustomSerDe.class)) {
+            mocked.when(() -> CustomSerDe.submitRequestToNonSensitiveJson(any(SubmitApplicationRequest.class))).thenThrow(new RuntimeException("serde failure"));
+            // call focal method; should not throw despite CustomSerDe throwing and DB being null
+            dao.logApplicationSubmission("sub-2", "bob", new SubmitApplicationRequest());
+            // verify the static method was invoked once
+            mocked.verify(() -> CustomSerDe.submitRequestToNonSensitiveJson(any(SubmitApplicationRequest.class)), times(1));
+        }
+    }
+
+    @Test
+    public void testInvokePrivate_logApplicationSubmissionImpl_handlesDbException_andIncrementsFailureMetric() throws Exception {
+        // create instance with bypass true so dbConnection is null; we'll invoke private impl directly
+        LogDao dao = new LogDao("", "user", "pass", "dbName", new LoggingMeterRegistry());
+        // replace failureMetrics with a mock to verify increment is invoked when DB operations fail
+        CounterMetricContainer mockFailureMetrics = mock(CounterMetricContainer.class);
+        Field failureField = LogDao.class.getDeclaredField("failureMetrics");
+        failureField.setAccessible(true);
+        failureField.set(dao, mockFailureMetrics);
+        // prepare method reference to private method
+        Method impl = LogDao.class.getDeclaredMethod("logApplicationSubmissionImpl", String.class, String.class, SubmitApplicationRequest.class, String.class);
+        impl.setAccessible(true);
+        // invoke private method; since dbConnection is null a NullPointerException will occur inside try-with-resources
+        // which should be caught by the method and failureMetrics.increment should be called
+        SubmitApplicationRequest req = new SubmitApplicationRequest();
+        impl.invoke(dao, "sub-3", "carol", req, "{\"body\":\"x\"}");
+        // verify increment was called at least once; arguments are not tightly asserted here
+        // signature in production: increment(String, Tag...)
+        Mockito.verify(mockFailureMetrics, times(1)).increment(anyString(), any(Tag.class), any(Tag.class));
+    }
+}
+
+--------------------------------------------
+Error in testLogApplicationSubmission_whenSerDeThrows_timerStillRuns_andNoExceptionPropagates(): line 69 : java.lang.IllegalStateException: Could not initialize plugin: interface org.mockito.plugins.MockMaker (alternate: null)
+Error in testBypassLog_doesNotCallCustomSerDe(): line 40 : java.lang.IllegalStateException: Could not initialize plugin: interface org.mockito.plugins.MockMaker (alternate: null)
+Error in testInvokePrivate_logApplicationSubmissionImpl_handlesDbException_andIncrementsFailureMetric(): line 83 : java.lang.IllegalStateException: Could not initialize plugin: interface org.mockito.plugins.MockMaker (alternate: null)

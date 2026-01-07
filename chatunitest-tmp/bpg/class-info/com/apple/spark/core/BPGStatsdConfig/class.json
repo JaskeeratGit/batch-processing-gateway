@@ -1,0 +1,59 @@
+{
+  "fullClassName": "com.apple.spark.core.BPGStatsdConfig",
+  "className": "BPGStatsdConfig",
+  "index": 97,
+  "modifier": "[public ]",
+  "extend": "[]",
+  "implement": "[StatsdConfig]",
+  "packageName": "com.apple.spark.core",
+  "packageDeclaration": "package com.apple.spark.core;",
+  "classSignature": "public class BPGStatsdConfig",
+  "hasConstructor": false,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import io.micrometer.core.instrument.Clock;",
+    "import io.micrometer.core.instrument.MeterRegistry;",
+    "import io.micrometer.core.instrument.logging.LoggingMeterRegistry;",
+    "import io.micrometer.statsd.StatsdConfig;",
+    "import io.micrometer.statsd.StatsdFlavor;",
+    "import io.micrometer.statsd.StatsdMeterRegistry;",
+    "import org.apache.commons.lang3.StringUtils;",
+    "import org.slf4j.Logger;",
+    "import org.slf4j.LoggerFactory;"
+  ],
+  "fields": [
+    "private static final Logger logger = LoggerFactory.getLogger(BPGStatsdConfig.class);",
+    "private static final String STATSD_SERVER_IP_ENV_NAME = \"STATSD_SERVER_IP\";",
+    "private static final String STATSD_SERVER_PORT_ENV_NAME = \"STATSD_SERVER_PORT\";"
+  ],
+  "superClasses": [],
+  "implementedTypes": [
+    "StatsdConfig"
+  ],
+  "methodSigs": {
+    "createMeterRegistry()": "0",
+    "get(String)": "1",
+    "enabled()": "2",
+    "flavor()": "3",
+    "host()": "4",
+    "port()": "5"
+  },
+  "methodsBrief": [
+    "public static MeterRegistry createMeterRegistry(){}",
+    "@Override\n  public String get(String s){}",
+    "@Override\n  public boolean enabled(){}",
+    "@Override\n  public StatsdFlavor flavor(){}",
+    "@Override\n  public String host(){}",
+    "@Override\n  public int port(){}"
+  ],
+  "constructorSigs": [],
+  "constructorBrief": [],
+  "getterSetterSigs": [],
+  "getterSetterBrief": [],
+  "constructorDeps": {},
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.core;\n\nimport io.micrometer.core.instrument.Clock;\nimport io.micrometer.core.instrument.MeterRegistry;\nimport io.micrometer.core.instrument.logging.LoggingMeterRegistry;\nimport io.micrometer.statsd.StatsdConfig;\nimport io.micrometer.statsd.StatsdFlavor;\nimport io.micrometer.statsd.StatsdMeterRegistry;\nimport org.apache.commons.lang3.StringUtils;\nimport org.slf4j.Logger;\nimport org.slf4j.LoggerFactory;\n\npublic class BPGStatsdConfig implements StatsdConfig {\n\n    private static final Logger logger = LoggerFactory.getLogger(BPGStatsdConfig.class);\n\n    private static final String STATSD_SERVER_IP_ENV_NAME = \"STATSD_SERVER_IP\";\n\n    private static final String STATSD_SERVER_PORT_ENV_NAME = \"STATSD_SERVER_PORT\";\n\n    public static MeterRegistry createMeterRegistry() {\n        BPGStatsdConfig statsdConfig = new BPGStatsdConfig();\n        MeterRegistry meterRegistry;\n        if (statsdConfig.enabled()) {\n            logger.info(\"Use statsd meter registry\");\n            meterRegistry = new StatsdMeterRegistry(statsdConfig, Clock.SYSTEM);\n        } else {\n            logger.info(\"Use logging meter registry\");\n            meterRegistry = new LoggingMeterRegistry();\n        }\n        return meterRegistry;\n    }\n\n    @Override\n    public String get(String s) {\n        return null;\n    }\n\n    @Override\n    public boolean enabled() {\n        return !StringUtils.isEmpty(host()) && port() > 0;\n    }\n\n    @Override\n    public StatsdFlavor flavor() {\n        return StatsdFlavor.DATADOG;\n    }\n\n    @Override\n    public String host() {\n        return System.getenv(STATSD_SERVER_IP_ENV_NAME);\n    }\n\n    @Override\n    public int port() {\n        String value = System.getenv(STATSD_SERVER_PORT_ENV_NAME);\n        if (StringUtils.isEmpty(value)) {\n            return 0;\n        }\n        try {\n            return Integer.parseInt(value);\n        } catch (Throwable ex) {\n            logger.warn(String.format(\"Failed to parse environment value for %s: %s\", STATSD_SERVER_PORT_ENV_NAME, value), ex);\n            return 0;\n        }\n    }\n}\n",
+  "classDeclarationCode": "public class BPGStatsdConfig implements StatsdConfig {\n\n    private static final Logger logger = LoggerFactory.getLogger(BPGStatsdConfig.class);\n\n    private static final String STATSD_SERVER_IP_ENV_NAME = \"STATSD_SERVER_IP\";\n\n    private static final String STATSD_SERVER_PORT_ENV_NAME = \"STATSD_SERVER_PORT\";\n\n    public static MeterRegistry createMeterRegistry() {\n        BPGStatsdConfig statsdConfig = new BPGStatsdConfig();\n        MeterRegistry meterRegistry;\n        if (statsdConfig.enabled()) {\n            logger.info(\"Use statsd meter registry\");\n            meterRegistry = new StatsdMeterRegistry(statsdConfig, Clock.SYSTEM);\n        } else {\n            logger.info(\"Use logging meter registry\");\n            meterRegistry = new LoggingMeterRegistry();\n        }\n        return meterRegistry;\n    }\n\n    @Override\n    public String get(String s) {\n        return null;\n    }\n\n    @Override\n    public boolean enabled() {\n        return !StringUtils.isEmpty(host()) && port() > 0;\n    }\n\n    @Override\n    public StatsdFlavor flavor() {\n        return StatsdFlavor.DATADOG;\n    }\n\n    @Override\n    public String host() {\n        return System.getenv(STATSD_SERVER_IP_ENV_NAME);\n    }\n\n    @Override\n    public int port() {\n        String value = System.getenv(STATSD_SERVER_PORT_ENV_NAME);\n        if (StringUtils.isEmpty(value)) {\n            return 0;\n        }\n        try {\n            return Integer.parseInt(value);\n        } catch (Throwable ex) {\n            logger.warn(String.format(\"Failed to parse environment value for %s: %s\", STATSD_SERVER_PORT_ENV_NAME, value), ex);\n            return 0;\n        }\n    }\n}",
+  "subClasses": []
+}

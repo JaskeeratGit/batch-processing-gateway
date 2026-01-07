@@ -1,0 +1,37 @@
+{
+  "className": "SparkPodNodeAffinityHelper",
+  "methodName": "applyDriverNodeLabelAffinity",
+  "brief": "private static void applyDriverNodeLabelAffinity(\n      final List<NodeSelectorRequirement> matchExpressions,\n      final AppConfig appConfig,\n      final String parentQueue){}",
+  "methodSignature": "applyDriverNodeLabelAffinity(List, AppConfig, String)",
+  "sourceCode": "private static void applyDriverNodeLabelAffinity(\n      final List<NodeSelectorRequirement> matchExpressions,\n      final AppConfig appConfig,\n      final String parentQueue) {\n    List<String> driverNodeLabelValues = getDriverNodeLabelValuesForQueue(appConfig, parentQueue);\n    String nodeLabelKey = getDriverNodeLabelKeyForQueue(appConfig, parentQueue);\n    if (driverNodeLabelValues == null || driverNodeLabelValues.isEmpty()) {\n      return;\n    }\n    // set hard requiredDuringSchedulingIgnoredDuringExecutionTerm to driver\n    NodeSelectorRequirement nodeSelectorRequirement =\n        new NodeSelectorRequirement(\n            nodeLabelKey,\n            NodeSelectorOperator.NodeSelectorOpIn.toString(),\n            driverNodeLabelValues.toArray(new String[0])); // set \"spark_driver\" as nodeselctor\n\n    matchExpressions.add(nodeSelectorRequirement);\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "List<NodeSelectorRequirement>",
+    "AppConfig",
+    "String"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.AppConfig": [],
+    "java.lang.String": [],
+    "com.apple.spark.core.SparkPodNodeAffinityHelper": [
+      "getDriverNodeLabelKeyForQueue(AppConfig, String)",
+      "getDriverNodeLabelValuesForQueue(AppConfig, String)"
+    ],
+    "java.util.List": [
+      "toArray(T[])",
+      "isEmpty()",
+      "add(E)"
+    ],
+    "com.apple.spark.operator.NodeSelectorOperator": [
+      "toString()"
+    ]
+  },
+  "full_method_info": "private static void applyDriverNodeLabelAffinity(final List<NodeSelectorRequirement> matchExpressions, final AppConfig appConfig, final String parentQueue) {\n    List<String> driverNodeLabelValues = getDriverNodeLabelValuesForQueue(appConfig, parentQueue);\n    String nodeLabelKey = getDriverNodeLabelKeyForQueue(appConfig, parentQueue);\n    if (driverNodeLabelValues == null || driverNodeLabelValues.isEmpty()) {\n        return;\n    }\n    // set hard requiredDuringSchedulingIgnoredDuringExecutionTerm to driver\n    NodeSelectorRequirement nodeSelectorRequirement = new NodeSelectorRequirement(nodeLabelKey, NodeSelectorOperator.NodeSelectorOpIn.toString(), // set \"spark_driver\" as nodeselctor\n    driverNodeLabelValues.toArray(new String[0]));\n    matchExpressions.add(nodeSelectorRequirement);\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

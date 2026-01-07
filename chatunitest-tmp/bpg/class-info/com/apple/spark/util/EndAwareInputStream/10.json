@@ -1,0 +1,27 @@
+{
+  "className": "EndAwareInputStream",
+  "methodName": "executeWithoutResultValue",
+  "brief": "private void executeWithoutResultValue(RunnableWithIOException callable) throws IOException{}",
+  "methodSignature": "executeWithoutResultValue(RunnableWithIOException)",
+  "sourceCode": "private void executeWithoutResultValue(RunnableWithIOException callable) throws IOException {\n    try {\n      callable.run();\n    } catch (IOException ex) {\n      executeEndingAction();\n      throw ex;\n    }\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "RunnableWithIOException"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.util.EndAwareInputStream.RunnableWithIOException": [
+      "run()"
+    ],
+    "com.apple.spark.util.EndAwareInputStream": [
+      "executeEndingAction()"
+    ]
+  },
+  "full_method_info": "private void executeWithoutResultValue(RunnableWithIOException callable) throws IOException {\n    try {\n        callable.run();\n    } catch (IOException ex) {\n        executeEndingAction();\n        throw ex;\n    }\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

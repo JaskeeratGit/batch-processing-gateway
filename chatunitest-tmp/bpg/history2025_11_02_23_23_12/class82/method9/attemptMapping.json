@@ -1,0 +1,47 @@
+{
+  "attempt0": {
+    "testClassName": "LogDao_logApplicationFinished_9_0_Test",
+    "fullName": "com.apple.spark.core.LogDao_logApplicationFinished_9_0_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/LogDao_logApplicationFinished_9_0_Test.java",
+    "className": "LogDao",
+    "packageName": "com.apple.spark.core",
+    "methodName": "logApplicationFinished",
+    "methodSig": "logApplicationFinished(String, String, Timestamp, Double, Double)"
+  },
+  "attempt1": {
+    "testClassName": "LogDao_logApplicationFinished_9_1_Test",
+    "fullName": "com.apple.spark.core.LogDao_logApplicationFinished_9_1_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/LogDao_logApplicationFinished_9_0_Test.java",
+    "className": "LogDao",
+    "packageName": "com.apple.spark.core",
+    "methodName": "logApplicationFinished",
+    "methodSig": "logApplicationFinished(String, String, Timestamp, Double, Double)"
+  },
+  "attempt2": {
+    "testClassName": "LogDao_logApplicationFinished_9_2_Test",
+    "fullName": "com.apple.spark.core.LogDao_logApplicationFinished_9_2_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/LogDao_logApplicationFinished_9_0_Test.java",
+    "className": "LogDao",
+    "packageName": "com.apple.spark.core",
+    "methodName": "logApplicationFinished",
+    "methodSig": "logApplicationFinished(String, String, Timestamp, Double, Double)"
+  },
+  "attempt3": {
+    "testClassName": "LogDao_logApplicationFinished_9_3_Test",
+    "fullName": "com.apple.spark.core.LogDao_logApplicationFinished_9_3_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/LogDao_logApplicationFinished_9_0_Test.java",
+    "className": "LogDao",
+    "packageName": "com.apple.spark.core",
+    "methodName": "logApplicationFinished",
+    "methodSig": "logApplicationFinished(String, String, Timestamp, Double, Double)"
+  },
+  "attempt4": {
+    "testClassName": "LogDao_logApplicationFinished_9_4_Test",
+    "fullName": "com.apple.spark.core.LogDao_logApplicationFinished_9_4_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/LogDao_logApplicationFinished_9_0_Test.java",
+    "className": "LogDao",
+    "packageName": "com.apple.spark.core",
+    "methodName": "logApplicationFinished",
+    "methodSig": "logApplicationFinished(String, String, Timestamp, Double, Double)"
+  }
+}

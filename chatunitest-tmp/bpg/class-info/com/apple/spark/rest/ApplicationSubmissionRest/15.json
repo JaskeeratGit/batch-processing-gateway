@@ -1,0 +1,35 @@
+{
+  "className": "ApplicationSubmissionRest",
+  "methodName": "getMaxExecutorInstanceForQueue",
+  "brief": "private int getMaxExecutorInstanceForQueue(String queue){}",
+  "methodSignature": "getMaxExecutorInstanceForQueue(String)",
+  "sourceCode": "private int getMaxExecutorInstanceForQueue(String queue) {\n    AppConfig.QueueConfig targetQueueConfig = null;\n    for (AppConfig.QueueConfig config : appConfig.getQueues()) {\n      if (config.getName().equalsIgnoreCase(queue)) {\n        targetQueueConfig = config;\n      }\n    }\n    if (targetQueueConfig == null) {\n      String errMsg =\n          String.format(\n              \"The queue %s does not exist. Please check the queue name and try again.\", queue);\n      logger.error(errMsg);\n      throw new WebApplicationException(errMsg);\n    }\n    return targetQueueConfig.getMaxExecutorInstances() == null\n        ? MAX_EXECUTOR_INSTANCES\n        : targetQueueConfig.getMaxExecutorInstances();\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "format(String, Object[])",
+      "equalsIgnoreCase(String)"
+    ],
+    "com.apple.spark.AppConfig": [
+      "getQueues()"
+    ],
+    "com.apple.spark.AppConfig.QueueConfig": [
+      "getMaxExecutorInstances()",
+      "getName()"
+    ],
+    "org.slf4j.Logger": [
+      "error(String)"
+    ]
+  },
+  "full_method_info": "private int getMaxExecutorInstanceForQueue(String queue) {\n    AppConfig.QueueConfig targetQueueConfig = null;\n    for (AppConfig.QueueConfig config : appConfig.getQueues()) {\n        if (config.getName().equalsIgnoreCase(queue)) {\n            targetQueueConfig = config;\n        }\n    }\n    if (targetQueueConfig == null) {\n        String errMsg = String.format(\"The queue %s does not exist. Please check the queue name and try again.\", queue);\n        logger.error(errMsg);\n        throw new WebApplicationException(errMsg);\n    }\n    return targetQueueConfig.getMaxExecutorInstances() == null ? MAX_EXECUTOR_INSTANCES : targetQueueConfig.getMaxExecutorInstances();\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

@@ -1,0 +1,77 @@
+{
+  "fullClassName": "com.apple.spark.operator.ExecutorSpec",
+  "className": "ExecutorSpec",
+  "index": 21,
+  "modifier": "[public ]",
+  "extend": "[SparkPodSpec]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.operator",
+  "packageDeclaration": "package com.apple.spark.operator;",
+  "classSignature": "@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class ExecutorSpec",
+  "hasConstructor": true,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import static com.apple.spark.core.SparkConstants.EXECUTOR_CORE_DEFAULT;",
+    "import static com.apple.spark.core.SparkConstants.EXECUTOR_MEM_DEFAULT;",
+    "import static com.apple.spark.core.SparkConstants.NUM_EXECUTORS_DEFAULT;",
+    "import com.fasterxml.jackson.annotation.JsonIgnoreProperties;",
+    "import com.fasterxml.jackson.annotation.JsonInclude;",
+    "import io.swagger.v3.oas.annotations.Hidden;"
+  ],
+  "fields": [
+    "private Integer instances;",
+    "@Hidden private Boolean deleteOnTermination;"
+  ],
+  "superClasses": [
+    "SparkPodSpec"
+  ],
+  "implementedTypes": [],
+  "methodSigs": {
+    "copyFrom(ExecutorSpec)": "0",
+    "getInstances()": "1",
+    "setInstances(Integer)": "2",
+    "getDeleteOnTermination()": "3",
+    "setDeleteOnTermination(Boolean)": "4",
+    "ExecutorSpec()": "5"
+  },
+  "methodsBrief": [
+    "public void copyFrom(ExecutorSpec another){}",
+    "public Integer getInstances(){}",
+    "public void setInstances(Integer instances){}",
+    "public Boolean getDeleteOnTermination(){}",
+    "public void setDeleteOnTermination(Boolean deleteOnTermination){}",
+    "public ExecutorSpec(){}"
+  ],
+  "constructorSigs": [
+    "ExecutorSpec()"
+  ],
+  "constructorBrief": [
+    "public ExecutorSpec(){}"
+  ],
+  "getterSetterSigs": [
+    "getInstances()",
+    "setInstances(Integer)",
+    "getDeleteOnTermination()",
+    "setDeleteOnTermination(Boolean)"
+  ],
+  "getterSetterBrief": [
+    "public Integer getInstances(){}",
+    "public void setInstances(Integer instances){}",
+    "public Boolean getDeleteOnTermination(){}",
+    "public void setDeleteOnTermination(Boolean deleteOnTermination){}"
+  ],
+  "constructorDeps": {
+    "com.apple.spark.operator.SparkPodSpec": [
+      "setMemory(String)",
+      "setCores(Integer)"
+    ],
+    "com.apple.spark.operator.ExecutorSpec": [
+      "setInstances(Integer)"
+    ]
+  },
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.operator;\n\nimport static com.apple.spark.core.SparkConstants.EXECUTOR_CORE_DEFAULT;\nimport static com.apple.spark.core.SparkConstants.EXECUTOR_MEM_DEFAULT;\nimport static com.apple.spark.core.SparkConstants.NUM_EXECUTORS_DEFAULT;\nimport com.fasterxml.jackson.annotation.JsonIgnoreProperties;\nimport com.fasterxml.jackson.annotation.JsonInclude;\nimport io.swagger.v3.oas.annotations.Hidden;\n\n@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class ExecutorSpec extends SparkPodSpec {\n\n    private Integer instances;\n\n    @Hidden\n    private Boolean deleteOnTermination;\n\n    public ExecutorSpec() {\n        this.setCores(EXECUTOR_CORE_DEFAULT);\n        this.setMemory(EXECUTOR_MEM_DEFAULT);\n        this.setInstances(NUM_EXECUTORS_DEFAULT);\n    }\n\n    public void copyFrom(ExecutorSpec another) {\n        super.copyFrom(another);\n        if (another.instances != null) {\n            this.instances = another.instances;\n        }\n        this.deleteOnTermination = another.deleteOnTermination;\n    }\n\n    public Integer getInstances() {\n        return instances;\n    }\n\n    public void setInstances(Integer instances) {\n        this.instances = instances;\n    }\n\n    public Boolean getDeleteOnTermination() {\n        return deleteOnTermination;\n    }\n\n    public void setDeleteOnTermination(Boolean deleteOnTermination) {\n        this.deleteOnTermination = deleteOnTermination;\n    }\n}\n",
+  "classDeclarationCode": "@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class ExecutorSpec extends SparkPodSpec {\n\n    private Integer instances;\n\n    @Hidden\n    private Boolean deleteOnTermination;\n\n    public ExecutorSpec() {\n        this.setCores(EXECUTOR_CORE_DEFAULT);\n        this.setMemory(EXECUTOR_MEM_DEFAULT);\n        this.setInstances(NUM_EXECUTORS_DEFAULT);\n    }\n\n    public void copyFrom(ExecutorSpec another) {\n        super.copyFrom(another);\n        if (another.instances != null) {\n            this.instances = another.instances;\n        }\n        this.deleteOnTermination = another.deleteOnTermination;\n    }\n\n    public Integer getInstances() {\n        return instances;\n    }\n\n    public void setInstances(Integer instances) {\n        this.instances = instances;\n    }\n\n    public Boolean getDeleteOnTermination() {\n        return deleteOnTermination;\n    }\n\n    public void setDeleteOnTermination(Boolean deleteOnTermination) {\n        this.deleteOnTermination = deleteOnTermination;\n    }\n}",
+  "subClasses": []
+}

@@ -1,0 +1,57 @@
+{
+  "className": "QueueTokenVerifier",
+  "methodName": "verify",
+  "brief": "public static void verify(String token, List<String> secretCandidates, String queue){}",
+  "methodSignature": "verify(String, List, String)",
+  "sourceCode": "public static void verify(String token, List<String> secretCandidates, String queue) {\n    if (secretCandidates == null || secretCandidates.isEmpty()) {\n      throw new WebApplicationException(\n          \"Server not configured with secrets to verify queue token\",\n          Response.Status.INTERNAL_SERVER_ERROR);\n    }\n\n    Throwable lastException = null;\n    DecodedJWT jwt = null;\n\n    for (int i = 0; i < secretCandidates.size(); i++) {\n      try {\n        String secret = secretCandidates.get(i);\n        jwt = JwtUtils.verifyToken(token, secret);\n      } catch (Throwable ex) {\n        logger.warn(String.format(\"Failed to verify token with secret %s\", i), ex);\n        lastException = ex;\n      }\n    }\n\n    if (jwt == null) {\n      if (lastException == null || !(lastException instanceof JWTVerificationException)) {\n        throw new WebApplicationException(\n            \"Server failed to verify queue token. Please contact service support.\",\n            Response.Status.INTERNAL_SERVER_ERROR);\n      } else {\n        throw new WebApplicationException(\n            String.format(\n                \"Queue token is not valid: %s. Please provide a valid queue token, or contact\"\n                    + \" service support.\",\n                lastException.getMessage()),\n            Response.Status.BAD_REQUEST);\n      }\n    }\n\n    String issuer = jwt.getIssuer();\n    if (issuer == null || issuer.isEmpty()) {\n      throw new WebApplicationException(\n          \"Queue token is not valid: no issuer. Please provide a valid queue token, or contact\"\n              + \" service support.\",\n          Response.Status.BAD_REQUEST);\n    }\n\n    if (!issuer.equalsIgnoreCase(ISSUER_ADMIN) && !issuer.equalsIgnoreCase(ISSUER_AIRFLOW)) {\n      throw new WebApplicationException(\n          String.format(\n              \"Queue token is not valid due to unsupported issuer: %s. Please provide a valid queue\"\n                  + \" token, or contact service support.\",\n              issuer),\n          Response.Status.BAD_REQUEST);\n    }\n\n    Claim claim = jwt.getClaim(CLAIM_ALLOWED_QUEUES);\n    if (claim == null || claim.isNull()) {\n      throw new WebApplicationException(\n          String.format(\n              \"Queue token is not valid due to no claim: %s. Please provide a valid queue token, or\"\n                  + \" contact service support.\",\n              CLAIM_ALLOWED_QUEUES),\n          Response.Status.BAD_REQUEST);\n    }\n\n    Set<String> allowedQueues = new HashSet<>();\n\n    try {\n      String[] values = claim.asArray(String.class);\n      for (String str : values) {\n        allowedQueues.add(str);\n      }\n    } catch (Throwable ex) {\n      logger.warn(String.format(\"Failed to convert claim %s to array\", claim), ex);\n    }\n\n    if (allowedQueues.isEmpty()) {\n      try {\n        List<String> values = claim.asList(String.class);\n        allowedQueues.addAll(values);\n      } catch (Throwable ex) {\n        logger.warn(String.format(\"Failed to convert claim %s to list\", claim), ex);\n      }\n    }\n\n    if (allowedQueues.isEmpty()) {\n      throw new WebApplicationException(\n          \"Queue token has no allowed queues. Please provide a valid queue token, or contact\"\n              + \" service support.\",\n          Response.Status.BAD_REQUEST);\n    }\n\n    if (!allowedQueues.contains(queue)) {\n      throw new WebApplicationException(\n          String.format(\n              \"Queue token does not allow queue %s. Please provide a valid queue token, or contact\"\n                  + \" service support.\",\n              queue),\n          Response.Status.BAD_REQUEST);\n    }\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String",
+    "List<String>",
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "isEmpty()",
+      "format(String, Object[])",
+      "equalsIgnoreCase(String)"
+    ],
+    "java.util.List": [
+      "isEmpty()",
+      "get(int)",
+      "size()"
+    ],
+    "com.apple.spark.util.JwtUtils": [
+      "verifyToken(String, String)"
+    ],
+    "org.slf4j.Logger": [
+      "warn(String, Throwable)"
+    ],
+    "java.lang.Throwable": [
+      "getMessage()"
+    ],
+    "com.auth0.jwt.interfaces.Payload": [
+      "getClaim(String)",
+      "getIssuer()"
+    ],
+    "com.auth0.jwt.interfaces.Claim": [
+      "asArray(Class<T>)",
+      "asList(Class<T>)",
+      "isNull()"
+    ],
+    "java.util.Set": [
+      "isEmpty()",
+      "addAll(Collection<? extends E>)",
+      "contains(Object)",
+      "add(E)"
+    ]
+  },
+  "full_method_info": "// Verify whether the token is a valid queue token using given secrets to decode it.\n// Multiple decoding secrets here is to support secret rotation.\n// The method will also verify the queue token has a claim allowedQueues which contain the given\n// queue.\npublic static void verify(String token, List<String> secretCandidates, String queue) {\n    if (secretCandidates == null || secretCandidates.isEmpty()) {\n        throw new WebApplicationException(\"Server not configured with secrets to verify queue token\", Response.Status.INTERNAL_SERVER_ERROR);\n    }\n    Throwable lastException = null;\n    DecodedJWT jwt = null;\n    for (int i = 0; i < secretCandidates.size(); i++) {\n        try {\n            String secret = secretCandidates.get(i);\n            jwt = JwtUtils.verifyToken(token, secret);\n        } catch (Throwable ex) {\n            logger.warn(String.format(\"Failed to verify token with secret %s\", i), ex);\n            lastException = ex;\n        }\n    }\n    if (jwt == null) {\n        if (lastException == null || !(lastException instanceof JWTVerificationException)) {\n            throw new WebApplicationException(\"Server failed to verify queue token. Please contact service support.\", Response.Status.INTERNAL_SERVER_ERROR);\n        } else {\n            throw new WebApplicationException(String.format(\"Queue token is not valid: %s. Please provide a valid queue token, or contact\" + \" service support.\", lastException.getMessage()), Response.Status.BAD_REQUEST);\n        }\n    }\n    String issuer = jwt.getIssuer();\n    if (issuer == null || issuer.isEmpty()) {\n        throw new WebApplicationException(\"Queue token is not valid: no issuer. Please provide a valid queue token, or contact\" + \" service support.\", Response.Status.BAD_REQUEST);\n    }\n    if (!issuer.equalsIgnoreCase(ISSUER_ADMIN) && !issuer.equalsIgnoreCase(ISSUER_AIRFLOW)) {\n        throw new WebApplicationException(String.format(\"Queue token is not valid due to unsupported issuer: %s. Please provide a valid queue\" + \" token, or contact service support.\", issuer), Response.Status.BAD_REQUEST);\n    }\n    Claim claim = jwt.getClaim(CLAIM_ALLOWED_QUEUES);\n    if (claim == null || claim.isNull()) {\n        throw new WebApplicationException(String.format(\"Queue token is not valid due to no claim: %s. Please provide a valid queue token, or\" + \" contact service support.\", CLAIM_ALLOWED_QUEUES), Response.Status.BAD_REQUEST);\n    }\n    Set<String> allowedQueues = new HashSet<>();\n    try {\n        String[] values = claim.asArray(String.class);\n        for (String str : values) {\n            allowedQueues.add(str);\n        }\n    } catch (Throwable ex) {\n        logger.warn(String.format(\"Failed to convert claim %s to array\", claim), ex);\n    }\n    if (allowedQueues.isEmpty()) {\n        try {\n            List<String> values = claim.asList(String.class);\n            allowedQueues.addAll(values);\n        } catch (Throwable ex) {\n            logger.warn(String.format(\"Failed to convert claim %s to list\", claim), ex);\n        }\n    }\n    if (allowedQueues.isEmpty()) {\n        throw new WebApplicationException(\"Queue token has no allowed queues. Please provide a valid queue token, or contact\" + \" service support.\", Response.Status.BAD_REQUEST);\n    }\n    if (!allowedQueues.contains(queue)) {\n        throw new WebApplicationException(String.format(\"Queue token does not allow queue %s. Please provide a valid queue token, or contact\" + \" service support.\", queue), Response.Status.BAD_REQUEST);\n    }\n}",
+  "method_comment": " queue.",
+  "method_annotation": ""
+}

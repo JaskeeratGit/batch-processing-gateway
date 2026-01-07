@@ -1,0 +1,12 @@
+[ERROR] COMPILATION ERROR : 
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/BPGApplication_main_0_0_Test_testMain_withSystemProperty_false_invokesMainPath.java:[134,1] duplicate class: com.apple.spark.BuildInfo
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.8.1:testCompile (default-testCompile) on project bpg: Compilation failure
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/BPGApplication_main_0_0_Test_testMain_withSystemProperty_false_invokesMainPath.java:[134,1] duplicate class: com.apple.spark.BuildInfo
+[ERROR] 
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

@@ -1,0 +1,22 @@
+{
+  "className": "Builder",
+  "methodName": "withType",
+  "brief": "public Builder withType(String type){}",
+  "methodSignature": "withType(String)",
+  "sourceCode": "public Builder withType(String type) {\n      this.sparkApplicationSpec.type = type;\n      return this;\n    }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": []
+  },
+  "full_method_info": "public Builder withType(String type) {\n    this.sparkApplicationSpec.type = type;\n    return this;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

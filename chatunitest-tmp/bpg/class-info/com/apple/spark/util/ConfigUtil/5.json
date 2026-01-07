@@ -1,0 +1,28 @@
+{
+  "className": "ConfigUtil",
+  "methodName": "readVersion",
+  "brief": "public static VersionInfo readVersion(){}",
+  "methodSignature": "readVersion()",
+  "sourceCode": "public static VersionInfo readVersion() {\n    VersionInfo verInfo = new VersionInfo();\n    try {\n      InputStream in = ConfigUtil.class.getResourceAsStream(\"/version.txt\");\n      ObjectMapper mapper_yaml = new ObjectMapper(new YAMLFactory());\n      verInfo = mapper_yaml.readValue(in, VersionInfo.class);\n    } catch (Exception e) {\n      logger.error(\"version.txt not found\");\n    }\n    return verInfo;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {
+    "java.lang.Class": [
+      "getResourceAsStream(String)"
+    ],
+    "com.fasterxml.jackson.databind.ObjectMapper": [
+      "readValue(InputStream, Class<T>)"
+    ],
+    "org.slf4j.Logger": [
+      "error(String)"
+    ]
+  },
+  "full_method_info": "public static VersionInfo readVersion() {\n    VersionInfo verInfo = new VersionInfo();\n    try {\n        InputStream in = ConfigUtil.class.getResourceAsStream(\"/version.txt\");\n        ObjectMapper mapper_yaml = new ObjectMapper(new YAMLFactory());\n        verInfo = mapper_yaml.readValue(in, VersionInfo.class);\n    } catch (Exception e) {\n        logger.error(\"version.txt not found\");\n    }\n    return verInfo;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

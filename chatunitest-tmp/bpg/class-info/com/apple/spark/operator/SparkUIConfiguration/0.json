@@ -1,0 +1,18 @@
+{
+  "className": "SparkUIConfiguration",
+  "methodName": "getServicePort",
+  "brief": "public Integer getServicePort(){}",
+  "methodSignature": "getServicePort()",
+  "sourceCode": "public Integer getServicePort() {\n    return servicePort;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public Integer getServicePort() {\n    return servicePort;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

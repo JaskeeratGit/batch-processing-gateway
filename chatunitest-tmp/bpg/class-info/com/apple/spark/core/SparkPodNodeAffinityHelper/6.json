@@ -1,0 +1,42 @@
+{
+  "className": "SparkPodNodeAffinityHelper",
+  "methodName": "applyExecutorNodeLabelAffinity",
+  "brief": "private static void applyExecutorNodeLabelAffinity(\n      final List<NodeSelectorRequirement> matchExpressions,\n      final SubmitApplicationRequest request,\n      final AppConfig appConfig,\n      final String parentQueue){}",
+  "methodSignature": "applyExecutorNodeLabelAffinity(List, SubmitApplicationRequest, AppConfig, String)",
+  "sourceCode": "private static void applyExecutorNodeLabelAffinity(\n      final List<NodeSelectorRequirement> matchExpressions,\n      final SubmitApplicationRequest request,\n      final AppConfig appConfig,\n      final String parentQueue) {\n\n    List<String> executorNodeLabelValues = new ArrayList<>();\n\n    if (request.getSpotInstance()) {\n      executorNodeLabelValues = getExecutorSpotNodeLabelValuesForQueue(appConfig, parentQueue);\n    } else {\n      executorNodeLabelValues = getExecutorNodeLabelValuesForQueue(appConfig, parentQueue);\n    }\n\n    String nodeLabelKey = getExecutorNodeLabelKeyForQueue(appConfig, parentQueue);\n\n    if (executorNodeLabelValues == null || executorNodeLabelValues.isEmpty()) {\n      return;\n    }\n    // set hard requiredDuringSchedulingIgnoredDuringExecutionTerm to executor\n    NodeSelectorRequirement nodeSelectorRequirement =\n        new NodeSelectorRequirement(\n            nodeLabelKey,\n            NodeSelectorOperator.NodeSelectorOpIn.toString(),\n            executorNodeLabelValues.toArray(new String[0]));\n\n    matchExpressions.add(nodeSelectorRequirement);\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "List<NodeSelectorRequirement>",
+    "SubmitApplicationRequest",
+    "AppConfig",
+    "String"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.api.SubmitApplicationRequest": [
+      "getSpotInstance()"
+    ],
+    "com.apple.spark.AppConfig": [],
+    "java.lang.String": [],
+    "com.apple.spark.core.SparkPodNodeAffinityHelper": [
+      "getExecutorSpotNodeLabelValuesForQueue(AppConfig, String)",
+      "getExecutorNodeLabelKeyForQueue(AppConfig, String)",
+      "getExecutorNodeLabelValuesForQueue(AppConfig, String)"
+    ],
+    "java.util.List": [
+      "toArray(T[])",
+      "isEmpty()",
+      "add(E)"
+    ],
+    "com.apple.spark.operator.NodeSelectorOperator": [
+      "toString()"
+    ]
+  },
+  "full_method_info": "private static void applyExecutorNodeLabelAffinity(final List<NodeSelectorRequirement> matchExpressions, final SubmitApplicationRequest request, final AppConfig appConfig, final String parentQueue) {\n    List<String> executorNodeLabelValues = new ArrayList<>();\n    if (request.getSpotInstance()) {\n        executorNodeLabelValues = getExecutorSpotNodeLabelValuesForQueue(appConfig, parentQueue);\n    } else {\n        executorNodeLabelValues = getExecutorNodeLabelValuesForQueue(appConfig, parentQueue);\n    }\n    String nodeLabelKey = getExecutorNodeLabelKeyForQueue(appConfig, parentQueue);\n    if (executorNodeLabelValues == null || executorNodeLabelValues.isEmpty()) {\n        return;\n    }\n    // set hard requiredDuringSchedulingIgnoredDuringExecutionTerm to executor\n    NodeSelectorRequirement nodeSelectorRequirement = new NodeSelectorRequirement(nodeLabelKey, NodeSelectorOperator.NodeSelectorOpIn.toString(), executorNodeLabelValues.toArray(new String[0]));\n    matchExpressions.add(nodeSelectorRequirement);\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

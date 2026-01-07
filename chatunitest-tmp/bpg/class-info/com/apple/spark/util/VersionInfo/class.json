@@ -1,0 +1,63 @@
+{
+  "fullClassName": "com.apple.spark.util.VersionInfo",
+  "className": "VersionInfo",
+  "index": 65,
+  "modifier": "[public ]",
+  "extend": "[]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.util",
+  "packageDeclaration": "package com.apple.spark.util;",
+  "classSignature": "public class VersionInfo",
+  "hasConstructor": false,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [],
+  "fields": [
+    "private String version;",
+    "private String gitCommit;",
+    "private String buildTime;"
+  ],
+  "superClasses": [],
+  "implementedTypes": [],
+  "methodSigs": {
+    "getVersion()": "0",
+    "setVersion(String)": "1",
+    "getGitCommit()": "2",
+    "setGitCommit(String)": "3",
+    "getBuildTime()": "4",
+    "setBuildTime(String)": "5",
+    "toString()": "6"
+  },
+  "methodsBrief": [
+    "public String getVersion(){}",
+    "public void setVersion(String version){}",
+    "public String getGitCommit(){}",
+    "public void setGitCommit(String gitCommit){}",
+    "public String getBuildTime(){}",
+    "public void setBuildTime(String buildTime){}",
+    "public String toString(){}"
+  ],
+  "constructorSigs": [],
+  "constructorBrief": [],
+  "getterSetterSigs": [
+    "getVersion()",
+    "setVersion(String)",
+    "getGitCommit()",
+    "setGitCommit(String)",
+    "getBuildTime()",
+    "setBuildTime(String)"
+  ],
+  "getterSetterBrief": [
+    "public String getVersion(){}",
+    "public void setVersion(String version){}",
+    "public String getGitCommit(){}",
+    "public void setGitCommit(String gitCommit){}",
+    "public String getBuildTime(){}",
+    "public void setBuildTime(String buildTime){}"
+  ],
+  "constructorDeps": {},
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.util;\n\npublic class VersionInfo {\n\n    private String version;\n\n    private String gitCommit;\n\n    private String buildTime;\n\n    public String getVersion() {\n        return version;\n    }\n\n    public void setVersion(String version) {\n        this.version = version;\n    }\n\n    public String getGitCommit() {\n        return gitCommit;\n    }\n\n    public void setGitCommit(String gitCommit) {\n        this.gitCommit = gitCommit;\n    }\n\n    public String getBuildTime() {\n        return buildTime;\n    }\n\n    public void setBuildTime(String buildTime) {\n        this.buildTime = buildTime;\n    }\n\n    public String toString() {\n        return \"version: \" + version + \", gitCommit: \" + gitCommit + \", buildTime: \" + buildTime;\n    }\n}\n",
+  "classDeclarationCode": "public class VersionInfo {\n\n    private String version;\n\n    private String gitCommit;\n\n    private String buildTime;\n\n    public String getVersion() {\n        return version;\n    }\n\n    public void setVersion(String version) {\n        this.version = version;\n    }\n\n    public String getGitCommit() {\n        return gitCommit;\n    }\n\n    public void setGitCommit(String gitCommit) {\n        this.gitCommit = gitCommit;\n    }\n\n    public String getBuildTime() {\n        return buildTime;\n    }\n\n    public void setBuildTime(String buildTime) {\n        this.buildTime = buildTime;\n    }\n\n    public String toString() {\n        return \"version: \" + version + \", gitCommit: \" + gitCommit + \", buildTime: \" + buildTime;\n    }\n}",
+  "subClasses": []
+}

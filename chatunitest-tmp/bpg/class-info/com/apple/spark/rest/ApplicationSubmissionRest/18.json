@@ -1,0 +1,75 @@
+{
+  "className": "ApplicationSubmissionRest",
+  "methodName": "ApplicationSubmissionRest",
+  "brief": "public ApplicationSubmissionRest(AppConfig appConfig, MeterRegistry meterRegistry){}",
+  "methodSignature": "ApplicationSubmissionRest(AppConfig, MeterRegistry)",
+  "sourceCode": "public ApplicationSubmissionRest(AppConfig appConfig, MeterRegistry meterRegistry) {\n    super(appConfig, meterRegistry);\n    this.registry = SharedMetricRegistries.getDefault();\n\n    String dbConnectionString = null;\n    String dbUser = null;\n    String dbPassword = null;\n    String dbName = null;\n\n    if (appConfig.getDbStorageSOPS() != null) {\n      dbConnectionString = appConfig.getDbStorageSOPS().getConnectionString();\n      dbUser = appConfig.getDbStorageSOPS().getUser();\n      dbPassword = appConfig.getDbStorageSOPS().getPasswordDecodedValue();\n      dbName = appConfig.getDbStorageSOPS().getDbName();\n    }\n\n    this.logDao = new LogDao(dbConnectionString, dbUser, dbPassword, dbName, meterRegistry);\n\n    if (appConfig.getStatusCacheExpireMillis() != null) {\n      statusCacheExpireMillis = appConfig.getStatusCacheExpireMillis();\n    } else {\n      statusCacheExpireMillis = DEFAULT_STATUS_CACHE_EXPIRE_MILLIS;\n    }\n    logger.info(\"Creating status cache with expire millis: {}\", statusCacheExpireMillis);\n\n    CacheLoader<String, GetSubmissionStatusResponseCacheValue> loader;\n    loader =\n        new CacheLoader<String, GetSubmissionStatusResponseCacheValue>() {\n          @Override\n          public GetSubmissionStatusResponseCacheValue load(String submissionId) {\n            requestCounters.increment(STATUS_CACHE_LOAD);\n            AppConfig.SparkCluster sparkCluster = getSparkCluster(submissionId);\n            try {\n              GetSubmissionStatusResponse response =\n                  getStatusImplWithoutCache(\n                      getSparkApplicationResource(submissionId), submissionId, sparkCluster);\n              return new GetSubmissionStatusResponseCacheValue(response);\n            } catch (Throwable ex) {\n              requestCounters.increment(\n                  STATUS_CACHE_LOAD_FAILURE, Tag.of(\"exception\", ex.getClass().getSimpleName()));\n              logger.warn(\n                  String.format(\"Failed to load status from Kubernetes for %s\", submissionId), ex);\n              if (ExceptionUtils.isTooManyRequest(ex)) {\n                GetSubmissionStatusResponse response = new GetSubmissionStatusResponse();\n                response.setApplicationState(UNKNOWN_STATE);\n                response.setApplicationErrorMessage(ExceptionUtils.getExceptionNameAndMessage(ex));\n                return new GetSubmissionStatusResponseCacheValue(response);\n              } else {\n                return new GetSubmissionStatusResponseCacheValue(ex);\n              }\n            }\n          }\n        };\n\n    statusCache =\n        CacheBuilder.newBuilder()\n            .expireAfterWrite(statusCacheExpireMillis, TimeUnit.MILLISECONDS)\n            .build(loader);\n  }",
+  "useField": true,
+  "isConstructor": true,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "AppConfig",
+    "MeterRegistry"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.AppConfig": [
+      "getStatusCacheExpireMillis()",
+      "getDbStorageSOPS()"
+    ],
+    "io.micrometer.core.instrument.MeterRegistry": [],
+    "com.codahale.metrics.SharedMetricRegistries": [
+      "getDefault()"
+    ],
+    "com.apple.spark.AppConfig.DBStorage": [
+      "getUser()",
+      "getConnectionString()",
+      "getDbName()",
+      "getPasswordDecodedValue()"
+    ],
+    "org.slf4j.Logger": [
+      "warn(String, Throwable)",
+      "info(String, Object)"
+    ],
+    "com.apple.spark.util.CounterMetricContainer": [
+      "increment(String, Tag[])"
+    ],
+    "com.apple.spark.rest.RestBase": [
+      "getSparkApplicationResource(String)",
+      "getSparkCluster(String)"
+    ],
+    "com.apple.spark.rest.ApplicationSubmissionRest": [
+      "getStatusImplWithoutCache(SparkApplication, String, SparkCluster)"
+    ],
+    "io.micrometer.core.instrument.Tag": [
+      "of(String, String)"
+    ],
+    "java.lang.Class": [
+      "getSimpleName()"
+    ],
+    "java.lang.Object": [
+      "getClass()"
+    ],
+    "java.lang.String": [
+      "format(String, Object[])"
+    ],
+    "com.apple.spark.util.ExceptionUtils": [
+      "isTooManyRequest(Throwable)",
+      "getExceptionNameAndMessage(Throwable)"
+    ],
+    "com.apple.spark.api.SubmissionStatus": [
+      "setApplicationErrorMessage(String)",
+      "setApplicationState(String)"
+    ],
+    "com.google.common.cache.CacheBuilder": [
+      "expireAfterWrite(long, TimeUnit)",
+      "newBuilder()",
+      "build(CacheLoader<? super K1, V1>)"
+    ]
+  },
+  "full_method_info": "public ApplicationSubmissionRest(AppConfig appConfig, MeterRegistry meterRegistry) {\n    super(appConfig, meterRegistry);\n    this.registry = SharedMetricRegistries.getDefault();\n    String dbConnectionString = null;\n    String dbUser = null;\n    String dbPassword = null;\n    String dbName = null;\n    if (appConfig.getDbStorageSOPS() != null) {\n        dbConnectionString = appConfig.getDbStorageSOPS().getConnectionString();\n        dbUser = appConfig.getDbStorageSOPS().getUser();\n        dbPassword = appConfig.getDbStorageSOPS().getPasswordDecodedValue();\n        dbName = appConfig.getDbStorageSOPS().getDbName();\n    }\n    this.logDao = new LogDao(dbConnectionString, dbUser, dbPassword, dbName, meterRegistry);\n    if (appConfig.getStatusCacheExpireMillis() != null) {\n        statusCacheExpireMillis = appConfig.getStatusCacheExpireMillis();\n    } else {\n        statusCacheExpireMillis = DEFAULT_STATUS_CACHE_EXPIRE_MILLIS;\n    }\n    logger.info(\"Creating status cache with expire millis: {}\", statusCacheExpireMillis);\n    CacheLoader<String, GetSubmissionStatusResponseCacheValue> loader;\n    loader = new CacheLoader<String, GetSubmissionStatusResponseCacheValue>() {\n\n        @Override\n        public GetSubmissionStatusResponseCacheValue load(String submissionId) {\n            requestCounters.increment(STATUS_CACHE_LOAD);\n            AppConfig.SparkCluster sparkCluster = getSparkCluster(submissionId);\n            try {\n                GetSubmissionStatusResponse response = getStatusImplWithoutCache(getSparkApplicationResource(submissionId), submissionId, sparkCluster);\n                return new GetSubmissionStatusResponseCacheValue(response);\n            } catch (Throwable ex) {\n                requestCounters.increment(STATUS_CACHE_LOAD_FAILURE, Tag.of(\"exception\", ex.getClass().getSimpleName()));\n                logger.warn(String.format(\"Failed to load status from Kubernetes for %s\", submissionId), ex);\n                if (ExceptionUtils.isTooManyRequest(ex)) {\n                    GetSubmissionStatusResponse response = new GetSubmissionStatusResponse();\n                    response.setApplicationState(UNKNOWN_STATE);\n                    response.setApplicationErrorMessage(ExceptionUtils.getExceptionNameAndMessage(ex));\n                    return new GetSubmissionStatusResponseCacheValue(response);\n                } else {\n                    return new GetSubmissionStatusResponseCacheValue(ex);\n                }\n            }\n        }\n    };\n    statusCache = CacheBuilder.newBuilder().expireAfterWrite(statusCacheExpireMillis, TimeUnit.MILLISECONDS).build(loader);\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

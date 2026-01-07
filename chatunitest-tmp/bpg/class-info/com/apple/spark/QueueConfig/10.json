@@ -1,0 +1,22 @@
+{
+  "className": "QueueConfig",
+  "methodName": "setDriverNodeLabelKey",
+  "brief": "public void setDriverNodeLabelKey(String driverNodeLabelKey){}",
+  "methodSignature": "setDriverNodeLabelKey(String)",
+  "sourceCode": "public void setDriverNodeLabelKey(String driverNodeLabelKey) {\n      this.driverNodeLabelKey = driverNodeLabelKey;\n    }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": []
+  },
+  "full_method_info": "public void setDriverNodeLabelKey(String driverNodeLabelKey) {\n    this.driverNodeLabelKey = driverNodeLabelKey;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

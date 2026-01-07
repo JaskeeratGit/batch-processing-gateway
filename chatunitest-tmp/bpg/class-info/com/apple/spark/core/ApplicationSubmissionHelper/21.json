@@ -1,0 +1,28 @@
+{
+  "className": "ApplicationSubmissionHelper",
+  "methodName": "getMemUnitIndexFromRequestStr",
+  "brief": "private static int getMemUnitIndexFromRequestStr(String memStr){}",
+  "methodSignature": "getMemUnitIndexFromRequestStr(String)",
+  "sourceCode": "private static int getMemUnitIndexFromRequestStr(String memStr) {\n    int unitIndex = -1;\n    for (int i = 0; i < memStr.length(); i++) {\n      if (!Character.isDigit(memStr.charAt(i)) && memStr.charAt(i) != '.') {\n        unitIndex = i;\n        break;\n      }\n    }\n    return unitIndex;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "length()",
+      "charAt(int)"
+    ],
+    "java.lang.Character": [
+      "isDigit(char)"
+    ]
+  },
+  "full_method_info": "private static int getMemUnitIndexFromRequestStr(String memStr) {\n    int unitIndex = -1;\n    for (int i = 0; i < memStr.length(); i++) {\n        if (!Character.isDigit(memStr.charAt(i)) && memStr.charAt(i) != '.') {\n            unitIndex = i;\n            break;\n        }\n    }\n    return unitIndex;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

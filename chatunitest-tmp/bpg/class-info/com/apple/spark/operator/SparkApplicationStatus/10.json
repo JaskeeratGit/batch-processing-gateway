@@ -1,0 +1,18 @@
+{
+  "className": "SparkApplicationStatus",
+  "methodName": "getExecutorState",
+  "brief": "public Map<String, String> getExecutorState(){}",
+  "methodSignature": "getExecutorState()",
+  "sourceCode": "public Map<String, String> getExecutorState() {\n    return executorState;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public Map<String, String> getExecutorState() {\n    return executorState;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

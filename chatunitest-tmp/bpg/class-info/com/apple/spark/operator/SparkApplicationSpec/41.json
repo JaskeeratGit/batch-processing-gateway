@@ -1,0 +1,22 @@
+{
+  "className": "SparkApplicationSpec",
+  "methodName": "setPythonVersion",
+  "brief": "public void setPythonVersion(String pythonVersion){}",
+  "methodSignature": "setPythonVersion(String)",
+  "sourceCode": "public void setPythonVersion(String pythonVersion) {\n    this.pythonVersion = pythonVersion;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": []
+  },
+  "full_method_info": "public void setPythonVersion(String pythonVersion) {\n    this.pythonVersion = pythonVersion;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

@@ -1,0 +1,76 @@
+{
+  "fullClassName": "com.apple.spark.operator.NodeAffinity",
+  "className": "NodeAffinity",
+  "index": 28,
+  "modifier": "[public ]",
+  "extend": "[]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.operator",
+  "packageDeclaration": "package com.apple.spark.operator;",
+  "classSignature": "@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class NodeAffinity",
+  "hasConstructor": true,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import com.fasterxml.jackson.annotation.JsonIgnoreProperties;",
+    "import com.fasterxml.jackson.annotation.JsonInclude;"
+  ],
+  "fields": [
+    "private PreferredSchedulingTerm[] preferredDuringSchedulingIgnoredDuringExecution;",
+    "private RequiredDuringSchedulingIgnoredDuringExecutionTerm\n      requiredDuringSchedulingIgnoredDuringExecution;"
+  ],
+  "superClasses": [],
+  "implementedTypes": [],
+  "methodSigs": {
+    "getPreferredDuringSchedulingIgnoredDuringExecution()": "0",
+    "setPreferredDuringSchedulingIgnoredDuringExecution(PreferredSchedulingTerm[])": "1",
+    "getRequiredDuringSchedulingIgnoredDuringExecution()": "2",
+    "setRequiredDuringSchedulingIgnoredDuringExecution(RequiredDuringSchedulingIgnoredDuringExecutionTerm)": "3",
+    "NodeAffinity()": "4",
+    "NodeAffinity(PreferredSchedulingTerm[])": "5",
+    "NodeAffinity(PreferredSchedulingTerm[], RequiredDuringSchedulingIgnoredDuringExecutionTerm)": "6",
+    "NodeAffinity(RequiredDuringSchedulingIgnoredDuringExecutionTerm)": "7"
+  },
+  "methodsBrief": [
+    "public PreferredSchedulingTerm[] getPreferredDuringSchedulingIgnoredDuringExecution(){}",
+    "public void setPreferredDuringSchedulingIgnoredDuringExecution(\n      PreferredSchedulingTerm[] preferredDuringSchedulingIgnoredDuringExecution){}",
+    "public RequiredDuringSchedulingIgnoredDuringExecutionTerm\n      getRequiredDuringSchedulingIgnoredDuringExecution(){}",
+    "public void setRequiredDuringSchedulingIgnoredDuringExecution(\n      RequiredDuringSchedulingIgnoredDuringExecutionTerm\n          requiredDuringSchedulingIgnoredDuringExecution){}",
+    "public NodeAffinity(){}",
+    "public NodeAffinity(PreferredSchedulingTerm[] preferredDuringSchedulingIgnoredDuringExecution){}",
+    "public NodeAffinity(\n      PreferredSchedulingTerm[] preferredDuringSchedulingIgnoredDuringExecution,\n      RequiredDuringSchedulingIgnoredDuringExecutionTerm\n          requiredDuringSchedulingIgnoredDuringExecution){}",
+    "public NodeAffinity(\n      RequiredDuringSchedulingIgnoredDuringExecutionTerm\n          requiredDuringSchedulingIgnoredDuringExecution){}"
+  ],
+  "constructorSigs": [
+    "NodeAffinity()",
+    "NodeAffinity(PreferredSchedulingTerm[])",
+    "NodeAffinity(PreferredSchedulingTerm[], RequiredDuringSchedulingIgnoredDuringExecutionTerm)",
+    "NodeAffinity(RequiredDuringSchedulingIgnoredDuringExecutionTerm)"
+  ],
+  "constructorBrief": [
+    "public NodeAffinity(){}",
+    "public NodeAffinity(PreferredSchedulingTerm[] preferredDuringSchedulingIgnoredDuringExecution){}",
+    "public NodeAffinity(\n      PreferredSchedulingTerm[] preferredDuringSchedulingIgnoredDuringExecution,\n      RequiredDuringSchedulingIgnoredDuringExecutionTerm\n          requiredDuringSchedulingIgnoredDuringExecution){}",
+    "public NodeAffinity(\n      RequiredDuringSchedulingIgnoredDuringExecutionTerm\n          requiredDuringSchedulingIgnoredDuringExecution){}"
+  ],
+  "getterSetterSigs": [
+    "getPreferredDuringSchedulingIgnoredDuringExecution()",
+    "setPreferredDuringSchedulingIgnoredDuringExecution(PreferredSchedulingTerm[])",
+    "getRequiredDuringSchedulingIgnoredDuringExecution()",
+    "setRequiredDuringSchedulingIgnoredDuringExecution(RequiredDuringSchedulingIgnoredDuringExecutionTerm)"
+  ],
+  "getterSetterBrief": [
+    "public PreferredSchedulingTerm[] getPreferredDuringSchedulingIgnoredDuringExecution(){}",
+    "public void setPreferredDuringSchedulingIgnoredDuringExecution(\n      PreferredSchedulingTerm[] preferredDuringSchedulingIgnoredDuringExecution){}",
+    "public RequiredDuringSchedulingIgnoredDuringExecutionTerm\n      getRequiredDuringSchedulingIgnoredDuringExecution(){}",
+    "public void setRequiredDuringSchedulingIgnoredDuringExecution(\n      RequiredDuringSchedulingIgnoredDuringExecutionTerm\n          requiredDuringSchedulingIgnoredDuringExecution){}"
+  ],
+  "constructorDeps": {
+    "com.apple.spark.operator.PreferredSchedulingTerm": [],
+    "com.apple.spark.operator.RequiredDuringSchedulingIgnoredDuringExecutionTerm": []
+  },
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.operator;\n\nimport com.fasterxml.jackson.annotation.JsonIgnoreProperties;\nimport com.fasterxml.jackson.annotation.JsonInclude;\n\n@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class NodeAffinity {\n\n    private PreferredSchedulingTerm[] preferredDuringSchedulingIgnoredDuringExecution;\n\n    private RequiredDuringSchedulingIgnoredDuringExecutionTerm requiredDuringSchedulingIgnoredDuringExecution;\n\n    public NodeAffinity() {\n    }\n\n    public NodeAffinity(PreferredSchedulingTerm[] preferredDuringSchedulingIgnoredDuringExecution) {\n        this.preferredDuringSchedulingIgnoredDuringExecution = preferredDuringSchedulingIgnoredDuringExecution;\n    }\n\n    public NodeAffinity(PreferredSchedulingTerm[] preferredDuringSchedulingIgnoredDuringExecution, RequiredDuringSchedulingIgnoredDuringExecutionTerm requiredDuringSchedulingIgnoredDuringExecution) {\n        this.preferredDuringSchedulingIgnoredDuringExecution = preferredDuringSchedulingIgnoredDuringExecution;\n        this.requiredDuringSchedulingIgnoredDuringExecution = requiredDuringSchedulingIgnoredDuringExecution;\n    }\n\n    public NodeAffinity(RequiredDuringSchedulingIgnoredDuringExecutionTerm requiredDuringSchedulingIgnoredDuringExecution) {\n        this.requiredDuringSchedulingIgnoredDuringExecution = requiredDuringSchedulingIgnoredDuringExecution;\n    }\n\n    public PreferredSchedulingTerm[] getPreferredDuringSchedulingIgnoredDuringExecution() {\n        return preferredDuringSchedulingIgnoredDuringExecution;\n    }\n\n    public void setPreferredDuringSchedulingIgnoredDuringExecution(PreferredSchedulingTerm[] preferredDuringSchedulingIgnoredDuringExecution) {\n        this.preferredDuringSchedulingIgnoredDuringExecution = preferredDuringSchedulingIgnoredDuringExecution;\n    }\n\n    public RequiredDuringSchedulingIgnoredDuringExecutionTerm getRequiredDuringSchedulingIgnoredDuringExecution() {\n        return requiredDuringSchedulingIgnoredDuringExecution;\n    }\n\n    public void setRequiredDuringSchedulingIgnoredDuringExecution(RequiredDuringSchedulingIgnoredDuringExecutionTerm requiredDuringSchedulingIgnoredDuringExecution) {\n        this.requiredDuringSchedulingIgnoredDuringExecution = requiredDuringSchedulingIgnoredDuringExecution;\n    }\n}\n",
+  "classDeclarationCode": "@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class NodeAffinity {\n\n    private PreferredSchedulingTerm[] preferredDuringSchedulingIgnoredDuringExecution;\n\n    private RequiredDuringSchedulingIgnoredDuringExecutionTerm requiredDuringSchedulingIgnoredDuringExecution;\n\n    public NodeAffinity() {\n    }\n\n    public NodeAffinity(PreferredSchedulingTerm[] preferredDuringSchedulingIgnoredDuringExecution) {\n        this.preferredDuringSchedulingIgnoredDuringExecution = preferredDuringSchedulingIgnoredDuringExecution;\n    }\n\n    public NodeAffinity(PreferredSchedulingTerm[] preferredDuringSchedulingIgnoredDuringExecution, RequiredDuringSchedulingIgnoredDuringExecutionTerm requiredDuringSchedulingIgnoredDuringExecution) {\n        this.preferredDuringSchedulingIgnoredDuringExecution = preferredDuringSchedulingIgnoredDuringExecution;\n        this.requiredDuringSchedulingIgnoredDuringExecution = requiredDuringSchedulingIgnoredDuringExecution;\n    }\n\n    public NodeAffinity(RequiredDuringSchedulingIgnoredDuringExecutionTerm requiredDuringSchedulingIgnoredDuringExecution) {\n        this.requiredDuringSchedulingIgnoredDuringExecution = requiredDuringSchedulingIgnoredDuringExecution;\n    }\n\n    public PreferredSchedulingTerm[] getPreferredDuringSchedulingIgnoredDuringExecution() {\n        return preferredDuringSchedulingIgnoredDuringExecution;\n    }\n\n    public void setPreferredDuringSchedulingIgnoredDuringExecution(PreferredSchedulingTerm[] preferredDuringSchedulingIgnoredDuringExecution) {\n        this.preferredDuringSchedulingIgnoredDuringExecution = preferredDuringSchedulingIgnoredDuringExecution;\n    }\n\n    public RequiredDuringSchedulingIgnoredDuringExecutionTerm getRequiredDuringSchedulingIgnoredDuringExecution() {\n        return requiredDuringSchedulingIgnoredDuringExecution;\n    }\n\n    public void setRequiredDuringSchedulingIgnoredDuringExecution(RequiredDuringSchedulingIgnoredDuringExecutionTerm requiredDuringSchedulingIgnoredDuringExecution) {\n        this.requiredDuringSchedulingIgnoredDuringExecution = requiredDuringSchedulingIgnoredDuringExecution;\n    }\n}",
+  "subClasses": []
+}

@@ -1,0 +1,42 @@
+{
+  "fullClassName": "com.apple.spark.security.UserUnauthorizedHandler",
+  "className": "UserUnauthorizedHandler",
+  "index": 49,
+  "modifier": "[public ]",
+  "extend": "[]",
+  "implement": "[UnauthorizedHandler]",
+  "packageName": "com.apple.spark.security",
+  "packageDeclaration": "package com.apple.spark.security;",
+  "classSignature": "public class UserUnauthorizedHandler",
+  "hasConstructor": false,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import com.google.common.collect.ImmutableMap;",
+    "import io.dropwizard.auth.UnauthorizedHandler;",
+    "import javax.ws.rs.core.HttpHeaders;",
+    "import javax.ws.rs.core.Response;"
+  ],
+  "fields": [
+    "private static final String CHALLENGE_FORMAT = \"%s realm=\\\"%s\\\"\";"
+  ],
+  "superClasses": [],
+  "implementedTypes": [
+    "UnauthorizedHandler"
+  ],
+  "methodSigs": {
+    "buildResponse(String, String)": "0"
+  },
+  "methodsBrief": [
+    "@Override\n  public Response buildResponse(String prefix, String realm){}"
+  ],
+  "constructorSigs": [],
+  "constructorBrief": [],
+  "getterSetterSigs": [],
+  "getterSetterBrief": [],
+  "constructorDeps": {},
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.security;\n\nimport com.google.common.collect.ImmutableMap;\nimport io.dropwizard.auth.UnauthorizedHandler;\nimport javax.ws.rs.core.HttpHeaders;\nimport javax.ws.rs.core.Response;\n\npublic class UserUnauthorizedHandler implements UnauthorizedHandler {\n\n    private static final String CHALLENGE_FORMAT = \"%s realm=\\\"%s\\\"\";\n\n    @Override\n    public Response buildResponse(String prefix, String realm) {\n        return Response.status(Response.Status.UNAUTHORIZED).header(HttpHeaders.WWW_AUTHENTICATE, String.format(CHALLENGE_FORMAT, prefix, realm)).entity(ImmutableMap.of(\"code\", \"401\", \"message\", \"HTTP 401 Unauthorized.\")).build();\n    }\n}\n",
+  "classDeclarationCode": "public class UserUnauthorizedHandler implements UnauthorizedHandler {\n\n    private static final String CHALLENGE_FORMAT = \"%s realm=\\\"%s\\\"\";\n\n    @Override\n    public Response buildResponse(String prefix, String realm) {\n        return Response.status(Response.Status.UNAUTHORIZED).header(HttpHeaders.WWW_AUTHENTICATE, String.format(CHALLENGE_FORMAT, prefix, realm)).entity(ImmutableMap.of(\"code\", \"401\", \"message\", \"HTTP 401 Unauthorized.\")).build();\n    }\n}",
+  "subClasses": []
+}

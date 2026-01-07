@@ -1,0 +1,68 @@
+{
+  "className": "ApplicationSubmissionRest",
+  "methodName": "getStatusImplWithoutCache",
+  "brief": "private GetSubmissionStatusResponse getStatusImplWithoutCache(\n      SparkApplication sparkApplication, String submissionId, AppConfig.SparkCluster sparkCluster){}",
+  "methodSignature": "getStatusImplWithoutCache(SparkApplication, String, AppConfig.SparkCluster)",
+  "sourceCode": "private GetSubmissionStatusResponse getStatusImplWithoutCache(\n      SparkApplication sparkApplication, String submissionId, AppConfig.SparkCluster sparkCluster) {\n\n    if (sparkApplication == null) {\n      throw new WebApplicationException(\n          String.format(\"Application submission %s not found\", submissionId),\n          Response.Status.NOT_FOUND);\n    }\n    GetSubmissionStatusResponse response = new GetSubmissionStatusResponse();\n    response.copyFrom(sparkApplication);\n\n    if (!StringUtils.isEmpty(sparkCluster.getSparkUIUrl())\n        && SparkConstants.RUNNING_STATE.equalsIgnoreCase(response.getApplicationState())) {\n      String url = ConfigUtil.getSparkUIUrl(sparkCluster, submissionId);\n      response.setSparkUIUrl(url);\n    }\n\n    // add more information regarding max running time\n    String extraMessage = \"\";\n    if (sparkApplication.getMetadata().getLabels() != null) {\n      String maxRunningMillisLabel =\n          sparkApplication.getMetadata().getLabels().get(MAX_RUNNING_MILLIS_LABEL);\n      if (maxRunningMillisLabel != null && !maxRunningMillisLabel.isEmpty()) {\n        try {\n          long maxRunningMillis = Long.parseLong(maxRunningMillisLabel);\n          if (maxRunningMillis > DEFAULT_MAX_RUNNING_MILLIS) {\n            extraMessage =\n                String.format(\n                    \"(warning: application is configured with custom max running time: %s millis,\"\n                        + \" but might be still killed in certain situations like maintenance)\",\n                    maxRunningMillis);\n          }\n          if (FAILED_STATE.equals(response.getApplicationState())) {\n            if (response.getTerminationTime() != null && response.getCreationTime() != null) {\n              long runningMillis = response.getTerminationTime() - response.getCreationTime();\n              // check whether running time is close to max running time allowed,\n              // if they are close, add extra information in response\n              if (runningMillis >= maxRunningMillis - TimeUnit.MINUTES.toMillis(2)) {\n                extraMessage = \"(application might be killed because of running too long)\";\n              }\n            }\n          }\n        } catch (Throwable ex) {\n          logger.warn(String.format(\"Failed to check max running mills for %s\", submissionId), ex);\n        }\n      }\n    }\n    if (extraMessage != null && !extraMessage.isEmpty()) {\n      String consolidatedMessage = response.getApplicationErrorMessage();\n      if (consolidatedMessage == null) {\n        consolidatedMessage = \"\";\n      } else {\n        consolidatedMessage = consolidatedMessage + \" \";\n      }\n      consolidatedMessage = consolidatedMessage + extraMessage;\n      response.setApplicationErrorMessage(consolidatedMessage);\n    }\n\n    return response;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "SparkApplication",
+    "String",
+    "AppConfig.SparkCluster"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.operator.SparkApplication": [],
+    "java.lang.String": [
+      "equals(Object)",
+      "isEmpty()",
+      "format(String, Object[])",
+      "equalsIgnoreCase(String)"
+    ],
+    "com.apple.spark.api.SubmissionStatus": [
+      "getApplicationState()",
+      "setApplicationErrorMessage(String)",
+      "copyFrom(SparkApplication)",
+      "getCreationTime()",
+      "getTerminationTime()",
+      "getApplicationErrorMessage()"
+    ],
+    "org.apache.commons.lang3.StringUtils": [
+      "isEmpty(CharSequence)"
+    ],
+    "com.apple.spark.AppConfig.SparkCluster": [
+      "getSparkUIUrl()"
+    ],
+    "com.apple.spark.util.ConfigUtil": [
+      "getSparkUIUrl(SparkCluster, String)"
+    ],
+    "com.apple.spark.api.GetSubmissionStatusResponse": [
+      "setSparkUIUrl(String)"
+    ],
+    "io.fabric8.kubernetes.api.model.ObjectMeta": [
+      "getLabels()"
+    ],
+    "io.fabric8.kubernetes.client.CustomResource": [
+      "getMetadata()"
+    ],
+    "java.util.Map": [
+      "get(Object)"
+    ],
+    "java.lang.Long": [
+      "parseLong(String)"
+    ],
+    "java.util.concurrent.TimeUnit": [
+      "toMillis(long)"
+    ],
+    "org.slf4j.Logger": [
+      "warn(String, Throwable)"
+    ]
+  },
+  "full_method_info": "private GetSubmissionStatusResponse getStatusImplWithoutCache(SparkApplication sparkApplication, String submissionId, AppConfig.SparkCluster sparkCluster) {\n    if (sparkApplication == null) {\n        throw new WebApplicationException(String.format(\"Application submission %s not found\", submissionId), Response.Status.NOT_FOUND);\n    }\n    GetSubmissionStatusResponse response = new GetSubmissionStatusResponse();\n    response.copyFrom(sparkApplication);\n    if (!StringUtils.isEmpty(sparkCluster.getSparkUIUrl()) && SparkConstants.RUNNING_STATE.equalsIgnoreCase(response.getApplicationState())) {\n        String url = ConfigUtil.getSparkUIUrl(sparkCluster, submissionId);\n        response.setSparkUIUrl(url);\n    }\n    // add more information regarding max running time\n    String extraMessage = \"\";\n    if (sparkApplication.getMetadata().getLabels() != null) {\n        String maxRunningMillisLabel = sparkApplication.getMetadata().getLabels().get(MAX_RUNNING_MILLIS_LABEL);\n        if (maxRunningMillisLabel != null && !maxRunningMillisLabel.isEmpty()) {\n            try {\n                long maxRunningMillis = Long.parseLong(maxRunningMillisLabel);\n                if (maxRunningMillis > DEFAULT_MAX_RUNNING_MILLIS) {\n                    extraMessage = String.format(\"(warning: application is configured with custom max running time: %s millis,\" + \" but might be still killed in certain situations like maintenance)\", maxRunningMillis);\n                }\n                if (FAILED_STATE.equals(response.getApplicationState())) {\n                    if (response.getTerminationTime() != null && response.getCreationTime() != null) {\n                        long runningMillis = response.getTerminationTime() - response.getCreationTime();\n                        // check whether running time is close to max running time allowed,\n                        // if they are close, add extra information in response\n                        if (runningMillis >= maxRunningMillis - TimeUnit.MINUTES.toMillis(2)) {\n                            extraMessage = \"(application might be killed because of running too long)\";\n                        }\n                    }\n                }\n            } catch (Throwable ex) {\n                logger.warn(String.format(\"Failed to check max running mills for %s\", submissionId), ex);\n            }\n        }\n    }\n    if (extraMessage != null && !extraMessage.isEmpty()) {\n        String consolidatedMessage = response.getApplicationErrorMessage();\n        if (consolidatedMessage == null) {\n            consolidatedMessage = \"\";\n        } else {\n            consolidatedMessage = consolidatedMessage + \" \";\n        }\n        consolidatedMessage = consolidatedMessage + extraMessage;\n        response.setApplicationErrorMessage(consolidatedMessage);\n    }\n    return response;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

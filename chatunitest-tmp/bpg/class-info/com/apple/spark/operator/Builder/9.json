@@ -1,0 +1,22 @@
+{
+  "className": "Builder",
+  "methodName": "withImagePullPolicy",
+  "brief": "public Builder withImagePullPolicy(String imagePullPolicy){}",
+  "methodSignature": "withImagePullPolicy(String)",
+  "sourceCode": "public Builder withImagePullPolicy(String imagePullPolicy) {\n      this.sparkApplicationSpec.imagePullPolicy = imagePullPolicy;\n      return this;\n    }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": []
+  },
+  "full_method_info": "public Builder withImagePullPolicy(String imagePullPolicy) {\n    this.sparkApplicationSpec.imagePullPolicy = imagePullPolicy;\n    return this;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

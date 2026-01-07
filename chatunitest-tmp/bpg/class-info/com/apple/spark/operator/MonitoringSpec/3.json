@@ -1,0 +1,22 @@
+{
+  "className": "MonitoringSpec",
+  "methodName": "setExposeExecutorMetrics",
+  "brief": "public void setExposeExecutorMetrics(Boolean exposeExecutorMetrics){}",
+  "methodSignature": "setExposeExecutorMetrics(Boolean)",
+  "sourceCode": "public void setExposeExecutorMetrics(Boolean exposeExecutorMetrics) {\n    this.exposeExecutorMetrics = exposeExecutorMetrics;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "Boolean"
+  ],
+  "dependentMethods": {
+    "java.lang.Boolean": []
+  },
+  "full_method_info": "public void setExposeExecutorMetrics(Boolean exposeExecutorMetrics) {\n    this.exposeExecutorMetrics = exposeExecutorMetrics;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

@@ -1,0 +1,22 @@
+{
+  "className": "RestartPolicy",
+  "methodName": "setOnSubmissionFailureRetries",
+  "brief": "public void setOnSubmissionFailureRetries(Integer onSubmissionFailureRetries){}",
+  "methodSignature": "setOnSubmissionFailureRetries(Integer)",
+  "sourceCode": "public void setOnSubmissionFailureRetries(Integer onSubmissionFailureRetries) {\n    this.onSubmissionFailureRetries = onSubmissionFailureRetries;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "Integer"
+  ],
+  "dependentMethods": {
+    "java.lang.Integer": []
+  },
+  "full_method_info": "public void setOnSubmissionFailureRetries(Integer onSubmissionFailureRetries) {\n    this.onSubmissionFailureRetries = onSubmissionFailureRetries;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

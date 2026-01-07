@@ -1,0 +1,22 @@
+{
+  "className": "SparkCluster",
+  "methodName": "getCaCertDataSOPSDecoded",
+  "brief": "public String getCaCertDataSOPSDecoded(){}",
+  "methodSignature": "getCaCertDataSOPSDecoded()",
+  "sourceCode": "public String getCaCertDataSOPSDecoded() {\n      return ConfigValue.tryGetEncodedSecretValue(caCertDataSOPS);\n    }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {
+    "com.apple.spark.core.ConfigValue": [
+      "tryGetEncodedSecretValue(String)"
+    ]
+  },
+  "full_method_info": "public String getCaCertDataSOPSDecoded() {\n    return ConfigValue.tryGetEncodedSecretValue(caCertDataSOPS);\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

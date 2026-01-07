@@ -1,0 +1,165 @@
+[ERROR] COMPILATION ERROR : 
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[35,31] cannot find symbol
+  symbol:   variable ISSUER_ADMIN
+  location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[37,31] cannot find symbol
+  symbol:   variable CLAIM_ALLOWED_QUEUES
+  location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[39,23] incompatible types: no instance(s) of type variable(s) T exist so that java.util.List<T> conforms to java.util.Map<java.lang.String,java.lang.String>
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[44,31] cannot find symbol
+  symbol:   variable ISSUER_ADMIN
+  location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[46,31] cannot find symbol
+  symbol:   variable CLAIM_ALLOWED_QUEUES
+  location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[48,23] incompatible types: no instance(s) of type variable(s) T exist so that java.util.List<T> conforms to java.util.Map<java.lang.String,java.lang.String>
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[56,31] cannot find symbol
+  symbol:   variable ISSUER_ADMIN
+  location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[58,31] cannot find symbol
+  symbol:   variable CLAIM_ALLOWED_QUEUES
+  location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[60,23] incompatible types: no instance(s) of type variable(s) T exist so that java.util.List<T> conforms to java.util.Map<java.lang.String,java.lang.String>
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[65,31] cannot find symbol
+  symbol:   variable ISSUER_ADMIN
+  location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[67,31] cannot find symbol
+  symbol:   variable CLAIM_ALLOWED_QUEUES
+  location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[69,23] incompatible types: no instance(s) of type variable(s) T exist so that java.util.List<T> conforms to java.util.Map<java.lang.String,java.lang.String>
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[77,31] cannot find symbol
+  symbol:   variable ISSUER_ADMIN
+  location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[79,31] cannot find symbol
+  symbol:   variable CLAIM_ALLOWED_QUEUES
+  location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[81,23] incompatible types: no instance(s) of type variable(s) T exist so that java.util.List<T> conforms to java.util.Map<java.lang.String,java.lang.String>
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[86,31] cannot find symbol
+  symbol:   variable ISSUER_ADMIN
+  location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[88,31] cannot find symbol
+  symbol:   variable CLAIM_ALLOWED_QUEUES
+  location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[90,23] incompatible types: no instance(s) of type variable(s) T exist so that java.util.List<T> conforms to java.util.Map<java.lang.String,java.lang.String>
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[98,31] cannot find symbol
+  symbol:   variable ISSUER_AIRFLOW
+  location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[100,31] cannot find symbol
+  symbol:   variable CLAIM_ALLOWED_QUEUES
+  location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[102,23] incompatible types: no instance(s) of type variable(s) T exist so that java.util.List<T> conforms to java.util.Map<java.lang.String,java.lang.String>
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[110,31] cannot find symbol
+  symbol:   variable ISSUER_ADMIN
+  location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[112,31] cannot find symbol
+  symbol:   variable CLAIM_ALLOWED_QUEUES
+  location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[114,23] incompatible types: no instance(s) of type variable(s) T exist so that java.util.List<T> conforms to java.util.Map<java.lang.String,java.lang.String>
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[124,31] cannot find symbol
+  symbol:   variable CLAIM_ALLOWED_QUEUES
+  location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[126,23] incompatible types: no instance(s) of type variable(s) T exist so that java.util.List<T> conforms to java.util.Map<java.lang.String,java.lang.String>
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[134,31] cannot find symbol
+  symbol:   variable ISSUER_ADMIN
+  location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[138,23] incompatible types: no instance(s) of type variable(s) T exist so that java.util.List<T> conforms to java.util.Map<java.lang.String,java.lang.String>
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[146,31] cannot find symbol
+  symbol:   variable ISSUER_ADMIN
+  location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[148,31] cannot find symbol
+  symbol:   variable CLAIM_ALLOWED_QUEUES
+  location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[150,23] incompatible types: no instance(s) of type variable(s) T exist so that java.util.List<T> conforms to java.util.Map<java.lang.String,java.lang.String>
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[158,31] cannot find symbol
+  symbol:   variable ISSUER_ADMIN
+  location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[160,31] cannot find symbol
+  symbol:   variable CLAIM_ALLOWED_QUEUES
+  location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[162,23] incompatible types: no instance(s) of type variable(s) T exist so that java.util.List<T> conforms to java.util.Map<java.lang.String,java.lang.String>
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.8.1:testCompile (default-testCompile) on project bpg: Compilation failure: Compilation failure: 
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[35,31] cannot find symbol
+[ERROR]   symbol:   variable ISSUER_ADMIN
+[ERROR]   location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[37,31] cannot find symbol
+[ERROR]   symbol:   variable CLAIM_ALLOWED_QUEUES
+[ERROR]   location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[39,23] incompatible types: no instance(s) of type variable(s) T exist so that java.util.List<T> conforms to java.util.Map<java.lang.String,java.lang.String>
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[44,31] cannot find symbol
+[ERROR]   symbol:   variable ISSUER_ADMIN
+[ERROR]   location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[46,31] cannot find symbol
+[ERROR]   symbol:   variable CLAIM_ALLOWED_QUEUES
+[ERROR]   location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[48,23] incompatible types: no instance(s) of type variable(s) T exist so that java.util.List<T> conforms to java.util.Map<java.lang.String,java.lang.String>
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[56,31] cannot find symbol
+[ERROR]   symbol:   variable ISSUER_ADMIN
+[ERROR]   location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[58,31] cannot find symbol
+[ERROR]   symbol:   variable CLAIM_ALLOWED_QUEUES
+[ERROR]   location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[60,23] incompatible types: no instance(s) of type variable(s) T exist so that java.util.List<T> conforms to java.util.Map<java.lang.String,java.lang.String>
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[65,31] cannot find symbol
+[ERROR]   symbol:   variable ISSUER_ADMIN
+[ERROR]   location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[67,31] cannot find symbol
+[ERROR]   symbol:   variable CLAIM_ALLOWED_QUEUES
+[ERROR]   location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[69,23] incompatible types: no instance(s) of type variable(s) T exist so that java.util.List<T> conforms to java.util.Map<java.lang.String,java.lang.String>
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[77,31] cannot find symbol
+[ERROR]   symbol:   variable ISSUER_ADMIN
+[ERROR]   location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[79,31] cannot find symbol
+[ERROR]   symbol:   variable CLAIM_ALLOWED_QUEUES
+[ERROR]   location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[81,23] incompatible types: no instance(s) of type variable(s) T exist so that java.util.List<T> conforms to java.util.Map<java.lang.String,java.lang.String>
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[86,31] cannot find symbol
+[ERROR]   symbol:   variable ISSUER_ADMIN
+[ERROR]   location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[88,31] cannot find symbol
+[ERROR]   symbol:   variable CLAIM_ALLOWED_QUEUES
+[ERROR]   location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[90,23] incompatible types: no instance(s) of type variable(s) T exist so that java.util.List<T> conforms to java.util.Map<java.lang.String,java.lang.String>
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[98,31] cannot find symbol
+[ERROR]   symbol:   variable ISSUER_AIRFLOW
+[ERROR]   location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[100,31] cannot find symbol
+[ERROR]   symbol:   variable CLAIM_ALLOWED_QUEUES
+[ERROR]   location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[102,23] incompatible types: no instance(s) of type variable(s) T exist so that java.util.List<T> conforms to java.util.Map<java.lang.String,java.lang.String>
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[110,31] cannot find symbol
+[ERROR]   symbol:   variable ISSUER_ADMIN
+[ERROR]   location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[112,31] cannot find symbol
+[ERROR]   symbol:   variable CLAIM_ALLOWED_QUEUES
+[ERROR]   location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[114,23] incompatible types: no instance(s) of type variable(s) T exist so that java.util.List<T> conforms to java.util.Map<java.lang.String,java.lang.String>
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[124,31] cannot find symbol
+[ERROR]   symbol:   variable CLAIM_ALLOWED_QUEUES
+[ERROR]   location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[126,23] incompatible types: no instance(s) of type variable(s) T exist so that java.util.List<T> conforms to java.util.Map<java.lang.String,java.lang.String>
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[134,31] cannot find symbol
+[ERROR]   symbol:   variable ISSUER_ADMIN
+[ERROR]   location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[138,23] incompatible types: no instance(s) of type variable(s) T exist so that java.util.List<T> conforms to java.util.Map<java.lang.String,java.lang.String>
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[146,31] cannot find symbol
+[ERROR]   symbol:   variable ISSUER_ADMIN
+[ERROR]   location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[148,31] cannot find symbol
+[ERROR]   symbol:   variable CLAIM_ALLOWED_QUEUES
+[ERROR]   location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[150,23] incompatible types: no instance(s) of type variable(s) T exist so that java.util.List<T> conforms to java.util.Map<java.lang.String,java.lang.String>
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[158,31] cannot find symbol
+[ERROR]   symbol:   variable ISSUER_ADMIN
+[ERROR]   location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[160,31] cannot find symbol
+[ERROR]   symbol:   variable CLAIM_ALLOWED_QUEUES
+[ERROR]   location: class com.apple.spark.core.QueueTokenVerifier
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[162,23] incompatible types: no instance(s) of type variable(s) T exist so that java.util.List<T> conforms to java.util.Map<java.lang.String,java.lang.String>
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

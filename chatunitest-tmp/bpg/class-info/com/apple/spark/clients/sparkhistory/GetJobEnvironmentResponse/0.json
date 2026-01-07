@@ -1,0 +1,18 @@
+{
+  "className": "GetJobEnvironmentResponse",
+  "methodName": "getSparkProperties",
+  "brief": "public List<List<String>> getSparkProperties(){}",
+  "methodSignature": "getSparkProperties()",
+  "sourceCode": "public List<List<String>> getSparkProperties() {\n    return sparkProperties;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public List<List<String>> getSparkProperties() {\n    return sparkProperties;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

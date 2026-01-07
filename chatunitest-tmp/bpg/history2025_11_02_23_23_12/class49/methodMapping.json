@@ -1,0 +1,8 @@
+{
+  "method0": {
+    "methodName": "buildResponse",
+    "signature": "buildResponse(String, String)",
+    "className": "UserUnauthorizedHandler",
+    "packageName": "com.apple.spark.security"
+  }
+}

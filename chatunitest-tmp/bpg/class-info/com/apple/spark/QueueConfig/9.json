@@ -1,0 +1,18 @@
+{
+  "className": "QueueConfig",
+  "methodName": "getDriverNodeLabelKey",
+  "brief": "public String getDriverNodeLabelKey(){}",
+  "methodSignature": "getDriverNodeLabelKey()",
+  "sourceCode": "public String getDriverNodeLabelKey() {\n      return driverNodeLabelKey;\n    }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public String getDriverNodeLabelKey() {\n    return driverNodeLabelKey;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

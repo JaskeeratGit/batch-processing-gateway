@@ -1,0 +1,47 @@
+{
+  "attempt0": {
+    "testClassName": "SparkClusterHelper_getParentQueue_3_0_Test",
+    "fullName": "com.apple.spark.core.SparkClusterHelper_getParentQueue_3_0_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/SparkClusterHelper_getParentQueue_3_0_Test.java",
+    "className": "SparkClusterHelper",
+    "packageName": "com.apple.spark.core",
+    "methodName": "getParentQueue",
+    "methodSig": "getParentQueue(String)"
+  },
+  "attempt1": {
+    "testClassName": "SparkClusterHelper_getParentQueue_3_1_Test",
+    "fullName": "com.apple.spark.core.SparkClusterHelper_getParentQueue_3_1_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/SparkClusterHelper_getParentQueue_3_0_Test.java",
+    "className": "SparkClusterHelper",
+    "packageName": "com.apple.spark.core",
+    "methodName": "getParentQueue",
+    "methodSig": "getParentQueue(String)"
+  },
+  "attempt2": {
+    "testClassName": "SparkClusterHelper_getParentQueue_3_2_Test",
+    "fullName": "com.apple.spark.core.SparkClusterHelper_getParentQueue_3_2_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/SparkClusterHelper_getParentQueue_3_0_Test.java",
+    "className": "SparkClusterHelper",
+    "packageName": "com.apple.spark.core",
+    "methodName": "getParentQueue",
+    "methodSig": "getParentQueue(String)"
+  },
+  "attempt3": {
+    "testClassName": "SparkClusterHelper_getParentQueue_3_3_Test",
+    "fullName": "com.apple.spark.core.SparkClusterHelper_getParentQueue_3_3_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/SparkClusterHelper_getParentQueue_3_0_Test.java",
+    "className": "SparkClusterHelper",
+    "packageName": "com.apple.spark.core",
+    "methodName": "getParentQueue",
+    "methodSig": "getParentQueue(String)"
+  },
+  "attempt4": {
+    "testClassName": "SparkClusterHelper_getParentQueue_3_4_Test",
+    "fullName": "com.apple.spark.core.SparkClusterHelper_getParentQueue_3_4_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/SparkClusterHelper_getParentQueue_3_0_Test.java",
+    "className": "SparkClusterHelper",
+    "packageName": "com.apple.spark.core",
+    "methodName": "getParentQueue",
+    "methodSig": "getParentQueue(String)"
+  }
+}

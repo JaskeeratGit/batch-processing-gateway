@@ -1,0 +1,47 @@
+{
+  "fullClassName": "com.apple.spark.api.GetSubmissionStatusResponse",
+  "className": "GetSubmissionStatusResponse",
+  "index": 57,
+  "modifier": "[public ]",
+  "extend": "[SubmissionStatus]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.api",
+  "packageDeclaration": "package com.apple.spark.api;",
+  "classSignature": "@JsonInclude(JsonInclude.Include.NON_NULL)\npublic class GetSubmissionStatusResponse",
+  "hasConstructor": false,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import com.fasterxml.jackson.annotation.JsonInclude;"
+  ],
+  "fields": [
+    "private String sparkUIUrl;"
+  ],
+  "superClasses": [
+    "SubmissionStatus"
+  ],
+  "implementedTypes": [],
+  "methodSigs": {
+    "getSparkUIUrl()": "0",
+    "setSparkUIUrl(String)": "1"
+  },
+  "methodsBrief": [
+    "public String getSparkUIUrl(){}",
+    "public void setSparkUIUrl(String sparkUIUrl){}"
+  ],
+  "constructorSigs": [],
+  "constructorBrief": [],
+  "getterSetterSigs": [
+    "getSparkUIUrl()",
+    "setSparkUIUrl(String)"
+  ],
+  "getterSetterBrief": [
+    "public String getSparkUIUrl(){}",
+    "public void setSparkUIUrl(String sparkUIUrl){}"
+  ],
+  "constructorDeps": {},
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.api;\n\nimport com.fasterxml.jackson.annotation.JsonInclude;\n\n@JsonInclude(JsonInclude.Include.NON_NULL)\npublic class GetSubmissionStatusResponse extends SubmissionStatus {\n\n    private String sparkUIUrl;\n\n    public String getSparkUIUrl() {\n        return sparkUIUrl;\n    }\n\n    public void setSparkUIUrl(String sparkUIUrl) {\n        this.sparkUIUrl = sparkUIUrl;\n    }\n}\n",
+  "classDeclarationCode": "@JsonInclude(JsonInclude.Include.NON_NULL)\npublic class GetSubmissionStatusResponse extends SubmissionStatus {\n\n    private String sparkUIUrl;\n\n    public String getSparkUIUrl() {\n        return sparkUIUrl;\n    }\n\n    public void setSparkUIUrl(String sparkUIUrl) {\n        this.sparkUIUrl = sparkUIUrl;\n    }\n}",
+  "subClasses": []
+}

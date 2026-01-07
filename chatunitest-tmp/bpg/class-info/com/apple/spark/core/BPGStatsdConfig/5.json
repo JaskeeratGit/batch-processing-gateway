@@ -1,0 +1,34 @@
+{
+  "className": "BPGStatsdConfig",
+  "methodName": "port",
+  "brief": "@Override\n  public int port(){}",
+  "methodSignature": "port()",
+  "sourceCode": "@Override\n  public int port() {\n    String value = System.getenv(STATSD_SERVER_PORT_ENV_NAME);\n    if (StringUtils.isEmpty(value)) {\n      return 0;\n    }\n    try {\n      return Integer.parseInt(value);\n    } catch (Throwable ex) {\n      logger.warn(\n          String.format(\n              \"Failed to parse environment value for %s: %s\", STATSD_SERVER_PORT_ENV_NAME, value),\n          ex);\n      return 0;\n    }\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {
+    "java.lang.System": [
+      "getenv(String)"
+    ],
+    "org.apache.commons.lang3.StringUtils": [
+      "isEmpty(CharSequence)"
+    ],
+    "java.lang.Integer": [
+      "parseInt(String)"
+    ],
+    "org.slf4j.Logger": [
+      "warn(String, Throwable)"
+    ],
+    "java.lang.String": [
+      "format(String, Object[])"
+    ]
+  },
+  "full_method_info": "@Override\npublic int port() {\n    String value = System.getenv(STATSD_SERVER_PORT_ENV_NAME);\n    if (StringUtils.isEmpty(value)) {\n        return 0;\n    }\n    try {\n        return Integer.parseInt(value);\n    } catch (Throwable ex) {\n        logger.warn(String.format(\"Failed to parse environment value for %s: %s\", STATSD_SERVER_PORT_ENV_NAME, value), ex);\n        return 0;\n    }\n}",
+  "method_comment": "",
+  "method_annotation": "@Override\n"
+}

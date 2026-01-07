@@ -1,0 +1,23 @@
+{
+  "className": "TestApplicationInfo",
+  "methodName": "toString",
+  "brief": "@Override\n    public String toString(){}",
+  "methodSignature": "toString()",
+  "sourceCode": "@Override\n    public String toString() {\n      return \"TestApp{\"\n          + \"submissionId='\"\n          + submissionId\n          + '\\''\n          + \", submitTime=\"\n          + submitTime\n          + \", submitLatencyMillis=\"\n          + submitLatency\n          + \", state='\"\n          + state\n          + '\\''\n          + \", completedTime=\"\n          + completedTime\n          + \", driverStartLatencySeconds=\"\n          + getDriverStartLatencySeconds()\n          + \", applicationFinishLatency=\"\n          + getApplicationFinishLatency()\n          + '}';\n    }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {
+    "com.apple.spark.tools.LoadTest.TestApplicationInfo": [
+      "getApplicationFinishLatency()",
+      "getDriverStartLatencySeconds()"
+    ]
+  },
+  "full_method_info": "@Override\npublic String toString() {\n    return \"TestApp{\" + \"submissionId='\" + submissionId + '\\'' + \", submitTime=\" + submitTime + \", submitLatencyMillis=\" + submitLatency + \", state='\" + state + '\\'' + \", completedTime=\" + completedTime + \", driverStartLatencySeconds=\" + getDriverStartLatencySeconds() + \", applicationFinishLatency=\" + getApplicationFinishLatency() + '}';\n}",
+  "method_comment": "",
+  "method_annotation": "@Override\n"
+}

@@ -1,0 +1,18 @@
+{
+  "className": "PreferredSchedulingTerm",
+  "methodName": "getWeight",
+  "brief": "public int getWeight(){}",
+  "methodSignature": "getWeight()",
+  "sourceCode": "public int getWeight() {\n    return weight;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public int getWeight() {\n    return weight;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

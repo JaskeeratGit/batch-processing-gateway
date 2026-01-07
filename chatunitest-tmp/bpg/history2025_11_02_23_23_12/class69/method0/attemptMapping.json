@@ -1,0 +1,47 @@
+{
+  "attempt0": {
+    "testClassName": "ConfigUtil_mergeConfig_0_0_Test",
+    "fullName": "com.apple.spark.util.ConfigUtil_mergeConfig_0_0_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/util/ConfigUtil_mergeConfig_0_0_Test.java",
+    "className": "ConfigUtil",
+    "packageName": "com.apple.spark.util",
+    "methodName": "mergeConfig",
+    "methodSig": "mergeConfig(AppConfig)"
+  },
+  "attempt1": {
+    "testClassName": "ConfigUtil_mergeConfig_0_1_Test",
+    "fullName": "com.apple.spark.util.ConfigUtil_mergeConfig_0_1_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/util/ConfigUtil_mergeConfig_0_0_Test.java",
+    "className": "ConfigUtil",
+    "packageName": "com.apple.spark.util",
+    "methodName": "mergeConfig",
+    "methodSig": "mergeConfig(AppConfig)"
+  },
+  "attempt2": {
+    "testClassName": "ConfigUtil_mergeConfig_0_2_Test",
+    "fullName": "com.apple.spark.util.ConfigUtil_mergeConfig_0_2_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/util/ConfigUtil_mergeConfig_0_0_Test.java",
+    "className": "ConfigUtil",
+    "packageName": "com.apple.spark.util",
+    "methodName": "mergeConfig",
+    "methodSig": "mergeConfig(AppConfig)"
+  },
+  "attempt3": {
+    "testClassName": "ConfigUtil_mergeConfig_0_3_Test",
+    "fullName": "com.apple.spark.util.ConfigUtil_mergeConfig_0_3_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/util/ConfigUtil_mergeConfig_0_0_Test.java",
+    "className": "ConfigUtil",
+    "packageName": "com.apple.spark.util",
+    "methodName": "mergeConfig",
+    "methodSig": "mergeConfig(AppConfig)"
+  },
+  "attempt4": {
+    "testClassName": "ConfigUtil_mergeConfig_0_4_Test",
+    "fullName": "com.apple.spark.util.ConfigUtil_mergeConfig_0_4_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/util/ConfigUtil_mergeConfig_0_0_Test.java",
+    "className": "ConfigUtil",
+    "packageName": "com.apple.spark.util",
+    "methodName": "mergeConfig",
+    "methodSig": "mergeConfig(AppConfig)"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "className": "DriverSpec",
+  "methodName": "copyFrom",
+  "brief": "public void copyFrom(DriverSpec another){}",
+  "methodSignature": "copyFrom(DriverSpec)",
+  "sourceCode": "public void copyFrom(DriverSpec another) {\n    super.copyFrom(another);\n    this.podName = another.podName;\n    this.kubernetesMaster = another.kubernetesMaster;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "DriverSpec"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.operator.DriverSpec": [],
+    "com.apple.spark.operator.SparkPodSpec": [
+      "copyFrom(SparkPodSpec)"
+    ]
+  },
+  "full_method_info": "public void copyFrom(DriverSpec another) {\n    super.copyFrom(another);\n    this.podName = another.podName;\n    this.kubernetesMaster = another.kubernetesMaster;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

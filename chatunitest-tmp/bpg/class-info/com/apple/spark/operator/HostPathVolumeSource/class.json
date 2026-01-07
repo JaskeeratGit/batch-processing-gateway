@@ -1,0 +1,67 @@
+{
+  "fullClassName": "com.apple.spark.operator.HostPathVolumeSource",
+  "className": "HostPathVolumeSource",
+  "index": 13,
+  "modifier": "[public ]",
+  "extend": "[]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.operator",
+  "packageDeclaration": "package com.apple.spark.operator;",
+  "classSignature": "@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class HostPathVolumeSource",
+  "hasConstructor": true,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import com.fasterxml.jackson.annotation.JsonIgnoreProperties;",
+    "import com.fasterxml.jackson.annotation.JsonInclude;"
+  ],
+  "fields": [
+    "private String path;",
+    "private String type;"
+  ],
+  "superClasses": [],
+  "implementedTypes": [],
+  "methodSigs": {
+    "getPath()": "0",
+    "setPath(String)": "1",
+    "getType()": "2",
+    "setType(String)": "3",
+    "HostPathVolumeSource()": "4",
+    "HostPathVolumeSource(String, String)": "5"
+  },
+  "methodsBrief": [
+    "public String getPath(){}",
+    "public void setPath(String path){}",
+    "public String getType(){}",
+    "public void setType(String type){}",
+    "public HostPathVolumeSource(){}",
+    "public HostPathVolumeSource(String path, String type){}"
+  ],
+  "constructorSigs": [
+    "HostPathVolumeSource()",
+    "HostPathVolumeSource(String, String)"
+  ],
+  "constructorBrief": [
+    "public HostPathVolumeSource(){}",
+    "public HostPathVolumeSource(String path, String type){}"
+  ],
+  "getterSetterSigs": [
+    "getPath()",
+    "setPath(String)",
+    "getType()",
+    "setType(String)"
+  ],
+  "getterSetterBrief": [
+    "public String getPath(){}",
+    "public void setPath(String path){}",
+    "public String getType(){}",
+    "public void setType(String type){}"
+  ],
+  "constructorDeps": {
+    "java.lang.String": []
+  },
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.operator;\n\nimport com.fasterxml.jackson.annotation.JsonIgnoreProperties;\nimport com.fasterxml.jackson.annotation.JsonInclude;\n\n@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class HostPathVolumeSource {\n\n    private String path;\n\n    private String type;\n\n    public HostPathVolumeSource() {\n    }\n\n    public HostPathVolumeSource(String path, String type) {\n        this.path = path;\n        this.type = type;\n    }\n\n    public String getPath() {\n        return path;\n    }\n\n    public void setPath(String path) {\n        this.path = path;\n    }\n\n    public String getType() {\n        return type;\n    }\n\n    public void setType(String type) {\n        this.type = type;\n    }\n}\n",
+  "classDeclarationCode": "@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class HostPathVolumeSource {\n\n    private String path;\n\n    private String type;\n\n    public HostPathVolumeSource() {\n    }\n\n    public HostPathVolumeSource(String path, String type) {\n        this.path = path;\n        this.type = type;\n    }\n\n    public String getPath() {\n        return path;\n    }\n\n    public void setPath(String path) {\n        this.path = path;\n    }\n\n    public String getType() {\n        return type;\n    }\n\n    public void setType(String type) {\n        this.type = type;\n    }\n}",
+  "subClasses": []
+}

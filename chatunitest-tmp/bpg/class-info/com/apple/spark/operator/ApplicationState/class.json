@@ -1,0 +1,55 @@
+{
+  "fullClassName": "com.apple.spark.operator.ApplicationState",
+  "className": "ApplicationState",
+  "index": 9,
+  "modifier": "[public ]",
+  "extend": "[]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.operator",
+  "packageDeclaration": "package com.apple.spark.operator;",
+  "classSignature": "@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class ApplicationState",
+  "hasConstructor": false,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import com.fasterxml.jackson.annotation.JsonIgnoreProperties;",
+    "import com.fasterxml.jackson.annotation.JsonInclude;"
+  ],
+  "fields": [
+    "private String state;",
+    "private String errorMessage;"
+  ],
+  "superClasses": [],
+  "implementedTypes": [],
+  "methodSigs": {
+    "getState()": "0",
+    "setState(String)": "1",
+    "getErrorMessage()": "2",
+    "setErrorMessage(String)": "3"
+  },
+  "methodsBrief": [
+    "public String getState(){}",
+    "public void setState(String state){}",
+    "public String getErrorMessage(){}",
+    "public void setErrorMessage(String errorMessage){}"
+  ],
+  "constructorSigs": [],
+  "constructorBrief": [],
+  "getterSetterSigs": [
+    "getState()",
+    "setState(String)",
+    "getErrorMessage()",
+    "setErrorMessage(String)"
+  ],
+  "getterSetterBrief": [
+    "public String getState(){}",
+    "public void setState(String state){}",
+    "public String getErrorMessage(){}",
+    "public void setErrorMessage(String errorMessage){}"
+  ],
+  "constructorDeps": {},
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.operator;\n\nimport com.fasterxml.jackson.annotation.JsonIgnoreProperties;\nimport com.fasterxml.jackson.annotation.JsonInclude;\n\n@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class ApplicationState {\n\n    private String state;\n\n    private String errorMessage;\n\n    public String getState() {\n        return state;\n    }\n\n    public void setState(String state) {\n        this.state = state;\n    }\n\n    public String getErrorMessage() {\n        return errorMessage;\n    }\n\n    public void setErrorMessage(String errorMessage) {\n        this.errorMessage = errorMessage;\n    }\n}\n",
+  "classDeclarationCode": "@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class ApplicationState {\n\n    private String state;\n\n    private String errorMessage;\n\n    public String getState() {\n        return state;\n    }\n\n    public void setState(String state) {\n        this.state = state;\n    }\n\n    public String getErrorMessage() {\n        return errorMessage;\n    }\n\n    public void setErrorMessage(String errorMessage) {\n        this.errorMessage = errorMessage;\n    }\n}",
+  "subClasses": []
+}

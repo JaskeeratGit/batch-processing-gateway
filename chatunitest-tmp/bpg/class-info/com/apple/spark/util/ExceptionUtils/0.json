@@ -1,0 +1,33 @@
+{
+  "className": "ExceptionUtils",
+  "methodName": "getExceptionNameAndMessage",
+  "brief": "public static String getExceptionNameAndMessage(Throwable ex){}",
+  "methodSignature": "getExceptionNameAndMessage(Throwable)",
+  "sourceCode": "public static String getExceptionNameAndMessage(Throwable ex) {\n    if (ex == null) {\n      return \"\";\n    } else {\n      return String.format(\"%s: %s\", ex.getClass().getName(), ex.getMessage());\n    }\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "Throwable"
+  ],
+  "dependentMethods": {
+    "java.lang.Throwable": [
+      "getMessage()"
+    ],
+    "java.lang.String": [
+      "format(String, Object[])"
+    ],
+    "java.lang.Class": [
+      "getName()"
+    ],
+    "java.lang.Object": [
+      "getClass()"
+    ]
+  },
+  "full_method_info": "public static String getExceptionNameAndMessage(Throwable ex) {\n    if (ex == null) {\n        return \"\";\n    } else {\n        return String.format(\"%s: %s\", ex.getClass().getName(), ex.getMessage());\n    }\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

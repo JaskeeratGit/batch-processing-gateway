@@ -1,0 +1,20 @@
+{
+  "className": "SparkCluster",
+  "methodName": "setSparkVersions",
+  "brief": "public void setSparkVersions(List<String> sparkVersions){}",
+  "methodSignature": "setSparkVersions(List)",
+  "sourceCode": "public void setSparkVersions(List<String> sparkVersions) {\n      this.sparkVersions = sparkVersions;\n    }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "List<String>"
+  ],
+  "dependentMethods": {},
+  "full_method_info": "public void setSparkVersions(List<String> sparkVersions) {\n    this.sparkVersions = sparkVersions;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

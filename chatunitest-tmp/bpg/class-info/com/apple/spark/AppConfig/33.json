@@ -1,0 +1,18 @@
+{
+  "className": "AppConfig",
+  "methodName": "getStatusCacheExpireMillis",
+  "brief": "public Long getStatusCacheExpireMillis(){}",
+  "methodSignature": "getStatusCacheExpireMillis()",
+  "sourceCode": "public Long getStatusCacheExpireMillis() {\n    return statusCacheExpireMillis;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public Long getStatusCacheExpireMillis() {\n    return statusCacheExpireMillis;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

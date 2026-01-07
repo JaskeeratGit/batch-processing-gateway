@@ -1,0 +1,50 @@
+{
+  "className": "KubernetesHelper",
+  "methodName": "getLocalK8sClient",
+  "brief": "public static DefaultKubernetesClient getLocalK8sClient(){}",
+  "methodSignature": "getLocalK8sClient()",
+  "sourceCode": "public static DefaultKubernetesClient getLocalK8sClient() {\n    Long timeoutMillis = DEFAULT_TIMEOUT_MILLIS;\n    ConfigBuilder configBuilder =\n        new ConfigBuilder(Config.autoConfigure(null))\n            .withApiVersion(\"v1\")\n            .withTrustCerts(false)\n            .withConnectionTimeout(timeoutMillis.intValue())\n            .withRequestTimeout(timeoutMillis.intValue())\n            .withWebsocketTimeout(timeoutMillis)\n            .withUserAgent(Constants.KUBERNETES_USER_AGENT);\n    if (configBuilder.getMasterUrl() == null || configBuilder.getMasterUrl().isEmpty()) {\n      configBuilder = configBuilder.withMasterUrl(LOCAL_API_SERVER_URL);\n    }\n    if ((configBuilder.getCaCertFile() == null || configBuilder.getCaCertFile().isEmpty())\n        && (configBuilder.getCaCertData() == null || configBuilder.getCaCertData().isEmpty())) {\n      String caCertFile = tryGetServiceAccountCACertFile();\n      if (caCertFile != null && !caCertFile.isEmpty()) {\n        configBuilder = configBuilder.withCaCertFile(caCertFile);\n      }\n    }\n    if (configBuilder.getOauthToken() == null || configBuilder.getOauthToken().isEmpty()) {\n      String token = tryGetServiceAccountToken();\n      if (token != null && !token.isEmpty()) {\n        configBuilder = configBuilder.withOauthToken(token);\n      }\n    }\n    Config config = configBuilder.build();\n    return new DefaultKubernetesClient(config);\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {
+    "io.fabric8.kubernetes.client.ConfigFluentImpl": [
+      "withTrustCerts(boolean)",
+      "getMasterUrl()",
+      "withCaCertFile(String)",
+      "getOauthToken()",
+      "getCaCertData()",
+      "withRequestTimeout(int)",
+      "withOauthToken(String)",
+      "withUserAgent(String)",
+      "withMasterUrl(String)",
+      "withConnectionTimeout(int)",
+      "withWebsocketTimeout(long)",
+      "withApiVersion(String)",
+      "getCaCertFile()"
+    ],
+    "io.fabric8.kubernetes.client.Config": [
+      "autoConfigure(String)"
+    ],
+    "java.lang.Long": [
+      "intValue()"
+    ],
+    "java.lang.String": [
+      "isEmpty()"
+    ],
+    "com.apple.spark.core.KubernetesHelper": [
+      "tryGetServiceAccountToken()",
+      "tryGetServiceAccountCACertFile()"
+    ],
+    "io.fabric8.kubernetes.client.ConfigBuilder": [
+      "build()"
+    ]
+  },
+  "full_method_info": "// Note: the client returned by this method may not last for long time, since its credential may\n// expire. Caller of this method should do retry in case the credential expires.\npublic static DefaultKubernetesClient getLocalK8sClient() {\n    Long timeoutMillis = DEFAULT_TIMEOUT_MILLIS;\n    ConfigBuilder configBuilder = new ConfigBuilder(Config.autoConfigure(null)).withApiVersion(\"v1\").withTrustCerts(false).withConnectionTimeout(timeoutMillis.intValue()).withRequestTimeout(timeoutMillis.intValue()).withWebsocketTimeout(timeoutMillis).withUserAgent(Constants.KUBERNETES_USER_AGENT);\n    if (configBuilder.getMasterUrl() == null || configBuilder.getMasterUrl().isEmpty()) {\n        configBuilder = configBuilder.withMasterUrl(LOCAL_API_SERVER_URL);\n    }\n    if ((configBuilder.getCaCertFile() == null || configBuilder.getCaCertFile().isEmpty()) && (configBuilder.getCaCertData() == null || configBuilder.getCaCertData().isEmpty())) {\n        String caCertFile = tryGetServiceAccountCACertFile();\n        if (caCertFile != null && !caCertFile.isEmpty()) {\n            configBuilder = configBuilder.withCaCertFile(caCertFile);\n        }\n    }\n    if (configBuilder.getOauthToken() == null || configBuilder.getOauthToken().isEmpty()) {\n        String token = tryGetServiceAccountToken();\n        if (token != null && !token.isEmpty()) {\n            configBuilder = configBuilder.withOauthToken(token);\n        }\n    }\n    Config config = configBuilder.build();\n    return new DefaultKubernetesClient(config);\n}",
+  "method_comment": " expire. Caller of this method should do retry in case the credential expires.",
+  "method_annotation": ""
+}

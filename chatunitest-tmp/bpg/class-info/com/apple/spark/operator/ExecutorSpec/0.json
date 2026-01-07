@@ -1,0 +1,25 @@
+{
+  "className": "ExecutorSpec",
+  "methodName": "copyFrom",
+  "brief": "public void copyFrom(ExecutorSpec another){}",
+  "methodSignature": "copyFrom(ExecutorSpec)",
+  "sourceCode": "public void copyFrom(ExecutorSpec another) {\n    super.copyFrom(another);\n    if (another.instances != null) {\n      this.instances = another.instances;\n    }\n    this.deleteOnTermination = another.deleteOnTermination;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "ExecutorSpec"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.operator.ExecutorSpec": [],
+    "com.apple.spark.operator.SparkPodSpec": [
+      "copyFrom(SparkPodSpec)"
+    ]
+  },
+  "full_method_info": "public void copyFrom(ExecutorSpec another) {\n    super.copyFrom(another);\n    if (another.instances != null) {\n        this.instances = another.instances;\n    }\n    this.deleteOnTermination = another.deleteOnTermination;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

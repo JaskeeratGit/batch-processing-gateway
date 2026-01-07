@@ -1,0 +1,210 @@
+package com.apple.spark;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import static com.apple.spark.core.Constants.QUEUE_INFO;
+import static com.apple.spark.core.Constants.SERVICE_ABBR;
+import com.apple.spark.core.ApplicationMonitor;
+import com.apple.spark.core.BPGStatsdConfig;
+import com.apple.spark.core.Constants;
+import com.apple.spark.core.ThrowableExceptionMapper;
+import com.apple.spark.health.BPGHealthCheck;
+import com.apple.spark.rest.AdminRest;
+import com.apple.spark.rest.ApplicationGetLogRest;
+import com.apple.spark.rest.ApplicationSubmissionRest;
+import com.apple.spark.rest.HealthcheckRest;
+import com.apple.spark.rest.CloudStorageRest;
+import com.apple.spark.security.User;
+import com.apple.spark.security.UserNameAuthFilter;
+import com.apple.spark.security.UserNameBasicAuthenticator;
+import com.apple.spark.security.UserUnauthorizedHandler;
+import com.apple.spark.util.CounterMetricContainer;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.SharedMetricRegistries;
+import io.dropwizard.Application;
+import io.dropwizard.auth.AuthDynamicFeature;
+import io.dropwizard.auth.AuthValueFactoryProvider;
+import io.dropwizard.auth.basic.BasicCredentialAuthFilter;
+import io.dropwizard.auth.basic.BasicCredentials;
+import io.dropwizard.auth.chained.ChainedAuthFilter;
+import io.dropwizard.setup.Bootstrap;
+import io.dropwizard.setup.Environment;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
+import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
+import io.swagger.v3.oas.integration.SwaggerConfiguration;
+import io.swagger.v3.oas.models.OpenAPI;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class BPGApplication_run_3_0_Test {
+
+    @Test
+    public void testDefaultConstructor_and_getName_notNull() throws Exception {
+        // Use default constructor
+        BPGApplication app = new BPGApplication();
+        assertNotNull(app);
+        // getName should be callable and return a non-null value
+        Method getNameMethod = BPGApplication.class.getMethod("getName");
+        Object name = getNameMethod.invoke(app);
+        assertNotNull(name, "getName() should not return null");
+        assertTrue(name instanceof String, "getName() should return a String");
+        assertFalse(((String) name).isEmpty(), "getName() should not be empty");
+    }
+
+    @Test
+    public void testBooleanConstructor_setsMonitorApplicationField_true() throws Exception {
+        // Use constructor with boolean argument
+        Constructor<BPGApplication> ctor = BPGApplication.class.getConstructor(boolean.class);
+        BPGApplication app = ctor.newInstance(true);
+        assertNotNull(app);
+        // Access the private field 'monitorApplication' via reflection
+        Field monitorField = BPGApplication.class.getDeclaredField("monitorApplication");
+        monitorField.setAccessible(true);
+        Object fieldValue = monitorField.get(app);
+        assertTrue(fieldValue instanceof Boolean);
+        assertTrue((Boolean) fieldValue, "monitorApplication should be true for constructor(true)");
+    }
+
+    @Test
+    public void testBooleanConstructor_setsMonitorApplicationField_false() throws Exception {
+        Constructor<BPGApplication> ctor = BPGApplication.class.getConstructor(boolean.class);
+        BPGApplication app = ctor.newInstance(false);
+        assertNotNull(app);
+        Field monitorField = BPGApplication.class.getDeclaredField("monitorApplication");
+        monitorField.setAccessible(true);
+        Object fieldValue = monitorField.get(app);
+        assertTrue(fieldValue instanceof Boolean);
+        assertFalse((Boolean) fieldValue, "monitorApplication should be false for constructor(false)");
+    }
+
+    @Test
+    public void testRun_nullContextPath_usesDefaultAndRegistersResources() {
+        AppConfig config = mock(AppConfig.class);
+        when(config.getApplicationContextPath()).thenReturn(null);
+        when(config.getAllowedUsers()).thenReturn(Collections.emptyList());
+        when(config.getBlockedUsers()).thenReturn(Collections.emptyList());
+        when(config.getSparkClusters()).thenReturn(Collections.emptyList());
+        BPGApplication app = new BPGApplication(false);
+        // Execute
+        app.run(config, environment);
+        // Verify default context path used
+        verify(servletContextHandler).setContextPath(Constants.DEFAULT_APPLICATION_CONTEXT_PATH);
+        // Verify that core REST resources are registered
+        verify(jerseyEnvironment).register(isA(ApplicationSubmissionRest.class));
+        verify(jerseyEnvironment).register(isA(ApplicationGetLogRest.class));
+        verify(jerseyEnvironment).register(isA(CloudStorageRest.class));
+        verify(jerseyEnvironment).register(isA(AdminRest.class));
+        verify(jerseyEnvironment).register(isA(HealthcheckRest.class));
+        // Verify exception mapper and auth bindings registered (at least once)
+        verify(jerseyEnvironment, atLeastOnce()).register(isA(ThrowableExceptionMapper.class));
+        verify(jerseyEnvironment, atLeastOnce()).register(isA(AuthDynamicFeature.class));
+        verify(jerseyEnvironment, atLeastOnce()).register(isA(AuthValueFactoryProvider.Binder.class));
+        // Verify health check registered
+        verify(healthCheckRegistry).register(eq("sparkClusters"), isA(BPGHealthCheck.class));
+        // Verify metric registry was added to SharedMetricRegistries
+        assertSame(metricRegistry, SharedMetricRegistries.getOrCreate(Constants.DEFAULT_METRIC_REGISTRY));
+    }
+
+    @Test
+    public void testRun_customContextPath_monitorApplicationTrue_and_invokePrivateSendPeriodicMetrics() throws Exception {
+        AppConfig config = mock(AppConfig.class);
+        when(config.getApplicationContextPath()).thenReturn("/custom");
+        when(config.getAllowedUsers()).thenReturn(Collections.emptyList());
+        when(config.getBlockedUsers()).thenReturn(Collections.emptyList());
+        when(config.getSparkClusters()).thenReturn(Collections.emptyList());
+        BPGApplication app = new BPGApplication(true);
+        // Execute run (this will attempt to start ApplicationMonitor if available)
+        app.run(config, environment);
+        // Verify custom context path used
+        verify(servletContextHandler).setContextPath("/custom");
+        // Now invoke private method sendPeriodicMetrics reflectively
+        Method m = BPGApplication.class.getDeclaredMethod("sendPeriodicMetrics", AppConfig.class, MeterRegistry.class);
+        m.setAccessible(true);
+        // Provide a simple MeterRegistry instance
+        SimpleMeterRegistry simpleMeterRegistry = new SimpleMeterRegistry();
+        // Should not throw
+        m.invoke(app, config, simpleMeterRegistry);
+    }
+}
+
+--------------------------------------------
+Error in BPGApplication_run_3_0_Test: line 98 : cannot find symbol
+  symbol:   variable Collections
+  location: class com.apple.spark.BPGApplication_run_3_0_Test
+Error in BPGApplication_run_3_0_Test: line 99 : cannot find symbol
+  symbol:   variable Collections
+  location: class com.apple.spark.BPGApplication_run_3_0_Test
+Error in BPGApplication_run_3_0_Test: line 100 : cannot find symbol
+  symbol:   variable Collections
+  location: class com.apple.spark.BPGApplication_run_3_0_Test
+Error in BPGApplication_run_3_0_Test: line 103 : cannot find symbol
+  symbol:   variable environment
+  location: class com.apple.spark.BPGApplication_run_3_0_Test
+Error in BPGApplication_run_3_0_Test: line 105 : cannot find symbol
+  symbol:   variable servletContextHandler
+  location: class com.apple.spark.BPGApplication_run_3_0_Test
+Error in BPGApplication_run_3_0_Test: line 107 : cannot find symbol
+  symbol:   variable jerseyEnvironment
+  location: class com.apple.spark.BPGApplication_run_3_0_Test
+Error in BPGApplication_run_3_0_Test: line 108 : cannot find symbol
+  symbol:   variable jerseyEnvironment
+  location: class com.apple.spark.BPGApplication_run_3_0_Test
+Error in BPGApplication_run_3_0_Test: line 109 : cannot find symbol
+  symbol:   variable jerseyEnvironment
+  location: class com.apple.spark.BPGApplication_run_3_0_Test
+Error in BPGApplication_run_3_0_Test: line 110 : cannot find symbol
+  symbol:   variable jerseyEnvironment
+  location: class com.apple.spark.BPGApplication_run_3_0_Test
+Error in BPGApplication_run_3_0_Test: line 111 : cannot find symbol
+  symbol:   variable jerseyEnvironment
+  location: class com.apple.spark.BPGApplication_run_3_0_Test
+Error in BPGApplication_run_3_0_Test: line 113 : cannot find symbol
+  symbol:   variable jerseyEnvironment
+  location: class com.apple.spark.BPGApplication_run_3_0_Test
+Error in BPGApplication_run_3_0_Test: line 114 : cannot find symbol
+  symbol:   variable jerseyEnvironment
+  location: class com.apple.spark.BPGApplication_run_3_0_Test
+Error in BPGApplication_run_3_0_Test: line 115 : cannot find symbol
+  symbol:   variable jerseyEnvironment
+  location: class com.apple.spark.BPGApplication_run_3_0_Test
+Error in BPGApplication_run_3_0_Test: line 117 : cannot find symbol
+  symbol:   variable healthCheckRegistry
+  location: class com.apple.spark.BPGApplication_run_3_0_Test
+Error in BPGApplication_run_3_0_Test: line 119 : cannot find symbol
+  symbol:   variable metricRegistry
+  location: class com.apple.spark.BPGApplication_run_3_0_Test
+Error in BPGApplication_run_3_0_Test: line 126 : cannot find symbol
+  symbol:   variable Collections
+  location: class com.apple.spark.BPGApplication_run_3_0_Test
+Error in BPGApplication_run_3_0_Test: line 127 : cannot find symbol
+  symbol:   variable Collections
+  location: class com.apple.spark.BPGApplication_run_3_0_Test
+Error in BPGApplication_run_3_0_Test: line 128 : cannot find symbol
+  symbol:   variable Collections
+  location: class com.apple.spark.BPGApplication_run_3_0_Test
+Error in BPGApplication_run_3_0_Test: line 131 : cannot find symbol
+  symbol:   variable environment
+  location: class com.apple.spark.BPGApplication_run_3_0_Test
+Error in BPGApplication_run_3_0_Test: line 133 : cannot find symbol
+  symbol:   variable servletContextHandler
+  location: class com.apple.spark.BPGApplication_run_3_0_Test
+Error in BPGApplication_run_3_0_Test: line 138 : cannot find symbol
+  symbol:   class SimpleMeterRegistry
+  location: class com.apple.spark.BPGApplication_run_3_0_Test
+Error in BPGApplication_run_3_0_Test: line 138 : cannot find symbol
+  symbol:   class SimpleMeterRegistry
+  location: class com.apple.spark.BPGApplication_run_3_0_Test

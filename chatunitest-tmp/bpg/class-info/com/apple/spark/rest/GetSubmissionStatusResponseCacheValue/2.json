@@ -1,0 +1,18 @@
+{
+  "className": "GetSubmissionStatusResponseCacheValue",
+  "methodName": "getCreatedTimeMillis",
+  "brief": "public long getCreatedTimeMillis(){}",
+  "methodSignature": "getCreatedTimeMillis()",
+  "sourceCode": "public long getCreatedTimeMillis() {\n    return createdTimeMillis;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public long getCreatedTimeMillis() {\n    return createdTimeMillis;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

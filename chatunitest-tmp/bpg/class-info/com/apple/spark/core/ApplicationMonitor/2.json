@@ -1,0 +1,28 @@
+{
+  "className": "ApplicationMonitor",
+  "methodName": "close",
+  "brief": "@Override\n  public void close(){}",
+  "methodSignature": "close()",
+  "sourceCode": "@Override\n  public void close() {\n    for (SharedInformerFactory factory : informerFactories) {\n      try {\n        factory.stopAllRegisteredInformers();\n      } catch (Throwable ex) {\n        logger.warn(\"Failed in stopAllRegisteredInformers\", ex);\n      }\n    }\n\n    for (KubernetesClient client : clients) {\n      KubernetesHelper.closeQuietly(client);\n    }\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {
+    "io.fabric8.kubernetes.client.informers.SharedInformerFactory": [
+      "stopAllRegisteredInformers()"
+    ],
+    "org.slf4j.Logger": [
+      "warn(String, Throwable)"
+    ],
+    "com.apple.spark.core.KubernetesHelper": [
+      "closeQuietly(Closeable)"
+    ]
+  },
+  "full_method_info": "@Override\npublic void close() {\n    for (SharedInformerFactory factory : informerFactories) {\n        try {\n            factory.stopAllRegisteredInformers();\n        } catch (Throwable ex) {\n            logger.warn(\"Failed in stopAllRegisteredInformers\", ex);\n        }\n    }\n    for (KubernetesClient client : clients) {\n        KubernetesHelper.closeQuietly(client);\n    }\n}",
+  "method_comment": "",
+  "method_annotation": "@Override\n"
+}

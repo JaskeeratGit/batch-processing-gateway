@@ -1,0 +1,72 @@
+{
+  "fullClassName": "com.apple.spark.util.EndAwareInputStream",
+  "className": "EndAwareInputStream",
+  "index": 72,
+  "modifier": "[public ]",
+  "extend": "[InputStream]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.util",
+  "packageDeclaration": "package com.apple.spark.util;",
+  "classSignature": "public class EndAwareInputStream",
+  "hasConstructor": true,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import java.io.IOException;",
+    "import java.io.InputStream;"
+  ],
+  "fields": [
+    "private final InputStream inputStream;",
+    "private final Runnable endingAction;"
+  ],
+  "superClasses": [
+    "InputStream"
+  ],
+  "implementedTypes": [],
+  "methodSigs": {
+    "read()": "0",
+    "read(byte[])": "1",
+    "read(byte[], int, int)": "2",
+    "skip(long)": "3",
+    "available()": "4",
+    "close()": "5",
+    "mark(int)": "6",
+    "reset()": "7",
+    "markSupported()": "8",
+    "executeWithResultValue(CallableWithIOException)": "9",
+    "executeWithoutResultValue(RunnableWithIOException)": "10",
+    "executeEndingAction()": "11",
+    "EndAwareInputStream(InputStream, Runnable)": "12"
+  },
+  "methodsBrief": [
+    "@Override\n  public int read() throws IOException{}",
+    "@Override\n  public int read(byte[] b) throws IOException{}",
+    "@Override\n  public int read(byte[] b, int off, int len) throws IOException{}",
+    "@Override\n  public long skip(long n) throws IOException{}",
+    "@Override\n  public int available() throws IOException{}",
+    "@Override\n  public void close() throws IOException{}",
+    "@Override\n  public void mark(int readlimit){}",
+    "@Override\n  public void reset() throws IOException{}",
+    "@Override\n  public boolean markSupported(){}",
+    "private <T> T executeWithResultValue(CallableWithIOException<T> callable) throws IOException{}",
+    "private void executeWithoutResultValue(RunnableWithIOException callable) throws IOException{}",
+    "private void executeEndingAction(){}",
+    "public EndAwareInputStream(InputStream inputStream, Runnable endingAction){}"
+  ],
+  "constructorSigs": [
+    "EndAwareInputStream(InputStream, Runnable)"
+  ],
+  "constructorBrief": [
+    "public EndAwareInputStream(InputStream inputStream, Runnable endingAction){}"
+  ],
+  "getterSetterSigs": [],
+  "getterSetterBrief": [],
+  "constructorDeps": {
+    "java.io.InputStream": [],
+    "java.lang.Runnable": []
+  },
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.util;\n\nimport java.io.IOException;\nimport java.io.InputStream;\n\n/**\n * This class wraps an InputStream and executes extra action when InputStream reads to the end.\n */\npublic class EndAwareInputStream extends InputStream {\n\n    private final InputStream inputStream;\n\n    private final Runnable endingAction;\n\n    public EndAwareInputStream(InputStream inputStream, Runnable endingAction) {\n        this.inputStream = inputStream;\n        this.endingAction = endingAction;\n    }\n\n    @Override\n    public int read() throws IOException {\n        int result = executeWithResultValue(inputStream::read);\n        if (result == -1) {\n            executeEndingAction();\n        }\n        return result;\n    }\n\n    @Override\n    public int read(byte[] b) throws IOException {\n        int result = executeWithResultValue(() -> inputStream.read(b));\n        if (result == -1) {\n            executeEndingAction();\n        }\n        return result;\n    }\n\n    @Override\n    public int read(byte[] b, int off, int len) throws IOException {\n        int result = executeWithResultValue(() -> inputStream.read(b, off, len));\n        if (result == -1) {\n            executeEndingAction();\n        }\n        return result;\n    }\n\n    @Override\n    public long skip(long n) throws IOException {\n        return executeWithResultValue(() -> inputStream.skip(n));\n    }\n\n    @Override\n    public int available() throws IOException {\n        return executeWithResultValue(() -> inputStream.available());\n    }\n\n    @Override\n    public void close() throws IOException {\n        executeWithoutResultValue(() -> inputStream.close());\n    }\n\n    @Override\n    public void mark(int readlimit) {\n        inputStream.mark(readlimit);\n    }\n\n    @Override\n    public void reset() throws IOException {\n        executeWithoutResultValue(() -> inputStream.reset());\n    }\n\n    @Override\n    public boolean markSupported() {\n        return inputStream.markSupported();\n    }\n\n    private <T> T executeWithResultValue(CallableWithIOException<T> callable) throws IOException {\n        try {\n            return callable.call();\n        } catch (IOException ex) {\n            executeEndingAction();\n            throw ex;\n        }\n    }\n\n    private void executeWithoutResultValue(RunnableWithIOException callable) throws IOException {\n        try {\n            callable.run();\n        } catch (IOException ex) {\n            executeEndingAction();\n            throw ex;\n        }\n    }\n\n    private void executeEndingAction() {\n        if (endingAction != null) {\n            endingAction.run();\n        }\n    }\n\n    private interface CallableWithIOException<T> {\n\n        T call() throws IOException;\n    }\n\n    private interface RunnableWithIOException {\n\n        void run() throws IOException;\n    }\n}\n",
+  "classDeclarationCode": "/**\n * This class wraps an InputStream and executes extra action when InputStream reads to the end.\n */\npublic class EndAwareInputStream extends InputStream {\n\n    private final InputStream inputStream;\n\n    private final Runnable endingAction;\n\n    public EndAwareInputStream(InputStream inputStream, Runnable endingAction) {\n        this.inputStream = inputStream;\n        this.endingAction = endingAction;\n    }\n\n    @Override\n    public int read() throws IOException {\n        int result = executeWithResultValue(inputStream::read);\n        if (result == -1) {\n            executeEndingAction();\n        }\n        return result;\n    }\n\n    @Override\n    public int read(byte[] b) throws IOException {\n        int result = executeWithResultValue(() -> inputStream.read(b));\n        if (result == -1) {\n            executeEndingAction();\n        }\n        return result;\n    }\n\n    @Override\n    public int read(byte[] b, int off, int len) throws IOException {\n        int result = executeWithResultValue(() -> inputStream.read(b, off, len));\n        if (result == -1) {\n            executeEndingAction();\n        }\n        return result;\n    }\n\n    @Override\n    public long skip(long n) throws IOException {\n        return executeWithResultValue(() -> inputStream.skip(n));\n    }\n\n    @Override\n    public int available() throws IOException {\n        return executeWithResultValue(() -> inputStream.available());\n    }\n\n    @Override\n    public void close() throws IOException {\n        executeWithoutResultValue(() -> inputStream.close());\n    }\n\n    @Override\n    public void mark(int readlimit) {\n        inputStream.mark(readlimit);\n    }\n\n    @Override\n    public void reset() throws IOException {\n        executeWithoutResultValue(() -> inputStream.reset());\n    }\n\n    @Override\n    public boolean markSupported() {\n        return inputStream.markSupported();\n    }\n\n    private <T> T executeWithResultValue(CallableWithIOException<T> callable) throws IOException {\n        try {\n            return callable.call();\n        } catch (IOException ex) {\n            executeEndingAction();\n            throw ex;\n        }\n    }\n\n    private void executeWithoutResultValue(RunnableWithIOException callable) throws IOException {\n        try {\n            callable.run();\n        } catch (IOException ex) {\n            executeEndingAction();\n            throw ex;\n        }\n    }\n\n    private void executeEndingAction() {\n        if (endingAction != null) {\n            endingAction.run();\n        }\n    }\n\n    private interface CallableWithIOException<T> {\n\n        T call() throws IOException;\n    }\n\n    private interface RunnableWithIOException {\n\n        void run() throws IOException;\n    }\n}",
+  "subClasses": []
+}

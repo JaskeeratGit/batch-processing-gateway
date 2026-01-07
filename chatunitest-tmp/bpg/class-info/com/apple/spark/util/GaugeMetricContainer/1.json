@@ -1,0 +1,43 @@
+{
+  "className": "GaugeMetricContainer",
+  "methodName": "register",
+  "brief": "public void register(String metricName, Supplier<Number> valueProvider, Collection<Tag> tags){}",
+  "methodSignature": "register(String, Supplier, Collection)",
+  "sourceCode": "public void register(String metricName, Supplier<Number> valueProvider, Collection<Tag> tags) {\n    List<String> tagValues = tags.stream().map(Tag::getValue).collect(Collectors.toList());\n    MetricId metricId = new MetricId(metricName, tagValues);\n    Gauge gauge = gauges.get(metricId);\n    if (gauge == null) {\n      gauges.computeIfAbsent(\n          metricId,\n          k -> Gauge.builder(metricName, valueProvider).tags(tags).register(meterRegistry));\n    }\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String",
+    "Supplier<Number>",
+    "Collection<Tag>"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [],
+    "java.util.stream.Stream": [
+      "map(Function<? super T, ? extends R>)"
+    ],
+    "java.util.Collection": [
+      "stream()"
+    ],
+    "java.util.stream.Collectors": [
+      "toList()"
+    ],
+    "java.util.concurrent.ConcurrentHashMap": [
+      "get(Object)",
+      "computeIfAbsent(K, Function<? super K, ? extends V>)"
+    ],
+    "io.micrometer.core.instrument.Gauge.Builder": [
+      "tags(Tag>)"
+    ],
+    "io.micrometer.core.instrument.Gauge": [
+      "builder(String, Number>)"
+    ]
+  },
+  "full_method_info": "public void register(String metricName, Supplier<Number> valueProvider, Collection<Tag> tags) {\n    List<String> tagValues = tags.stream().map(Tag::getValue).collect(Collectors.toList());\n    MetricId metricId = new MetricId(metricName, tagValues);\n    Gauge gauge = gauges.get(metricId);\n    if (gauge == null) {\n        gauges.computeIfAbsent(metricId, k -> Gauge.builder(metricName, valueProvider).tags(tags).register(meterRegistry));\n    }\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

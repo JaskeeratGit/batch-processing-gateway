@@ -1,0 +1,47 @@
+{
+  "attempt0": {
+    "testClassName": "RunningApplicationMonitor_getMaxRunningMillis_0_0_Test",
+    "fullName": "com.apple.spark.core.RunningApplicationMonitor_getMaxRunningMillis_0_0_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/RunningApplicationMonitor_getMaxRunningMillis_0_0_Test.java",
+    "className": "RunningApplicationMonitor",
+    "packageName": "com.apple.spark.core",
+    "methodName": "getMaxRunningMillis",
+    "methodSig": "getMaxRunningMillis(SparkApplication)"
+  },
+  "attempt1": {
+    "testClassName": "RunningApplicationMonitor_getMaxRunningMillis_0_1_Test",
+    "fullName": "com.apple.spark.core.RunningApplicationMonitor_getMaxRunningMillis_0_1_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/RunningApplicationMonitor_getMaxRunningMillis_0_0_Test.java",
+    "className": "RunningApplicationMonitor",
+    "packageName": "com.apple.spark.core",
+    "methodName": "getMaxRunningMillis",
+    "methodSig": "getMaxRunningMillis(SparkApplication)"
+  },
+  "attempt2": {
+    "testClassName": "RunningApplicationMonitor_getMaxRunningMillis_0_2_Test",
+    "fullName": "com.apple.spark.core.RunningApplicationMonitor_getMaxRunningMillis_0_2_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/RunningApplicationMonitor_getMaxRunningMillis_0_0_Test.java",
+    "className": "RunningApplicationMonitor",
+    "packageName": "com.apple.spark.core",
+    "methodName": "getMaxRunningMillis",
+    "methodSig": "getMaxRunningMillis(SparkApplication)"
+  },
+  "attempt3": {
+    "testClassName": "RunningApplicationMonitor_getMaxRunningMillis_0_3_Test",
+    "fullName": "com.apple.spark.core.RunningApplicationMonitor_getMaxRunningMillis_0_3_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/RunningApplicationMonitor_getMaxRunningMillis_0_0_Test.java",
+    "className": "RunningApplicationMonitor",
+    "packageName": "com.apple.spark.core",
+    "methodName": "getMaxRunningMillis",
+    "methodSig": "getMaxRunningMillis(SparkApplication)"
+  },
+  "attempt4": {
+    "testClassName": "RunningApplicationMonitor_getMaxRunningMillis_0_4_Test",
+    "fullName": "com.apple.spark.core.RunningApplicationMonitor_getMaxRunningMillis_0_4_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/core/RunningApplicationMonitor_getMaxRunningMillis_0_0_Test.java",
+    "className": "RunningApplicationMonitor",
+    "packageName": "com.apple.spark.core",
+    "methodName": "getMaxRunningMillis",
+    "methodSig": "getMaxRunningMillis(SparkApplication)"
+  }
+}

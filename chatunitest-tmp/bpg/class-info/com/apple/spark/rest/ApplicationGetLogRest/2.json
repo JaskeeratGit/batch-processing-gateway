@@ -1,0 +1,74 @@
+{
+  "className": "ApplicationGetLogRest",
+  "methodName": "getLog",
+  "brief": "@ExceptionMetered(name = \"RuntimeException\", absolute = true, cause = RuntimeException.class)\n  private InputStream getLog(SparkApplication sparkApplication, String execId){}",
+  "methodSignature": "getLog(SparkApplication, String)",
+  "sourceCode": "@ExceptionMetered(name = \"RuntimeException\", absolute = true, cause = RuntimeException.class)\n  private InputStream getLog(SparkApplication sparkApplication, String execId) {\n    if (sparkApplication == null) {\n      logger.info(\"Cannot get log from EKS, spark application not found\");\n      return null;\n    }\n    String submissionId = sparkApplication.getMetadata().getName();\n    AppConfig.SparkCluster sparkCluster = getSparkCluster(submissionId);\n    DefaultKubernetesClient client = KubernetesHelper.getK8sClient(sparkCluster);\n    String podName = \"\";\n    try {\n      if (sparkApplication.getStatus() == null) {\n        logger.info(\"Cannot get log from EKS, spark application status empty for {}\", submissionId);\n        client.close();\n        return null;\n      }\n\n      if (sparkApplication.getStatus().getDriverInfo() == null) {\n        logger.info(\n            \"Cannot get log from EKS, spark application driver info empty for {}\", submissionId);\n        client.close();\n        return null;\n      }\n      // execId by default is empty and which means only driver log is desired\n      if (execId.isEmpty() || execId.endsWith(\"driver\")) {\n        podName = sparkApplication.getStatus().getDriverInfo().getPodName();\n        // if execId is specified, then look for exec logs\n      } else {\n        Set<String> execPodNames = sparkApplication.getStatus().getExecutorState().keySet();\n        for (String execPodName : execPodNames) {\n          if (execPodName.endsWith(\"exec-\" + execId)) {\n            podName = execPodName;\n          }\n        }\n      }\n      if (podName == null || podName.isEmpty()) {\n        logger.info(\"Cannot get log, spark application pod name empty for {}\", submissionId);\n        client.close();\n        return null;\n      }\n\n      com.codahale.metrics.Timer timer =\n          registry.timer(this.getClass().getSimpleName() + \".getLog.k8s-time\");\n      try (com.codahale.metrics.Timer.Context ignored = timer.time()) {\n        InputStream logStream =\n            KubernetesHelper.tryGetLogStream(\n                client, sparkCluster.getSparkApplicationNamespace(), podName);\n        if (logStream == null) {\n          client.close();\n          return null;\n        }\n        return logStream;\n      }\n\n    } catch (RuntimeException ex) {\n      client.close();\n      throw ex;\n    }\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "SparkApplication",
+    "String"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.operator.SparkApplication": [
+      "getStatus()"
+    ],
+    "java.lang.String": [
+      "isEmpty()",
+      "endsWith(String)"
+    ],
+    "org.slf4j.Logger": [
+      "info(String)",
+      "info(String, Object)"
+    ],
+    "io.fabric8.kubernetes.api.model.ObjectMeta": [
+      "getName()"
+    ],
+    "io.fabric8.kubernetes.client.CustomResource": [
+      "getMetadata()"
+    ],
+    "com.apple.spark.rest.RestBase": [
+      "getSparkCluster(String)"
+    ],
+    "com.apple.spark.core.KubernetesHelper": [
+      "getK8sClient(SparkCluster)",
+      "tryGetLogStream(DefaultKubernetesClient, String, String)"
+    ],
+    "io.fabric8.kubernetes.client.extension.ClientAdapter": [
+      "close()"
+    ],
+    "com.apple.spark.operator.SparkApplicationStatus": [
+      "getExecutorState()",
+      "getDriverInfo()"
+    ],
+    "com.apple.spark.operator.DriverInfo": [
+      "getPodName()"
+    ],
+    "java.util.Map": [
+      "keySet()"
+    ],
+    "com.codahale.metrics.MetricRegistry": [
+      "timer(String)"
+    ],
+    "java.lang.Class": [
+      "getSimpleName()"
+    ],
+    "java.lang.Object": [
+      "getClass()"
+    ],
+    "com.codahale.metrics.Timer": [
+      "time()"
+    ],
+    "com.apple.spark.AppConfig.SparkCluster": [
+      "getSparkApplicationNamespace()"
+    ]
+  },
+  "full_method_info": "@ExceptionMetered(name = \"RuntimeException\", absolute = true, cause = RuntimeException.class)\nprivate InputStream getLog(SparkApplication sparkApplication, String execId) {\n    if (sparkApplication == null) {\n        logger.info(\"Cannot get log from EKS, spark application not found\");\n        return null;\n    }\n    String submissionId = sparkApplication.getMetadata().getName();\n    AppConfig.SparkCluster sparkCluster = getSparkCluster(submissionId);\n    DefaultKubernetesClient client = KubernetesHelper.getK8sClient(sparkCluster);\n    String podName = \"\";\n    try {\n        if (sparkApplication.getStatus() == null) {\n            logger.info(\"Cannot get log from EKS, spark application status empty for {}\", submissionId);\n            client.close();\n            return null;\n        }\n        if (sparkApplication.getStatus().getDriverInfo() == null) {\n            logger.info(\"Cannot get log from EKS, spark application driver info empty for {}\", submissionId);\n            client.close();\n            return null;\n        }\n        // execId by default is empty and which means only driver log is desired\n        if (execId.isEmpty() || execId.endsWith(\"driver\")) {\n            podName = sparkApplication.getStatus().getDriverInfo().getPodName();\n            // if execId is specified, then look for exec logs\n        } else {\n            Set<String> execPodNames = sparkApplication.getStatus().getExecutorState().keySet();\n            for (String execPodName : execPodNames) {\n                if (execPodName.endsWith(\"exec-\" + execId)) {\n                    podName = execPodName;\n                }\n            }\n        }\n        if (podName == null || podName.isEmpty()) {\n            logger.info(\"Cannot get log, spark application pod name empty for {}\", submissionId);\n            client.close();\n            return null;\n        }\n        com.codahale.metrics.Timer timer = registry.timer(this.getClass().getSimpleName() + \".getLog.k8s-time\");\n        try (com.codahale.metrics.Timer.Context ignored = timer.time()) {\n            InputStream logStream = KubernetesHelper.tryGetLogStream(client, sparkCluster.getSparkApplicationNamespace(), podName);\n            if (logStream == null) {\n                client.close();\n                return null;\n            }\n            return logStream;\n        }\n    } catch (RuntimeException ex) {\n        client.close();\n        throw ex;\n    }\n}",
+  "method_comment": "",
+  "method_annotation": "@ExceptionMetered(name = \"RuntimeException\", absolute = true, cause = RuntimeException.class)\n"
+}

@@ -1,0 +1,28 @@
+{
+  "className": "LogDao",
+  "methodName": "getJobInfoQuery",
+  "brief": "public ResultSet getJobInfoQuery(String status, String user, int queryLimit, int numDaysToShow){}",
+  "methodSignature": "getJobInfoQuery(String, String, int, int)",
+  "sourceCode": "public ResultSet getJobInfoQuery(String status, String user, int queryLimit, int numDaysToShow) {\n    return getJobInfoQueryImpl(status, user, queryLimit, numDaysToShow);\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String",
+    "String",
+    "int",
+    "int"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [],
+    "com.apple.spark.core.LogDao": [
+      "getJobInfoQueryImpl(String, String, int, int)"
+    ]
+  },
+  "full_method_info": "public ResultSet getJobInfoQuery(String status, String user, int queryLimit, int numDaysToShow) {\n    return getJobInfoQueryImpl(status, user, queryLimit, numDaysToShow);\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

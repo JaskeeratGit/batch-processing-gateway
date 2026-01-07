@@ -1,0 +1,61 @@
+{
+  "fullClassName": "com.apple.spark.clients.sparkhistory.GetJobEnvironmentResponse",
+  "className": "GetJobEnvironmentResponse",
+  "index": 79,
+  "modifier": "[public ]",
+  "extend": "[]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.clients.sparkhistory",
+  "packageDeclaration": "package com.apple.spark.clients.sparkhistory;",
+  "classSignature": "@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class GetJobEnvironmentResponse",
+  "hasConstructor": false,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import com.fasterxml.jackson.annotation.JsonIgnoreProperties;",
+    "import com.fasterxml.jackson.annotation.JsonInclude;",
+    "import java.util.List;",
+    "import java.util.Map;"
+  ],
+  "fields": [
+    "private Map<String, String> runtime;",
+    "private List<List<String>> sparkProperties;"
+  ],
+  "superClasses": [],
+  "implementedTypes": [],
+  "methodSigs": {
+    "getSparkProperties()": "0",
+    "setSparkProperties(List)": "1",
+    "getRuntime()": "2",
+    "setRuntime(Map)": "3",
+    "getPodNamePrefix()": "4"
+  },
+  "methodsBrief": [
+    "public List<List<String>> getSparkProperties(){}",
+    "public void setSparkProperties(List<List<String>> sparkProperties){}",
+    "public Map<String, String> getRuntime(){}",
+    "public void setRuntime(Map<String, String> runtime){}",
+    "public String getPodNamePrefix(){}"
+  ],
+  "constructorSigs": [],
+  "constructorBrief": [],
+  "getterSetterSigs": [
+    "getSparkProperties()",
+    "setSparkProperties(List)",
+    "getRuntime()",
+    "setRuntime(Map)",
+    "getPodNamePrefix()"
+  ],
+  "getterSetterBrief": [
+    "public List<List<String>> getSparkProperties(){}",
+    "public void setSparkProperties(List<List<String>> sparkProperties){}",
+    "public Map<String, String> getRuntime(){}",
+    "public void setRuntime(Map<String, String> runtime){}",
+    "public String getPodNamePrefix(){}"
+  ],
+  "constructorDeps": {},
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.clients.sparkhistory;\n\nimport com.fasterxml.jackson.annotation.JsonIgnoreProperties;\nimport com.fasterxml.jackson.annotation.JsonInclude;\nimport java.util.List;\nimport java.util.Map;\n\n@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class GetJobEnvironmentResponse {\n\n    private Map<String, String> runtime;\n\n    private List<List<String>> sparkProperties;\n\n    public List<List<String>> getSparkProperties() {\n        return sparkProperties;\n    }\n\n    public void setSparkProperties(List<List<String>> sparkProperties) {\n        this.sparkProperties = sparkProperties;\n    }\n\n    public Map<String, String> getRuntime() {\n        return runtime;\n    }\n\n    public void setRuntime(Map<String, String> runtime) {\n        this.runtime = runtime;\n    }\n\n    public String getPodNamePrefix() {\n        String podNamePrefix = \"\";\n        String key = \"\";\n        String value = \"\";\n        if (sparkProperties != null) {\n            int n = this.sparkProperties.size();\n            for (int i = 0; i < n; ++i) {\n                List<String> item = sparkProperties.get(i);\n                // the sparkProperties should have two items in each property\n                if (item.size() == 2) {\n                    key = item.get(0);\n                    value = item.get(1);\n                    if (key.equalsIgnoreCase(\"spark.kubernetes.executor.label.sparkoperator.k8s.io/app-name\")) {\n                        podNamePrefix = value;\n                        break;\n                    }\n                }\n            }\n        }\n        return podNamePrefix;\n    }\n}\n",
+  "classDeclarationCode": "@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class GetJobEnvironmentResponse {\n\n    private Map<String, String> runtime;\n\n    private List<List<String>> sparkProperties;\n\n    public List<List<String>> getSparkProperties() {\n        return sparkProperties;\n    }\n\n    public void setSparkProperties(List<List<String>> sparkProperties) {\n        this.sparkProperties = sparkProperties;\n    }\n\n    public Map<String, String> getRuntime() {\n        return runtime;\n    }\n\n    public void setRuntime(Map<String, String> runtime) {\n        this.runtime = runtime;\n    }\n\n    public String getPodNamePrefix() {\n        String podNamePrefix = \"\";\n        String key = \"\";\n        String value = \"\";\n        if (sparkProperties != null) {\n            int n = this.sparkProperties.size();\n            for (int i = 0; i < n; ++i) {\n                List<String> item = sparkProperties.get(i);\n                // the sparkProperties should have two items in each property\n                if (item.size() == 2) {\n                    key = item.get(0);\n                    value = item.get(1);\n                    if (key.equalsIgnoreCase(\"spark.kubernetes.executor.label.sparkoperator.k8s.io/app-name\")) {\n                        podNamePrefix = value;\n                        break;\n                    }\n                }\n            }\n        }\n        return podNamePrefix;\n    }\n}",
+  "subClasses": []
+}

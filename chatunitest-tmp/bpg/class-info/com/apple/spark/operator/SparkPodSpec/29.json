@@ -1,0 +1,18 @@
+{
+  "className": "SparkPodSpec",
+  "methodName": "getCoreRequest",
+  "brief": "public String getCoreRequest(){}",
+  "methodSignature": "getCoreRequest()",
+  "sourceCode": "public String getCoreRequest() {\n    return coreRequest;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public String getCoreRequest() {\n    return coreRequest;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

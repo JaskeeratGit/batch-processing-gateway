@@ -1,0 +1,20 @@
+{
+  "className": "Dependencies",
+  "methodName": "setPackages",
+  "brief": "public void setPackages(List<String> packages){}",
+  "methodSignature": "setPackages(List)",
+  "sourceCode": "public void setPackages(List<String> packages) {\n    this.packages = packages;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "List<String>"
+  ],
+  "dependentMethods": {},
+  "full_method_info": "public void setPackages(List<String> packages) {\n    this.packages = packages;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

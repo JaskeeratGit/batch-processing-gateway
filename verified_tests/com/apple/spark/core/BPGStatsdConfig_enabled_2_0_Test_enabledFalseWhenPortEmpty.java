@@ -1,0 +1,133 @@
+package com.apple.spark.core;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import io.micrometer.core.instrument.Clock;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.logging.LoggingMeterRegistry;
+import io.micrometer.statsd.StatsdConfig;
+import io.micrometer.statsd.StatsdFlavor;
+import io.micrometer.statsd.StatsdMeterRegistry;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/*
+  JUnit 5 tests for BPGStatsdConfig.enabled()
+  - Uses reflection to invoke enabled() method.
+  - Modifies System.getenv() for each test and restores original environment afterwards.
+*/
+class BPGStatsdConfig_enabled_2_0_Test_enabledFalseWhenPortEmpty {
+
+    private Map<String, String> originalEnv;
+
+    @BeforeEach
+    void saveOriginalEnv() {
+        originalEnv = new HashMap<>(System.getenv());
+    }
+
+    @AfterEach
+    void restoreOriginalEnv() throws Exception {
+        setEnv(originalEnv);
+    }
+
+    // Utility to replace entire environment map (works on common JVMs)
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    private static void setEnv(Map<String, String> newenv) throws Exception {
+        try {
+            // For usual case where System.getenv() returns an UnmodifiableMap with field 'm'
+            Map<String, String> env = System.getenv();
+            Class<?> envClass = env.getClass();
+            Field mField = envClass.getDeclaredField("m");
+            mField.setAccessible(true);
+            Object obj = mField.get(env);
+            if (obj instanceof Map) {
+                Map<String, String> modifiable = (Map<String, String>) obj;
+                modifiable.clear();
+                modifiable.putAll(newenv);
+                return;
+            }
+        } catch (NoSuchFieldException ignored) {
+            // Fall through to other strategies
+        }
+        try {
+            // For Oracle / OpenJDK, try ProcessEnvironment
+            Class<?> pe = Class.forName("java.lang.ProcessEnvironment");
+            Field theEnvironment = pe.getDeclaredField("theEnvironment");
+            theEnvironment.setAccessible(true);
+            Map<String, String> env = (Map<String, String>) theEnvironment.get(null);
+            env.clear();
+            env.putAll(newenv);
+            Field theCaseInsensitiveEnvironment = null;
+            try {
+                theCaseInsensitiveEnvironment = pe.getDeclaredField("theCaseInsensitiveEnvironment");
+            } catch (NoSuchFieldException ignored) {
+                // Not present on all platforms
+            }
+            if (theCaseInsensitiveEnvironment != null) {
+                theCaseInsensitiveEnvironment.setAccessible(true);
+                Map<String, String> cienv = (Map<String, String>) theCaseInsensitiveEnvironment.get(null);
+                cienv.clear();
+                cienv.putAll(newenv);
+            }
+            return;
+        } catch (ClassNotFoundException | NoSuchFieldException ignored) {
+            // Fall through
+        }
+        // Last resort: reflect into Collections$UnmodifiableMap wrapper (different approach)
+        Map<String, String> env = System.getenv();
+        Class<?> clazz = env.getClass();
+        try {
+            Field field = clazz.getDeclaredField("m");
+            field.setAccessible(true);
+            Object obj = field.get(env);
+            if (obj instanceof Map) {
+                Map<String, String> map = (Map<String, String>) obj;
+                map.clear();
+                map.putAll(newenv);
+                return;
+            }
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new IllegalStateException("Failed to set environment variables for tests", e);
+        }
+    }
+
+    private static void setEnvVarAndAssert(String key, String value, Map<String, String> base) throws Exception {
+        Map<String, String> next = new HashMap<>(base);
+        if (value == null) {
+            next.remove(key);
+        } else {
+            next.put(key, value);
+        }
+        setEnv(next);
+    }
+
+    private boolean invokeEnabled(BPGStatsdConfig cfg) throws Exception {
+        Method m = BPGStatsdConfig.class.getDeclaredMethod("enabled");
+        m.setAccessible(true);
+        return (Boolean) m.invoke(cfg);
+    }
+
+
+
+
+    @Test
+    void enabledFalseWhenPortEmpty() throws Exception {
+        Map<String, String> env = new HashMap<>(originalEnv);
+        env.put("STATSD_SERVER_IP", "1.2.3.4");
+        // empty port -> port() returns 0
+        env.put("STATSD_SERVER_PORT", "");
+        setEnv(env);
+        BPGStatsdConfig cfg = new BPGStatsdConfig();
+        assertFalse(invokeEnabled(cfg));
+    }
+
+}

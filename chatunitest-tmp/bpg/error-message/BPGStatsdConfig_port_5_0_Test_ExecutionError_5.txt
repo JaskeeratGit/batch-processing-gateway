@@ -1,0 +1,140 @@
+package com.apple.spark.core;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.Map;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import io.micrometer.core.instrument.Clock;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.logging.LoggingMeterRegistry;
+import io.micrometer.statsd.StatsdConfig;
+import io.micrometer.statsd.StatsdFlavor;
+import io.micrometer.statsd.StatsdMeterRegistry;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/*
+  Fixed test: avoid Mockito static mocking (which requires mockito-inline). Instead,
+  modify the process environment via reflection to simulate different System.getenv values.
+  Tests invoke port() via reflection as requested.
+*/
+public class BPGStatsdConfig_port_5_0_Test {
+
+    private static final String STATSD_SERVER_PORT_ENV_NAME = "STATSD_SERVER_PORT";
+
+    @Test
+    public void testPort_whenEnvNotSet_returnsZero() throws Exception {
+        String original = System.getenv(STATSD_SERVER_PORT_ENV_NAME);
+        try {
+            setEnvVar(STATSD_SERVER_PORT_ENV_NAME, null);
+            int result = invokePortViaReflection();
+            assertEquals(0, result);
+        } finally {
+            setEnvVar(STATSD_SERVER_PORT_ENV_NAME, original);
+        }
+    }
+
+    @Test
+    public void testPort_whenEnvEmpty_returnsZero() throws Exception {
+        String original = System.getenv(STATSD_SERVER_PORT_ENV_NAME);
+        try {
+            setEnvVar(STATSD_SERVER_PORT_ENV_NAME, "");
+            int result = invokePortViaReflection();
+            assertEquals(0, result);
+        } finally {
+            setEnvVar(STATSD_SERVER_PORT_ENV_NAME, original);
+        }
+    }
+
+    @Test
+    public void testPort_whenEnvIsValidNumber_returnsParsedInt() throws Exception {
+        String original = System.getenv(STATSD_SERVER_PORT_ENV_NAME);
+        try {
+            setEnvVar(STATSD_SERVER_PORT_ENV_NAME, "8125");
+            int result = invokePortViaReflection();
+            assertEquals(8125, result);
+        } finally {
+            setEnvVar(STATSD_SERVER_PORT_ENV_NAME, original);
+        }
+    }
+
+    @Test
+    public void testPort_whenEnvIsInvalidNumber_returnsZero() throws Exception {
+        String original = System.getenv(STATSD_SERVER_PORT_ENV_NAME);
+        try {
+            setEnvVar(STATSD_SERVER_PORT_ENV_NAME, "notANumber");
+            int result = invokePortViaReflection();
+            assertEquals(0, result);
+        } finally {
+            setEnvVar(STATSD_SERVER_PORT_ENV_NAME, original);
+        }
+    }
+
+    // Helper to invoke port() via reflection (as requested)
+    private int invokePortViaReflection() throws Exception {
+        Class<?> clazz = Class.forName("com.apple.spark.core.BPGStatsdConfig");
+        Object instance = clazz.getDeclaredConstructor().newInstance();
+        Method m = clazz.getDeclaredMethod("port");
+        m.setAccessible(true);
+        Object ret = m.invoke(instance);
+        return (ret instanceof Integer) ? (Integer) ret : 0;
+    }
+
+    // Reflection-based helper to set/unset environment variables for the running JVM process.
+    @SuppressWarnings("unchecked")
+    private static void setEnvVar(String key, String value) throws Exception {
+        try {
+            Map<String, String> env = System.getenv();
+            Class<?> envClass = env.getClass();
+            Field mField = envClass.getDeclaredField("m");
+            mField.setAccessible(true);
+            Map<String, String> modifiable = (Map<String, String>) mField.get(env);
+            if (value == null) {
+                modifiable.remove(key);
+            } else {
+                modifiable.put(key, value);
+            }
+        } catch (NoSuchFieldException e) {
+            // Fallback for other JVM implementations (e.g., some Java 8/11+)
+            Class<?> pe = Class.forName("java.lang.ProcessEnvironment");
+            try {
+                Field theEnvironmentField = pe.getDeclaredField("theEnvironment");
+                theEnvironmentField.setAccessible(true);
+                Map<String, String> env = (Map<String, String>) theEnvironmentField.get(null);
+                if (value == null) {
+                    env.remove(key);
+                } else {
+                    env.put(key, value);
+                }
+            } catch (NoSuchFieldException ignored) {
+            }
+            try {
+                Field theCaseInsensitiveEnvironmentField = pe.getDeclaredField("theCaseInsensitiveEnvironment");
+                theCaseInsensitiveEnvironmentField.setAccessible(true);
+                Map<String, String> cienv = (Map<String, String>) theCaseInsensitiveEnvironmentField.get(null);
+                if (value == null) {
+                    cienv.remove(key);
+                } else {
+                    cienv.put(key, value);
+                }
+            } catch (NoSuchFieldException ignored) {
+            }
+        }
+    }
+}
+
+--------------------------------------------
+Error in testPort_whenEnvNotSet_returnsZero(): line 96 : java.lang.reflect.InaccessibleObjectException: Unable to make field private final java.util.Map java.util.Collections$UnmodifiableMap.m accessible: module java.base does not "opens java.util" to unnamed module @46a17568
+Error in testPort_whenEnvNotSet_returnsZero(): line 39 : java.lang.reflect.InaccessibleObjectException: Unable to make field private final java.util.Map java.util.Collections$UnmodifiableMap.m accessible: module java.base does not "opens java.util" to unnamed module @46a17568
+Error in testPort_whenEnvIsValidNumber_returnsParsedInt(): line 96 : java.lang.reflect.InaccessibleObjectException: Unable to make field private final java.util.Map java.util.Collections$UnmodifiableMap.m accessible: module java.base does not "opens java.util" to unnamed module @46a17568
+Error in testPort_whenEnvIsValidNumber_returnsParsedInt(): line 63 : java.lang.reflect.InaccessibleObjectException: Unable to make field private final java.util.Map java.util.Collections$UnmodifiableMap.m accessible: module java.base does not "opens java.util" to unnamed module @46a17568
+Error in testPort_whenEnvEmpty_returnsZero(): line 96 : java.lang.reflect.InaccessibleObjectException: Unable to make field private final java.util.Map java.util.Collections$UnmodifiableMap.m accessible: module java.base does not "opens java.util" to unnamed module @46a17568
+Error in testPort_whenEnvEmpty_returnsZero(): line 51 : java.lang.reflect.InaccessibleObjectException: Unable to make field private final java.util.Map java.util.Collections$UnmodifiableMap.m accessible: module java.base does not "opens java.util" to unnamed module @46a17568
+Error in testPort_whenEnvIsInvalidNumber_returnsZero(): line 96 : java.lang.reflect.InaccessibleObjectException: Unable to make field private final java.util.Map java.util.Collections$UnmodifiableMap.m accessible: module java.base does not "opens java.util" to unnamed module @46a17568
+Error in testPort_whenEnvIsInvalidNumber_returnsZero(): line 75 : java.lang.reflect.InaccessibleObjectException: Unable to make field private final java.util.Map java.util.Collections$UnmodifiableMap.m accessible: module java.base does not "opens java.util" to unnamed module @46a17568

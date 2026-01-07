@@ -1,0 +1,57 @@
+{
+  "className": "ConfigValue",
+  "methodName": "tryGetEncodedSecretValueFromK8sSecret",
+  "brief": "private static String tryGetEncodedSecretValueFromK8sSecret(String value){}",
+  "methodSignature": "tryGetEncodedSecretValueFromK8sSecret(String)",
+  "sourceCode": "private static String tryGetEncodedSecretValueFromK8sSecret(String value) {\n    logger.info(String.format(\"tryGetEncodedSecretValueFromK8sSecret: %s\", value));\n    String secretNameAndKey = value.substring(K8S_SECRET_PREFIX.length());\n    String[] strParts = secretNameAndKey.split(\":\");\n    if (strParts.length != 3) {\n      logger.info(String.format(\"Not valid encoded k8s secret value: %s\", value));\n      return value;\n    }\n    String namespace = strParts[0];\n    if (namespace.isEmpty()) {\n      namespace = KubernetesHelper.tryGetServiceAccountNamespace();\n      if (namespace != null && !namespace.isEmpty()) {\n        logger.info(\n            String.format(\n                \"Use current namespace %s for encoded k8s secret value: %s\", namespace, value));\n      }\n    }\n    if (namespace == null || namespace.isEmpty()) {\n      logger.info(String.format(\"Cannot resolve namespace in encoded k8s secret value: %s\", value));\n      return value;\n    }\n    String secretName = strParts[1];\n    String secretKey = strParts[2];\n    int retryTimes = 2;\n    int retryIntervalMillis = 1000;\n    for (int i = 0; i <= retryTimes; i++) {\n      try (DefaultKubernetesClient client = KubernetesHelper.getLocalK8sClient()) {\n        Secret secret = client.secrets().inNamespace(namespace).withName(secretName).get();\n        if (secret == null) {\n          logger.info(\n              String.format(\n                  \"Secret %s not exists in namespace %s (encoded k8s secret value: %s)\",\n                  secretName, namespace, value));\n          return value;\n        }\n        logger.info(\n            String.format(\n                \"Found secret %s in namespace %s (encoded k8s secret value: %s)\",\n                secretName, namespace, value));\n        Map<String, String> data = secret.getData();\n        if (data == null) {\n          logger.info(\n              String.format(\n                  \"Secret %s has no data in namespace %s (encoded k8s secret value: %s)\",\n                  secretName, namespace, value));\n          return value;\n        }\n        String secretValue = data.get(secretKey);\n        if (secretValue == null) {\n          logger.info(\n              String.format(\n                  \"Secret %s has no data key %s in namespace %s (encoded k8s secret value: %s)\",\n                  secretName, secretKey, namespace, value));\n          return value;\n        } else {\n          String base64DecodedStr =\n              new String(Base64.getDecoder().decode(secretValue), StandardCharsets.UTF_8);\n          logger.info(\n              String.format(\n                  \"Secret %s got value (base64 encoded length: %d, base64 decoded length: %d) for\"\n                      + \" data key %s in namespace %s (encoded k8s secret value: %s)\",\n                  secretName,\n                  secretValue.length(),\n                  base64DecodedStr.length(),\n                  secretKey,\n                  namespace,\n                  value));\n          return base64DecodedStr;\n        }\n      } catch (Throwable ex) {\n        logger.warn(\n            String.format(\n                \"Failed to get secret %s in namespace %s (encoded k8s secret value: %s)\",\n                secretName, namespace, value),\n            ex);\n        try {\n          Thread.sleep(retryIntervalMillis);\n        } catch (InterruptedException e) {\n          throw new RuntimeException(e);\n        }\n      }\n    }\n    return value;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "substring(int)",
+      "isEmpty()",
+      "split(String)",
+      "format(String, Object[])",
+      "length()"
+    ],
+    "org.slf4j.Logger": [
+      "info(String)",
+      "warn(String, Throwable)"
+    ],
+    "com.apple.spark.core.KubernetesHelper": [
+      "tryGetServiceAccountNamespace()",
+      "getLocalK8sClient()"
+    ],
+    "io.fabric8.kubernetes.client.dsl.Namespaceable": [
+      "inNamespace(String)"
+    ],
+    "io.fabric8.kubernetes.client.NamespacedKubernetesClientAdapter": [
+      "secrets()"
+    ],
+    "io.fabric8.kubernetes.api.model.Secret": [
+      "getData()"
+    ],
+    "java.util.Map": [
+      "get(Object)"
+    ],
+    "java.util.Base64.Decoder": [
+      "decode(String)"
+    ],
+    "java.util.Base64": [
+      "getDecoder()"
+    ],
+    "java.lang.Thread": [
+      "sleep(long)"
+    ]
+  },
+  "full_method_info": "private static String tryGetEncodedSecretValueFromK8sSecret(String value) {\n    logger.info(String.format(\"tryGetEncodedSecretValueFromK8sSecret: %s\", value));\n    String secretNameAndKey = value.substring(K8S_SECRET_PREFIX.length());\n    String[] strParts = secretNameAndKey.split(\":\");\n    if (strParts.length != 3) {\n        logger.info(String.format(\"Not valid encoded k8s secret value: %s\", value));\n        return value;\n    }\n    String namespace = strParts[0];\n    if (namespace.isEmpty()) {\n        namespace = KubernetesHelper.tryGetServiceAccountNamespace();\n        if (namespace != null && !namespace.isEmpty()) {\n            logger.info(String.format(\"Use current namespace %s for encoded k8s secret value: %s\", namespace, value));\n        }\n    }\n    if (namespace == null || namespace.isEmpty()) {\n        logger.info(String.format(\"Cannot resolve namespace in encoded k8s secret value: %s\", value));\n        return value;\n    }\n    String secretName = strParts[1];\n    String secretKey = strParts[2];\n    int retryTimes = 2;\n    int retryIntervalMillis = 1000;\n    for (int i = 0; i <= retryTimes; i++) {\n        try (DefaultKubernetesClient client = KubernetesHelper.getLocalK8sClient()) {\n            Secret secret = client.secrets().inNamespace(namespace).withName(secretName).get();\n            if (secret == null) {\n                logger.info(String.format(\"Secret %s not exists in namespace %s (encoded k8s secret value: %s)\", secretName, namespace, value));\n                return value;\n            }\n            logger.info(String.format(\"Found secret %s in namespace %s (encoded k8s secret value: %s)\", secretName, namespace, value));\n            Map<String, String> data = secret.getData();\n            if (data == null) {\n                logger.info(String.format(\"Secret %s has no data in namespace %s (encoded k8s secret value: %s)\", secretName, namespace, value));\n                return value;\n            }\n            String secretValue = data.get(secretKey);\n            if (secretValue == null) {\n                logger.info(String.format(\"Secret %s has no data key %s in namespace %s (encoded k8s secret value: %s)\", secretName, secretKey, namespace, value));\n                return value;\n            } else {\n                String base64DecodedStr = new String(Base64.getDecoder().decode(secretValue), StandardCharsets.UTF_8);\n                logger.info(String.format(\"Secret %s got value (base64 encoded length: %d, base64 decoded length: %d) for\" + \" data key %s in namespace %s (encoded k8s secret value: %s)\", secretName, secretValue.length(), base64DecodedStr.length(), secretKey, namespace, value));\n                return base64DecodedStr;\n            }\n        } catch (Throwable ex) {\n            logger.warn(String.format(\"Failed to get secret %s in namespace %s (encoded k8s secret value: %s)\", secretName, namespace, value), ex);\n            try {\n                Thread.sleep(retryIntervalMillis);\n            } catch (InterruptedException e) {\n                throw new RuntimeException(e);\n            }\n        }\n    }\n    return value;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

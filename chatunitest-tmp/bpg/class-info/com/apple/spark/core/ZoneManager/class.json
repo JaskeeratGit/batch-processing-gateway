@@ -1,0 +1,49 @@
+{
+  "fullClassName": "com.apple.spark.core.ZoneManager",
+  "className": "ZoneManager",
+  "index": 103,
+  "modifier": "[public ]",
+  "extend": "[]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.core",
+  "packageDeclaration": "package com.apple.spark.core;",
+  "classSignature": "public class ZoneManager",
+  "hasConstructor": false,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import com.apple.spark.AppConfig;",
+    "import com.apple.spark.AppConfig.QueueConfig;",
+    "import com.apple.spark.api.SubmitApplicationRequest;",
+    "import java.util.List;",
+    "import java.util.Optional;",
+    "import java.util.concurrent.ConcurrentHashMap;",
+    "import java.util.concurrent.ConcurrentMap;",
+    "import org.slf4j.Logger;",
+    "import org.slf4j.LoggerFactory;"
+  ],
+  "fields": [
+    "private static final Logger logger = LoggerFactory.getLogger(ZoneManager.class);",
+    "public static final String ROUND_ROBIN_ZONE_PICKER_NAME = \"round_robin\";",
+    "private static final ConcurrentMap<String, ZonePicker> zonePickers = new ConcurrentHashMap<>();"
+  ],
+  "superClasses": [],
+  "implementedTypes": [],
+  "methodSigs": {
+    "pickZones(SubmitApplicationRequest, AppConfig, String, AppConfig.SparkCluster, String)": "0",
+    "createZonePickerForQueue(QueueConfig)": "1"
+  },
+  "methodsBrief": [
+    "public static List<String> pickZones(\n      final SubmitApplicationRequest request,\n      final AppConfig appConfig,\n      final String queueName,\n      final AppConfig.SparkCluster sparkCluster,\n      final String submissionId){}",
+    "private static ZonePicker createZonePickerForQueue(final QueueConfig queueConfig){}"
+  ],
+  "constructorSigs": [],
+  "constructorBrief": [],
+  "getterSetterSigs": [],
+  "getterSetterBrief": [],
+  "constructorDeps": {},
+  "compilationUnitCode": "package com.apple.spark.core;\n\nimport com.apple.spark.AppConfig;\nimport com.apple.spark.AppConfig.QueueConfig;\nimport com.apple.spark.api.SubmitApplicationRequest;\nimport java.util.List;\nimport java.util.Optional;\nimport java.util.concurrent.ConcurrentHashMap;\nimport java.util.concurrent.ConcurrentMap;\nimport org.slf4j.Logger;\nimport org.slf4j.LoggerFactory;\n\npublic class ZoneManager {\n\n    private static final Logger logger = LoggerFactory.getLogger(ZoneManager.class);\n\n    public static final String ROUND_ROBIN_ZONE_PICKER_NAME = \"round_robin\";\n\n    private static final ConcurrentMap<String, ZonePicker> zonePickers = new ConcurrentHashMap<>();\n\n    public static List<String> pickZones(final SubmitApplicationRequest request, final AppConfig appConfig, final String queueName, final AppConfig.SparkCluster sparkCluster, final String submissionId) {\n        if (request == null || appConfig == null) {\n            return null;\n        }\n        Optional<QueueConfig> queueConfigOptional = appConfig.getQueues().stream().filter(t -> t.getName().equals(queueName)).findFirst();\n        if (queueConfigOptional.isEmpty()) {\n            return null;\n        }\n        QueueConfig queueConfig = queueConfigOptional.get();\n        List<String> allowedZone = queueConfig.getAllowedZones();\n        if (allowedZone == null || allowedZone.isEmpty()) {\n            return null;\n        }\n        List<String> pickedZones = zonePickers.computeIfAbsent(queueConfig.getName(), (name) -> createZonePickerForQueue(queueConfig)).pick();\n        logger.info(\"Picked Zones: {} for job: {} in Queue: {}\", String.join(\",\", pickedZones), submissionId, queueConfig.getName());\n        return pickedZones;\n    }\n\n    private static ZonePicker createZonePickerForQueue(final QueueConfig queueConfig) {\n        String zonePickerName = queueConfig.getZonePickerName();\n        if (zonePickerName == null) {\n            zonePickerName = ROUND_ROBIN_ZONE_PICKER_NAME;\n        }\n        ZonePicker zonePicker;\n        switch(zonePickerName) {\n            case ROUND_ROBIN_ZONE_PICKER_NAME:\n                zonePicker = new RoundRobinZonePicker();\n                break;\n            default:\n                zonePicker = new RoundRobinZonePicker();\n        }\n        zonePicker.update(queueConfig.getAllowedZones());\n        logger.info(\"Creating {} ZonePicker for Queue {} with AllowedAvailabilityZones {}\", zonePickerName, queueConfig.getName(), String.join(\",\", queueConfig.getAllowedZones()));\n        return zonePicker;\n    }\n}\n",
+  "classDeclarationCode": "public class ZoneManager {\n\n    private static final Logger logger = LoggerFactory.getLogger(ZoneManager.class);\n\n    public static final String ROUND_ROBIN_ZONE_PICKER_NAME = \"round_robin\";\n\n    private static final ConcurrentMap<String, ZonePicker> zonePickers = new ConcurrentHashMap<>();\n\n    public static List<String> pickZones(final SubmitApplicationRequest request, final AppConfig appConfig, final String queueName, final AppConfig.SparkCluster sparkCluster, final String submissionId) {\n        if (request == null || appConfig == null) {\n            return null;\n        }\n        Optional<QueueConfig> queueConfigOptional = appConfig.getQueues().stream().filter(t -> t.getName().equals(queueName)).findFirst();\n        if (queueConfigOptional.isEmpty()) {\n            return null;\n        }\n        QueueConfig queueConfig = queueConfigOptional.get();\n        List<String> allowedZone = queueConfig.getAllowedZones();\n        if (allowedZone == null || allowedZone.isEmpty()) {\n            return null;\n        }\n        List<String> pickedZones = zonePickers.computeIfAbsent(queueConfig.getName(), (name) -> createZonePickerForQueue(queueConfig)).pick();\n        logger.info(\"Picked Zones: {} for job: {} in Queue: {}\", String.join(\",\", pickedZones), submissionId, queueConfig.getName());\n        return pickedZones;\n    }\n\n    private static ZonePicker createZonePickerForQueue(final QueueConfig queueConfig) {\n        String zonePickerName = queueConfig.getZonePickerName();\n        if (zonePickerName == null) {\n            zonePickerName = ROUND_ROBIN_ZONE_PICKER_NAME;\n        }\n        ZonePicker zonePicker;\n        switch(zonePickerName) {\n            case ROUND_ROBIN_ZONE_PICKER_NAME:\n                zonePicker = new RoundRobinZonePicker();\n                break;\n            default:\n                zonePicker = new RoundRobinZonePicker();\n        }\n        zonePicker.update(queueConfig.getAllowedZones());\n        logger.info(\"Creating {} ZonePicker for Queue {} with AllowedAvailabilityZones {}\", zonePickerName, queueConfig.getName(), String.join(\",\", queueConfig.getAllowedZones()));\n        return zonePicker;\n    }\n}",
+  "subClasses": []
+}

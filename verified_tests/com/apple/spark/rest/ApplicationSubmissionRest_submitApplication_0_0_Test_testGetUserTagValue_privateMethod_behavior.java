@@ -1,0 +1,138 @@
+package com.apple.spark.rest;
+
+import com.apple.spark.AppConfig;
+import com.apple.spark.api.SubmitApplicationResponse;
+import com.apple.spark.security.User;
+import com.apple.spark.util.TimerMetricContainer;
+import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Supplier;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import static com.apple.spark.core.ApplicationSubmissionHelper.getDriverSpec;
+import static com.apple.spark.core.ApplicationSubmissionHelper.getExecutorSpec;
+import static com.apple.spark.core.ApplicationSubmissionHelper.getImage;
+import static com.apple.spark.core.ApplicationSubmissionHelper.getProxyUser;
+import static com.apple.spark.core.ApplicationSubmissionHelper.getSparkConf;
+import static com.apple.spark.core.ApplicationSubmissionHelper.getSparkUIConfiguration;
+import static com.apple.spark.core.ApplicationSubmissionHelper.getType;
+import static com.apple.spark.core.ApplicationSubmissionHelper.getVolumes;
+import static com.apple.spark.core.ApplicationSubmissionHelper.getYuniKornSchedulerConfig;
+import static com.apple.spark.core.BatchSchedulerConstants.YUNIKORN_ROOT_QUEUE;
+import static com.apple.spark.core.BatchSchedulerConstants.YUNIKORN_SCHEDULER;
+import static com.apple.spark.core.Constants.*;
+import com.apple.spark.AppConfig.SparkCluster;
+import com.apple.spark.api.DeleteSubmissionResponse;
+import com.apple.spark.api.GetDriverInfoResponse;
+import com.apple.spark.api.GetMySubmissionsResponse;
+import com.apple.spark.api.GetSubmissionStatusResponse;
+import com.apple.spark.api.SubmissionSummary;
+import com.apple.spark.api.SubmitApplicationRequest;
+import com.apple.spark.core.*;
+import com.apple.spark.operator.DriverInfo;
+import com.apple.spark.operator.SparkApplication;
+import com.apple.spark.operator.SparkApplicationResourceList;
+import com.apple.spark.operator.SparkApplicationSpec;
+import com.apple.spark.util.ConfigUtil;
+import com.apple.spark.util.CustomSerDe;
+import com.apple.spark.util.DateTimeUtils;
+import com.apple.spark.util.ExceptionUtils;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.SharedMetricRegistries;
+import com.codahale.metrics.annotation.ExceptionMetered;
+import com.codahale.metrics.annotation.Timed;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
+import io.dropwizard.auth.Auth;
+import io.fabric8.kubernetes.api.model.Event;
+import io.fabric8.kubernetes.api.model.EventList;
+import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.PodStatus;
+import io.fabric8.kubernetes.client.DefaultKubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.Resource;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import javax.annotation.security.PermitAll;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class ApplicationSubmissionRest_submitApplication_0_0_Test_testGetUserTagValue_privateMethod_behavior {
+
+    private AppConfig appConfig;
+
+    private SimpleMeterRegistry meterRegistry;
+
+    private ApplicationSubmissionRest rest;
+
+    @BeforeEach
+    public void setup() {
+        appConfig = new AppConfig();
+        meterRegistry = new SimpleMeterRegistry();
+        // instantiate real ApplicationSubmissionRest (uses AppConfig and MeterRegistry)
+        rest = new ApplicationSubmissionRest(appConfig, meterRegistry);
+    }
+
+
+    @Test
+    public void testGetUserTagValue_privateMethod_behavior() throws Exception {
+        // Access the private getUserTagValue method via reflection
+        Field[] fields = ApplicationSubmissionRest.class.getDeclaredFields();
+        // locate method by name
+        java.lang.reflect.Method method = ApplicationSubmissionRest.class.getDeclaredMethod("getUserTagValue", com.apple.spark.security.User.class);
+        method.setAccessible(true);
+        // Case 1: user is null -> expect empty string
+        String resultNull = (String) method.invoke(rest, new Object[] { null });
+        assertEquals("", resultNull, "getUserTagValue should return empty string for null user");
+        // Case 2: user with null name -> expect empty string
+        User userWithNullName = new User(null);
+        String resultNullName = (String) method.invoke(rest, new Object[] { userWithNullName });
+        assertEquals("", resultNullName, "getUserTagValue should return empty string when user's name is null");
+        // Case 3: user with name -> expect the name returned
+        User bob = new User("bob");
+        String resultBob = (String) method.invoke(rest, new Object[] { bob });
+        assertEquals("bob", resultBob, "getUserTagValue should return the user's name when present");
+    }
+}

@@ -1,0 +1,22 @@
+{
+  "className": "SparkApplicationStatus",
+  "methodName": "setApplicationState",
+  "brief": "public void setApplicationState(ApplicationState applicationState){}",
+  "methodSignature": "setApplicationState(ApplicationState)",
+  "sourceCode": "public void setApplicationState(ApplicationState applicationState) {\n    this.applicationState = applicationState;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "ApplicationState"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.operator.ApplicationState": []
+  },
+  "full_method_info": "public void setApplicationState(ApplicationState applicationState) {\n    this.applicationState = applicationState;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

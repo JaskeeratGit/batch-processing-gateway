@@ -1,0 +1,61 @@
+{
+  "fullClassName": "com.apple.spark.util.ConfigUtil",
+  "className": "ConfigUtil",
+  "index": 69,
+  "modifier": "[public ]",
+  "extend": "[]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.util",
+  "packageDeclaration": "package com.apple.spark.util;",
+  "classSignature": "public class ConfigUtil",
+  "hasConstructor": false,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import static com.apple.spark.AppConfig.SparkCluster;",
+    "import com.apple.spark.AppConfig;",
+    "import com.apple.spark.core.DBConnection;",
+    "import com.fasterxml.jackson.databind.ObjectMapper;",
+    "import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;",
+    "import java.io.InputStream;",
+    "import java.util.ArrayList;",
+    "import java.util.Comparator;",
+    "import java.util.List;",
+    "import java.util.Map;",
+    "import java.util.Set;",
+    "import java.util.TreeSet;",
+    "import org.jdbi.v3.core.Jdbi;",
+    "import org.slf4j.Logger;",
+    "import org.slf4j.LoggerFactory;"
+  ],
+  "fields": [
+    "private static final Logger logger = LoggerFactory.getLogger(ConfigUtil.class);"
+  ],
+  "superClasses": [],
+  "implementedTypes": [],
+  "methodSigs": {
+    "mergeConfig(AppConfig)": "0",
+    "getSparkUIUrl(SparkCluster, String)": "1",
+    "getSparkHistoryUrl(String, String)": "2",
+    "merge(List, List)": "3",
+    "getConfFromDB(AppConfig)": "4",
+    "readVersion()": "5"
+  },
+  "methodsBrief": [
+    "public static void mergeConfig(AppConfig config){}",
+    "public static String getSparkUIUrl(SparkCluster cluster, String submissionId){}",
+    "public static String getSparkHistoryUrl(String sparkHistoryDns, String appId){}",
+    "public static List<SparkCluster> merge(List<SparkCluster> c1, List<SparkCluster> c2){}",
+    "public static List<SparkCluster> getConfFromDB(AppConfig config){}",
+    "public static VersionInfo readVersion(){}"
+  ],
+  "constructorSigs": [],
+  "constructorBrief": [],
+  "getterSetterSigs": [],
+  "getterSetterBrief": [],
+  "constructorDeps": {},
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.util;\n\nimport static com.apple.spark.AppConfig.SparkCluster;\nimport com.apple.spark.AppConfig;\nimport com.apple.spark.core.DBConnection;\nimport com.fasterxml.jackson.databind.ObjectMapper;\nimport com.fasterxml.jackson.dataformat.yaml.YAMLFactory;\nimport java.io.InputStream;\nimport java.util.ArrayList;\nimport java.util.Comparator;\nimport java.util.List;\nimport java.util.Map;\nimport java.util.Set;\nimport java.util.TreeSet;\nimport org.jdbi.v3.core.Jdbi;\nimport org.slf4j.Logger;\nimport org.slf4j.LoggerFactory;\n\npublic class ConfigUtil {\n\n    private static final Logger logger = LoggerFactory.getLogger(ConfigUtil.class);\n\n    public static void mergeConfig(AppConfig config) {\n        List<SparkCluster> clustersFromDB = getConfFromDB(config);\n        List<SparkCluster> clustersFromCM = config.getSparkClusters();\n        List<SparkCluster> combinedSparkClusters = merge(clustersFromCM, clustersFromDB);\n        config.setSparkClusters(combinedSparkClusters);\n    }\n\n    public static String getSparkUIUrl(SparkCluster cluster, String submissionId) {\n        return String.format(\"%s/%s/%s\", cluster.getSparkUIUrl(), cluster.getSparkApplicationNamespace(), submissionId);\n    }\n\n    public static String getSparkHistoryUrl(String sparkHistoryDns, String appId) {\n        return String.format(\"https://%s/history/%s\", sparkHistoryDns, appId);\n    }\n\n    public static List<SparkCluster> merge(List<SparkCluster> c1, List<SparkCluster> c2) {\n        Set<SparkCluster> combinedSet = new TreeSet<>(Comparator.comparing(SparkCluster::getId));\n        if (c1 != null) {\n            combinedSet.addAll(c1);\n        }\n        combinedSet.addAll(c2);\n        List<SparkCluster> combinedSparkClusters = new ArrayList<>(combinedSet);\n        if (combinedSparkClusters.isEmpty()) {\n            throw new RuntimeException(\"Could not get Spark Clusters configuration from DB and k8s configmap. Exit.\");\n        }\n        return combinedSparkClusters;\n    }\n\n    public static List<SparkCluster> getConfFromDB(AppConfig config) {\n        AppConfig.DBStorage dbconf = config.getDbStorageSOPS();\n        String connectionString = dbconf.getConnectionString();\n        String userId = dbconf.getUser();\n        String password = dbconf.getPasswordDecodedValue();\n        String queryConf = \"SELECT cid, conf FROM config\";\n        DBConnection dbConnection = new DBConnection(connectionString, userId, password);\n        List<SparkCluster> sparkClusters = new ArrayList<>();\n        ObjectMapper objectMapper = new ObjectMapper();\n        try {\n            Jdbi jdbi = Jdbi.create(dbConnection.getConnection());\n            List<Map<String, Object>> dbResults = jdbi.withHandle(handle -> handle.createQuery(queryConf).mapToMap().list());\n            for (Map<String, Object> m : dbResults) {\n                String conf = (String) m.get(\"conf\");\n                SparkCluster sparkCluster = objectMapper.readValue(conf, SparkCluster.class);\n                if (sparkCluster != null) {\n                    sparkClusters.add(sparkCluster);\n                    logger.info(\"Read configuration from db for spark cluster/namespace: {}\", sparkCluster.getId());\n                }\n            }\n        } catch (Exception e) {\n            logger.info(\"Error occurred fetching and parsing config from DB: {}.\", e.toString());\n        }\n        if (sparkClusters.isEmpty()) {\n            logger.info(\"No spark cluster configuration was read from DB.\");\n        }\n        return sparkClusters;\n    }\n\n    public static VersionInfo readVersion() {\n        VersionInfo verInfo = new VersionInfo();\n        try {\n            InputStream in = ConfigUtil.class.getResourceAsStream(\"/version.txt\");\n            ObjectMapper mapper_yaml = new ObjectMapper(new YAMLFactory());\n            verInfo = mapper_yaml.readValue(in, VersionInfo.class);\n        } catch (Exception e) {\n            logger.error(\"version.txt not found\");\n        }\n        return verInfo;\n    }\n}\n",
+  "classDeclarationCode": "public class ConfigUtil {\n\n    private static final Logger logger = LoggerFactory.getLogger(ConfigUtil.class);\n\n    public static void mergeConfig(AppConfig config) {\n        List<SparkCluster> clustersFromDB = getConfFromDB(config);\n        List<SparkCluster> clustersFromCM = config.getSparkClusters();\n        List<SparkCluster> combinedSparkClusters = merge(clustersFromCM, clustersFromDB);\n        config.setSparkClusters(combinedSparkClusters);\n    }\n\n    public static String getSparkUIUrl(SparkCluster cluster, String submissionId) {\n        return String.format(\"%s/%s/%s\", cluster.getSparkUIUrl(), cluster.getSparkApplicationNamespace(), submissionId);\n    }\n\n    public static String getSparkHistoryUrl(String sparkHistoryDns, String appId) {\n        return String.format(\"https://%s/history/%s\", sparkHistoryDns, appId);\n    }\n\n    public static List<SparkCluster> merge(List<SparkCluster> c1, List<SparkCluster> c2) {\n        Set<SparkCluster> combinedSet = new TreeSet<>(Comparator.comparing(SparkCluster::getId));\n        if (c1 != null) {\n            combinedSet.addAll(c1);\n        }\n        combinedSet.addAll(c2);\n        List<SparkCluster> combinedSparkClusters = new ArrayList<>(combinedSet);\n        if (combinedSparkClusters.isEmpty()) {\n            throw new RuntimeException(\"Could not get Spark Clusters configuration from DB and k8s configmap. Exit.\");\n        }\n        return combinedSparkClusters;\n    }\n\n    public static List<SparkCluster> getConfFromDB(AppConfig config) {\n        AppConfig.DBStorage dbconf = config.getDbStorageSOPS();\n        String connectionString = dbconf.getConnectionString();\n        String userId = dbconf.getUser();\n        String password = dbconf.getPasswordDecodedValue();\n        String queryConf = \"SELECT cid, conf FROM config\";\n        DBConnection dbConnection = new DBConnection(connectionString, userId, password);\n        List<SparkCluster> sparkClusters = new ArrayList<>();\n        ObjectMapper objectMapper = new ObjectMapper();\n        try {\n            Jdbi jdbi = Jdbi.create(dbConnection.getConnection());\n            List<Map<String, Object>> dbResults = jdbi.withHandle(handle -> handle.createQuery(queryConf).mapToMap().list());\n            for (Map<String, Object> m : dbResults) {\n                String conf = (String) m.get(\"conf\");\n                SparkCluster sparkCluster = objectMapper.readValue(conf, SparkCluster.class);\n                if (sparkCluster != null) {\n                    sparkClusters.add(sparkCluster);\n                    logger.info(\"Read configuration from db for spark cluster/namespace: {}\", sparkCluster.getId());\n                }\n            }\n        } catch (Exception e) {\n            logger.info(\"Error occurred fetching and parsing config from DB: {}.\", e.toString());\n        }\n        if (sparkClusters.isEmpty()) {\n            logger.info(\"No spark cluster configuration was read from DB.\");\n        }\n        return sparkClusters;\n    }\n\n    public static VersionInfo readVersion() {\n        VersionInfo verInfo = new VersionInfo();\n        try {\n            InputStream in = ConfigUtil.class.getResourceAsStream(\"/version.txt\");\n            ObjectMapper mapper_yaml = new ObjectMapper(new YAMLFactory());\n            verInfo = mapper_yaml.readValue(in, VersionInfo.class);\n        } catch (Exception e) {\n            logger.error(\"version.txt not found\");\n        }\n        return verInfo;\n    }\n}",
+  "subClasses": []
+}

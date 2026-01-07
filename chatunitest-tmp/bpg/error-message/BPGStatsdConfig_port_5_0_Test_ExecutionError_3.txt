@@ -1,0 +1,166 @@
+package com.apple.spark.core;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import io.micrometer.core.instrument.Clock;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.logging.LoggingMeterRegistry;
+import io.micrometer.statsd.StatsdConfig;
+import io.micrometer.statsd.StatsdFlavor;
+import io.micrometer.statsd.StatsdMeterRegistry;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/*
+  Fixed test: do not rely on Mockito's mockStatic. Instead modify the process environment
+  via reflection (with a fallback for different JVM implementations). Tests invoke port()
+  via reflection as requested.
+*/
+public class BPGStatsdConfig_port_5_0_Test {
+
+    private static final String STATSD_SERVER_PORT_ENV_NAME = "STATSD_SERVER_PORT";
+
+    private Map<String, String> originalEnv;
+
+    @BeforeEach
+    public void backupEnv() {
+        originalEnv = new HashMap<>(System.getenv());
+    }
+
+    @AfterEach
+    public void restoreEnv() throws Exception {
+        setEnvMap(originalEnv);
+    }
+
+    @Test
+    public void testPort_whenEnvNotSet_returnsZero() throws Exception {
+        // remove the env var
+        setEnvVar(STATSD_SERVER_PORT_ENV_NAME, null);
+        int result = invokePortViaReflection();
+        assertEquals(0, result);
+    }
+
+    @Test
+    public void testPort_whenEnvEmpty_returnsZero() throws Exception {
+        setEnvVar(STATSD_SERVER_PORT_ENV_NAME, "");
+        int result = invokePortViaReflection();
+        assertEquals(0, result);
+    }
+
+    @Test
+    public void testPort_whenEnvIsValidNumber_returnsParsedInt() throws Exception {
+        setEnvVar(STATSD_SERVER_PORT_ENV_NAME, "8125");
+        int result = invokePortViaReflection();
+        assertEquals(8125, result);
+    }
+
+    @Test
+    public void testPort_whenEnvIsInvalidNumber_returnsZero() throws Exception {
+        setEnvVar(STATSD_SERVER_PORT_ENV_NAME, "notANumber");
+        int result = invokePortViaReflection();
+        assertEquals(0, result);
+    }
+
+    // Helper to invoke port() via reflection (as requested)
+    private int invokePortViaReflection() throws Exception {
+        Class<?> clazz = Class.forName("com.apple.spark.core.BPGStatsdConfig");
+        Object instance = clazz.getDeclaredConstructor().newInstance();
+        Method m = clazz.getDeclaredMethod("port");
+        m.setAccessible(true);
+        Object ret = m.invoke(instance);
+        return (ret instanceof Integer) ? (Integer) ret : 0;
+    }
+
+    // Helpers to modify the environment map via reflection
+    private void setEnvVar(String key, String value) throws Exception {
+        Map<String, String> newenv = new HashMap<>(System.getenv());
+        if (value == null) {
+            newenv.remove(key);
+        } else {
+            newenv.put(key, value);
+        }
+        setEnvMap(newenv);
+    }
+
+    @SuppressWarnings("unchecked")
+    private void setEnvMap(Map<String, String> newenv) throws Exception {
+        try {
+            // Try the ProcessEnvironment approach first (works on Oracle/OpenJDK)
+            Class<?> processEnvironmentClass = Class.forName("java.lang.ProcessEnvironment");
+            try {
+                Field theEnvironmentField = processEnvironmentClass.getDeclaredField("theEnvironment");
+                theEnvironmentField.setAccessible(true);
+                Map<String, String> env = (Map<String, String>) theEnvironmentField.get(null);
+                env.clear();
+                env.putAll(newenv);
+            } catch (NoSuchFieldException ignored) {
+                // ignore and try other field names if necessary
+            }
+            try {
+                Field theCaseInsensitiveEnvironmentField = processEnvironmentClass.getDeclaredField("theCaseInsensitiveEnvironment");
+                theCaseInsensitiveEnvironmentField.setAccessible(true);
+                Map<String, String> cienv = (Map<String, String>) theCaseInsensitiveEnvironmentField.get(null);
+                cienv.clear();
+                cienv.putAll(newenv);
+            } catch (NoSuchFieldException ignored) {
+                // ignore if not present
+            }
+        } catch (ClassNotFoundException e) {
+            // Fallback to modifying the unmodifiable map's backing map
+            // This should work for many JVMs where System.getenv() returns an UnmodifiableMap
+            boolean modified = false;
+            for (Class<?> cl : Collections.class.getDeclaredClasses()) {
+                if ("java.util.Collections$UnmodifiableMap".equals(cl.getName())) {
+                    Field m = cl.getDeclaredField("m");
+                    m.setAccessible(true);
+                    Object obj = m.get(System.getenv());
+                    if (obj instanceof Map) {
+                        Map<String, String> map = (Map<String, String>) obj;
+                        map.clear();
+                        map.putAll(newenv);
+                        modified = true;
+                        break;
+                    }
+                }
+            }
+            if (!modified) {
+                // As an extra fallback, try ProcessEnvironment via reflection without class load
+                try {
+                    Class<?> pe = Class.forName("java.lang.ProcessEnvironment");
+                    Field theEnvironmentField = pe.getDeclaredField("theEnvironment");
+                    theEnvironmentField.setAccessible(true);
+                    Map<String, String> env = (Map<String, String>) theEnvironmentField.get(null);
+                    env.clear();
+                    env.putAll(newenv);
+                } catch (Exception ex) {
+                    // If everything fails, throw to let the test fail meaningfully
+                    throw new IllegalStateException("Failed to set environment variables for tests", ex);
+                }
+            }
+        }
+    }
+}
+
+--------------------------------------------
+Error in testPort_whenEnvNotSet_returnsZero(): line 102 : java.lang.reflect.InaccessibleObjectException: Unable to make field private static final java.util.HashMap java.lang.ProcessEnvironment.theEnvironment accessible: module java.base does not "opens java.lang" to unnamed module @2b2d00ec
+Error in testPort_whenEnvNotSet_returnsZero(): line 92 : java.lang.reflect.InaccessibleObjectException: Unable to make field private static final java.util.HashMap java.lang.ProcessEnvironment.theEnvironment accessible: module java.base does not "opens java.lang" to unnamed module @2b2d00ec
+Error in testPort_whenEnvNotSet_returnsZero(): line 48 : java.lang.reflect.InaccessibleObjectException: Unable to make field private static final java.util.HashMap java.lang.ProcessEnvironment.theEnvironment accessible: module java.base does not "opens java.lang" to unnamed module @2b2d00ec
+Error in testPort_whenEnvIsValidNumber_returnsParsedInt(): line 102 : java.lang.reflect.InaccessibleObjectException: Unable to make field private static final java.util.HashMap java.lang.ProcessEnvironment.theEnvironment accessible: module java.base does not "opens java.lang" to unnamed module @2b2d00ec
+Error in testPort_whenEnvIsValidNumber_returnsParsedInt(): line 92 : java.lang.reflect.InaccessibleObjectException: Unable to make field private static final java.util.HashMap java.lang.ProcessEnvironment.theEnvironment accessible: module java.base does not "opens java.lang" to unnamed module @2b2d00ec
+Error in testPort_whenEnvIsValidNumber_returnsParsedInt(): line 62 : java.lang.reflect.InaccessibleObjectException: Unable to make field private static final java.util.HashMap java.lang.ProcessEnvironment.theEnvironment accessible: module java.base does not "opens java.lang" to unnamed module @2b2d00ec
+Error in testPort_whenEnvEmpty_returnsZero(): line 102 : java.lang.reflect.InaccessibleObjectException: Unable to make field private static final java.util.HashMap java.lang.ProcessEnvironment.theEnvironment accessible: module java.base does not "opens java.lang" to unnamed module @2b2d00ec
+Error in testPort_whenEnvEmpty_returnsZero(): line 92 : java.lang.reflect.InaccessibleObjectException: Unable to make field private static final java.util.HashMap java.lang.ProcessEnvironment.theEnvironment accessible: module java.base does not "opens java.lang" to unnamed module @2b2d00ec
+Error in testPort_whenEnvEmpty_returnsZero(): line 55 : java.lang.reflect.InaccessibleObjectException: Unable to make field private static final java.util.HashMap java.lang.ProcessEnvironment.theEnvironment accessible: module java.base does not "opens java.lang" to unnamed module @2b2d00ec
+Error in testPort_whenEnvIsInvalidNumber_returnsZero(): line 102 : java.lang.reflect.InaccessibleObjectException: Unable to make field private static final java.util.HashMap java.lang.ProcessEnvironment.theEnvironment accessible: module java.base does not "opens java.lang" to unnamed module @2b2d00ec
+Error in testPort_whenEnvIsInvalidNumber_returnsZero(): line 92 : java.lang.reflect.InaccessibleObjectException: Unable to make field private static final java.util.HashMap java.lang.ProcessEnvironment.theEnvironment accessible: module java.base does not "opens java.lang" to unnamed module @2b2d00ec
+Error in testPort_whenEnvIsInvalidNumber_returnsZero(): line 69 : java.lang.reflect.InaccessibleObjectException: Unable to make field private static final java.util.HashMap java.lang.ProcessEnvironment.theEnvironment accessible: module java.base does not "opens java.lang" to unnamed module @2b2d00ec

@@ -1,0 +1,22 @@
+{
+  "className": "PreferredSchedulingTerm",
+  "methodName": "setPreference",
+  "brief": "public void setPreference(NodeSelectorTerm preference){}",
+  "methodSignature": "setPreference(NodeSelectorTerm)",
+  "sourceCode": "public void setPreference(NodeSelectorTerm preference) {\n    this.preference = preference;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "NodeSelectorTerm"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.operator.NodeSelectorTerm": []
+  },
+  "full_method_info": "public void setPreference(NodeSelectorTerm preference) {\n    this.preference = preference;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

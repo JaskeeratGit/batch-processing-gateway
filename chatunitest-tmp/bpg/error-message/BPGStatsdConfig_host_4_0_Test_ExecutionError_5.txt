@@ -1,0 +1,150 @@
+package com.apple.spark.core;
+
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import io.micrometer.core.instrument.Clock;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.logging.LoggingMeterRegistry;
+import io.micrometer.statsd.StatsdConfig;
+import io.micrometer.statsd.StatsdFlavor;
+import io.micrometer.statsd.StatsdMeterRegistry;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class BPGStatsdConfig_host_4_0_Test {
+
+    private Map<String, String> originalEnv;
+
+    @BeforeEach
+    public void backupEnv() {
+        originalEnv = new HashMap<>(System.getenv());
+    }
+
+    @AfterEach
+    public void restoreEnv() throws Exception {
+        setEnvMap(originalEnv);
+    }
+
+    @Test
+    public void testHostReturnsEnvValue() throws Exception {
+        setEnv("STATSD_SERVER_IP", "1.2.3.4");
+        BPGStatsdConfig config = new BPGStatsdConfig();
+        String returned = config.host();
+        assertNotNull(returned);
+        assertEquals("1.2.3.4", returned);
+    }
+
+    @Test
+    public void testHostReturnsNullWhenEnvNotSet() throws Exception {
+        // remove the variable
+        removeEnv("STATSD_SERVER_IP");
+        BPGStatsdConfig config = new BPGStatsdConfig();
+        String returned = config.host();
+        assertNull(returned);
+    }
+
+    @Test
+    public void testHostReturnsEmptyStringWhenEnvEmpty() throws Exception {
+        setEnv("STATSD_SERVER_IP", "");
+        BPGStatsdConfig config = new BPGStatsdConfig();
+        String returned = config.host();
+        assertNotNull(returned);
+        assertEquals("", returned);
+    }
+
+    // Helpers to modify the process environment for tests
+    @SuppressWarnings("unchecked")
+    private void setEnv(String key, String value) throws Exception {
+        Map<String, String> newEnv = new HashMap<>(System.getenv());
+        newEnv.put(key, value);
+        setEnvMap(newEnv);
+    }
+
+    @SuppressWarnings("unchecked")
+    private void removeEnv(String key) throws Exception {
+        Map<String, String> newEnv = new HashMap<>(System.getenv());
+        newEnv.remove(key);
+        setEnvMap(newEnv);
+    }
+
+    @SuppressWarnings("unchecked")
+    private void setEnvMap(Map<String, String> newEnv) throws Exception {
+        try {
+            // Attempt to set the internal map of the unmodifiable environment (works on many JDKs)
+            Map<String, String> env = System.getenv();
+            Class<?> envClass = env.getClass();
+            Field mField = null;
+            try {
+                mField = envClass.getDeclaredField("m");
+            } catch (NoSuchFieldException e) {
+                // ignore
+            }
+            if (mField != null) {
+                mField.setAccessible(true);
+                Object obj = mField.get(env);
+                Map<String, String> modifiable = (Map<String, String>) obj;
+                modifiable.clear();
+                modifiable.putAll(newEnv);
+                return;
+            }
+            // Fallback for other JVM implementations (e.g., Java 8's ProcessEnvironment)
+            try {
+                Class<?> processEnvironmentClass = Class.forName("java.lang.ProcessEnvironment");
+                Field theEnvironmentField = processEnvironmentClass.getDeclaredField("theEnvironment");
+                theEnvironmentField.setAccessible(true);
+                Map<String, String> envMap = (Map<String, String>) theEnvironmentField.get(null);
+                envMap.clear();
+                envMap.putAll(newEnv);
+                try {
+                    Field theCaseInsensitiveEnvironmentField = processEnvironmentClass.getDeclaredField("theCaseInsensitiveEnvironment");
+                    theCaseInsensitiveEnvironmentField.setAccessible(true);
+                    Map<String, String> ciEnv = (Map<String, String>) theCaseInsensitiveEnvironmentField.get(null);
+                    ciEnv.clear();
+                    ciEnv.putAll(newEnv);
+                } catch (NoSuchFieldException ignore) {
+                    // Not all platforms have a case-insensitive map
+                }
+                return;
+            } catch (ClassNotFoundException | NoSuchFieldException ignore) {
+                // ignore and try the final fallback
+            }
+            // Last resort: try to modify the underlying map via reflection on Collections$UnmodifiableMap
+            Field[] fields = envClass.getDeclaredFields();
+            for (Field field : fields) {
+                if ("m".equals(field.getName())) {
+                    field.setAccessible(true);
+                    Object obj = field.get(env);
+                    if (obj instanceof Map) {
+                        Map<String, String> modifiable = (Map<String, String>) obj;
+                        modifiable.clear();
+                        modifiable.putAll(newEnv);
+                        return;
+                    }
+                }
+            }
+            // If we reach here and haven't returned, throw an exception
+            throw new UnsupportedOperationException("Failed to set environment variables for the test");
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+}
+
+--------------------------------------------
+Error in testHostReturnsEnvValue(): line 91 : java.lang.reflect.InaccessibleObjectException: Unable to make field private final java.util.Map java.util.Collections$UnmodifiableMap.m accessible: module java.base does not "opens java.util" to unnamed module @6487b441
+Error in testHostReturnsEnvValue(): line 68 : java.lang.reflect.InaccessibleObjectException: Unable to make field private final java.util.Map java.util.Collections$UnmodifiableMap.m accessible: module java.base does not "opens java.util" to unnamed module @6487b441
+Error in testHostReturnsEnvValue(): line 38 : java.lang.reflect.InaccessibleObjectException: Unable to make field private final java.util.Map java.util.Collections$UnmodifiableMap.m accessible: module java.base does not "opens java.util" to unnamed module @6487b441
+Error in testHostReturnsEmptyStringWhenEnvEmpty(): line 91 : java.lang.reflect.InaccessibleObjectException: Unable to make field private final java.util.Map java.util.Collections$UnmodifiableMap.m accessible: module java.base does not "opens java.util" to unnamed module @6487b441
+Error in testHostReturnsEmptyStringWhenEnvEmpty(): line 68 : java.lang.reflect.InaccessibleObjectException: Unable to make field private final java.util.Map java.util.Collections$UnmodifiableMap.m accessible: module java.base does not "opens java.util" to unnamed module @6487b441
+Error in testHostReturnsEmptyStringWhenEnvEmpty(): line 56 : java.lang.reflect.InaccessibleObjectException: Unable to make field private final java.util.Map java.util.Collections$UnmodifiableMap.m accessible: module java.base does not "opens java.util" to unnamed module @6487b441
+Error in testHostReturnsNullWhenEnvNotSet(): line 91 : java.lang.reflect.InaccessibleObjectException: Unable to make field private final java.util.Map java.util.Collections$UnmodifiableMap.m accessible: module java.base does not "opens java.util" to unnamed module @6487b441
+Error in testHostReturnsNullWhenEnvNotSet(): line 75 : java.lang.reflect.InaccessibleObjectException: Unable to make field private final java.util.Map java.util.Collections$UnmodifiableMap.m accessible: module java.base does not "opens java.util" to unnamed module @6487b441
+Error in testHostReturnsNullWhenEnvNotSet(): line 48 : java.lang.reflect.InaccessibleObjectException: Unable to make field private final java.util.Map java.util.Collections$UnmodifiableMap.m accessible: module java.base does not "opens java.util" to unnamed module @6487b441

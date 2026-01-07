@@ -1,0 +1,18 @@
+{
+  "className": "DBStorage",
+  "methodName": "getDbName",
+  "brief": "public String getDbName(){}",
+  "methodSignature": "getDbName()",
+  "sourceCode": "public String getDbName() {\n      return dbName;\n    }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public String getDbName() {\n    return dbName;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

@@ -1,0 +1,44 @@
+{
+  "method0": {
+    "methodName": "getVersion",
+    "signature": "getVersion()",
+    "className": "VersionInfo",
+    "packageName": "com.apple.spark.util"
+  },
+  "method1": {
+    "methodName": "setVersion",
+    "signature": "setVersion(String)",
+    "className": "VersionInfo",
+    "packageName": "com.apple.spark.util"
+  },
+  "method2": {
+    "methodName": "getGitCommit",
+    "signature": "getGitCommit()",
+    "className": "VersionInfo",
+    "packageName": "com.apple.spark.util"
+  },
+  "method3": {
+    "methodName": "setGitCommit",
+    "signature": "setGitCommit(String)",
+    "className": "VersionInfo",
+    "packageName": "com.apple.spark.util"
+  },
+  "method4": {
+    "methodName": "getBuildTime",
+    "signature": "getBuildTime()",
+    "className": "VersionInfo",
+    "packageName": "com.apple.spark.util"
+  },
+  "method5": {
+    "methodName": "setBuildTime",
+    "signature": "setBuildTime(String)",
+    "className": "VersionInfo",
+    "packageName": "com.apple.spark.util"
+  },
+  "method6": {
+    "methodName": "toString",
+    "signature": "toString()",
+    "className": "VersionInfo",
+    "packageName": "com.apple.spark.util"
+  }
+}

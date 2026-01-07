@@ -1,0 +1,31 @@
+{
+  "className": "HttpUtils",
+  "methodName": "post",
+  "brief": "public static <T> T post(\n          String url,\n          String requestText,\n          String contentType,\n          String headerName,\n          String headerValue,\n          Class<T> clazz){}",
+  "methodSignature": "post(String, String, String, String, String, Class)",
+  "sourceCode": "public static <T> T post(\n          String url,\n          String requestText,\n          String contentType,\n          String headerName,\n          String headerValue,\n          Class<T> clazz) {\n    String str = post(url, requestText, contentType, headerName, headerValue);\n    return parseJson(str, clazz);\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String",
+    "String",
+    "String",
+    "String",
+    "String",
+    "Class<T>"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [],
+    "com.apple.spark.util.HttpUtils": [
+      "parseJson(String, Class<T>)",
+      "post(String, String, String, String, String)"
+    ]
+  },
+  "full_method_info": "public static <T> T post(String url, String requestText, String contentType, String headerName, String headerValue, Class<T> clazz) {\n    String str = post(url, requestText, contentType, headerName, headerValue);\n    return parseJson(str, clazz);\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

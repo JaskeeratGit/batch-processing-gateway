@@ -1,0 +1,20 @@
+{
+  "className": "Dependencies",
+  "methodName": "setJars",
+  "brief": "public void setJars(List<String> jars){}",
+  "methodSignature": "setJars(List)",
+  "sourceCode": "public void setJars(List<String> jars) {\n    this.jars = jars;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "List<String>"
+  ],
+  "dependentMethods": {},
+  "full_method_info": "public void setJars(List<String> jars) {\n    this.jars = jars;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

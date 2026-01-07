@@ -1,0 +1,18 @@
+{
+  "className": "AppConfig",
+  "methodName": "getAdminUsers",
+  "brief": "public List<String> getAdminUsers(){}",
+  "methodSignature": "getAdminUsers()",
+  "sourceCode": "public List<String> getAdminUsers() {\n    return adminUsers;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public List<String> getAdminUsers() {\n    return adminUsers;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

@@ -1,0 +1,219 @@
+package com.apple.spark.rest;
+
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.GetObjectRequest;
+import com.apple.spark.AppConfig;
+import com.apple.spark.core.LogDao;
+import com.apple.spark.security.User;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import static com.apple.spark.core.Constants.LOG_API;
+import static com.apple.spark.rest.AwsConstants.CLIENT_REGION;
+import static com.apple.spark.rest.AwsConstants.S3_GET_TIMEOUT_MILLISECS;
+import static com.apple.spark.util.HttpUtils.get;
+import com.amazonaws.ClientConfiguration;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.apple.spark.clients.sparkhistory.GetJobEnvironmentResponse;
+import com.apple.spark.core.KubernetesHelper;
+import com.apple.spark.core.RestStreamingOutput;
+import com.apple.spark.operator.SparkApplication;
+import com.apple.spark.util.ExceptionUtils;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.SharedMetricRegistries;
+import com.codahale.metrics.annotation.ExceptionMetered;
+import com.codahale.metrics.annotation.Timed;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.dropwizard.auth.Auth;
+import io.fabric8.kubernetes.client.DefaultKubernetesClient;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.util.List;
+import java.util.Set;
+import javax.annotation.security.PermitAll;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+public class ApplicationGetLogRest_getLog_0_0_Test {
+
+    // Ensure SharedMetricRegistries default is set to avoid IllegalStateException in tests
+    @BeforeAll
+    public static void initSharedMetricRegistry() {
+        String name = "unit-test";
+        try {
+            if (!SharedMetricRegistries.getNames().contains(name)) {
+                SharedMetricRegistries.add(name, new MetricRegistry());
+            }
+            try {
+                SharedMetricRegistries.setDefault(name);
+            } catch (IllegalStateException e) {
+                // default already set by other tests/environment; ignore
+            }
+        } catch (Exception ignore) {
+            // In case of any unexpected issue, ignore to avoid test init failure
+        }
+    }
+
+    // Helper to set private fields via reflection
+    private static void setField(Object target, String fieldName, Object value) throws Exception {
+        Field f = null;
+        Class<?> cls = target.getClass();
+        while (cls != null) {
+            try {
+                f = cls.getDeclaredField(fieldName);
+                break;
+            } catch (NoSuchFieldException e) {
+                cls = cls.getSuperclass();
+            }
+        }
+        if (f == null) {
+            throw new NoSuchFieldException(fieldName);
+        }
+        f.setAccessible(true);
+        f.set(target, value);
+    }
+
+    // Helper to invoke write(OutputStream) on the anonymous RestStreamingOutput entity
+    private static void invokeWrite(Object entity, ByteArrayOutputStream out) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        Method write = entity.getClass().getMethod("write", java.io.OutputStream.class);
+        write.invoke(entity, out);
+    }
+
+    @Test
+    public void testGetLog_bothIdsEmpty_throwsBadRequest() {
+        AppConfig appConfig = new AppConfig();
+        SimpleMeterRegistry meterRegistry = new SimpleMeterRegistry();
+        ApplicationGetLogRest rest = new ApplicationGetLogRest(appConfig, meterRegistry);
+        User user = new User("alice");
+        WebApplicationException ex = Assertions.assertThrows(WebApplicationException.class, () -> rest.getLog("", "", "false", "", "none", user));
+        Assertions.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), ex.getResponse().getStatus());
+        Assertions.assertTrue(ex.getMessage().contains("Please provide either a submissionId or an appId"));
+    }
+
+    @Test
+    public void testGetLog_idTooShort_throwsBadRequest() {
+        AppConfig appConfig = new AppConfig();
+        SimpleMeterRegistry meterRegistry = new SimpleMeterRegistry();
+        ApplicationGetLogRest rest = new ApplicationGetLogRest(appConfig, meterRegistry);
+        User user = new User("bob");
+        // submissionId shorter than 32 should trigger bad request
+        String shortId = "short-id-123";
+        WebApplicationException ex = Assertions.assertThrows(WebApplicationException.class, () -> rest.getLog(shortId, "", "false", "", "none", user));
+        Assertions.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), ex.getResponse().getStatus());
+        Assertions.assertTrue(ex.getMessage().contains("Should be at least 32 characters"));
+    }
+
+    @Test
+    public void testGetLog_s3ObjectStreaming_extractsLogField() throws Exception {
+        AppConfig appConfig = new AppConfig();
+        appConfig.setSparkLogS3Bucket("my-bucket");
+        SimpleMeterRegistry meterRegistry = new SimpleMeterRegistry();
+        ApplicationGetLogRest rest = new ApplicationGetLogRest(appConfig, meterRegistry);
+        User user = new User("charlie");
+        // Prepare a stub LogDao that returns a single object key
+        LogDao stubLogDao = new LogDao(null, null, null, null, meterRegistry) {
+
+            @Override
+            public ArrayList<String> getKeyList(String podPrefix, String execId) {
+                ArrayList<String> keys = new ArrayList<>();
+                keys.add("logs/part-000");
+                return keys;
+            }
+        };
+        // Prepare an S3Object that contains a JSON line with an escaped newline (\n) inside the log field.
+        // The code's regex expects a literal backslash-n sequence, so we embed \\n in the content.
+        String s3Line = "{\"log\":\"HELLO_WORLD\\\\n\",\"stream\":\"stdout\"}\n";
+        byte[] bytes = s3Line.getBytes(StandardCharsets.UTF_8);
+        S3Object s3Object = new S3Object();
+        InputStream contentStream = new ByteArrayInputStream(bytes);
+        s3Object.setObjectContent(contentStream);
+        // Create a dynamic proxy for AmazonS3 that only handles getObject and returns our S3Object.
+        Object amazonS3Proxy = Proxy.newProxyInstance(ApplicationGetLogRest.class.getClassLoader(), new Class[] { com.amazonaws.services.s3.AmazonS3.class }, (proxy, method, args) -> {
+            if ("getObject".equals(method.getName()) && args != null && args.length >= 1 && args[0] instanceof GetObjectRequest) {
+                return s3Object;
+            }
+            // Default: return null or throw for unexpected methods
+            return null;
+        });
+        // Inject stubLogDao and s3Client into the rest instance
+        setField(rest, "logDao", stubLogDao);
+        setField(rest, "s3Client", amazonS3Proxy);
+        // Use a valid 32-char submissionId (all 'a's)
+        String submissionId = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+        Response response = rest.getLog(submissionId, "", "true", "", "none", user);
+        Object entity = response.getEntity();
+        Assertions.assertNotNull(entity);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        invokeWrite(entity, out);
+        String output = out.toString(StandardCharsets.UTF_8.name());
+        // The streaming output should contain the extracted HELLO_WORLD and at least one newline
+        Assertions.assertTrue(output.contains("HELLO_WORLD"));
+        Assertions.assertTrue(output.contains("\n"));
+    }
+
+    @Test
+    public void testGetLog_noKeys_noLogStream_writesCannotFindMessage() throws Exception {
+        AppConfig appConfig = new AppConfig();
+        appConfig.setSparkLogS3Bucket("bucket-x");
+        SimpleMeterRegistry meterRegistry = new SimpleMeterRegistry();
+        ApplicationGetLogRest rest = new ApplicationGetLogRest(appConfig, meterRegistry);
+        User user = new User("dave");
+        // Provide a LogDao that returns an empty list
+        LogDao emptyLogDao = new LogDao(null, null, null, null, meterRegistry) {
+
+            @Override
+            public ArrayList<String> getKeyList(String podPrefix, String execId) {
+                return new ArrayList<>();
+            }
+        };
+        setField(rest, "logDao", emptyLogDao);
+        // 32 chars
+        String submissionId = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
+        Response response = rest.getLog(submissionId, "", "true", "", "none", user);
+        Object entity = response.getEntity();
+        Assertions.assertNotNull(entity);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        invokeWrite(entity, out);
+        String output = out.toString(StandardCharsets.UTF_8.name());
+        Assertions.assertTrue(output.contains("Cannot find matched log files") || output.contains("Cannot find matched"), "Expected cannot find message but got: " + output);
+    }
+}
+
+--------------------------------------------
+Error in ApplicationGetLogRest_getLog_0_0_Test: line 78 : cannot find symbol
+  symbol:   method getNames()
+  location: class com.codahale.metrics.SharedMetricRegistries

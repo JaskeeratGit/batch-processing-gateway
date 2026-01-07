@@ -1,0 +1,12 @@
+[ERROR] COMPILATION ERROR : 
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/LogDao_updateExecutorInfo_18_0_Test_testUpdateExecutorInfo_implThrows_returnsFalse_and_privateMethod_invocation.java:[56,28] name clash: record(java.util.function.Supplier<java.lang.Boolean>,java.lang.String,io.micrometer.core.instrument.Tag[]) in <anonymous com.apple.spark.core.LogDao_updateExecutorInfo_18_0_Test_testUpdateExecutorInfo_implThrows_returnsFalse_and_privateMethod_invocation$1> and record(java.util.function.Supplier<T>,java.lang.String,io.micrometer.core.instrument.Tag[]) in com.apple.spark.util.TimerMetricContainer have the same erasure, yet neither overrides the other
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.8.1:testCompile (default-testCompile) on project bpg: Compilation failure
+[ERROR] /Users/jaskeeratsingh/Work/remote-machine-folders/final_projects/cli_latest_stable/new_extractor/verify_broken/batch-processing-gateway/src/test/java/com/apple/spark/core/LogDao_updateExecutorInfo_18_0_Test_testUpdateExecutorInfo_implThrows_returnsFalse_and_privateMethod_invocation.java:[56,28] name clash: record(java.util.function.Supplier<java.lang.Boolean>,java.lang.String,io.micrometer.core.instrument.Tag[]) in <anonymous com.apple.spark.core.LogDao_updateExecutorInfo_18_0_Test_testUpdateExecutorInfo_implThrows_returnsFalse_and_privateMethod_invocation$1> and record(java.util.function.Supplier<T>,java.lang.String,io.micrometer.core.instrument.Tag[]) in com.apple.spark.util.TimerMetricContainer have the same erasure, yet neither overrides the other
+[ERROR] 
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

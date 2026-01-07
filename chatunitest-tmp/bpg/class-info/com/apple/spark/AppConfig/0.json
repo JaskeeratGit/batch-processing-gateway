@@ -1,0 +1,18 @@
+{
+  "className": "AppConfig",
+  "methodName": "getApplicationContextPath",
+  "brief": "public String getApplicationContextPath(){}",
+  "methodSignature": "getApplicationContextPath()",
+  "sourceCode": "public String getApplicationContextPath() {\n    return applicationContextPath;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public String getApplicationContextPath() {\n    return applicationContextPath;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

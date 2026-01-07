@@ -1,0 +1,25 @@
+{
+  "className": "EndAwareInputStream",
+  "methodName": "close",
+  "brief": "@Override\n  public void close() throws IOException{}",
+  "methodSignature": "close()",
+  "sourceCode": "@Override\n  public void close() throws IOException {\n    executeWithoutResultValue(() -> inputStream.close());\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {
+    "com.apple.spark.util.EndAwareInputStream": [
+      "executeWithoutResultValue(RunnableWithIOException)"
+    ],
+    "java.io.InputStream": [
+      "close()"
+    ]
+  },
+  "full_method_info": "@Override\npublic void close() throws IOException {\n    executeWithoutResultValue(() -> inputStream.close());\n}",
+  "method_comment": "",
+  "method_annotation": "@Override\n"
+}

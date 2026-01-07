@@ -1,0 +1,49 @@
+{
+  "className": "HttpUtils",
+  "methodName": "getHttpResponse",
+  "brief": "public static HttpResponse getHttpResponse(String url, String headerName, String headerValue){}",
+  "methodSignature": "getHttpResponse(String, String, String)",
+  "sourceCode": "public static HttpResponse getHttpResponse(String url, String headerName, String headerValue) {\n    HttpResponse<String> response;\n    try {\n      var builder = HttpRequest.newBuilder().uri(new URI(url));\n      if (headerName != null && !headerName.isEmpty()) {\n        builder = builder.header(headerName, headerValue);\n      }\n      HttpRequest request = builder.GET().build();\n      response =\n              HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofString());\n    } catch (Throwable ex) {\n      throw new RuntimeException(String.format(\"Failed to get request from %s\", url), ex);\n    }\n\n    try {\n      checkResponseOK(url, response);\n    } catch (RuntimeException ex) {\n      throw ex;\n    }\n    return response;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String",
+    "String",
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "isEmpty()",
+      "format(String, Object[])"
+    ],
+    "java.net.http.HttpRequest.Builder": [
+      "uri(URI)",
+      "header(String, String)",
+      "build()",
+      "GET()"
+    ],
+    "java.net.http.HttpRequest": [
+      "newBuilder()"
+    ],
+    "java.net.http.HttpClient": [
+      "send(HttpRequest, BodyHandler<T>)",
+      "newBuilder()"
+    ],
+    "java.net.http.HttpClient.Builder": [
+      "build()"
+    ],
+    "java.net.http.HttpResponse.BodyHandlers": [
+      "ofString()"
+    ],
+    "com.apple.spark.util.HttpUtils": [
+      "checkResponseOK(String, HttpResponse<?>)"
+    ]
+  },
+  "full_method_info": "public static HttpResponse getHttpResponse(String url, String headerName, String headerValue) {\n    HttpResponse<String> response;\n    try {\n        var builder = HttpRequest.newBuilder().uri(new URI(url));\n        if (headerName != null && !headerName.isEmpty()) {\n            builder = builder.header(headerName, headerValue);\n        }\n        HttpRequest request = builder.GET().build();\n        response = HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofString());\n    } catch (Throwable ex) {\n        throw new RuntimeException(String.format(\"Failed to get request from %s\", url), ex);\n    }\n    try {\n        checkResponseOK(url, response);\n    } catch (RuntimeException ex) {\n        throw ex;\n    }\n    return response;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

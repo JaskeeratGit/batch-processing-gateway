@@ -1,0 +1,18 @@
+{
+  "className": "ApplicationUpdateEvent",
+  "methodName": "getRunningApplicationMonitor",
+  "brief": "public RunningApplicationMonitor getRunningApplicationMonitor(){}",
+  "methodSignature": "getRunningApplicationMonitor()",
+  "sourceCode": "public RunningApplicationMonitor getRunningApplicationMonitor() {\n    return runningApplicationMonitor;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public RunningApplicationMonitor getRunningApplicationMonitor() {\n    return runningApplicationMonitor;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

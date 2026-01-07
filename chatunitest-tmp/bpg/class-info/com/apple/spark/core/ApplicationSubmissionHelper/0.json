@@ -1,0 +1,47 @@
+{
+  "className": "ApplicationSubmissionHelper",
+  "methodName": "parseSubmitRequest",
+  "brief": "public static SubmitApplicationRequest parseSubmitRequest(\n      String requestBody, String contentType){}",
+  "methodSignature": "parseSubmitRequest(String, String)",
+  "sourceCode": "public static SubmitApplicationRequest parseSubmitRequest(\n      String requestBody, String contentType) {\n    SubmitApplicationRequest request;\n\n    boolean parseRequestAsYaml =\n        !StringUtils.isEmpty(contentType) && contentType.toLowerCase().contains(\"yaml\");\n\n    // parse request as YAML or JSON, depending on the content type\n    if (parseRequestAsYaml) {\n      ObjectMapper yamlObjectMapper =\n          new ObjectMapper(\n              new YAMLFactory()\n                  .disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER)\n                  .enable(YAMLGenerator.Feature.MINIMIZE_QUOTES));\n      try {\n        request = yamlObjectMapper.readValue(requestBody, SubmitApplicationRequest.class);\n      } catch (Throwable e) {\n        logger.warn(\"Failed to parse request as YAML\", e);\n        throw new WebApplicationException(\n            String.format(\"Invalid YAML request: %s\", ExceptionUtils.getExceptionNameAndMessage(e)),\n            Response.Status.BAD_REQUEST);\n      }\n    } else {\n      // try to parse the request body as JSON\n      try {\n        request = new ObjectMapper().readValue(requestBody, SubmitApplicationRequest.class);\n      } catch (Throwable e) {\n        // when users use curl to submit jobs, sometimes they send the file path\n        // instead of the file content\n        // this can happen when they misuse the @/file/path syntax\n        if (looksLikeFilePath(requestBody)) {\n          logger.warn(\"Request body was rejected because it looked like a file path\");\n          throw new WebApplicationException(\n              String.format(\n                  \"Invalid request body. It actually looks like a file path. If you're using curl,\"\n                      + \" make sure you are passing the file content (not the file path) as the\"\n                      + \" request body.\"),\n              Response.Status.BAD_REQUEST);\n        } else {\n          logger.warn(\"Failed to parse request as JSON\", e);\n          throw new WebApplicationException(\n              String.format(\n                  \"Invalid JSON request: %s\", ExceptionUtils.getExceptionNameAndMessage(e)),\n              Response.Status.BAD_REQUEST);\n        }\n      }\n    }\n\n    return request;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String",
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "format(String, Object[])",
+      "toLowerCase()",
+      "contains(CharSequence)"
+    ],
+    "org.apache.commons.lang3.StringUtils": [
+      "isEmpty(CharSequence)"
+    ],
+    "com.fasterxml.jackson.dataformat.yaml.YAMLFactory": [
+      "enable(Feature)",
+      "disable(Feature)"
+    ],
+    "com.fasterxml.jackson.databind.ObjectMapper": [
+      "readValue(String, Class<T>)"
+    ],
+    "org.slf4j.Logger": [
+      "warn(String, Throwable)",
+      "warn(String)"
+    ],
+    "com.apple.spark.util.ExceptionUtils": [
+      "getExceptionNameAndMessage(Throwable)"
+    ],
+    "com.apple.spark.core.ApplicationSubmissionHelper": [
+      "looksLikeFilePath(String)"
+    ]
+  },
+  "full_method_info": "public static SubmitApplicationRequest parseSubmitRequest(String requestBody, String contentType) {\n    SubmitApplicationRequest request;\n    boolean parseRequestAsYaml = !StringUtils.isEmpty(contentType) && contentType.toLowerCase().contains(\"yaml\");\n    // parse request as YAML or JSON, depending on the content type\n    if (parseRequestAsYaml) {\n        ObjectMapper yamlObjectMapper = new ObjectMapper(new YAMLFactory().disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER).enable(YAMLGenerator.Feature.MINIMIZE_QUOTES));\n        try {\n            request = yamlObjectMapper.readValue(requestBody, SubmitApplicationRequest.class);\n        } catch (Throwable e) {\n            logger.warn(\"Failed to parse request as YAML\", e);\n            throw new WebApplicationException(String.format(\"Invalid YAML request: %s\", ExceptionUtils.getExceptionNameAndMessage(e)), Response.Status.BAD_REQUEST);\n        }\n    } else {\n        // try to parse the request body as JSON\n        try {\n            request = new ObjectMapper().readValue(requestBody, SubmitApplicationRequest.class);\n        } catch (Throwable e) {\n            // when users use curl to submit jobs, sometimes they send the file path\n            // instead of the file content\n            // this can happen when they misuse the @/file/path syntax\n            if (looksLikeFilePath(requestBody)) {\n                logger.warn(\"Request body was rejected because it looked like a file path\");\n                throw new WebApplicationException(String.format(\"Invalid request body. It actually looks like a file path. If you're using curl,\" + \" make sure you are passing the file content (not the file path) as the\" + \" request body.\"), Response.Status.BAD_REQUEST);\n            } else {\n                logger.warn(\"Failed to parse request as JSON\", e);\n                throw new WebApplicationException(String.format(\"Invalid JSON request: %s\", ExceptionUtils.getExceptionNameAndMessage(e)), Response.Status.BAD_REQUEST);\n            }\n        }\n    }\n    return request;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

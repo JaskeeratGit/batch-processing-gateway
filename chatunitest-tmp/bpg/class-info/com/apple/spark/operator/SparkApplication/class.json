@@ -1,0 +1,60 @@
+{
+  "fullClassName": "com.apple.spark.operator.SparkApplication",
+  "className": "SparkApplication",
+  "index": 29,
+  "modifier": "[public ]",
+  "extend": "[CustomResource]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.operator",
+  "packageDeclaration": "package com.apple.spark.operator;",
+  "classSignature": "@Version(\"v1beta2\")\n@Group(\"sparkoperator.k8s.io\")\n@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class SparkApplication",
+  "hasConstructor": false,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import com.fasterxml.jackson.annotation.JsonIgnoreProperties;",
+    "import com.fasterxml.jackson.annotation.JsonInclude;",
+    "import io.fabric8.kubernetes.client.CustomResource;",
+    "import io.fabric8.kubernetes.model.annotation.Group;",
+    "import io.fabric8.kubernetes.model.annotation.Version;"
+  ],
+  "fields": [
+    "private SparkApplicationSpec spec;",
+    "private SparkApplicationStatus status;"
+  ],
+  "superClasses": [
+    "CustomResource"
+  ],
+  "implementedTypes": [],
+  "methodSigs": {
+    "getSpec()": "0",
+    "setSpec(SparkApplicationSpec)": "1",
+    "getStatus()": "2",
+    "setStatus(SparkApplicationStatus)": "3"
+  },
+  "methodsBrief": [
+    "public SparkApplicationSpec getSpec(){}",
+    "public void setSpec(SparkApplicationSpec spec){}",
+    "public SparkApplicationStatus getStatus(){}",
+    "public void setStatus(SparkApplicationStatus status){}"
+  ],
+  "constructorSigs": [],
+  "constructorBrief": [],
+  "getterSetterSigs": [
+    "getSpec()",
+    "setSpec(SparkApplicationSpec)",
+    "getStatus()",
+    "setStatus(SparkApplicationStatus)"
+  ],
+  "getterSetterBrief": [
+    "public SparkApplicationSpec getSpec(){}",
+    "public void setSpec(SparkApplicationSpec spec){}",
+    "public SparkApplicationStatus getStatus(){}",
+    "public void setStatus(SparkApplicationStatus status){}"
+  ],
+  "constructorDeps": {},
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.operator;\n\nimport com.fasterxml.jackson.annotation.JsonIgnoreProperties;\nimport com.fasterxml.jackson.annotation.JsonInclude;\nimport io.fabric8.kubernetes.client.CustomResource;\nimport io.fabric8.kubernetes.model.annotation.Group;\nimport io.fabric8.kubernetes.model.annotation.Version;\n\n@Version(\"v1beta2\")\n@Group(\"sparkoperator.k8s.io\")\n@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class SparkApplication extends CustomResource {\n\n    private SparkApplicationSpec spec;\n\n    private SparkApplicationStatus status;\n\n    public SparkApplicationSpec getSpec() {\n        return spec;\n    }\n\n    public void setSpec(SparkApplicationSpec spec) {\n        this.spec = spec;\n    }\n\n    public SparkApplicationStatus getStatus() {\n        return status;\n    }\n\n    public void setStatus(SparkApplicationStatus status) {\n        this.status = status;\n    }\n}\n",
+  "classDeclarationCode": "@Version(\"v1beta2\")\n@Group(\"sparkoperator.k8s.io\")\n@JsonInclude(JsonInclude.Include.NON_NULL)\n@JsonIgnoreProperties(ignoreUnknown = true)\npublic class SparkApplication extends CustomResource {\n\n    private SparkApplicationSpec spec;\n\n    private SparkApplicationStatus status;\n\n    public SparkApplicationSpec getSpec() {\n        return spec;\n    }\n\n    public void setSpec(SparkApplicationSpec spec) {\n        this.spec = spec;\n    }\n\n    public SparkApplicationStatus getStatus() {\n        return status;\n    }\n\n    public void setStatus(SparkApplicationStatus status) {\n        this.status = status;\n    }\n}",
+  "subClasses": []
+}

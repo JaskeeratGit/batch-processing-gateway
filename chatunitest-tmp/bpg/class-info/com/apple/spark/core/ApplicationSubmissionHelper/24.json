@@ -1,0 +1,45 @@
+{
+  "className": "ApplicationSubmissionHelper",
+  "methodName": "getImage",
+  "brief": "public static String getImage(\n      AppConfig appConfig,\n      SubmitApplicationRequest request,\n      String type,\n      String sparkVersion,\n      String proxyUser){}",
+  "methodSignature": "getImage(AppConfig, SubmitApplicationRequest, String, String, String)",
+  "sourceCode": "public static String getImage(\n      AppConfig appConfig,\n      SubmitApplicationRequest request,\n      String type,\n      String sparkVersion,\n      String proxyUser) {\n    if (request.getImage() == null || request.getImage().isEmpty()) {\n      Optional<AppConfig.SparkImage> sparkImage = appConfig.resolveImage(type, sparkVersion);\n      if (!sparkImage.isPresent()) {\n        throw new WebApplicationException(\n            String.format(\"Spark image not found for type: %s, version: %s\", type, sparkVersion),\n            Response.Status.BAD_REQUEST);\n      }\n      return sparkImage.get().getName();\n\n    } else {\n      logger.info(\"User {} is using a custom spark image {}\", proxyUser, request.getImage());\n\n      return request.getImage();\n    }\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "AppConfig",
+    "SubmitApplicationRequest",
+    "String",
+    "String",
+    "String"
+  ],
+  "dependentMethods": {
+    "com.apple.spark.AppConfig": [
+      "resolveImage(String, String)"
+    ],
+    "com.apple.spark.api.SubmitApplicationRequest": [
+      "getImage()"
+    ],
+    "java.lang.String": [
+      "isEmpty()",
+      "format(String, Object[])"
+    ],
+    "java.util.Optional": [
+      "isPresent()",
+      "get()"
+    ],
+    "com.apple.spark.AppConfig.SparkImage": [
+      "getName()"
+    ],
+    "org.slf4j.Logger": [
+      "info(String, Object, Object)"
+    ]
+  },
+  "full_method_info": "public static String getImage(AppConfig appConfig, SubmitApplicationRequest request, String type, String sparkVersion, String proxyUser) {\n    if (request.getImage() == null || request.getImage().isEmpty()) {\n        Optional<AppConfig.SparkImage> sparkImage = appConfig.resolveImage(type, sparkVersion);\n        if (!sparkImage.isPresent()) {\n            throw new WebApplicationException(String.format(\"Spark image not found for type: %s, version: %s\", type, sparkVersion), Response.Status.BAD_REQUEST);\n        }\n        return sparkImage.get().getName();\n    } else {\n        logger.info(\"User {} is using a custom spark image {}\", proxyUser, request.getImage());\n        return request.getImage();\n    }\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

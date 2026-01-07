@@ -1,0 +1,18 @@
+{
+  "className": "MonitoringSpec",
+  "methodName": "getPrometheus",
+  "brief": "public PrometheusSpec getPrometheus(){}",
+  "methodSignature": "getPrometheus()",
+  "sourceCode": "public PrometheusSpec getPrometheus() {\n    return prometheus;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public PrometheusSpec getPrometheus() {\n    return prometheus;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

@@ -1,0 +1,68 @@
+{
+  "className": "ApplicationMonitor",
+  "methodName": "start",
+  "brief": "public void start(){}",
+  "methodSignature": "start()",
+  "sourceCode": "public void start() {\n    // Launch a thread that updates DB with the latest job state, and notifies the\n    // RunningApplicationMonitor of the Spark cluster the event came from.\n    String threadName = this.getClass().getSimpleName();\n    Thread thread =\n        new Thread(\n            () -> {\n              logger.info(\"Thread started: {}\", threadName);\n              int timeoutMillis = 1000;\n              while (true) {\n                try {\n                  ApplicationUpdateEvent event =\n                      applicationUpdateEventQueue.poll(timeoutMillis, TimeUnit.MILLISECONDS);\n                  if (event != null) {\n                    try {\n                      // Update DB with job status, metadata and applicationId\n                      onUpdateImpl_logApplication(\n                          event.getSparkCluster(), event.getPrevCRDState(), event.getNewCRDState());\n                    } catch (Throwable ex) {\n                      logger.warn(\"Failed to run onUpdate to log application\", ex);\n                    }\n\n                    try {\n                      // notify the RunningApplicationMonitor of the new object\n                      event\n                          .getRunningApplicationMonitor()\n                          .onUpdate(event.getPrevCRDState(), event.getNewCRDState());\n                    } catch (Throwable ex) {\n                      logger.warn(\"Failed to run onUpdate on running application monitor\", ex);\n                    }\n                  }\n                } catch (Throwable e) {\n                  logger.warn(\"Failed to dequeue and process event\", e);\n                }\n              }\n            });\n    thread.setDaemon(true);\n    thread.setName(threadName);\n    thread.start();\n\n    KubernetesDeserializer.registerCustomKind(\n        String.format(\n            \"%s/%s\", SparkConstants.SPARK_APPLICATION_CRD_GROUP, SparkConstants.CRD_VERSION),\n        SparkConstants.SPARK_APPLICATION_KIND,\n        SparkApplication.class);\n\n    if (appConfig.getSparkClusters() != null) {\n      Map<KubernetesClusterAndNamespace, AppConfig.SparkCluster> uniqueClusters = new HashMap<>();\n      for (AppConfig.SparkCluster sparkCluster : appConfig.getSparkClusters()) {\n        if (sparkCluster.getWeight() > 0) {\n          KubernetesClusterAndNamespace kubernetesClusterAndNamespace =\n              new KubernetesClusterAndNamespace(\n                  sparkCluster.getMasterUrl(), sparkCluster.getSparkApplicationNamespace());\n\n          uniqueClusters.put(kubernetesClusterAndNamespace, sparkCluster);\n        }\n      }\n\n      // For each Spark cluster, start a RunningApplicationMonitor instance, and register a CRD\n      // informer to listen to CRD updates.\n      Timer timer = new Timer(true);\n      for (AppConfig.SparkCluster sparkCluster : uniqueClusters.values()) {\n        start(sparkCluster, timer);\n      }\n    }\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {
+    "java.lang.Class": [
+      "getSimpleName()"
+    ],
+    "java.lang.Object": [
+      "getClass()"
+    ],
+    "org.slf4j.Logger": [
+      "warn(String, Throwable)",
+      "info(String, Object)"
+    ],
+    "java.util.concurrent.ArrayBlockingQueue": [
+      "poll(long, TimeUnit)"
+    ],
+    "com.apple.spark.core.ApplicationMonitor": [
+      "onUpdateImpl_logApplication(SparkCluster, SparkApplication, SparkApplication)",
+      "start(SparkCluster, Timer)"
+    ],
+    "com.apple.spark.core.ApplicationUpdateEvent": [
+      "getSparkCluster()",
+      "getPrevCRDState()",
+      "getRunningApplicationMonitor()",
+      "getNewCRDState()"
+    ],
+    "com.apple.spark.core.RunningApplicationMonitor": [
+      "onUpdate(SparkApplication, SparkApplication)"
+    ],
+    "java.lang.Thread": [
+      "setDaemon(boolean)",
+      "setName(String)",
+      "start()"
+    ],
+    "io.fabric8.kubernetes.internal.KubernetesDeserializer": [
+      "registerCustomKind(String, String, KubernetesResource>)"
+    ],
+    "java.lang.String": [
+      "format(String, Object[])"
+    ],
+    "com.apple.spark.AppConfig": [
+      "getSparkClusters()"
+    ],
+    "com.apple.spark.AppConfig.SparkCluster": [
+      "getMasterUrl()",
+      "getWeight()",
+      "getSparkApplicationNamespace()"
+    ],
+    "java.util.Map": [
+      "values()",
+      "put(K, V)"
+    ]
+  },
+  "full_method_info": "/**\n * Launch a thread that updates DB with the latest job state, and then launch one\n * RunningApplicationMonitor instance for each Spark cluster\n */\npublic void start() {\n    // Launch a thread that updates DB with the latest job state, and notifies the\n    // RunningApplicationMonitor of the Spark cluster the event came from.\n    String threadName = this.getClass().getSimpleName();\n    Thread thread = new Thread(() -> {\n        logger.info(\"Thread started: {}\", threadName);\n        int timeoutMillis = 1000;\n        while (true) {\n            try {\n                ApplicationUpdateEvent event = applicationUpdateEventQueue.poll(timeoutMillis, TimeUnit.MILLISECONDS);\n                if (event != null) {\n                    try {\n                        // Update DB with job status, metadata and applicationId\n                        onUpdateImpl_logApplication(event.getSparkCluster(), event.getPrevCRDState(), event.getNewCRDState());\n                    } catch (Throwable ex) {\n                        logger.warn(\"Failed to run onUpdate to log application\", ex);\n                    }\n                    try {\n                        // notify the RunningApplicationMonitor of the new object\n                        event.getRunningApplicationMonitor().onUpdate(event.getPrevCRDState(), event.getNewCRDState());\n                    } catch (Throwable ex) {\n                        logger.warn(\"Failed to run onUpdate on running application monitor\", ex);\n                    }\n                }\n            } catch (Throwable e) {\n                logger.warn(\"Failed to dequeue and process event\", e);\n            }\n        }\n    });\n    thread.setDaemon(true);\n    thread.setName(threadName);\n    thread.start();\n    KubernetesDeserializer.registerCustomKind(String.format(\"%s/%s\", SparkConstants.SPARK_APPLICATION_CRD_GROUP, SparkConstants.CRD_VERSION), SparkConstants.SPARK_APPLICATION_KIND, SparkApplication.class);\n    if (appConfig.getSparkClusters() != null) {\n        Map<KubernetesClusterAndNamespace, AppConfig.SparkCluster> uniqueClusters = new HashMap<>();\n        for (AppConfig.SparkCluster sparkCluster : appConfig.getSparkClusters()) {\n            if (sparkCluster.getWeight() > 0) {\n                KubernetesClusterAndNamespace kubernetesClusterAndNamespace = new KubernetesClusterAndNamespace(sparkCluster.getMasterUrl(), sparkCluster.getSparkApplicationNamespace());\n                uniqueClusters.put(kubernetesClusterAndNamespace, sparkCluster);\n            }\n        }\n        // For each Spark cluster, start a RunningApplicationMonitor instance, and register a CRD\n        // informer to listen to CRD updates.\n        Timer timer = new Timer(true);\n        for (AppConfig.SparkCluster sparkCluster : uniqueClusters.values()) {\n            start(sparkCluster, timer);\n        }\n    }\n}",
+  "method_comment": "\n   * Launch a thread that updates DB with the latest job state, and then launch one\n   * RunningApplicationMonitor instance for each Spark cluster\n   ",
+  "method_annotation": ""
+}

@@ -1,0 +1,22 @@
+{
+  "className": "DynamicAllocation",
+  "methodName": "setMaxExecutors",
+  "brief": "public void setMaxExecutors(Integer maxExecutors){}",
+  "methodSignature": "setMaxExecutors(Integer)",
+  "sourceCode": "public void setMaxExecutors(Integer maxExecutors) {\n    this.maxExecutors = maxExecutors;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "Integer"
+  ],
+  "dependentMethods": {
+    "java.lang.Integer": []
+  },
+  "full_method_info": "public void setMaxExecutors(Integer maxExecutors) {\n    this.maxExecutors = maxExecutors;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

@@ -1,0 +1,79 @@
+{
+  "className": "ApplicationSubmissionRest",
+  "methodName": "describe",
+  "brief": "@GET()\n  @Path(\"{submissionId}/describe\")\n  @Timed\n  @ExceptionMetered(\n      name = \"WebApplicationException\",\n      absolute = true,\n      cause = WebApplicationException.class)\n  @Operation(\n      summary = \"Get spark application spec and related events as a text stream.\",\n      description = \"May return an empty stream when the Spark application has not started yet.\",\n      tags = {\"Examination\"})\n  @ApiResponse(\n      responseCode = \"200\",\n      content = @Content(mediaType = \"application/octet-stream\", schema = @Schema(type = \"string\")),\n      description = \"OK\")\n  @ApiResponse(\n      responseCode = \"400\",\n      description = \"Bad request due to invalid submission ID or other issues\")\n  @ApiResponse(responseCode = \"500\", description = \"Internal server error\")\n  @Produces(MediaType.APPLICATION_OCTET_STREAM)\n  public Response describe(\n      @PathParam(\"submissionId\") String submissionId,\n      @DefaultValue(\"none\") @HeaderParam(\"Client-Version\") String clientVersion,\n      @Auth User user){}",
+  "methodSignature": "describe(String, String, User)",
+  "sourceCode": "@GET()\n  @Path(\"{submissionId}/describe\")\n  @Timed\n  @ExceptionMetered(\n      name = \"WebApplicationException\",\n      absolute = true,\n      cause = WebApplicationException.class)\n  @Operation(\n      summary = \"Get spark application spec and related events as a text stream.\",\n      description = \"May return an empty stream when the Spark application has not started yet.\",\n      tags = {\"Examination\"})\n  @ApiResponse(\n      responseCode = \"200\",\n      content = @Content(mediaType = \"application/octet-stream\", schema = @Schema(type = \"string\")),\n      description = \"OK\")\n  @ApiResponse(\n      responseCode = \"400\",\n      description = \"Bad request due to invalid submission ID or other issues\")\n  @ApiResponse(responseCode = \"500\", description = \"Internal server error\")\n  @Produces(MediaType.APPLICATION_OCTET_STREAM)\n  public Response describe(\n      @PathParam(\"submissionId\") String submissionId,\n      @DefaultValue(\"none\") @HeaderParam(\"Client-Version\") String clientVersion,\n      @Auth User user) {\n    logger.info(\n        \"LogClientInfo: user {}, {}, Client-Version {}\", user.getName(), \"describe\", clientVersion);\n    requestCounters.increment(\n        REQUEST_METRIC_NAME,\n        Tag.of(\"name\", \"describe_application\"),\n        Tag.of(\"user\", user.getName()));\n\n    final SparkApplication sparkApplicationResource = getSparkApplicationResource(submissionId);\n    SparkApplicationSpec sparkApplicationSpec =\n        removeEnvFromSpec(sparkApplicationResource.getSpec());\n\n    ObjectMapper objectMapper =\n        new ObjectMapper(\n            new YAMLFactory()\n                .disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER)\n                .enable(YAMLGenerator.Feature.MINIMIZE_QUOTES));\n    String yaml = \"\";\n    try {\n      yaml = objectMapper.writeValueAsString(sparkApplicationSpec);\n    } catch (JsonProcessingException e) {\n      ExceptionUtils.meterJsonProcessingException();\n      logger.warn(\"Failed to serialize spark application spec to yaml\", e);\n    }\n    final String sparkApplicationSpecYaml = yaml;\n\n    AppConfig.SparkCluster sparkCluster = getSparkCluster(submissionId);\n    List<Event> sparkApplicationEvents = getEvents(sparkCluster, submissionId);\n\n    String driverName = String.format(\"%s-driver\", submissionId);\n    List<Event> driverEvents = getEvents(sparkCluster, driverName);\n\n    return Response.ok(\n            new RestStreamingOutput() {\n              final byte[] buffer = new byte[8196]; // Should make this configurable in the future\n\n              @Override\n              public void write(OutputStream outputStream)\n                  throws IOException, WebApplicationException {\n                logger.info(\"Streaming log for submission {}\", submissionId);\n                try {\n                  writeLine(outputStream, \"--- Spark Spec ---\");\n                  writeLine(outputStream, sparkApplicationSpecYaml);\n                  outputStream.flush();\n\n                  writeLine(outputStream, \"--- Spark Application Events ---\");\n                  for (Event event : sparkApplicationEvents) {\n                    writeLine(\n                        outputStream,\n                        String.format(\n                            \"%s %s %s\",\n                            event.getLastTimestamp(), event.getReason(), event.getMessage()));\n                  }\n                  outputStream.flush();\n\n                  writeLine(outputStream, \"--- Spark Driver Events ---\");\n                  for (Event event : driverEvents) {\n                    writeLine(\n                        outputStream,\n                        String.format(\n                            \"%s %s %s\",\n                            event.getLastTimestamp(), event.getReason(), event.getMessage()));\n                  }\n                  outputStream.flush();\n\n                  logger.info(\"Finished streaming log for submission {}\", submissionId);\n                } catch (Throwable ex) {\n                  logger.warn(\n                      String.format(\n                          \"Hit exception when streaming log for submission %s\", submissionId),\n                      ex);\n                  ExceptionUtils.meterException();\n                }\n              }\n            })\n        .build();\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String",
+    "String",
+    "User"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "format(String, Object[])"
+    ],
+    "com.apple.spark.security.User": [
+      "getName()"
+    ],
+    "org.slf4j.Logger": [
+      "warn(String, Throwable)",
+      "info(String, Object[])",
+      "info(String, Object)"
+    ],
+    "com.apple.spark.util.CounterMetricContainer": [
+      "increment(String, Tag[])"
+    ],
+    "io.micrometer.core.instrument.Tag": [
+      "of(String, String)"
+    ],
+    "com.apple.spark.rest.RestBase": [
+      "getSparkApplicationResource(String)",
+      "getSparkCluster(String)"
+    ],
+    "com.apple.spark.rest.ApplicationSubmissionRest": [
+      "getEvents(SparkCluster, String)",
+      "removeEnvFromSpec(SparkApplicationSpec)"
+    ],
+    "com.apple.spark.operator.SparkApplication": [
+      "getSpec()"
+    ],
+    "com.fasterxml.jackson.dataformat.yaml.YAMLFactory": [
+      "enable(Feature)",
+      "disable(Feature)"
+    ],
+    "com.fasterxml.jackson.databind.ObjectMapper": [
+      "writeValueAsString(Object)"
+    ],
+    "com.apple.spark.util.ExceptionUtils": [
+      "meterJsonProcessingException()",
+      "meterException()"
+    ],
+    "javax.ws.rs.core.Response.ResponseBuilder": [
+      "build()"
+    ],
+    "javax.ws.rs.core.Response": [
+      "ok(Object)"
+    ],
+    "com.apple.spark.core.RestStreamingOutput": [
+      "writeLine(OutputStream, String)"
+    ],
+    "java.io.OutputStream": [
+      "flush()"
+    ],
+    "io.fabric8.kubernetes.api.model.Event": [
+      "getLastTimestamp()",
+      "getMessage()",
+      "getReason()"
+    ]
+  },
+  "full_method_info": "@GET()\n@Path(\"{submissionId}/describe\")\n@Timed\n@ExceptionMetered(name = \"WebApplicationException\", absolute = true, cause = WebApplicationException.class)\n@Operation(summary = \"Get spark application spec and related events as a text stream.\", description = \"May return an empty stream when the Spark application has not started yet.\", tags = { \"Examination\" })\n@ApiResponse(responseCode = \"200\", content = @Content(mediaType = \"application/octet-stream\", schema = @Schema(type = \"string\")), description = \"OK\")\n@ApiResponse(responseCode = \"400\", description = \"Bad request due to invalid submission ID or other issues\")\n@ApiResponse(responseCode = \"500\", description = \"Internal server error\")\n@Produces(MediaType.APPLICATION_OCTET_STREAM)\npublic Response describe(@PathParam(\"submissionId\") String submissionId, @DefaultValue(\"none\") @HeaderParam(\"Client-Version\") String clientVersion, @Auth User user) {\n    logger.info(\"LogClientInfo: user {}, {}, Client-Version {}\", user.getName(), \"describe\", clientVersion);\n    requestCounters.increment(REQUEST_METRIC_NAME, Tag.of(\"name\", \"describe_application\"), Tag.of(\"user\", user.getName()));\n    final SparkApplication sparkApplicationResource = getSparkApplicationResource(submissionId);\n    SparkApplicationSpec sparkApplicationSpec = removeEnvFromSpec(sparkApplicationResource.getSpec());\n    ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory().disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER).enable(YAMLGenerator.Feature.MINIMIZE_QUOTES));\n    String yaml = \"\";\n    try {\n        yaml = objectMapper.writeValueAsString(sparkApplicationSpec);\n    } catch (JsonProcessingException e) {\n        ExceptionUtils.meterJsonProcessingException();\n        logger.warn(\"Failed to serialize spark application spec to yaml\", e);\n    }\n    final String sparkApplicationSpecYaml = yaml;\n    AppConfig.SparkCluster sparkCluster = getSparkCluster(submissionId);\n    List<Event> sparkApplicationEvents = getEvents(sparkCluster, submissionId);\n    String driverName = String.format(\"%s-driver\", submissionId);\n    List<Event> driverEvents = getEvents(sparkCluster, driverName);\n    return Response.ok(new RestStreamingOutput() {\n\n        // Should make this configurable in the future\n        final byte[] buffer = new byte[8196];\n\n        @Override\n        public void write(OutputStream outputStream) throws IOException, WebApplicationException {\n            logger.info(\"Streaming log for submission {}\", submissionId);\n            try {\n                writeLine(outputStream, \"--- Spark Spec ---\");\n                writeLine(outputStream, sparkApplicationSpecYaml);\n                outputStream.flush();\n                writeLine(outputStream, \"--- Spark Application Events ---\");\n                for (Event event : sparkApplicationEvents) {\n                    writeLine(outputStream, String.format(\"%s %s %s\", event.getLastTimestamp(), event.getReason(), event.getMessage()));\n                }\n                outputStream.flush();\n                writeLine(outputStream, \"--- Spark Driver Events ---\");\n                for (Event event : driverEvents) {\n                    writeLine(outputStream, String.format(\"%s %s %s\", event.getLastTimestamp(), event.getReason(), event.getMessage()));\n                }\n                outputStream.flush();\n                logger.info(\"Finished streaming log for submission {}\", submissionId);\n            } catch (Throwable ex) {\n                logger.warn(String.format(\"Hit exception when streaming log for submission %s\", submissionId), ex);\n                ExceptionUtils.meterException();\n            }\n        }\n    }).build();\n}",
+  "method_comment": "",
+  "method_annotation": "@GET()\n@Path(\"{submissionId}/describe\")\n@Timed\n@ExceptionMetered(name = \"WebApplicationException\", absolute = true, cause = WebApplicationException.class)\n@Operation(summary = \"Get spark application spec and related events as a text stream.\", description = \"May return an empty stream when the Spark application has not started yet.\", tags = { \"Examination\" })\n@ApiResponse(responseCode = \"200\", content = @Content(mediaType = \"application/octet-stream\", schema = @Schema(type = \"string\")), description = \"OK\")\n@ApiResponse(responseCode = \"400\", description = \"Bad request due to invalid submission ID or other issues\")\n@ApiResponse(responseCode = \"500\", description = \"Internal server error\")\n@Produces(MediaType.APPLICATION_OCTET_STREAM)\n"
+}

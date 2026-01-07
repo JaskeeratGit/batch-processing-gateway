@@ -1,0 +1,239 @@
+package com.apple.spark.core;
+
+import com.apple.spark.util.CounterMetricContainer;
+import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.logging.LoggingMeterRegistry;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import static com.apple.spark.core.Constants.DEFAULT_DB_NAME;
+import static com.apple.spark.core.SparkConstants.RUNNING_STATE;
+import static com.apple.spark.core.SparkConstants.SUBMITTED_STATE;
+import com.apple.spark.api.SubmitApplicationRequest;
+import com.apple.spark.util.CustomSerDe;
+import com.apple.spark.util.TimerMetricContainer;
+import io.micrometer.core.instrument.MeterRegistry;
+import java.sql.PreparedStatement;
+import java.sql.Timestamp;
+import javax.sql.rowset.CachedRowSet;
+import javax.sql.rowset.RowSetProvider;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class LogDao_getKeyList_20_0_Test {
+
+    private static final String DB_NAME = "testdb";
+
+    private LogDao logDao;
+
+    @BeforeEach
+    public void setUp() {
+        // construct LogDao with empty connection string so it won't attempt real DB ops during ctor
+        logDao = new LogDao("", "", "", DB_NAME, new LoggingMeterRegistry());
+    }
+
+    @Test
+    public void testGetKeyList_returnsKeysFromResultSet() throws Exception {
+        // create a fake ResultSet that returns two rows "key-1", "key-2"
+        String[] keys = new String[] { "key-1", "key-2" };
+        ResultSet rsProxy = createResultSetProxy(keys);
+        // create a fake PreparedStatement proxy that returns our ResultSet when executeQuery() is called
+        Object psProxy = Proxy.newProxyInstance(this.getClass().getClassLoader(), new Class[] { java.sql.PreparedStatement.class }, new InvocationHandler() {
+
+            @Override
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                if ("executeQuery".equals(method.getName())) {
+                    return rsProxy;
+                }
+                // return simple defaults for other methods
+                if (method.getReturnType() == boolean.class)
+                    return false;
+                if (method.getReturnType() == int.class)
+                    return 0;
+                return null;
+            }
+        });
+        // create a fake Connection proxy that returns our PreparedStatement for any prepareStatement call
+        Object connProxy = Proxy.newProxyInstance(this.getClass().getClassLoader(), new Class[] { java.sql.Connection.class }, new InvocationHandler() {
+
+            @Override
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                if ("prepareStatement".equals(method.getName())) {
+                    return psProxy;
+                }
+                // return simple defaults for other methods
+                if (method.getReturnType() == boolean.class)
+                    return false;
+                if (method.getReturnType() == int.class)
+                    return 0;
+                return null;
+            }
+        });
+        // create a fake DBConnection proxy that returns our Connection proxy for getConnection()
+        Object dbConnProxy = Proxy.newProxyInstance(this.getClass().getClassLoader(), new Class[] { DBConnection.class }, new InvocationHandler() {
+
+            @Override
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                if ("getConnection".equals(method.getName())) {
+                    return connProxy;
+                }
+                return null;
+            }
+        });
+        // a simple CounterMetricContainer that records calls to increment
+        class TestCounter extends CounterMetricContainer {
+
+            int calls = 0;
+
+            @Override
+            public void increment(String name, Tag t1, Tag t2) {
+                calls++;
+            }
+
+            public int getCalls() {
+                return calls;
+            }
+        }
+        TestCounter testFailureMetrics = new TestCounter();
+        // inject mock dbConnection and mock failureMetrics into private fields
+        setPrivateField(logDao, "dbConnection", dbConnProxy);
+        setPrivateField(logDao, "failureMetrics", testFailureMetrics);
+        // call focal method
+        ArrayList<String> result = logDao.getKeyList("mypod", "3");
+        // assertions
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assertEquals("key-1", result.get(0));
+        assertEquals("key-2", result.get(1));
+        // verify that failure metrics were not incremented
+        assertEquals(0, testFailureMetrics.getCalls());
+    }
+
+    @Test
+    public void testGetKeyList_onPrepareStatementThrows_incrementsFailureMetricAndReturnsEmpty() throws Exception {
+        // create a Connection proxy that throws when prepareStatement is called
+        Object connProxy = Proxy.newProxyInstance(this.getClass().getClassLoader(), new Class[] { java.sql.Connection.class }, new InvocationHandler() {
+
+            @Override
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                if ("prepareStatement".equals(method.getName())) {
+                    throw new RuntimeException("boom");
+                }
+                if (method.getReturnType() == boolean.class)
+                    return false;
+                if (method.getReturnType() == int.class)
+                    return 0;
+                return null;
+            }
+        });
+        // create a fake DBConnection proxy that returns our Connection proxy for getConnection()
+        Object dbConnProxy = Proxy.newProxyInstance(this.getClass().getClassLoader(), new Class[] { DBConnection.class }, new InvocationHandler() {
+
+            @Override
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                if ("getConnection".equals(method.getName())) {
+                    return connProxy;
+                }
+                return null;
+            }
+        });
+        // a simple CounterMetricContainer that records calls to increment
+        class TestCounter extends CounterMetricContainer {
+
+            int calls = 0;
+
+            String lastName = null;
+
+            Tag lastTag1 = null;
+
+            Tag lastTag2 = null;
+
+            @Override
+            public void increment(String name, Tag t1, Tag t2) {
+                calls++;
+                lastName = name;
+                lastTag1 = t1;
+                lastTag2 = t2;
+            }
+
+            public int getCalls() {
+                return calls;
+            }
+        }
+        TestCounter testFailureMetrics = new TestCounter();
+        // inject mocks
+        setPrivateField(logDao, "dbConnection", dbConnProxy);
+        setPrivateField(logDao, "failureMetrics", testFailureMetrics);
+        // call focal method with execId that ends with "driver" to exercise driver branch
+        ArrayList<String> result = logDao.getKeyList("mypod", "driver");
+        // should return empty list on exception
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+        // verify that failureMetrics.increment was called once
+        assertEquals(1, testFailureMetrics.getCalls());
+    }
+
+    // helper to set private fields via reflection
+    private static void setPrivateField(Object target, String fieldName, Object value) throws Exception {
+        Field field = LogDao.class.getDeclaredField(fieldName);
+        field.setAccessible(true);
+        field.set(target, value);
+    }
+
+    // helper to create a ResultSet proxy backed by provided string rows for column 1
+    private static ResultSet createResultSetProxy(String[] rows) {
+        AtomicInteger idx = new AtomicInteger(0);
+        Object resultSetProxy = Proxy.newProxyInstance(LogDao_getKeyList_20_0_Test.class.getClassLoader(), new Class[] { ResultSet.class }, new InvocationHandler() {
+
+            @Override
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                String name = method.getName();
+                if ("next".equals(name)) {
+                    if (idx.get() < rows.length) {
+                        idx.getAndIncrement();
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else if ("getString".equals(name)) {
+                    // column index provided in args[0]
+                    int col = (Integer) args[0];
+                    if (col == 1) {
+                        return rows[idx.get() - 1];
+                    }
+                    return null;
+                }
+                // reasonable defaults
+                if (method.getReturnType() == boolean.class)
+                    return false;
+                if (method.getReturnType() == int.class)
+                    return 0;
+                return null;
+            }
+        });
+        return (ResultSet) resultSetProxy;
+    }
+}
+
+--------------------------------------------
+Error in LogDao_getKeyList_20_0_Test: line 95 : constructor CounterMetricContainer in class com.apple.spark.util.CounterMetricContainer cannot be applied to given types;
+  required: io.micrometer.core.instrument.MeterRegistry
+  found:    no arguments
+  reason: actual and formal argument lists differ in length
+Error in LogDao_getKeyList_20_0_Test: line 99 : method does not override or implement a method from a supertype
+Error in LogDao_getKeyList_20_0_Test: line 152 : constructor CounterMetricContainer in class com.apple.spark.util.CounterMetricContainer cannot be applied to given types;
+  required: io.micrometer.core.instrument.MeterRegistry
+  found:    no arguments
+  reason: actual and formal argument lists differ in length
+Error in LogDao_getKeyList_20_0_Test: line 162 : method does not override or implement a method from a supertype

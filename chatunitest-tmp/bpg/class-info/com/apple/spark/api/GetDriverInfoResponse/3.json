@@ -1,0 +1,22 @@
+{
+  "className": "GetDriverInfoResponse",
+  "methodName": "setStartTime",
+  "brief": "public void setStartTime(Long startTime){}",
+  "methodSignature": "setStartTime(Long)",
+  "sourceCode": "public void setStartTime(Long startTime) {\n    this.startTime = startTime;\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "Long"
+  ],
+  "dependentMethods": {
+    "java.lang.Long": []
+  },
+  "full_method_info": "public void setStartTime(Long startTime) {\n    this.startTime = startTime;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

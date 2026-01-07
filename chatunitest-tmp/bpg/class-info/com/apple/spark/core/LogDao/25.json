@@ -1,0 +1,36 @@
+{
+  "className": "LogDao",
+  "methodName": "LogDao",
+  "brief": "public LogDao(\n      String connectionString,\n      String user,\n      String password,\n      String dbName,\n      MeterRegistry meterRegistry){}",
+  "methodSignature": "LogDao(String, String, String, String, MeterRegistry)",
+  "sourceCode": "public LogDao(\n      String connectionString,\n      String user,\n      String password,\n      String dbName,\n      MeterRegistry meterRegistry) {\n    if (StringUtils.isEmpty(dbName)) {\n      dbName = DEFAULT_DB_NAME;\n    }\n\n    verifyDBName(dbName);\n\n    if (StringUtils.isEmpty(connectionString)) {\n      this.dbConnection = null;\n      this.dbName = dbName;\n      bypassLog = true;\n    } else {\n      this.dbConnection = new DBConnection(connectionString, user, password);\n      this.dbName = dbName;\n      createDatabase();\n      createApplicationSubmissionTable();\n      createLogIndexTable();\n    }\n\n    failureMetrics = new CounterMetricContainer(meterRegistry);\n    timerMetrics = new TimerMetricContainer(meterRegistry);\n  }",
+  "useField": true,
+  "isConstructor": true,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String",
+    "String",
+    "String",
+    "String",
+    "MeterRegistry"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [],
+    "io.micrometer.core.instrument.MeterRegistry": [],
+    "org.apache.commons.lang3.StringUtils": [
+      "isEmpty(CharSequence)"
+    ],
+    "com.apple.spark.core.LogDao": [
+      "createLogIndexTable()",
+      "createApplicationSubmissionTable()",
+      "createDatabase()",
+      "verifyDBName(String)"
+    ]
+  },
+  "full_method_info": "public LogDao(String connectionString, String user, String password, String dbName, MeterRegistry meterRegistry) {\n    if (StringUtils.isEmpty(dbName)) {\n        dbName = DEFAULT_DB_NAME;\n    }\n    verifyDBName(dbName);\n    if (StringUtils.isEmpty(connectionString)) {\n        this.dbConnection = null;\n        this.dbName = dbName;\n        bypassLog = true;\n    } else {\n        this.dbConnection = new DBConnection(connectionString, user, password);\n        this.dbName = dbName;\n        createDatabase();\n        createApplicationSubmissionTable();\n        createLogIndexTable();\n    }\n    failureMetrics = new CounterMetricContainer(meterRegistry);\n    timerMetrics = new TimerMetricContainer(meterRegistry);\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

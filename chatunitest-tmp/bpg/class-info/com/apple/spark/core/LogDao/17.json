@@ -1,0 +1,64 @@
+{
+  "className": "LogDao",
+  "methodName": "getJobInfoQueryImpl",
+  "brief": "private ResultSet getJobInfoQueryImpl(\n      String status, String user, int queryLimit, int numDaysToShow){}",
+  "methodSignature": "getJobInfoQueryImpl(String, String, int, int)",
+  "sourceCode": "private ResultSet getJobInfoQueryImpl(\n      String status, String user, int queryLimit, int numDaysToShow) {\n    String sql = \"\";\n    CachedRowSet crs = null;\n\n    try {\n      if (user.equals(\"all\")) {\n        if (status.equals(RUNNING_STATE) || status.equals(SUBMITTED_STATE)) {\n          sql =\n              String.format(\n                  \"SELECT *, TIMESTAMPDIFF(second,created_time,NOW()) AS duration FROM\"\n                      + \" %s.application_submission WHERE created_time > (NOW() + CAST(? AS\"\n                      + \" INTEGER) * INTERVAL '1' DAY) AND status = ? ORDER BY created_time DESC\"\n                      + \" LIMIT ?\",\n                  dbName);\n        } else {\n          sql =\n              String.format(\n                  \"SELECT *, TIMESTAMPDIFF(second,created_time,finished_time) AS duration FROM\"\n                      + \" %s.application_submission WHERE created_time > (NOW() + CAST(? AS\"\n                      + \" INTEGER) * INTERVAL '1' DAY) AND status = ? ORDER BY created_time DESC\"\n                      + \" LIMIT ?\",\n                  dbName);\n        }\n        logger.info(\"Executing SQL: {}\", sql);\n\n        PreparedStatement statement = dbConnection.getConnection().prepareStatement(sql);\n        statement.setInt(1, -numDaysToShow);\n        statement.setString(2, status);\n        statement.setInt(3, queryLimit);\n\n        ResultSet resultSet = statement.executeQuery();\n        crs = RowSetProvider.newFactory().createCachedRowSet();\n        crs.populate(resultSet);\n      } else {\n        if (status.equals(RUNNING_STATE) || status.equals(SUBMITTED_STATE)) {\n          sql =\n              String.format(\n                  \"SELECT *, TIMESTAMPDIFF(second,created_time,NOW()) AS duration FROM\"\n                      + \" %s.application_submission WHERE created_time > (NOW() + CAST(? AS\"\n                      + \" INTEGER) * INTERVAL '1' DAY) AND status = ? AND `user` = ? ORDER BY\"\n                      + \" created_time DESC LIMIT ?\",\n                  dbName);\n        } else {\n          sql =\n              String.format(\n                  \"SELECT *, TIMESTAMPDIFF(second,created_time,finished_time) AS duration FROM\"\n                      + \" %s.application_submission WHERE created_time > (NOW() + CAST(? AS\"\n                      + \" INTEGER) * INTERVAL '1' DAY) AND status = ? AND `user` = ? ORDER BY\"\n                      + \" created_time DESC LIMIT ?\",\n                  dbName);\n        }\n        PreparedStatement statement = dbConnection.getConnection().prepareStatement(sql);\n        statement.setInt(1, -numDaysToShow);\n        statement.setString(2, status);\n        statement.setString(3, user);\n        statement.setInt(4, queryLimit);\n\n        logger.info(\"Executing SQL: {}\", sql);\n\n        ResultSet resultSet = statement.executeQuery();\n        crs = RowSetProvider.newFactory().createCachedRowSet();\n        crs.populate(resultSet);\n      }\n    } catch (Throwable ex) {\n      logger.warn(String.format(\"Failed to execute SQL query: %s\", sql), ex);\n      failureMetrics.increment(\n          DB_FAILURE_METRIC_NAME,\n          Tag.of(OPERATION_TAG, QUERY_SUBMISSION_OPERATION),\n          Tag.of(EXCEPTION_TAG, ex.getClass().getSimpleName()));\n    }\n\n    return crs;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": false,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String",
+    "String",
+    "int",
+    "int"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "equals(Object)",
+      "format(String, Object[])"
+    ],
+    "org.slf4j.Logger": [
+      "warn(String, Throwable)",
+      "info(String, Object)"
+    ],
+    "java.sql.Connection": [
+      "prepareStatement(String)"
+    ],
+    "com.apple.spark.core.DBConnection": [
+      "getConnection()"
+    ],
+    "java.sql.PreparedStatement": [
+      "setInt(int, int)",
+      "setString(int, String)",
+      "executeQuery()"
+    ],
+    "javax.sql.rowset.RowSetFactory": [
+      "createCachedRowSet()"
+    ],
+    "javax.sql.rowset.RowSetProvider": [
+      "newFactory()"
+    ],
+    "javax.sql.rowset.CachedRowSet": [
+      "populate(ResultSet)"
+    ],
+    "com.apple.spark.util.CounterMetricContainer": [
+      "increment(String, Tag[])"
+    ],
+    "io.micrometer.core.instrument.Tag": [
+      "of(String, String)"
+    ],
+    "java.lang.Class": [
+      "getSimpleName()"
+    ],
+    "java.lang.Object": [
+      "getClass()"
+    ]
+  },
+  "full_method_info": "private ResultSet getJobInfoQueryImpl(String status, String user, int queryLimit, int numDaysToShow) {\n    String sql = \"\";\n    CachedRowSet crs = null;\n    try {\n        if (user.equals(\"all\")) {\n            if (status.equals(RUNNING_STATE) || status.equals(SUBMITTED_STATE)) {\n                sql = String.format(\"SELECT *, TIMESTAMPDIFF(second,created_time,NOW()) AS duration FROM\" + \" %s.application_submission WHERE created_time > (NOW() + CAST(? AS\" + \" INTEGER) * INTERVAL '1' DAY) AND status = ? ORDER BY created_time DESC\" + \" LIMIT ?\", dbName);\n            } else {\n                sql = String.format(\"SELECT *, TIMESTAMPDIFF(second,created_time,finished_time) AS duration FROM\" + \" %s.application_submission WHERE created_time > (NOW() + CAST(? AS\" + \" INTEGER) * INTERVAL '1' DAY) AND status = ? ORDER BY created_time DESC\" + \" LIMIT ?\", dbName);\n            }\n            logger.info(\"Executing SQL: {}\", sql);\n            PreparedStatement statement = dbConnection.getConnection().prepareStatement(sql);\n            statement.setInt(1, -numDaysToShow);\n            statement.setString(2, status);\n            statement.setInt(3, queryLimit);\n            ResultSet resultSet = statement.executeQuery();\n            crs = RowSetProvider.newFactory().createCachedRowSet();\n            crs.populate(resultSet);\n        } else {\n            if (status.equals(RUNNING_STATE) || status.equals(SUBMITTED_STATE)) {\n                sql = String.format(\"SELECT *, TIMESTAMPDIFF(second,created_time,NOW()) AS duration FROM\" + \" %s.application_submission WHERE created_time > (NOW() + CAST(? AS\" + \" INTEGER) * INTERVAL '1' DAY) AND status = ? AND `user` = ? ORDER BY\" + \" created_time DESC LIMIT ?\", dbName);\n            } else {\n                sql = String.format(\"SELECT *, TIMESTAMPDIFF(second,created_time,finished_time) AS duration FROM\" + \" %s.application_submission WHERE created_time > (NOW() + CAST(? AS\" + \" INTEGER) * INTERVAL '1' DAY) AND status = ? AND `user` = ? ORDER BY\" + \" created_time DESC LIMIT ?\", dbName);\n            }\n            PreparedStatement statement = dbConnection.getConnection().prepareStatement(sql);\n            statement.setInt(1, -numDaysToShow);\n            statement.setString(2, status);\n            statement.setString(3, user);\n            statement.setInt(4, queryLimit);\n            logger.info(\"Executing SQL: {}\", sql);\n            ResultSet resultSet = statement.executeQuery();\n            crs = RowSetProvider.newFactory().createCachedRowSet();\n            crs.populate(resultSet);\n        }\n    } catch (Throwable ex) {\n        logger.warn(String.format(\"Failed to execute SQL query: %s\", sql), ex);\n        failureMetrics.increment(DB_FAILURE_METRIC_NAME, Tag.of(OPERATION_TAG, QUERY_SUBMISSION_OPERATION), Tag.of(EXCEPTION_TAG, ex.getClass().getSimpleName()));\n    }\n    return crs;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

@@ -1,0 +1,18 @@
+{
+  "className": "SubmitApplicationRequest",
+  "methodName": "getQueueToken",
+  "brief": "public String getQueueToken(){}",
+  "methodSignature": "getQueueToken()",
+  "sourceCode": "public String getQueueToken() {\n    return queueToken;\n  }",
+  "useField": false,
+  "isConstructor": false,
+  "isGetSet": true,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [],
+  "dependentMethods": {},
+  "full_method_info": "public String getQueueToken() {\n    return queueToken;\n}",
+  "method_comment": "",
+  "method_annotation": ""
+}

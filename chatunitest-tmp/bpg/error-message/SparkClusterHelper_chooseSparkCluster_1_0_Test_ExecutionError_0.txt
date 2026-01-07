@@ -1,0 +1,157 @@
+package com.apple.spark.core;
+
+import com.apple.spark.AppConfig;
+import com.apple.spark.api.SubmitApplicationRequest;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import javax.ws.rs.WebApplicationException;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import com.apple.spark.AppConfig.SparkCluster;
+import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import javax.ws.rs.core.Response;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.math3.distribution.EnumeratedDistribution;
+import org.apache.commons.math3.util.Pair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Unit tests for SparkClusterHelper.chooseSparkCluster(...)
+ *
+ * Note: A minimal ApplicationSubmissionHelper.validateQueueToken(...) stub is provided in the
+ * same package below to satisfy calls from SparkClusterHelper.getQueue(...) during tests.
+ */
+public class SparkClusterHelper_chooseSparkCluster_1_0_Test {
+
+    @Test
+    public void testChooseWithClusterIdFound() {
+        // Arrange
+        AppConfig appConfig = mock(AppConfig.class);
+        SubmitApplicationRequest request = mock(SubmitApplicationRequest.class);
+        AppConfig.SparkCluster cluster = mock(AppConfig.SparkCluster.class);
+        when(request.getClusterId()).thenReturn("c1");
+        when(request.getSparkVersion()).thenReturn("2.4");
+        when(cluster.getId()).thenReturn("c1");
+        when(cluster.matchSparkVersion("2.4")).thenReturn(true);
+        when(appConfig.getSparkClusters()).thenReturn(Collections.singletonList(cluster));
+        // Act
+        AppConfig.SparkCluster result = SparkClusterHelper.chooseSparkCluster(appConfig, request, "alice");
+        // Assert
+        assertSame(cluster, result, "Expected the cluster with matching id to be returned");
+    }
+
+    @Test
+    public void testChooseWithClusterIdNotFoundThrows() {
+        // Arrange
+        AppConfig appConfig = mock(AppConfig.class);
+        SubmitApplicationRequest request = mock(SubmitApplicationRequest.class);
+        AppConfig.SparkCluster cluster = mock(AppConfig.SparkCluster.class);
+        when(request.getClusterId()).thenReturn("cX");
+        when(request.getSparkVersion()).thenReturn("3.0");
+        when(cluster.getId()).thenReturn("c1");
+        when(cluster.matchSparkVersion("3.0")).thenReturn(false);
+        when(appConfig.getSparkClusters()).thenReturn(Collections.singletonList(cluster));
+        // Act & Assert
+        WebApplicationException ex = assertThrows(WebApplicationException.class, () -> SparkClusterHelper.chooseSparkCluster(appConfig, request, "bob"));
+        assertTrue(ex.getMessage().contains("Cluster with id cX having Spark version 3.0 not found"), "Expected message to indicate cluster id and spark version not found");
+        assertEquals(javax.ws.rs.core.Response.Status.BAD_REQUEST.getStatusCode(), ex.getResponse().getStatus(), "Expected BAD_REQUEST status");
+    }
+
+    @Test
+    public void testNoClusterSupportsSparkVersionThrows() {
+        // Arrange
+        AppConfig appConfig = mock(AppConfig.class);
+        SubmitApplicationRequest request = mock(SubmitApplicationRequest.class);
+        AppConfig.SparkCluster cluster1 = mock(AppConfig.SparkCluster.class);
+        AppConfig.SparkCluster cluster2 = mock(AppConfig.SparkCluster.class);
+        when(request.getClusterId()).thenReturn(null);
+        when(request.getSparkVersion()).thenReturn("9.9");
+        when(cluster1.getWeight()).thenReturn(1);
+        when(cluster1.matchSparkVersion("9.9")).thenReturn(false);
+        when(cluster2.getWeight()).thenReturn(10);
+        when(cluster2.matchSparkVersion("9.9")).thenReturn(false);
+        when(appConfig.getSparkClusters()).thenReturn(Arrays.asList(cluster1, cluster2));
+        // Act & Assert
+        WebApplicationException ex = assertThrows(WebApplicationException.class, () -> SparkClusterHelper.chooseSparkCluster(appConfig, request, "carol"));
+        assertTrue(ex.getMessage().contains("Spark version not supported: 9.9"), "Expected message to indicate spark version not supported");
+        assertEquals(javax.ws.rs.core.Response.Status.BAD_REQUEST.getStatusCode(), ex.getResponse().getStatus(), "Expected BAD_REQUEST status");
+    }
+
+    @Test
+    public void testQueueFilterNoMatchingClusterThrows() {
+        // Arrange
+        AppConfig appConfig = mock(AppConfig.class);
+        SubmitApplicationRequest request = mock(SubmitApplicationRequest.class);
+        AppConfig.SparkCluster cluster = mock(AppConfig.SparkCluster.class);
+        when(request.getClusterId()).thenReturn(null);
+        when(request.getSparkVersion()).thenReturn("2.4");
+        when(request.getQueue()).thenReturn("parent.child");
+        when(request.getQueueToken()).thenReturn(null);
+        when(cluster.getWeight()).thenReturn(1);
+        when(cluster.matchSparkVersion("2.4")).thenReturn(true);
+        // cluster does not match queue
+        when(cluster.matchQueue("parent")).thenReturn(false);
+        when(appConfig.getSparkClusters()).thenReturn(Collections.singletonList(cluster));
+        // No queues configured in appConfig to avoid alternative queue selection
+        when(appConfig.getQueues()).thenReturn(null);
+        // Act & Assert
+        WebApplicationException ex = assertThrows(WebApplicationException.class, () -> SparkClusterHelper.chooseSparkCluster(appConfig, request, "dave"));
+        assertTrue(ex.getMessage().contains("Cluster with queue parent.child having Spark version 2.4 not found"), "Expected message to indicate queue and spark version not found");
+        assertEquals(javax.ws.rs.core.Response.Status.BAD_REQUEST.getStatusCode(), ex.getResponse().getStatus(), "Expected BAD_REQUEST status");
+    }
+
+    @Test
+    public void testWeightSelectionWithMultipleClustersReturnsOneOfThem() {
+        // Arrange
+        AppConfig appConfig = mock(AppConfig.class);
+        SubmitApplicationRequest request = mock(SubmitApplicationRequest.class);
+        AppConfig.SparkCluster clusterA = mock(AppConfig.SparkCluster.class);
+        AppConfig.SparkCluster clusterB = mock(AppConfig.SparkCluster.class);
+        when(request.getClusterId()).thenReturn(null);
+        when(request.getSparkVersion()).thenReturn("2.4");
+        when(request.getQueue()).thenReturn("prod.q");
+        when(request.getQueueToken()).thenReturn(null);
+        when(clusterA.getWeight()).thenReturn(10);
+        when(clusterA.matchSparkVersion("2.4")).thenReturn(true);
+        when(clusterA.matchQueue("prod")).thenReturn(true);
+        when(clusterA.getId()).thenReturn("A");
+        when(clusterB.getWeight()).thenReturn(5);
+        when(clusterB.matchSparkVersion("2.4")).thenReturn(true);
+        when(clusterB.matchQueue("prod")).thenReturn(true);
+        when(clusterB.getId()).thenReturn("B");
+        when(appConfig.getSparkClusters()).thenReturn(Arrays.asList(clusterA, clusterB));
+        when(appConfig.getQueues()).thenReturn(null);
+        // Act
+        AppConfig.SparkCluster chosen = SparkClusterHelper.chooseSparkCluster(appConfig, request, "ellen");
+        // Assert: result should be one of the provided clusters
+        assertTrue(chosen == clusterA || chosen == clusterB, "Expected chosen cluster to be either clusterA or clusterB based on weighted sampling");
+    }
+}
+
+/*
+ Minimal stub for ApplicationSubmissionHelper to satisfy calls from SparkClusterHelper.getQueue(...)
+ Tests only need validateQueueToken to be callable; it does nothing here.
+ Placing this in same package as SparkClusterHelper (com.apple.spark.core) to match access.
+*/
+class ApplicationSubmissionHelper {
+
+    static void validateQueueToken(String queue, String token, com.apple.spark.AppConfig appConfig) {
+        // No-op stub for tests
+    }
+}
+
+--------------------------------------------
+Error in testNoClusterSupportsSparkVersionThrows(): line 72 : java.lang.IllegalStateException: Could not initialize plugin: interface org.mockito.plugins.MockMaker (alternate: null)
+Error in testQueueFilterNoMatchingClusterThrows(): line 92 : java.lang.IllegalStateException: Could not initialize plugin: interface org.mockito.plugins.MockMaker (alternate: null)
+Error in testWeightSelectionWithMultipleClustersReturnsOneOfThem(): line 115 : java.lang.IllegalStateException: Could not initialize plugin: interface org.mockito.plugins.MockMaker (alternate: null)
+Error in testChooseWithClusterIdNotFoundThrows(): line 55 : java.lang.IllegalStateException: Could not initialize plugin: interface org.mockito.plugins.MockMaker (alternate: null)
+Error in testChooseWithClusterIdFound(): line 38 : java.lang.IllegalStateException: Could not initialize plugin: interface org.mockito.plugins.MockMaker (alternate: null)

@@ -1,0 +1,36 @@
+{
+  "className": "UserUnauthorizedHandler",
+  "methodName": "buildResponse",
+  "brief": "@Override\n  public Response buildResponse(String prefix, String realm){}",
+  "methodSignature": "buildResponse(String, String)",
+  "sourceCode": "@Override\n  public Response buildResponse(String prefix, String realm) {\n    return Response.status(Response.Status.UNAUTHORIZED)\n        .header(HttpHeaders.WWW_AUTHENTICATE, String.format(CHALLENGE_FORMAT, prefix, realm))\n        .entity(ImmutableMap.of(\"code\", \"401\", \"message\", \"HTTP 401 Unauthorized.\"))\n        .build();\n  }",
+  "useField": true,
+  "isConstructor": false,
+  "isGetSet": false,
+  "isPublic": true,
+  "isBoolean": false,
+  "isAbstract": false,
+  "parameters": [
+    "String",
+    "String"
+  ],
+  "dependentMethods": {
+    "java.lang.String": [
+      "format(String, Object[])"
+    ],
+    "javax.ws.rs.core.Response.ResponseBuilder": [
+      "entity(Object)",
+      "header(String, Object)",
+      "build()"
+    ],
+    "javax.ws.rs.core.Response": [
+      "status(Status)"
+    ],
+    "com.google.common.collect.ImmutableMap": [
+      "of(K, V, K, V)"
+    ]
+  },
+  "full_method_info": "@Override\npublic Response buildResponse(String prefix, String realm) {\n    return Response.status(Response.Status.UNAUTHORIZED).header(HttpHeaders.WWW_AUTHENTICATE, String.format(CHALLENGE_FORMAT, prefix, realm)).entity(ImmutableMap.of(\"code\", \"401\", \"message\", \"HTTP 401 Unauthorized.\")).build();\n}",
+  "method_comment": "",
+  "method_annotation": "@Override\n"
+}

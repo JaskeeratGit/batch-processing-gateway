@@ -1,0 +1,47 @@
+{
+  "attempt0": {
+    "testClassName": "DateTimeUtils_parseOrNull_0_0_Test",
+    "fullName": "com.apple.spark.util.DateTimeUtils_parseOrNull_0_0_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/util/DateTimeUtils_parseOrNull_0_0_Test.java",
+    "className": "DateTimeUtils",
+    "packageName": "com.apple.spark.util",
+    "methodName": "parseOrNull",
+    "methodSig": "parseOrNull(String)"
+  },
+  "attempt1": {
+    "testClassName": "DateTimeUtils_parseOrNull_0_1_Test",
+    "fullName": "com.apple.spark.util.DateTimeUtils_parseOrNull_0_1_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/util/DateTimeUtils_parseOrNull_0_0_Test.java",
+    "className": "DateTimeUtils",
+    "packageName": "com.apple.spark.util",
+    "methodName": "parseOrNull",
+    "methodSig": "parseOrNull(String)"
+  },
+  "attempt2": {
+    "testClassName": "DateTimeUtils_parseOrNull_0_2_Test",
+    "fullName": "com.apple.spark.util.DateTimeUtils_parseOrNull_0_2_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/util/DateTimeUtils_parseOrNull_0_0_Test.java",
+    "className": "DateTimeUtils",
+    "packageName": "com.apple.spark.util",
+    "methodName": "parseOrNull",
+    "methodSig": "parseOrNull(String)"
+  },
+  "attempt3": {
+    "testClassName": "DateTimeUtils_parseOrNull_0_3_Test",
+    "fullName": "com.apple.spark.util.DateTimeUtils_parseOrNull_0_3_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/util/DateTimeUtils_parseOrNull_0_0_Test.java",
+    "className": "DateTimeUtils",
+    "packageName": "com.apple.spark.util",
+    "methodName": "parseOrNull",
+    "methodSig": "parseOrNull(String)"
+  },
+  "attempt4": {
+    "testClassName": "DateTimeUtils_parseOrNull_0_4_Test",
+    "fullName": "com.apple.spark.util.DateTimeUtils_parseOrNull_0_4_Test",
+    "path": "/home/jaskeerat/automated-test-research/final_projects/bpg_latest_stable/batch-processing-gateway/chatunitest-generated/bpg/com/apple/spark/util/DateTimeUtils_parseOrNull_0_0_Test.java",
+    "className": "DateTimeUtils",
+    "packageName": "com.apple.spark.util",
+    "methodName": "parseOrNull",
+    "methodSig": "parseOrNull(String)"
+  }
+}

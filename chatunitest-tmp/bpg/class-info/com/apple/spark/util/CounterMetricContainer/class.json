@@ -1,0 +1,55 @@
+{
+  "fullClassName": "com.apple.spark.util.CounterMetricContainer",
+  "className": "CounterMetricContainer",
+  "index": 66,
+  "modifier": "[public ]",
+  "extend": "[]",
+  "implement": "[]",
+  "packageName": "com.apple.spark.util",
+  "packageDeclaration": "package com.apple.spark.util;",
+  "classSignature": "public class CounterMetricContainer",
+  "hasConstructor": true,
+  "isPublic": true,
+  "isInterface": false,
+  "isAbstract": false,
+  "imports": [
+    "import io.micrometer.core.instrument.Counter;",
+    "import io.micrometer.core.instrument.MeterRegistry;",
+    "import io.micrometer.core.instrument.Tag;",
+    "import java.util.Arrays;",
+    "import java.util.Collection;",
+    "import java.util.List;",
+    "import java.util.concurrent.ConcurrentHashMap;",
+    "import java.util.stream.Collectors;"
+  ],
+  "fields": [
+    "private final MeterRegistry meterRegistry;",
+    "private final ConcurrentHashMap<MetricId, Counter> counters = new ConcurrentHashMap<>();"
+  ],
+  "superClasses": [],
+  "implementedTypes": [],
+  "methodSigs": {
+    "increment(String, Tag[])": "0",
+    "increment(String, Collection)": "1",
+    "CounterMetricContainer(MeterRegistry)": "2"
+  },
+  "methodsBrief": [
+    "public void increment(String metricName, Tag... tags){}",
+    "public void increment(String metricName, Collection<Tag> tags){}",
+    "public CounterMetricContainer(MeterRegistry meterRegistry){}"
+  ],
+  "constructorSigs": [
+    "CounterMetricContainer(MeterRegistry)"
+  ],
+  "constructorBrief": [
+    "public CounterMetricContainer(MeterRegistry meterRegistry){}"
+  ],
+  "getterSetterSigs": [],
+  "getterSetterBrief": [],
+  "constructorDeps": {
+    "io.micrometer.core.instrument.MeterRegistry": []
+  },
+  "compilationUnitCode": "/*\n *\n * This source file is part of the Batch Processing Gateway open source project\n *\n * Copyright 2022 Apple Inc. and the Batch Processing Gateway project authors\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *     http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\npackage com.apple.spark.util;\n\nimport io.micrometer.core.instrument.Counter;\nimport io.micrometer.core.instrument.MeterRegistry;\nimport io.micrometer.core.instrument.Tag;\nimport java.util.Arrays;\nimport java.util.Collection;\nimport java.util.List;\nimport java.util.concurrent.ConcurrentHashMap;\nimport java.util.stream.Collectors;\n\n/**\n * This class contains multiple counter metric instances with different name/tags. New metric\n * instance will be created when needed.\n */\npublic class CounterMetricContainer {\n\n    private final MeterRegistry meterRegistry;\n\n    private final ConcurrentHashMap<MetricId, Counter> counters = new ConcurrentHashMap<>();\n\n    public CounterMetricContainer(MeterRegistry meterRegistry) {\n        this.meterRegistry = meterRegistry;\n    }\n\n    public void increment(String metricName, Tag... tags) {\n        increment(metricName, Arrays.asList(tags));\n    }\n\n    public void increment(String metricName, Collection<Tag> tags) {\n        List<String> tagValues = tags.stream().map(Tag::getValue).collect(Collectors.toList());\n        MetricId metricId = new MetricId(metricName, tagValues);\n        Counter counter = counters.get(metricId);\n        if (counter == null) {\n            counter = counters.computeIfAbsent(metricId, k -> Counter.builder(metricName).tags(tags).register(meterRegistry));\n        }\n        counter.increment();\n    }\n}\n",
+  "classDeclarationCode": "/**\n * This class contains multiple counter metric instances with different name/tags. New metric\n * instance will be created when needed.\n */\npublic class CounterMetricContainer {\n\n    private final MeterRegistry meterRegistry;\n\n    private final ConcurrentHashMap<MetricId, Counter> counters = new ConcurrentHashMap<>();\n\n    public CounterMetricContainer(MeterRegistry meterRegistry) {\n        this.meterRegistry = meterRegistry;\n    }\n\n    public void increment(String metricName, Tag... tags) {\n        increment(metricName, Arrays.asList(tags));\n    }\n\n    public void increment(String metricName, Collection<Tag> tags) {\n        List<String> tagValues = tags.stream().map(Tag::getValue).collect(Collectors.toList());\n        MetricId metricId = new MetricId(metricName, tagValues);\n        Counter counter = counters.get(metricId);\n        if (counter == null) {\n            counter = counters.computeIfAbsent(metricId, k -> Counter.builder(metricName).tags(tags).register(meterRegistry));\n        }\n        counter.increment();\n    }\n}",
+  "subClasses": []
+}
