@@ -1,0 +1,36 @@
+package com.apple.spark.core;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import java.util.Objects;
+
+class RoundRobinZonePicker_update_0_0_Test_testUpdateWithListContainingNullThrows {
+
+    private RoundRobinZonePicker picker;
+
+    @BeforeEach
+    void setUp() {
+        picker = new RoundRobinZonePicker();
+    }
+
+
+
+
+    @Test
+    void testUpdateWithListContainingNullThrows() {
+        List<String> zonesWithNull = Arrays.asList("zone1", null, "zone3");
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> picker.update(zonesWithNull));
+        assertEquals("Invalid allowedZones: Some zone is empty", ex.getMessage());
+    }
+
+}

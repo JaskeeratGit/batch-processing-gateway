@@ -1,0 +1,74 @@
+{
+  "method0": {
+    "methodName": "tryGetServiceAccountNamespace",
+    "signature": "tryGetServiceAccountNamespace()",
+    "className": "KubernetesHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method1": {
+    "methodName": "tryGetServiceAccountCACertFile",
+    "signature": "tryGetServiceAccountCACertFile()",
+    "className": "KubernetesHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method10": {
+    "methodName": "isLabelValueAlphanumericChar",
+    "signature": "isLabelValueAlphanumericChar(char)",
+    "className": "KubernetesHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method11": {
+    "methodName": "isLabelValueChar",
+    "signature": "isLabelValueChar(char)",
+    "className": "KubernetesHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method2": {
+    "methodName": "tryGetServiceAccountToken",
+    "signature": "tryGetServiceAccountToken()",
+    "className": "KubernetesHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method3": {
+    "methodName": "getLocalK8sClient",
+    "signature": "getLocalK8sClient()",
+    "className": "KubernetesHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method4": {
+    "methodName": "getK8sClient",
+    "signature": "getK8sClient(AppConfig.SparkCluster)",
+    "className": "KubernetesHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method5": {
+    "methodName": "getSparkApplicationCrdContext",
+    "signature": "getSparkApplicationCrdContext()",
+    "className": "KubernetesHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method6": {
+    "methodName": "tryGetLogStream",
+    "signature": "tryGetLogStream(DefaultKubernetesClient, String, String)",
+    "className": "KubernetesHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method7": {
+    "methodName": "closeQuietly",
+    "signature": "closeQuietly(Closeable)",
+    "className": "KubernetesHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method8": {
+    "methodName": "normalizeLabelValue",
+    "signature": "normalizeLabelValue(String)",
+    "className": "KubernetesHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method9": {
+    "methodName": "getK8sConfig",
+    "signature": "getK8sConfig(AppConfig.SparkCluster)",
+    "className": "KubernetesHelper",
+    "packageName": "com.apple.spark.core"
+  }
+}

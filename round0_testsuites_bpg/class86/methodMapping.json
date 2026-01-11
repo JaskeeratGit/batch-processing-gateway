@@ -1,0 +1,32 @@
+{
+  "method0": {
+    "methodName": "start",
+    "signature": "start()",
+    "className": "ApplicationMonitor",
+    "packageName": "com.apple.spark.core"
+  },
+  "method1": {
+    "methodName": "start",
+    "signature": "start(AppConfig.SparkCluster, Timer)",
+    "className": "ApplicationMonitor",
+    "packageName": "com.apple.spark.core"
+  },
+  "method2": {
+    "methodName": "close",
+    "signature": "close()",
+    "className": "ApplicationMonitor",
+    "packageName": "com.apple.spark.core"
+  },
+  "method3": {
+    "methodName": "onUpdateImpl_logApplication",
+    "signature": "onUpdateImpl_logApplication(AppConfig.SparkCluster, SparkApplication, SparkApplication)",
+    "className": "ApplicationMonitor",
+    "packageName": "com.apple.spark.core"
+  },
+  "method4": {
+    "methodName": "ApplicationMonitor",
+    "signature": "ApplicationMonitor(AppConfig, MeterRegistry)",
+    "className": "ApplicationMonitor",
+    "packageName": "com.apple.spark.core"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "method0": {
+    "methodName": "getExceptionNameAndMessage",
+    "signature": "getExceptionNameAndMessage(Throwable)",
+    "className": "ExceptionUtils",
+    "packageName": "com.apple.spark.util"
+  },
+  "method1": {
+    "methodName": "isTooManyRequest",
+    "signature": "isTooManyRequest(Throwable)",
+    "className": "ExceptionUtils",
+    "packageName": "com.apple.spark.util"
+  },
+  "method2": {
+    "methodName": "meterJsonProcessingException",
+    "signature": "meterJsonProcessingException()",
+    "className": "ExceptionUtils",
+    "packageName": "com.apple.spark.util"
+  },
+  "method3": {
+    "methodName": "meterException",
+    "signature": "meterException()",
+    "className": "ExceptionUtils",
+    "packageName": "com.apple.spark.util"
+  },
+  "method4": {
+    "methodName": "meterIOException",
+    "signature": "meterIOException()",
+    "className": "ExceptionUtils",
+    "packageName": "com.apple.spark.util"
+  },
+  "method5": {
+    "methodName": "meterRuntimeException",
+    "signature": "meterRuntimeException()",
+    "className": "ExceptionUtils",
+    "packageName": "com.apple.spark.util"
+  }
+}

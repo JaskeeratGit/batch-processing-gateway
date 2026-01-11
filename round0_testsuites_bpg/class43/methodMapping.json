@@ -1,0 +1,116 @@
+{
+  "method0": {
+    "methodName": "submitApplication",
+    "signature": "submitApplication(String, String, String, String, User)",
+    "className": "ApplicationSubmissionRest",
+    "packageName": "com.apple.spark.rest"
+  },
+  "method1": {
+    "methodName": "submitApplicationImpl",
+    "signature": "submitApplicationImpl(String, String, User, String)",
+    "className": "ApplicationSubmissionRest",
+    "packageName": "com.apple.spark.rest"
+  },
+  "method10": {
+    "methodName": "getSubmissions",
+    "signature": "getSubmissions(String, User)",
+    "className": "ApplicationSubmissionRest",
+    "packageName": "com.apple.spark.rest"
+  },
+  "method11": {
+    "methodName": "getEvents",
+    "signature": "getEvents(AppConfig.SparkCluster, String)",
+    "className": "ApplicationSubmissionRest",
+    "packageName": "com.apple.spark.rest"
+  },
+  "method12": {
+    "methodName": "removeEnvFromSpec",
+    "signature": "removeEnvFromSpec(SparkApplicationSpec)",
+    "className": "ApplicationSubmissionRest",
+    "packageName": "com.apple.spark.rest"
+  },
+  "method13": {
+    "methodName": "getUserTagValue",
+    "signature": "getUserTagValue(User)",
+    "className": "ApplicationSubmissionRest",
+    "packageName": "com.apple.spark.rest"
+  },
+  "method14": {
+    "methodName": "getMaxRunningMillisForQueue",
+    "signature": "getMaxRunningMillisForQueue(String)",
+    "className": "ApplicationSubmissionRest",
+    "packageName": "com.apple.spark.rest"
+  },
+  "method15": {
+    "methodName": "getMaxExecutorInstanceForQueue",
+    "signature": "getMaxExecutorInstanceForQueue(String)",
+    "className": "ApplicationSubmissionRest",
+    "packageName": "com.apple.spark.rest"
+  },
+  "method16": {
+    "methodName": "validateSubmissionRequest",
+    "signature": "validateSubmissionRequest(SubmitApplicationRequest, String)",
+    "className": "ApplicationSubmissionRest",
+    "packageName": "com.apple.spark.rest"
+  },
+  "method17": {
+    "methodName": "configureZonesForRequest",
+    "signature": "configureZonesForRequest(SubmitApplicationRequest, AppConfig, String, AppConfig.SparkCluster, String)",
+    "className": "ApplicationSubmissionRest",
+    "packageName": "com.apple.spark.rest"
+  },
+  "method18": {
+    "methodName": "ApplicationSubmissionRest",
+    "signature": "ApplicationSubmissionRest(AppConfig, MeterRegistry)",
+    "className": "ApplicationSubmissionRest",
+    "packageName": "com.apple.spark.rest"
+  },
+  "method2": {
+    "methodName": "submitSparkCRD",
+    "signature": "submitSparkCRD(SparkCluster, String, SparkApplicationSpec, SubmitApplicationRequest, String, String)",
+    "className": "ApplicationSubmissionRest",
+    "packageName": "com.apple.spark.rest"
+  },
+  "method3": {
+    "methodName": "deleteSubmission",
+    "signature": "deleteSubmission(String, String, User)",
+    "className": "ApplicationSubmissionRest",
+    "packageName": "com.apple.spark.rest"
+  },
+  "method4": {
+    "methodName": "getSparkSpec",
+    "signature": "getSparkSpec(String, String, User)",
+    "className": "ApplicationSubmissionRest",
+    "packageName": "com.apple.spark.rest"
+  },
+  "method5": {
+    "methodName": "getStatus",
+    "signature": "getStatus(String, String, User)",
+    "className": "ApplicationSubmissionRest",
+    "packageName": "com.apple.spark.rest"
+  },
+  "method6": {
+    "methodName": "getStatusImpl",
+    "signature": "getStatusImpl(String, User)",
+    "className": "ApplicationSubmissionRest",
+    "packageName": "com.apple.spark.rest"
+  },
+  "method7": {
+    "methodName": "getStatusImplWithoutCache",
+    "signature": "getStatusImplWithoutCache(SparkApplication, String, AppConfig.SparkCluster)",
+    "className": "ApplicationSubmissionRest",
+    "packageName": "com.apple.spark.rest"
+  },
+  "method8": {
+    "methodName": "getDriverInfo",
+    "signature": "getDriverInfo(String, String, User)",
+    "className": "ApplicationSubmissionRest",
+    "packageName": "com.apple.spark.rest"
+  },
+  "method9": {
+    "methodName": "describe",
+    "signature": "describe(String, String, User)",
+    "className": "ApplicationSubmissionRest",
+    "packageName": "com.apple.spark.rest"
+  }
+}

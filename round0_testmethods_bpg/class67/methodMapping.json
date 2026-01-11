@@ -1,0 +1,20 @@
+{
+  "method0": {
+    "methodName": "register",
+    "signature": "register(String, Supplier, Tag[])",
+    "className": "GaugeMetricContainer",
+    "packageName": "com.apple.spark.util"
+  },
+  "method1": {
+    "methodName": "register",
+    "signature": "register(String, Supplier, Collection)",
+    "className": "GaugeMetricContainer",
+    "packageName": "com.apple.spark.util"
+  },
+  "method2": {
+    "methodName": "GaugeMetricContainer",
+    "signature": "GaugeMetricContainer(MeterRegistry)",
+    "className": "GaugeMetricContainer",
+    "packageName": "com.apple.spark.util"
+  }
+}

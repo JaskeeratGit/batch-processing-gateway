@@ -1,0 +1,14 @@
+{
+  "method0": {
+    "methodName": "parseOrNull",
+    "signature": "parseOrNull(String)",
+    "className": "DateTimeUtils",
+    "packageName": "com.apple.spark.util"
+  },
+  "method1": {
+    "methodName": "format",
+    "signature": "format(Instant)",
+    "className": "DateTimeUtils",
+    "packageName": "com.apple.spark.util"
+  }
+}

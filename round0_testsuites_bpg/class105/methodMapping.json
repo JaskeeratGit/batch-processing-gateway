@@ -1,0 +1,26 @@
+{
+  "method0": {
+    "methodName": "getQueue",
+    "signature": "getQueue(AppConfig, SubmitApplicationRequest, String)",
+    "className": "SparkClusterHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method1": {
+    "methodName": "chooseSparkCluster",
+    "signature": "chooseSparkCluster(AppConfig, SubmitApplicationRequest, String)",
+    "className": "SparkClusterHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method2": {
+    "methodName": "normalizeQueue",
+    "signature": "normalizeQueue(String)",
+    "className": "SparkClusterHelper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method3": {
+    "methodName": "getParentQueue",
+    "signature": "getParentQueue(String)",
+    "className": "SparkClusterHelper",
+    "packageName": "com.apple.spark.core"
+  }
+}

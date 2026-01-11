@@ -1,0 +1,32 @@
+{
+  "method0": {
+    "methodName": "getConnection",
+    "signature": "getConnection()",
+    "className": "DBConnection",
+    "packageName": "com.apple.spark.core"
+  },
+  "method1": {
+    "methodName": "executeSql",
+    "signature": "executeSql(String)",
+    "className": "DBConnection",
+    "packageName": "com.apple.spark.core"
+  },
+  "method2": {
+    "methodName": "close",
+    "signature": "close()",
+    "className": "DBConnection",
+    "packageName": "com.apple.spark.core"
+  },
+  "method3": {
+    "methodName": "DBConnection",
+    "signature": "DBConnection(String)",
+    "className": "DBConnection",
+    "packageName": "com.apple.spark.core"
+  },
+  "method4": {
+    "methodName": "DBConnection",
+    "signature": "DBConnection(String, String, String)",
+    "className": "DBConnection",
+    "packageName": "com.apple.spark.core"
+  }
+}

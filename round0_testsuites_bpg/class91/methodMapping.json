@@ -1,0 +1,8 @@
+{
+  "method0": {
+    "methodName": "verify",
+    "signature": "verify(String, List, String)",
+    "className": "QueueTokenVerifier",
+    "packageName": "com.apple.spark.core"
+  }
+}

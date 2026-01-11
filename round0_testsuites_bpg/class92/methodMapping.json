@@ -1,0 +1,8 @@
+{
+  "method0": {
+    "methodName": "isApplicationStopped",
+    "signature": "isApplicationStopped(String)",
+    "className": "SparkConstants",
+    "packageName": "com.apple.spark.core"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "method0": {
+    "methodName": "createToken",
+    "signature": "createToken(String, String, String, String, String[])",
+    "className": "JwtUtils",
+    "packageName": "com.apple.spark.util"
+  },
+  "method1": {
+    "methodName": "createToken",
+    "signature": "createToken(String, String, String, String, List)",
+    "className": "JwtUtils",
+    "packageName": "com.apple.spark.util"
+  },
+  "method2": {
+    "methodName": "verifyToken",
+    "signature": "verifyToken(String, String)",
+    "className": "JwtUtils",
+    "packageName": "com.apple.spark.util"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "method0": {
+    "methodName": "toResponse",
+    "signature": "toResponse(Throwable)",
+    "className": "ThrowableExceptionMapper",
+    "packageName": "com.apple.spark.core"
+  },
+  "method1": {
+    "methodName": "ThrowableExceptionMapper",
+    "signature": "ThrowableExceptionMapper(MetricRegistry)",
+    "className": "ThrowableExceptionMapper",
+    "packageName": "com.apple.spark.core"
+  }
+}

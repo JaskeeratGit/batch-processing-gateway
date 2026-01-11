@@ -1,0 +1,38 @@
+{
+  "method0": {
+    "methodName": "getMetricName",
+    "signature": "getMetricName()",
+    "className": "MetricId",
+    "packageName": "com.apple.spark.util"
+  },
+  "method1": {
+    "methodName": "getValues",
+    "signature": "getValues()",
+    "className": "MetricId",
+    "packageName": "com.apple.spark.util"
+  },
+  "method2": {
+    "methodName": "equals",
+    "signature": "equals(Object)",
+    "className": "MetricId",
+    "packageName": "com.apple.spark.util"
+  },
+  "method3": {
+    "methodName": "hashCode",
+    "signature": "hashCode()",
+    "className": "MetricId",
+    "packageName": "com.apple.spark.util"
+  },
+  "method4": {
+    "methodName": "toString",
+    "signature": "toString()",
+    "className": "MetricId",
+    "packageName": "com.apple.spark.util"
+  },
+  "method5": {
+    "methodName": "MetricId",
+    "signature": "MetricId(String, Collection)",
+    "className": "MetricId",
+    "packageName": "com.apple.spark.util"
+  }
+}

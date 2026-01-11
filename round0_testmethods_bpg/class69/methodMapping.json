@@ -1,0 +1,38 @@
+{
+  "method0": {
+    "methodName": "mergeConfig",
+    "signature": "mergeConfig(AppConfig)",
+    "className": "ConfigUtil",
+    "packageName": "com.apple.spark.util"
+  },
+  "method1": {
+    "methodName": "getSparkUIUrl",
+    "signature": "getSparkUIUrl(SparkCluster, String)",
+    "className": "ConfigUtil",
+    "packageName": "com.apple.spark.util"
+  },
+  "method2": {
+    "methodName": "getSparkHistoryUrl",
+    "signature": "getSparkHistoryUrl(String, String)",
+    "className": "ConfigUtil",
+    "packageName": "com.apple.spark.util"
+  },
+  "method3": {
+    "methodName": "merge",
+    "signature": "merge(List, List)",
+    "className": "ConfigUtil",
+    "packageName": "com.apple.spark.util"
+  },
+  "method4": {
+    "methodName": "getConfFromDB",
+    "signature": "getConfFromDB(AppConfig)",
+    "className": "ConfigUtil",
+    "packageName": "com.apple.spark.util"
+  },
+  "method5": {
+    "methodName": "readVersion",
+    "signature": "readVersion()",
+    "className": "ConfigUtil",
+    "packageName": "com.apple.spark.util"
+  }
+}

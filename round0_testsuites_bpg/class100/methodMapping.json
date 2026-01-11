@@ -1,0 +1,56 @@
+{
+  "method0": {
+    "methodName": "getNamespace",
+    "signature": "getNamespace()",
+    "className": "NamespaceAndName",
+    "packageName": "com.apple.spark.core"
+  },
+  "method1": {
+    "methodName": "setNamespace",
+    "signature": "setNamespace(String)",
+    "className": "NamespaceAndName",
+    "packageName": "com.apple.spark.core"
+  },
+  "method2": {
+    "methodName": "getName",
+    "signature": "getName()",
+    "className": "NamespaceAndName",
+    "packageName": "com.apple.spark.core"
+  },
+  "method3": {
+    "methodName": "setName",
+    "signature": "setName(String)",
+    "className": "NamespaceAndName",
+    "packageName": "com.apple.spark.core"
+  },
+  "method4": {
+    "methodName": "equals",
+    "signature": "equals(Object)",
+    "className": "NamespaceAndName",
+    "packageName": "com.apple.spark.core"
+  },
+  "method5": {
+    "methodName": "hashCode",
+    "signature": "hashCode()",
+    "className": "NamespaceAndName",
+    "packageName": "com.apple.spark.core"
+  },
+  "method6": {
+    "methodName": "toString",
+    "signature": "toString()",
+    "className": "NamespaceAndName",
+    "packageName": "com.apple.spark.core"
+  },
+  "method7": {
+    "methodName": "NamespaceAndName",
+    "signature": "NamespaceAndName()",
+    "className": "NamespaceAndName",
+    "packageName": "com.apple.spark.core"
+  },
+  "method8": {
+    "methodName": "NamespaceAndName",
+    "signature": "NamespaceAndName(String, String)",
+    "className": "NamespaceAndName",
+    "packageName": "com.apple.spark.core"
+  }
+}

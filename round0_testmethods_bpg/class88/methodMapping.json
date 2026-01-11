@@ -1,0 +1,8 @@
+{
+  "method0": {
+    "methodName": "getState",
+    "signature": "getState(SparkApplication)",
+    "className": "SparkApplicationResourceHelper",
+    "packageName": "com.apple.spark.core"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "method0": {
+    "methodName": "getMasterUrl",
+    "signature": "getMasterUrl()",
+    "className": "KubernetesClusterAndNamespace",
+    "packageName": "com.apple.spark.util"
+  },
+  "method1": {
+    "methodName": "getNamespace",
+    "signature": "getNamespace()",
+    "className": "KubernetesClusterAndNamespace",
+    "packageName": "com.apple.spark.util"
+  },
+  "method2": {
+    "methodName": "equals",
+    "signature": "equals(Object)",
+    "className": "KubernetesClusterAndNamespace",
+    "packageName": "com.apple.spark.util"
+  },
+  "method3": {
+    "methodName": "hashCode",
+    "signature": "hashCode()",
+    "className": "KubernetesClusterAndNamespace",
+    "packageName": "com.apple.spark.util"
+  },
+  "method4": {
+    "methodName": "toString",
+    "signature": "toString()",
+    "className": "KubernetesClusterAndNamespace",
+    "packageName": "com.apple.spark.util"
+  },
+  "method5": {
+    "methodName": "KubernetesClusterAndNamespace",
+    "signature": "KubernetesClusterAndNamespace(String, String)",
+    "className": "KubernetesClusterAndNamespace",
+    "packageName": "com.apple.spark.util"
+  }
+}

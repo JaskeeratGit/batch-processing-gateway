@@ -1,0 +1,14 @@
+{
+  "method0": {
+    "methodName": "authenticate",
+    "signature": "authenticate(BasicCredentials)",
+    "className": "UserNameBasicAuthenticator",
+    "packageName": "com.apple.spark.security"
+  },
+  "method1": {
+    "methodName": "UserNameBasicAuthenticator",
+    "signature": "UserNameBasicAuthenticator(Collection, Collection)",
+    "className": "UserNameBasicAuthenticator",
+    "packageName": "com.apple.spark.security"
+  }
+}

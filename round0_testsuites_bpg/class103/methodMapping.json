@@ -1,0 +1,14 @@
+{
+  "method0": {
+    "methodName": "pickZones",
+    "signature": "pickZones(SubmitApplicationRequest, AppConfig, String, AppConfig.SparkCluster, String)",
+    "className": "ZoneManager",
+    "packageName": "com.apple.spark.core"
+  },
+  "method1": {
+    "methodName": "createZonePickerForQueue",
+    "signature": "createZonePickerForQueue(QueueConfig)",
+    "className": "ZoneManager",
+    "packageName": "com.apple.spark.core"
+  }
+}

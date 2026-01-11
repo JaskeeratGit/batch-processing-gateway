@@ -1,0 +1,20 @@
+{
+  "method0": {
+    "methodName": "update",
+    "signature": "update(List)",
+    "className": "RoundRobinZonePicker",
+    "packageName": "com.apple.spark.core"
+  },
+  "method1": {
+    "methodName": "pick",
+    "signature": "pick()",
+    "className": "RoundRobinZonePicker",
+    "packageName": "com.apple.spark.core"
+  },
+  "method2": {
+    "methodName": "RoundRobinZonePicker",
+    "signature": "RoundRobinZonePicker()",
+    "className": "RoundRobinZonePicker",
+    "packageName": "com.apple.spark.core"
+  }
+}

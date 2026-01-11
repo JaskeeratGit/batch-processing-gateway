@@ -1,0 +1,85 @@
+package com.apple.spark.rest;
+
+import com.apple.spark.AppConfig;
+import io.micrometer.core.instrument.MeterRegistry;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.lang.reflect.Method;
+import javax.ws.rs.core.Response;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import static com.apple.spark.core.Constants.ADMIN_API;
+import com.apple.spark.core.Constants;
+import com.apple.spark.core.KubernetesHelper;
+import com.apple.spark.core.RestStreamingOutput;
+import com.apple.spark.core.RestSubmissionsStreamingOutput;
+import com.apple.spark.operator.SparkApplicationResourceList;
+import com.apple.spark.security.User;
+import com.apple.spark.util.ConfigUtil;
+import com.apple.spark.util.ExceptionUtils;
+import com.apple.spark.util.VersionInfo;
+import com.codahale.metrics.annotation.Timed;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.dropwizard.auth.Auth;
+import io.micrometer.core.instrument.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import javax.annotation.security.PermitAll;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class AdminRest_version_3_0_Test_testVersionWritesJsonSuccessfully {
+
+    private AppConfig appConfig;
+
+    private MeterRegistry meterRegistry;
+
+    private AdminRest adminRest;
+
+    @BeforeEach
+    public void setUp() {
+        appConfig = mock(AppConfig.class);
+        meterRegistry = mock(MeterRegistry.class);
+        adminRest = new AdminRest(appConfig, meterRegistry);
+    }
+
+    @Test
+    public void testVersionWritesJsonSuccessfully() throws Exception {
+        // Call the version() method
+        Response resp = adminRest.version();
+        assertNotNull(resp);
+        assertEquals(200, resp.getStatus());
+        Object entity = resp.getEntity();
+        assertNotNull(entity);
+        assertTrue(entity instanceof javax.ws.rs.core.StreamingOutput);
+        // Use reflection to invoke the write method on the anonymous RestStreamingOutput
+        Method writeMethod = entity.getClass().getMethod("write", OutputStream.class);
+        writeMethod.setAccessible(true);
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        // Should not throw; should write JSON representation of VersionInfo (possibly empty object)
+        writeMethod.invoke(entity, bos);
+        String output = bos.toString("UTF-8");
+        assertNotNull(output);
+        // Expect some JSON-like output; at minimum braces should be present for an object
+        assertTrue(output.contains("{") && output.contains("}"), "Output should contain JSON object braces");
+        // Expect a newline at the end (writeLine appends system line separator)
+        assertTrue(output.endsWith(System.lineSeparator()));
+    }
+
+}

@@ -1,0 +1,14 @@
+{
+  "method0": {
+    "methodName": "submitRequestToNonSensitiveJson",
+    "signature": "submitRequestToNonSensitiveJson(SubmitApplicationRequest)",
+    "className": "CustomSerDe",
+    "packageName": "com.apple.spark.util"
+  },
+  "method1": {
+    "methodName": "sparkSpecToNonSensitiveJson",
+    "signature": "sparkSpecToNonSensitiveJson(SparkApplicationSpec)",
+    "className": "CustomSerDe",
+    "packageName": "com.apple.spark.util"
+  }
+}
