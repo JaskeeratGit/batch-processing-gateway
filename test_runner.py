@@ -12,10 +12,6 @@ For each *.java file under an input directory:
   5) Restore src/test/java from verified_tests after each file (canonical set)
 
 Also appends a JSONL record per file to verify_results.jsonl.
-
-Notes:
-- This follows your original semantics: verified_tests is treated as the canonical restored test tree.
-- It performs a temporary backup at the start and restores from verified_tests after each attempt.
 """
 
 from __future__ import annotations
