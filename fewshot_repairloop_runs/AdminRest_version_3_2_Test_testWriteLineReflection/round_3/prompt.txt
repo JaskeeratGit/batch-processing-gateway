@@ -1,0 +1,377 @@
+I need you to fix an error in a unit test. An error occurred while compiling or executing.
+
+Below are a few examples of unit tests with their error messages and their correct fixes.
+
+========================
+EXAMPLE 1
+========================
+Original Unit Test:
+
+```java
+"public class Options_getOptionGroup_9_0_Test {
+    static class OptionGroup {
+        private final String id;
+        OptionGroup(String id) {
+            this.id = id;
+        }
+        String getId() {
+            return id;
+        }
+    }
+    
+    testGetOptionGroupReturnsNullWhenMissing() throws Exception {
+    Options options = new Options();
+    Option opt = new Option(""b"", ""desc"");
+    OptionGroup result = options.getOptionGroup(opt);
+    assertNull(result, ""Expected null when no OptionGroup is associated with the option key"");
+    
+}
+```
+
+Error chatMessage:
+ Error in Options_getOptionGroup_9_0_Test: line 46 : incompatible types: org.apache.commons.cli.OptionGroup cannot be converted to org.apache.commons.cli.Options_getOptionGroup_9_0_Test.OptionGroup,
+ Error in Options_getOptionGroup_9_0_Test: line 55 : incompatible types: org.apache.commons.cli.OptionGroup cannot be converted to org.apache.commons.cli.Options_getOptionGroup_9_0_Test.OptionGroup
+
+Fixed Unit Test:
+
+```java
+"public class Options_getOptionGroup_9_0_Test {
+   
+   testGetOptionGroupReturnsNullWhenMissing() throws Exception {
+    Options options = new Options();
+    Option opt = new Option(""b"", ""desc"");
+    OptionGroup result = options.getOptionGroup(opt);
+    assertNull(result, ""Expected null when no OptionGroup is associated with the option key"");
+}
+}
+
+```
+
+========================
+EXAMPLE 2
+========================
+Original Unit Test:
+
+```java
+public class CommandLine_getParsedOptionValues_46_0_Test {
+
+    @Test
+    void testNullOptionGroupReturnsDefault() throws Exception {
+        // Arrange
+        CommandLine cmd = new CommandLine();
+        Supplier<String[]> supplier = () -> new String[] { "default1", "default2" };
+        // Act
+        String[] result = cmd.getParsedOptionValues(null, supplier);
+        // Assert
+        assertArrayEquals(supplier.get(), result);
+    }
+}
+```
+
+Error chatMessage:
+Error in CommandLine_getParsedOptionValues_46_0_Test: line 30 : reference to getParsedOptionValues is ambiguous
+  both method <T>getParsedOptionValues(org.apache.commons.cli.OptionGroup,java.util.function.Supplier<T[]>) in org.apache.commons.cli.CommandLine and method <T>getParsedOptionValues(java.lang.String,java.util.function.Supplier<T[]>) in org.apache.commons.cli.CommandLine match
+
+Fixed Unit Test:
+
+```java
+public class CommandLine_getParsedOptionValues_46_0_Test {
+
+    @Test
+    void testNullOptionGroupReturnsDefault() throws Exception {
+        // Arrange
+        CommandLine cmd = new CommandLine();
+        Supplier<String[]> supplier = () -> new String[] { "default1", "default2" };
+        // Act
+        String[] result = cmd.getParsedOptionValues((OptionGroup) null, supplier);
+        // Assert
+        assertArrayEquals(supplier.get(), result);
+    }
+}
+```
+
+========================
+Now, fix the following.
+
+The unit test is:
+
+package com.apple.spark.rest;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import com.apple.spark.util.ConfigUtil;
+import com.apple.spark.util.VersionInfo;
+import java.io.ByteArrayOutputStream;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.StreamingOutput;
+import org.junit.jupiter.api.Test;
+
+public class AdminRest_version_3_2_Test {
+
+  @Test
+  void testWriteLineReflection() throws Exception {
+      AdminRest admin = new AdminRest(null, null);
+      Response resp = admin.version();
+      assertNotNull(resp);
+
+      Object entity = resp.getEntity();
+      assertNotNull(entity);
+      assertTrue(entity instanceof StreamingOutput);
+
+      StreamingOutput so = (StreamingOutput) entity;
+      ByteArrayOutputStream baos = new ByteArrayOutputStream();
+      so.write(baos);
+      String output = baos.toString("UTF-8");
+
+      assertNotNull(output);
+      // expect JSON-like output (at minimum some content)
+      assertTrue(output.length() > 0);
+      // simple sanity check for JSON structure
+      assertTrue(output.contains("{") || output.contains("null"));
+  }
+}
+
+The error chatMessage is:
+
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:147)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:127)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:90)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:55)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:102)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:54)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86)
+	at org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86)
+	at org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:55)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:223)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:175)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:139)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:456)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:169)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:595)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:581)
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Errors: 
+[ERROR]   AdminRest_version_3_2_Test.testWriteLineReflection:16 » IllegalState Default registry name has not been set.
+[INFO] 
+[ERROR] Tests run: 1, Failures: 0, Errors: 1, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO]
+
+The unit test is testing the method `version()` in the class `AdminRest`.
+
+Focal method source code:
+
+@GET
+  @Path("version")
+  @Timed
+  @Operation(
+      summary = "Show the version",
+      tags = {"Admin"})
+  @ApiResponse(
+          responseCode = "200",
+          content = @Content(mediaType = "application/json", schema = @Schema(type = "string")),
+          description = "OK")
+  public Response version() {
+    VersionInfo verInfo = ConfigUtil.readVersion();
+    return Response.ok(
+            new RestStreamingOutput() {
+              @Override
+              public void write(OutputStream outputStream) throws WebApplicationException {
+                try {
+                  ObjectMapper mapper = new ObjectMapper();
+                  String verJson =
+                      mapper.writerWithDefaultPrettyPrinter().writeValueAsString(verInfo);
+                  writeLine(outputStream, verJson);
+
+                  outputStream.flush();
+                } catch (Throwable ex) {
+                  logger.warn("Failed to get version info", ex);
+                  ExceptionUtils.meterException();
+                }
+              }
+            })
+        .build();
+  }
+
+Focal class skeleton (imports + fields + method signatures):
+
+import static com.apple.spark.core.Constants.ADMIN_API;
+import com.apple.spark.AppConfig;
+import com.apple.spark.core.Constants;
+import com.apple.spark.core.KubernetesHelper;
+import com.apple.spark.core.RestStreamingOutput;
+import com.apple.spark.core.RestSubmissionsStreamingOutput;
+import com.apple.spark.operator.SparkApplicationResourceList;
+import com.apple.spark.security.User;
+import com.apple.spark.util.ConfigUtil;
+import com.apple.spark.util.ExceptionUtils;
+import com.apple.spark.util.VersionInfo;
+import com.codahale.metrics.annotation.Timed;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.dropwizard.auth.Auth;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import java.io.OutputStream;
+import javax.annotation.security.PermitAll;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+@PermitAll
+@Path(ADMIN_API)
+@Produces(MediaType.APPLICATION_JSON)
+public class AdminRest {
+private static final Logger logger = ...;
+public AdminRest(AppConfig appConfig, MeterRegistry meterRegistry){}
+@GET
+  @Path("submissions")
+  @Timed
+  @Operation(
+      summary = "List submissions from all users",
+      tags = {"Admin"})
+  @ApiResponse(
+          responseCode = "200",
+          content = @Content(mediaType = "application/json", schema = @Schema(type = "string")),
+          description = "OK")
+  public Response listSubmissions(
+      @Parameter(hidden = true) @DefaultValue("none") @HeaderParam("Client-Version")
+          String clientVersion,
+      @Parameter(description = "specify this to list only submissions under one application name")
+          @QueryParam("name")
+          String applicationName,
+      @Parameter(hidden = true) @Auth User user){}
+private Response listAllSubmissions(User user){}
+private Response listSubmissionsByApplicationName(String applicationName, User user){}
+@GET
+  @Path("version")
+  @Timed
+  @Operation(
+      summary = "Show the version",
+      tags = {"Admin"})
+  @ApiResponse(
+          responseCode = "200",
+          content = @Content(mediaType = "application/json", schema = @Schema(type = "string")),
+          description = "OK")
+  public Response version(){}
+public AdminRest(AppConfig appConfig, MeterRegistry meterRegistry){}
+}
+
+To help you correctly fix the unit test file, we provide the brief information about the dependency
+
+The brief information of dependent class `com.apple.spark.util.ConfigUtil` is
+```[java]
+import static com.apple.spark.AppConfig.SparkCluster;
+import com.apple.spark.AppConfig;
+import com.apple.spark.core.DBConnection;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+import org.jdbi.v3.core.Jdbi;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+public class ConfigUtil {
+private static final Logger logger = ...;
+public static VersionInfo readVersion(){}
+}
+```
+
+The brief information of dependent class `com.apple.spark.core.RestStreamingOutput` is
+```[java]
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
+import javax.ws.rs.core.StreamingOutput;
+public abstract class RestStreamingOutput {
+protected void writeLine(OutputStream outputStream, String line) throws IOException{}
+}
+```
+
+The brief information of dependent class `com.apple.spark.util.ExceptionUtils` is
+```[java]
+import com.apple.spark.core.Constants;
+import com.codahale.metrics.Meter;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.SharedMetricRegistries;
+public class ExceptionUtils {
+private static final MetricRegistry registry;
+private static final Meter jsonProcessingExceptionMeter;
+private static final Meter ioExceptionMeter;
+private static final Meter runtimeExceptionMeter;
+private static final Meter exceptionMeter;
+public static void meterException(){}
+}
+```
+
+The brief information of dependent class `com.apple.spark.util.ConfigUtil` is
+```[java]
+readVersion()
+```
+
+The brief information of dependent class `com.fasterxml.jackson.databind.ObjectWriter` is
+```[java]
+writeValueAsString(Object)
+```
+
+The brief information of dependent class `com.fasterxml.jackson.databind.ObjectMapper` is
+```[java]
+writerWithDefaultPrettyPrinter()
+```
+
+The brief information of dependent class `com.apple.spark.core.RestStreamingOutput` is
+```[java]
+writeLine(OutputStream, String)
+```
+
+The brief information of dependent class `org.slf4j.Logger` is
+```[java]
+warn(String, Throwable)
+```
+
+The brief information of dependent class `com.apple.spark.util.ExceptionUtils` is
+```[java]
+meterException()
+```
+
+Please fix the error and return the whole fixed unit test. You can use Junit 5, and Mockito 3. Adhere to Java 8 language style. No explanation is needed.
+Return only the fixed unit test.

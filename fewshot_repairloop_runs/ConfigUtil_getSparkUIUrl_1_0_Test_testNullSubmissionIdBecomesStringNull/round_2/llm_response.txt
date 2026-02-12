@@ -1,0 +1,34 @@
+package com.apple.spark.util;
+
+import com.apple.spark.AppConfig;
+import com.apple.spark.util.ConfigUtil;
+import java.lang.reflect.Method;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class ConfigUtil_getSparkUIUrl_1_0_Test {
+
+    private Method getSparkUIUrlMethod() throws NoSuchMethodException {
+        Method m = ConfigUtil.class.getDeclaredMethod("getSparkUIUrl", AppConfig.SparkCluster.class, String.class);
+        m.setAccessible(true);
+        return m;
+    }
+
+    @Test
+    void testNullSubmissionIdBecomesStringNull() throws Exception {
+        Method m = getSparkUIUrlMethod();
+        AppConfig.SparkCluster cluster = new AppConfig.SparkCluster() {
+            @Override
+            public String getSparkUIUrl() {
+                return "u";
+            }
+
+            @Override
+            public String getSparkApplicationNamespace() {
+                return "n";
+            }
+        };
+        String result = (String) m.invoke(null, cluster, null);
+        assertEquals("u/n/null", result);
+    }
+}

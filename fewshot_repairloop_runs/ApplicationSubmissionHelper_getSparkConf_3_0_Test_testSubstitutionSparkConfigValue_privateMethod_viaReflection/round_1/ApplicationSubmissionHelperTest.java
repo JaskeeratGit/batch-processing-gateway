@@ -1,0 +1,38 @@
+package com.apple.spark.core;
+
+import org.junit.jupiter.api.Test;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class ApplicationSubmissionHelperTest {
+
+    @Test
+    void testSubstitutionSparkConfigValue_privateMethod_viaReflection() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Method method = ApplicationSubmissionHelper.class.getDeclaredMethod("substitutionSparkConfigValue", String.class, String.class);
+        method.setAccessible(true);
+        // null input should return null
+        Object resNull = method.invoke(null, (String) null, "id");
+        assertNull(resNull);
+        // substitution should occur
+        String template = "prefix-" + getConstantsVar() + "-suffix";
+        Object res = method.invoke(null, template, "SUB123");
+        assertTrue(res instanceof String);
+        assertEquals("prefix-SUB123-suffix", res);
+    }
+
+    private String getConstantsVar() {
+        try {
+            Class<?> c = Class.forName("com.apple.spark.core.Constants");
+            Field f = c.getDeclaredField("SPARK_APPLICATION_RESOURCE_NAME_VAR");
+            f.setAccessible(true);
+            return (String) f.get(null);
+        } catch (Exception e) {
+            // fallback to the expected placeholder if Constants isn't available
+            return "${SUBMISSION_ID}";
+        }
+    }
+}

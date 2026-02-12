@@ -1,0 +1,709 @@
+I need you to fix an error in a unit test. An error occurred while compiling or executing.
+
+Below are a few examples of unit tests with their error messages and their correct fixes.
+
+========================
+EXAMPLE 1
+========================
+Original Unit Test:
+
+```java
+"public class Options_getOptionGroup_9_0_Test {
+    static class OptionGroup {
+        private final String id;
+        OptionGroup(String id) {
+            this.id = id;
+        }
+        String getId() {
+            return id;
+        }
+    }
+    
+    testGetOptionGroupReturnsNullWhenMissing() throws Exception {
+    Options options = new Options();
+    Option opt = new Option(""b"", ""desc"");
+    OptionGroup result = options.getOptionGroup(opt);
+    assertNull(result, ""Expected null when no OptionGroup is associated with the option key"");
+    
+}
+```
+
+Error chatMessage:
+ Error in Options_getOptionGroup_9_0_Test: line 46 : incompatible types: org.apache.commons.cli.OptionGroup cannot be converted to org.apache.commons.cli.Options_getOptionGroup_9_0_Test.OptionGroup,
+ Error in Options_getOptionGroup_9_0_Test: line 55 : incompatible types: org.apache.commons.cli.OptionGroup cannot be converted to org.apache.commons.cli.Options_getOptionGroup_9_0_Test.OptionGroup
+
+Fixed Unit Test:
+
+```java
+"public class Options_getOptionGroup_9_0_Test {
+   
+   testGetOptionGroupReturnsNullWhenMissing() throws Exception {
+    Options options = new Options();
+    Option opt = new Option(""b"", ""desc"");
+    OptionGroup result = options.getOptionGroup(opt);
+    assertNull(result, ""Expected null when no OptionGroup is associated with the option key"");
+}
+}
+
+```
+
+========================
+EXAMPLE 2
+========================
+Original Unit Test:
+
+```java
+public class CommandLine_getParsedOptionValues_46_0_Test {
+
+    @Test
+    void testNullOptionGroupReturnsDefault() throws Exception {
+        // Arrange
+        CommandLine cmd = new CommandLine();
+        Supplier<String[]> supplier = () -> new String[] { "default1", "default2" };
+        // Act
+        String[] result = cmd.getParsedOptionValues(null, supplier);
+        // Assert
+        assertArrayEquals(supplier.get(), result);
+    }
+}
+```
+
+Error chatMessage:
+Error in CommandLine_getParsedOptionValues_46_0_Test: line 30 : reference to getParsedOptionValues is ambiguous
+  both method <T>getParsedOptionValues(org.apache.commons.cli.OptionGroup,java.util.function.Supplier<T[]>) in org.apache.commons.cli.CommandLine and method <T>getParsedOptionValues(java.lang.String,java.util.function.Supplier<T[]>) in org.apache.commons.cli.CommandLine match
+
+Fixed Unit Test:
+
+```java
+public class CommandLine_getParsedOptionValues_46_0_Test {
+
+    @Test
+    void testNullOptionGroupReturnsDefault() throws Exception {
+        // Arrange
+        CommandLine cmd = new CommandLine();
+        Supplier<String[]> supplier = () -> new String[] { "default1", "default2" };
+        // Act
+        String[] result = cmd.getParsedOptionValues((OptionGroup) null, supplier);
+        // Assert
+        assertArrayEquals(supplier.get(), result);
+    }
+}
+```
+
+========================
+Now, fix the following.
+
+The unit test is:
+
+package com.apple.spark.core;
+
+import com.apple.spark.AppConfig;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.*;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import static com.apple.spark.core.BatchSchedulerConstants.PLACEHOLDER_TIMEOUT_IN_SECONDS;
+import static com.apple.spark.core.BatchSchedulerConstants.YUNIKORN_ROOT_QUEUE;
+import static com.apple.spark.core.BatchSchedulerConstants.YUNIKORN_SPARK_DEFAULT_QUEUE;
+import static com.apple.spark.core.Constants.*;
+import static com.apple.spark.core.SparkConstants.CORE_LIMIT_RATIO;
+import static com.apple.spark.core.SparkConstants.DRIVER_CPU_BUFFER_RATIO;
+import static com.apple.spark.core.SparkConstants.DRIVER_MEM_BUFFER_RATIO;
+import static com.apple.spark.core.SparkConstants.EXECUTOR_CPU_BUFFER_RATIO;
+import static com.apple.spark.core.SparkConstants.EXECUTOR_MEM_BUFFER_RATIO;
+import static com.apple.spark.core.SparkPodNodeAffinityHelper.createNodeAffinityForSparkPods;
+import com.apple.spark.AppConfig.SparkCluster;
+import com.apple.spark.api.SubmitApplicationRequest;
+import com.apple.spark.operator.Affinity;
+import com.apple.spark.operator.BatchSchedulerConfiguration;
+import com.apple.spark.operator.DriverSpec;
+import com.apple.spark.operator.ExecutorSpec;
+import com.apple.spark.operator.NodeAffinity;
+import com.apple.spark.operator.SparkApplicationSpec;
+import com.apple.spark.operator.SparkUIConfiguration;
+import com.apple.spark.operator.Volume;
+import com.apple.spark.util.ExceptionUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
+import io.fabric8.kubernetes.api.model.PodDNSConfig;
+import io.fabric8.kubernetes.api.model.PodDNSConfigOption;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Unit tests for ApplicationSubmissionHelper.validateQueueToken
+ */
+public class ApplicationSubmissionHelper_validateQueueToken_10_0_Test_testQueueSecureWithTokenButNoSOPSThrowsInternalServerError {
+
+    // Helper to create an instance of the nested class com.apple.spark.AppConfig$QueueConfig
+    private Object createQueueConfig(String name, Boolean secure) {
+        try {
+            Class<?> qcClass = Class.forName("com.apple.spark.AppConfig$QueueConfig");
+            Object qc = qcClass.getDeclaredConstructor().newInstance();
+            // try setter setName
+            try {
+                Method m = qcClass.getMethod("setName", String.class);
+                m.invoke(qc, name);
+            } catch (NoSuchMethodException e) {
+                // try field
+                try {
+                    Field f = qcClass.getDeclaredField("name");
+                    f.setAccessible(true);
+                    f.set(qc, name);
+                } catch (NoSuchFieldException ex) {
+                    // ignore - best effort
+                }
+            }
+            // set secure via setSecure(Boolean) or setSecure(boolean) or field
+            if (secure != null) {
+                try {
+                    Method m = qcClass.getMethod("setSecure", Boolean.class);
+                    m.invoke(qc, secure);
+                } catch (NoSuchMethodException e) {
+                    try {
+                        Method m2 = qcClass.getMethod("setSecure", boolean.class);
+                        m2.invoke(qc, secure);
+                    } catch (NoSuchMethodException ex) {
+                        try {
+                            Field f = qcClass.getDeclaredField("secure");
+                            f.setAccessible(true);
+                            f.set(qc, secure);
+                        } catch (NoSuchFieldException exc) {
+                            // ignore
+                        }
+                    }
+                }
+            } else {
+                // leave secure null; try to set actual null if setter exists
+                try {
+                    Method m = qcClass.getMethod("setSecure", Boolean.class);
+                    m.invoke(qc, new Object[] { null });
+                } catch (Exception ignored) {
+                }
+            }
+            return qc;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to create QueueConfig reflectively", e);
+        }
+    }
+
+    // Helper to create an instance of com.apple.spark.AppConfig$QueueTokenConfig and set secrets map
+    private Object createQueueTokenConfig(Map<String, String> secrets) {
+        try {
+            Class<?> qtcClass = Class.forName("com.apple.spark.AppConfig$QueueTokenConfig");
+            Object qtc = qtcClass.getDeclaredConstructor().newInstance();
+            // try setter setSecrets
+            try {
+                Method m = qtcClass.getMethod("setSecrets", Map.class);
+                m.invoke(qtc, secrets);
+            } catch (NoSuchMethodException e) {
+                // try field
+                try {
+                    Field f = qtcClass.getDeclaredField("secrets");
+                    f.setAccessible(true);
+                    f.set(qtc, secrets);
+                } catch (NoSuchFieldException ex) {
+                    // ignore
+                }
+            }
+            return qtc;
+        } catch (ClassNotFoundException e) {
+            // If the nested class is not present, return a plain Map (we'll set via reflection on AppConfig anyway)
+            return secrets;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to create QueueTokenConfig reflectively", e);
+        }
+    }
+
+
+
+
+
+    @Test
+    public void testQueueSecureWithTokenButNoSOPSThrowsInternalServerError() {
+        AppConfig appConfig = new AppConfig();
+        List<Object> queues = new ArrayList<>();
+        queues.add(createQueueConfig("secureQ", Boolean.TRUE));
+        setFieldIfPossible(appConfig, "queues", queues);
+        // ensure queueTokenSOPS is null
+        setFieldIfPossible(appConfig, "queueTokenSOPS", null);
+        WebApplicationException ex = Assertions.assertThrows(WebApplicationException.class, () -> ApplicationSubmissionHelper.validateQueueToken("secureQ", "someToken", appConfig));
+        Assertions.assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), ex.getResponse().getStatus());
+    }
+
+
+
+    // Utility to set a field or call setter on AppConfig if present
+    private void setFieldIfPossible(Object target, String fieldName, Object value) {
+        try {
+            // try setter
+            Method setter = null;
+            Method[] methods = target.getClass().getMethods();
+            String setterName = "set" + Character.toUpperCase(fieldName.charAt(0)) + fieldName.substring(1);
+            for (Method m : methods) {
+                if (m.getName().equals(setterName) && m.getParameterCount() == 1) {
+                    setter = m;
+                    break;
+                }
+            }
+            if (setter != null) {
+                setter.invoke(target, value);
+                return;
+            }
+            // fallback to field
+            Field f = target.getClass().getDeclaredField(fieldName);
+            f.setAccessible(true);
+            f.set(target, value);
+        } catch (NoSuchFieldException | IllegalArgumentException nsf) {
+            // ignore quietly if not present
+            try {
+                // last resort: try to set via a loose approach using declared fields
+                Field f = target.getClass().getDeclaredField(fieldName);
+                f.setAccessible(true);
+                f.set(target, value);
+            } catch (Exception e) {
+                // ignore
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to set field " + fieldName, e);
+        }
+    }
+}
+
+/**
+ * Test-local replacement/shadow of the production QueueTokenVerifier.
+ *
+ * Placed in same package so ApplicationSubmissionHelper will resolve this class during tests.
+ */
+class QueueTokenVerifier {
+
+    static volatile boolean called = false;
+
+    static volatile String lastToken = null;
+
+    static volatile Map<String, String> lastSecrets = null;
+
+    static volatile String lastQueue = null;
+
+    public static void verify(String token, Map<String, String> secrets, String queue) {
+        called = true;
+        lastToken = token;
+        lastSecrets = secrets;
+        lastQueue = queue;
+        // Simulate a validation pass for token "good-token", throw for "invalid-token"
+        if ("invalid-token".equals(token)) {
+            throw new WebApplicationException("invalid token", Response.Status.UNAUTHORIZED);
+        }
+    }
+
+    static void reset() {
+        called = false;
+        lastToken = null;
+        lastSecrets = null;
+        lastQueue = null;
+    }
+
+    static boolean wasCalled() {
+        return called;
+    }
+}
+
+
+The error chatMessage is:
+
+src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[35,31] cannot find symbol
+symbol:   variable ISSUER_ADMIN
+location: class com.apple.spark.core.QueueTokenVerifier
+src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[37,31] cannot find symbol
+symbol:   variable CLAIM_ALLOWED_QUEUES
+location: class com.apple.spark.core.QueueTokenVerifier
+src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[39,23] incompatible types: no instance(s) of type variable(s) T exist so that java.util.List<T> conforms to java.util.Map<java.lang.String,java.lang.String>
+src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[44,31] cannot find symbol
+symbol:   variable ISSUER_ADMIN
+location: class com.apple.spark.core.QueueTokenVerifier
+src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[46,31] cannot find symbol
+symbol:   variable CLAIM_ALLOWED_QUEUES
+location: class com.apple.spark.core.QueueTokenVerifier
+src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[48,23] incompatible types: no instance(s) of type variable(s) T exist so that java.util.List<T> conforms to java.util.Map<java.lang.String,java.lang.String>
+src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[56,31] cannot find symbol
+symbol:   variable ISSUER_ADMIN
+location: class com.apple.spark.core.QueueTokenVerifier
+src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[58,31] cannot find symbol
+symbol:   variable CLAIM_ALLOWED_QUEUES
+location: class com.apple.spark.core.QueueTokenVerifier
+src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[60,23] incompatible types: no instance(s) of type variable(s) T exist so that java.util.List<T> conforms to java.util.Map<java.lang.String,java.lang.String>
+src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[65,31] cannot find symbol
+symbol:   variable ISSUER_ADMIN
+location: class com.apple.spark.core.QueueTokenVerifier
+src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[67,31] cannot find symbol
+symbol:   variable CLAIM_ALLOWED_QUEUES
+location: class com.apple.spark.core.QueueTokenVerifier
+src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[69,23] incompatible types: no instance(s) of type variable(s) T exist so that java.util.List<T> conforms to java.util.Map<java.lang.String,java.lang.String>
+src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[77,31] cannot find symbol
+symbol:   variable ISSUER_ADMIN
+location: class com.apple.spark.core.QueueTokenVerifier
+src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[79,31] cannot find symbol
+symbol:   variable CLAIM_ALLOWED_QUEUES
+location: class com.apple.spark.core.QueueTokenVerifier
+src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[81,23] incompatible types: no instance(s) of type variable(s) T exist so that java.util.List<T> conforms to java.util.Map<java.lang.String,java.lang.String>
+src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[86,31] cannot find symbol
+symbol:   variable ISSUER_ADMIN
+location: class com.apple.spark.core.QueueTokenVerifier
+src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[88,31] cannot find symbol
+symbol:   variable CLAIM_ALLOWED_QUEUES
+location: class com.apple.spark.core.QueueTokenVerifier
+src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[90,23] incompatible types: no instance(s) of type variable(s) T exist so that java.util.List<T> conforms to java.util.Map<java.lang.String,java.lang.String>
+src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[98,31] cannot find symbol
+symbol:   variable ISSUER_AIRFLOW
+location: class com.apple.spark.core.QueueTokenVerifier
+src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[100,31] cannot find symbol
+symbol:   variable CLAIM_ALLOWED_QUEUES
+location: class com.apple.spark.core.QueueTokenVerifier
+src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[102,23] incompatible types: no instance(s) of type variable(s) T exist so that java.util.List<T> conforms to java.util.Map<java.lang.String,java.lang.String>
+src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[110,31] cannot find symbol
+symbol:   variable ISSUER_ADMIN
+location: class com.apple.spark.core.QueueTokenVerifier
+src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[112,31] cannot find symbol
+symbol:   variable CLAIM_ALLOWED_QUEUES
+location: class com.apple.spark.core.QueueTokenVerifier
+src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[114,23] incompatible types: no instance(s) of type variable(s) T exist so that java.util.List<T> conforms to java.util.Map<java.lang.String,java.lang.String>
+src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[124,31] cannot find symbol
+symbol:   variable CLAIM_ALLOWED_QUEUES
+location: class com.apple.spark.core.QueueTokenVerifier
+src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[126,23] incompatible types: no instance(s) of type variable(s) T exist so that java.util.List<T> conforms to java.util.Map<java.lang.String,java.lang.String>
+src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[134,31] cannot find symbol
+symbol:   variable ISSUER_ADMIN
+location: class com.apple.spark.core.QueueTokenVerifier
+src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[138,23] incompatible types: no instance(s) of type variable(s) T exist so that java.util.List<T> conforms to java.util.Map<java.lang.String,java.lang.String>
+src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[146,31] cannot find symbol
+symbol:   variable ISSUER_ADMIN
+location: class com.apple.spark.core.QueueTokenVerifier
+src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[148,31] cannot find symbol
+symbol:   variable CLAIM_ALLOWED_QUEUES
+location: class com.apple.spark.core.QueueTokenVerifier
+src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[150,23] incompatible types: no instance(s) of type variable(s) T exist so that java.util.List<T> conforms to java.util.Map<java.lang.String,java.lang.String>
+src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[158,31] cannot find symbol
+symbol:   variable ISSUER_ADMIN
+location: class com.apple.spark.core.QueueTokenVerifier
+src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[160,31] cannot find symbol
+symbol:   variable CLAIM_ALLOWED_QUEUES
+location: class com.apple.spark.core.QueueTokenVerifier
+src/test/java/com/apple/spark/core/QueueTokenVerifierTest.java:[162,23] incompatible types: no instance(s) of type variable(s) T exist so that java.util.List<T> conforms to java.util.Map<java.lang.String,java.lang.String>
+
+The unit test is testing the method `validateQueueToken(String, String, AppConfig)` in the class `ApplicationSubmissionHelper`.
+
+Focal method source code:
+
+public static void validateQueueToken(String queue, String queueToken, AppConfig appConfig) {
+    if (appConfig.getQueues() != null) {
+      final String queueNameToFilter = queue;
+      Optional<AppConfig.QueueConfig> queueConfigOptional =
+          appConfig.getQueues().stream()
+              .filter(q -> q.getName().equalsIgnoreCase(queueNameToFilter))
+              .findFirst();
+      boolean queueSecure = false;
+      if (queueConfigOptional.isPresent()) {
+        AppConfig.QueueConfig queueConfig = queueConfigOptional.get();
+        if (queueConfig.getSecure() != null) {
+          queueSecure = queueConfig.getSecure();
+        }
+      }
+      if (queueSecure) {
+        if (queueToken == null || queueToken.isEmpty()) {
+          String errorMessage = String.format("Please specify queueToken for queue %s", queue);
+          throw new WebApplicationException(errorMessage, Response.Status.BAD_REQUEST);
+        }
+
+        if (appConfig.getQueueTokenSOPS() == null) {
+          throw new WebApplicationException(
+              "Server hit configuration error: no queue token configure",
+              Response.Status.INTERNAL_SERVER_ERROR);
+        }
+
+        QueueTokenVerifier.verify(queueToken, appConfig.getQueueTokenSOPS().getSecrets(), queue);
+      }
+    }
+  }
+
+Focal class skeleton (imports + fields + method signatures):
+
+import static com.apple.spark.core.BatchSchedulerConstants.PLACEHOLDER_TIMEOUT_IN_SECONDS;
+import static com.apple.spark.core.BatchSchedulerConstants.YUNIKORN_ROOT_QUEUE;
+import static com.apple.spark.core.BatchSchedulerConstants.YUNIKORN_SPARK_DEFAULT_QUEUE;
+import static com.apple.spark.core.Constants.*;
+import static com.apple.spark.core.SparkConstants.CORE_LIMIT_RATIO;
+import static com.apple.spark.core.SparkConstants.DRIVER_CPU_BUFFER_RATIO;
+import static com.apple.spark.core.SparkConstants.DRIVER_MEM_BUFFER_RATIO;
+import static com.apple.spark.core.SparkConstants.EXECUTOR_CPU_BUFFER_RATIO;
+import static com.apple.spark.core.SparkConstants.EXECUTOR_MEM_BUFFER_RATIO;
+import static com.apple.spark.core.SparkPodNodeAffinityHelper.createNodeAffinityForSparkPods;
+import com.apple.spark.AppConfig;
+import com.apple.spark.AppConfig.SparkCluster;
+import com.apple.spark.api.SubmitApplicationRequest;
+import com.apple.spark.operator.Affinity;
+import com.apple.spark.operator.BatchSchedulerConfiguration;
+import com.apple.spark.operator.DriverSpec;
+import com.apple.spark.operator.ExecutorSpec;
+import com.apple.spark.operator.NodeAffinity;
+import com.apple.spark.operator.SparkApplicationSpec;
+import com.apple.spark.operator.SparkUIConfiguration;
+import com.apple.spark.operator.Volume;
+import com.apple.spark.util.ExceptionUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
+import io.fabric8.kubernetes.api.model.PodDNSConfig;
+import io.fabric8.kubernetes.api.model.PodDNSConfigOption;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+public class ApplicationSubmissionHelper {
+private static final Logger logger = ...;
+private static final String FILE_PATH_REGEX = ...;
+public static SubmitApplicationRequest parseSubmitRequest(
+      String requestBody, String contentType){}
+public static String getProxyUser(String user, String dagUser){}
+public static boolean looksLikeFilePath(String requestBody){}
+public static Map<String, String> getSparkConf(
+      String submissionId,
+      SubmitApplicationRequest request,
+      AppConfig appConfig,
+      AppConfig.SparkCluster sparkCluster){}
+public static SparkUIConfiguration getSparkUIConfiguration(
+      String submissionId, AppConfig.SparkCluster sparkCluster){}
+public static List<Volume> getVolumes(
+      SubmitApplicationRequest request, AppConfig.SparkCluster sparkCluster){}
+public static void populateEnv(
+      SparkApplicationSpec sparkSpec,
+      SubmitApplicationRequest request,
+      AppConfig.SparkCluster sparkCluster){}
+public static String generateSubmissionId(String clusterId){}
+public static String generateSubmissionId(String clusterId, String submissionIdSuffix){}
+public static String getClusterIdFromSubmissionId(String submissionId){}
+public static void validateQueueToken(String queue, String queueToken, AppConfig appConfig){}
+private static String substitutionSparkConfigValue(String value, String submissionId){}
+private static Map<String, String> applyFeatureGate(
+      SubmitApplicationRequest request, Map<String, String> conf){}
+public static BatchSchedulerConfiguration getYuniKornSchedulerConfig(String queue){}
+public static DriverSpec getDriverSpec(
+      SubmitApplicationRequest request,
+      AppConfig appConfig,
+      String parentQueue,
+      SparkCluster sparkCluster){}
+private static double getDriverCPUBufferForQueue(AppConfig appConfig, String queue){}
+private static double getDriverMemBufferForQueue(AppConfig appConfig, String queue){}
+private static double getExecutorMemBufferForQueue(AppConfig appConfig, String queue){}
+private static double getExecutorCPUBufferForQueue(AppConfig appConfig, String queue){}
+private static long getMemNumFromRequestStr(String memStr){}
+private static String getMemUnitFromRequestStr(String memStr){}
+private static int getMemUnitIndexFromRequestStr(String memStr){}
+public static ExecutorSpec getExecutorSpec(
+      SubmitApplicationRequest request,
+      AppConfig appConfig,
+      String parentQueue,
+      SparkCluster sparkCluster){}
+public static String getType(String specifiedType, String mainClass){}
+public static String getImage(
+      AppConfig appConfig,
+      SubmitApplicationRequest request,
+      String type,
+      String sparkVersion,
+      String proxyUser){}
+}
+
+To help you correctly fix the unit test file, we provide the brief information about the dependency
+
+The brief information of dependent class `com.apple.spark.AppConfig` is
+```[java]
+import com.apple.spark.core.ConfigValue;
+import com.apple.spark.operator.DriverSpec;
+import com.apple.spark.operator.ExecutorSpec;
+import com.apple.spark.operator.SparkUIConfiguration;
+import com.apple.spark.operator.Volume;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.dropwizard.Configuration;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class AppConfig {
+private String applicationContextPath;
+private Map<String, String> defaultSparkConf;
+private Map<String, String> fixedSparkConf;
+private List<SparkCluster> sparkClusters;
+private List<SparkImage> sparkImages;
+private String s3Bucket;
+private String s3Folder;
+private String sparkLogS3Bucket;
+private String sparkLogIndex;
+private final int batchFileLimit = ...;
+private String sparkHistoryDns;
+private String gatewayDns;
+private String eksCluster;
+private String sparkHistoryUrl;
+private List<String> allowedUsers;
+private List<String> blockedUsers;
+private List<String> adminUsers;
+private List<QueueConfig> queues;
+private QueueTokenConfig queueTokenSOPS;
+private DBStorage dbStorageSOPS;
+private Double memoryMbSecondCost;
+private Double vCoreSecondCost;
+private Long statusCacheExpireMillis;
+public AppConfig(){}
+public List<QueueConfig> getQueues(){}
+public QueueTokenConfig getQueueTokenSOPS(){}
+}
+```
+
+The brief information of dependent class `com.apple.spark.AppConfig.QueueConfig` is
+```[java]
+import com.apple.spark.core.ConfigValue;
+import com.apple.spark.operator.DriverSpec;
+import com.apple.spark.operator.ExecutorSpec;
+import com.apple.spark.operator.SparkUIConfiguration;
+import com.apple.spark.operator.Volume;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.dropwizard.Configuration;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class AppConfig {
+private String applicationContextPath;
+private Map<String, String> defaultSparkConf;
+private Map<String, String> fixedSparkConf;
+private List<SparkCluster> sparkClusters;
+private List<SparkImage> sparkImages;
+private String s3Bucket;
+private String s3Folder;
+private String sparkLogS3Bucket;
+private String sparkLogIndex;
+private final int batchFileLimit = ...;
+private String sparkHistoryDns;
+private String gatewayDns;
+private String eksCluster;
+private String sparkHistoryUrl;
+private List<String> allowedUsers;
+private List<String> blockedUsers;
+private List<String> adminUsers;
+private List<QueueConfig> queues;
+private QueueTokenConfig queueTokenSOPS;
+private DBStorage dbStorageSOPS;
+private Double memoryMbSecondCost;
+private Double vCoreSecondCost;
+private Long statusCacheExpireMillis;
+public AppConfig(){}
+}
+```
+
+The brief information of dependent class `com.apple.spark.core.QueueTokenVerifier` is
+```[java]
+import com.apple.spark.util.JwtUtils;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.Claim;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+public class QueueTokenVerifier {
+public static final String ISSUER_ADMIN = ...;
+public static final String ISSUER_AIRFLOW = ...;
+public static final String CLAIM_ALLOWED_QUEUES = ...;
+private static final Logger logger = ...;
+public static void verify(String token, List<String> secretCandidates, String queue){}
+}
+```
+
+The brief information of dependent class `com.apple.spark.AppConfig.QueueTokenConfig` is
+```[java]
+import com.apple.spark.core.ConfigValue;
+import com.apple.spark.operator.DriverSpec;
+import com.apple.spark.operator.ExecutorSpec;
+import com.apple.spark.operator.SparkUIConfiguration;
+import com.apple.spark.operator.Volume;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.dropwizard.Configuration;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class AppConfig {
+private String applicationContextPath;
+private Map<String, String> defaultSparkConf;
+private Map<String, String> fixedSparkConf;
+private List<SparkCluster> sparkClusters;
+private List<SparkImage> sparkImages;
+private String s3Bucket;
+private String s3Folder;
+private String sparkLogS3Bucket;
+private String sparkLogIndex;
+private final int batchFileLimit = ...;
+private String sparkHistoryDns;
+private String gatewayDns;
+private String eksCluster;
+private String sparkHistoryUrl;
+private List<String> allowedUsers;
+private List<String> blockedUsers;
+private List<String> adminUsers;
+private List<QueueConfig> queues;
+private QueueTokenConfig queueTokenSOPS;
+private DBStorage dbStorageSOPS;
+private Double memoryMbSecondCost;
+private Double vCoreSecondCost;
+private Long statusCacheExpireMillis;
+public AppConfig(){}
+}
+```
+
+The brief information of dependent class `com.apple.spark.AppConfig` is
+```[java]
+getQueueTokenSOPS()
+getQueues()
+```
+
+The brief information of dependent class `com.apple.spark.AppConfig.QueueConfig` is
+```[java]
+getSecure()
+getName()
+```
+
+The brief information of dependent class `com.apple.spark.core.QueueTokenVerifier` is
+```[java]
+verify(String, String, String)
+```
+
+The brief information of dependent class `com.apple.spark.AppConfig.QueueTokenConfig` is
+```[java]
+getSecrets()
+```
+
+Please fix the error and return the whole fixed unit test. You can use Junit 5, and Mockito 3. Adhere to Java 8 language style. No explanation is needed.
+Return only the fixed unit test.

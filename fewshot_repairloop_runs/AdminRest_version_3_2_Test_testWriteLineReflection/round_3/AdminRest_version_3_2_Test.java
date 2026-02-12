@@ -1,0 +1,39 @@
+package com.apple.spark.rest;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import com.apple.spark.util.ConfigUtil;
+import com.apple.spark.util.VersionInfo;
+import com.codahale.metrics.SharedMetricRegistries;
+import java.io.ByteArrayOutputStream;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.StreamingOutput;
+import org.junit.jupiter.api.Test;
+
+public class AdminRest_version_3_2_Test {
+
+  @Test
+  void testWriteLineReflection() throws Exception {
+      // Ensure Dropwizard SharedMetricRegistries has a default name to avoid static init errors
+      SharedMetricRegistries.setDefaultName("test");
+
+      AdminRest admin = new AdminRest(null, null);
+      Response resp = admin.version();
+      assertNotNull(resp);
+
+      Object entity = resp.getEntity();
+      assertNotNull(entity);
+      assertTrue(entity instanceof StreamingOutput);
+
+      StreamingOutput so = (StreamingOutput) entity;
+      ByteArrayOutputStream baos = new ByteArrayOutputStream();
+      so.write(baos);
+      String output = baos.toString("UTF-8");
+
+      assertNotNull(output);
+      // expect JSON-like output (at minimum some content)
+      assertTrue(output.length() > 0);
+      // simple sanity check for JSON structure
+      assertTrue(output.contains("{") || output.contains("null"));
+  }
+}

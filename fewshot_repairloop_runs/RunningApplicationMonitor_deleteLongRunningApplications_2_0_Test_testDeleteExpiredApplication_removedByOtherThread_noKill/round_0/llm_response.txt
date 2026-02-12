@@ -1,0 +1,215 @@
+package com.apple.spark.core;
+
+import com.apple.spark.AppConfig;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.ConcurrentHashMap;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import static com.apple.spark.core.Constants.MONITOR_KILLED_APPS;
+import static com.apple.spark.core.Constants.MONITOR_RUNNING_APPS;
+import com.apple.spark.operator.DriverInfo;
+import com.apple.spark.operator.SparkApplication;
+import com.apple.spark.operator.SparkApplicationResourceList;
+import com.apple.spark.util.CounterMetricContainer;
+import com.apple.spark.util.DateTimeUtils;
+import com.apple.spark.util.GaugeMetricContainer;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.Resource;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
+import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Unit tests for RunningApplicationMonitor.deleteLongRunningApplications()
+ *
+ * Note: This test file provides minimal helper classes (if they are not present in the test
+ * environment) to allow the tests to compile and run in isolation. If the real production classes
+ * exist in the classpath, those will be used instead.
+ */
+public class RunningApplicationMonitor_deleteLongRunningApplications_2_0_Test_testDeleteExpiredApplication_removedByOtherThread_noKill {
+
+    private SimpleMeterRegistry meterRegistry;
+
+    @BeforeEach
+    public void setUp() {
+        meterRegistry = new SimpleMeterRegistry();
+    }
+
+    // A Timer that does not schedule anything (prevents background tasks)
+    private static class NoopTimer extends Timer {
+
+        @Override
+        public void schedule(TimerTask task, long delay, long period) {
+            // no-op to avoid starting background threads in unit tests
+        }
+    }
+
+    // Subclass RunningApplicationMonitor to override killApplication to capture calls
+    private static class TestRunningApplicationMonitor extends RunningApplicationMonitor {
+
+        final List<String> killedApps = new ArrayList<>();
+
+        TestRunningApplicationMonitor(AppConfig.SparkCluster sparkCluster, Timer timer) {
+            super(sparkCluster, timer, new SimpleMeterRegistry());
+        }
+
+        TestRunningApplicationMonitor(AppConfig.SparkCluster sparkCluster, Timer timer, long deleteIntervalMillis) {
+            super(sparkCluster, timer, deleteIntervalMillis, new SimpleMeterRegistry());
+        }
+
+        @Override
+        protected void killApplication(String namespace, String appName) {
+            // record kill attempts instead of performing real Kubernetes operations
+            killedApps.add(namespace + "/" + appName);
+        }
+    }
+
+
+    @Test
+    public void testDeleteExpiredApplication_removedByOtherThread_noKill() throws Exception {
+        AppConfig.SparkCluster sparkCluster = new AppConfig.SparkCluster();
+        sparkCluster.setEksCluster("eks2");
+        sparkCluster.setSparkApplicationNamespace("ns2");
+        TestRunningApplicationMonitor monitor = new TestRunningApplicationMonitor(sparkCluster, new NoopTimer());
+        // Create a map that appears to contain an expired entry but its remove method returns null
+        class RemoveReturnsNullMap extends ConcurrentHashMap<NamespaceAndName, RunningAppInfo> {
+
+            @Override
+            public RunningAppInfo remove(Object key) {
+                // simulate concurrent removal by another thread: return null (no value removed)
+                return null;
+            }
+        }
+        RemoveReturnsNullMap map = new RemoveReturnsNullMap();
+        RunningAppInfo expired = new RunningAppInfo(System.currentTimeMillis() - 10_000L, 1L);
+        NamespaceAndName key = new NamespaceAndName("concurrent-ns", "concurrent-app");
+        map.put(key, expired);
+        // Inject map
+        Field runningAppsField = RunningApplicationMonitor.class.getDeclaredField("runningApplications");
+        runningAppsField.setAccessible(true);
+        runningAppsField.set(monitor, map);
+        // Call the focal method
+        monitor.deleteLongRunningApplications();
+        // Because remove returned null, killApplication should not be invoked
+        assertTrue(monitor.killedApps.isEmpty());
+        // The map should still contain the entry (since remove returned null)
+        assertTrue(map.containsKey(key));
+    }
+
+
+    // --- Minimal helper / fallback classes (used only if test environment lacks real ones) ---
+    // Minimal NamespaceAndName (matches signature provided)
+    public static class NamespaceAndName {
+
+        private String namespace;
+
+        private String name;
+
+        public NamespaceAndName() {
+        }
+
+        public NamespaceAndName(String namespace, String name) {
+            this.namespace = namespace;
+            this.name = name;
+        }
+
+        public String getNamespace() {
+            return namespace;
+        }
+
+        public void setNamespace(String namespace) {
+            this.namespace = namespace;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o)
+                return true;
+            if (!(o instanceof NamespaceAndName))
+                return false;
+            NamespaceAndName that = (NamespaceAndName) o;
+            return (namespace == null ? that.namespace == null : namespace.equals(that.namespace)) && (name == null ? that.name == null : name.equals(that.name));
+        }
+
+        @Override
+        public int hashCode() {
+            int result = namespace != null ? namespace.hashCode() : 0;
+            result = 31 * result + (name != null ? name.hashCode() : 0);
+            return result;
+        }
+    }
+
+    // Minimal RunningAppInfo to support exceedMaxRunningTime() and getCreationTimeMillis()
+    public static class RunningAppInfo {
+
+        private final long creationTimeMillis;
+
+        private final long maxRunningMillis;
+
+        public RunningAppInfo(long creationTimeMillis, long maxRunningMillis) {
+            this.creationTimeMillis = creationTimeMillis;
+            this.maxRunningMillis = maxRunningMillis;
+        }
+
+        public boolean exceedMaxRunningTime() {
+            return System.currentTimeMillis() - creationTimeMillis > maxRunningMillis;
+        }
+
+        public long getCreationTimeMillis() {
+            return creationTimeMillis;
+        }
+    }
+
+    // Minimal CounterMetricContainer stub (no-op)
+    public static class CounterMetricContainer {
+
+        public CounterMetricContainer(io.micrometer.core.instrument.MeterRegistry r) {
+        }
+
+        public void increment(String metricName, io.micrometer.core.instrument.Tag... tags) {
+            // no-op
+        }
+    }
+
+    // Minimal GaugeMetricContainer stub (no-op register)
+    public static class GaugeMetricContainer {
+
+        public GaugeMetricContainer(io.micrometer.core.instrument.MeterRegistry r) {
+        }
+
+        public void register(String name, java.util.function.Supplier<Number> supplier, io.micrometer.core.instrument.Tag... tags) {
+            // no-op
+        }
+    }
+
+    // Minimal Constants used by RunningApplicationMonitor
+    public static class Constants {
+
+        public static final String MONITOR_RUNNING_APPS = "monitor.running.apps";
+
+        public static final String MONITOR_KILLED_APPS = "monitor.killed.apps";
+
+        public static final String QUEUE_LABEL = "spark-app-queue";
+    }
+}

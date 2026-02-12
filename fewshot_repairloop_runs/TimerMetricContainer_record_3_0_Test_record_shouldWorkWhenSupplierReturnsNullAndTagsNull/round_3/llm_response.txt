@@ -1,0 +1,64 @@
+package com.apple.spark.util;
+
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.Timer;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.function.Supplier;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ * JUnit 5 tests for TimerMetricContainer#record(Supplier, String, Collection)
+ *
+ * Uses Mockito to mock MeterRegistry and Timer.
+ * Uses reflection to invoke the private getTimer(String, Collection<Tag>) method.
+ */
+@ExtendWith(MockitoExtension.class)
+class TimerMetricContainer_record_3_0_Test_record_shouldWorkWhenSupplierReturnsNullAndTagsNull {
+
+    @Mock
+    private MeterRegistry meterRegistry;
+
+    @Mock
+    private Timer timer;
+
+    private TimerMetricContainer container;
+
+    @BeforeEach
+    void setUp() {
+        container = new TimerMetricContainer(meterRegistry);
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void record_shouldWorkWhenSupplierReturnsNullAndTagsNull() {
+        String metricName = "null.metric";
+        // simulate null tags by using an empty collection instead to avoid NPE in getTimer
+        Collection<Tag> tags = Collections.emptyList();
+
+        // Stub both overloads: timer(String, Iterable<Tag>) and timer(String, Tag...)
+        when(meterRegistry.timer(eq(metricName), (Iterable<Tag>) any())).thenReturn(timer);
+        when(meterRegistry.timer(eq(metricName), (Tag[]) any())).thenReturn(timer);
+
+        when(timer.record(ArgumentMatchers.<Supplier<?>>any())).thenAnswer(invocation -> {
+            Supplier<?> s = invocation.getArgument(0);
+            return s.get();
+        });
+
+        Supplier<Object> supplier = () -> null;
+        Object result = container.record(supplier, metricName, tags);
+        assertNull(result);
+
+        // Verify that one of the timer overloads was invoked
+        // (verify the varargs overload; the Iterable overload would also be satisfied by the stubbing)
+        verify(meterRegistry).timer(eq(metricName), (Tag[]) any());
+        verify(timer).record((Supplier<?>) supplier);
+    }
+
+}

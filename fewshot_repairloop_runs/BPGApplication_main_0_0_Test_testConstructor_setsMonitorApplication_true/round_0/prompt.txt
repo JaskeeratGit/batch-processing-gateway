@@ -1,0 +1,331 @@
+I need you to fix an error in a unit test. An error occurred while compiling or executing.
+
+Below are a few examples of unit tests with their error messages and their correct fixes.
+
+========================
+EXAMPLE 1
+========================
+Original Unit Test:
+
+```java
+"public class Options_getOptionGroup_9_0_Test {
+    static class OptionGroup {
+        private final String id;
+        OptionGroup(String id) {
+            this.id = id;
+        }
+        String getId() {
+            return id;
+        }
+    }
+    
+    testGetOptionGroupReturnsNullWhenMissing() throws Exception {
+    Options options = new Options();
+    Option opt = new Option(""b"", ""desc"");
+    OptionGroup result = options.getOptionGroup(opt);
+    assertNull(result, ""Expected null when no OptionGroup is associated with the option key"");
+    
+}
+```
+
+Error chatMessage:
+ Error in Options_getOptionGroup_9_0_Test: line 46 : incompatible types: org.apache.commons.cli.OptionGroup cannot be converted to org.apache.commons.cli.Options_getOptionGroup_9_0_Test.OptionGroup,
+ Error in Options_getOptionGroup_9_0_Test: line 55 : incompatible types: org.apache.commons.cli.OptionGroup cannot be converted to org.apache.commons.cli.Options_getOptionGroup_9_0_Test.OptionGroup
+
+Fixed Unit Test:
+
+```java
+"public class Options_getOptionGroup_9_0_Test {
+   
+   testGetOptionGroupReturnsNullWhenMissing() throws Exception {
+    Options options = new Options();
+    Option opt = new Option(""b"", ""desc"");
+    OptionGroup result = options.getOptionGroup(opt);
+    assertNull(result, ""Expected null when no OptionGroup is associated with the option key"");
+}
+}
+
+```
+
+========================
+EXAMPLE 2
+========================
+Original Unit Test:
+
+```java
+public class CommandLine_getParsedOptionValues_46_0_Test {
+
+    @Test
+    void testNullOptionGroupReturnsDefault() throws Exception {
+        // Arrange
+        CommandLine cmd = new CommandLine();
+        Supplier<String[]> supplier = () -> new String[] { "default1", "default2" };
+        // Act
+        String[] result = cmd.getParsedOptionValues(null, supplier);
+        // Assert
+        assertArrayEquals(supplier.get(), result);
+    }
+}
+```
+
+Error chatMessage:
+Error in CommandLine_getParsedOptionValues_46_0_Test: line 30 : reference to getParsedOptionValues is ambiguous
+  both method <T>getParsedOptionValues(org.apache.commons.cli.OptionGroup,java.util.function.Supplier<T[]>) in org.apache.commons.cli.CommandLine and method <T>getParsedOptionValues(java.lang.String,java.util.function.Supplier<T[]>) in org.apache.commons.cli.CommandLine match
+
+Fixed Unit Test:
+
+```java
+public class CommandLine_getParsedOptionValues_46_0_Test {
+
+    @Test
+    void testNullOptionGroupReturnsDefault() throws Exception {
+        // Arrange
+        CommandLine cmd = new CommandLine();
+        Supplier<String[]> supplier = () -> new String[] { "default1", "default2" };
+        // Act
+        String[] result = cmd.getParsedOptionValues((OptionGroup) null, supplier);
+        // Assert
+        assertArrayEquals(supplier.get(), result);
+    }
+}
+```
+
+========================
+Now, fix the following.
+
+The unit test is:
+
+package com.apple.spark;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import static com.apple.spark.core.Constants.QUEUE_INFO;
+import static com.apple.spark.core.Constants.SERVICE_ABBR;
+import com.apple.spark.core.ApplicationMonitor;
+import com.apple.spark.core.BPGStatsdConfig;
+import com.apple.spark.core.Constants;
+import com.apple.spark.core.ThrowableExceptionMapper;
+import com.apple.spark.health.BPGHealthCheck;
+import com.apple.spark.rest.AdminRest;
+import com.apple.spark.rest.ApplicationGetLogRest;
+import com.apple.spark.rest.ApplicationSubmissionRest;
+import com.apple.spark.rest.HealthcheckRest;
+import com.apple.spark.rest.CloudStorageRest;
+import com.apple.spark.security.User;
+import com.apple.spark.security.UserNameAuthFilter;
+import com.apple.spark.security.UserNameBasicAuthenticator;
+import com.apple.spark.security.UserUnauthorizedHandler;
+import com.apple.spark.util.CounterMetricContainer;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.SharedMetricRegistries;
+import io.dropwizard.Application;
+import io.dropwizard.auth.AuthDynamicFeature;
+import io.dropwizard.auth.AuthValueFactoryProvider;
+import io.dropwizard.auth.basic.BasicCredentialAuthFilter;
+import io.dropwizard.auth.basic.BasicCredentials;
+import io.dropwizard.auth.chained.ChainedAuthFilter;
+import io.dropwizard.setup.Bootstrap;
+import io.dropwizard.setup.Environment;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
+import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
+import io.swagger.v3.oas.integration.SwaggerConfiguration;
+import io.swagger.v3.oas.models.OpenAPI;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Generated unit tests for BPGApplication.main(String[]).
+ *
+ * Notes:
+ * - A small BuildInfo stub is provided below to satisfy references from BPGApplication.main.
+ * - main(...) is invoked reflectively in a separate thread with a timeout to avoid blocking the test run
+ *   in case the real run(...) would attempt to start a server.
+ * - Reflection is used to read the private field 'monitorApplication' after constructing instances
+ *   via the public constructors in order to validate constructor behavior and the boolean semantics.
+ */
+public class BPGApplication_main_0_0_Test_testConstructor_setsMonitorApplication_true {
+
+    private static final String MONITOR_PROPERTY = "monitorApplication";
+
+    @AfterEach
+    public void tearDown() {
+        System.clearProperty(MONITOR_PROPERTY);
+    }
+
+    // Helper to call the main method reflectively with a timeout
+    private void invokeMainWithTimeout(String[] args, long timeoutMillis) throws Exception {
+        Method main = BPGApplication.class.getMethod("main", String[].class);
+        ExecutorService exec = Executors.newSingleThreadExecutor();
+        try {
+            Callable<Object> task = () -> {
+                try {
+                    // varargs-safe invocation
+                    return main.invoke(null, (Object) args);
+                } catch (InvocationTargetException e) {
+                    // rethrow the underlying cause so the test can see it
+                    Throwable cause = e.getCause();
+                    if (cause instanceof Exception) {
+                        throw (Exception) cause;
+                    } else {
+                        throw new RuntimeException(cause);
+                    }
+                }
+            };
+            Future<Object> fut = exec.submit(task);
+            try {
+                fut.get(timeoutMillis, TimeUnit.MILLISECONDS);
+            } catch (java.util.concurrent.TimeoutException te) {
+                // cancel the invocation if it times out (to avoid blocking test suite)
+                fut.cancel(true);
+                // allow tests to continue; if main blocks it will be considered covered for invocation purposes
+            }
+        } finally {
+            exec.shutdownNow();
+        }
+    }
+
+    // Helper to construct BPGApplication(boolean) and read private field
+    private boolean readMonitorFieldFromInstance(BPGApplication instance) throws Exception {
+        Field f = BPGApplication.class.getDeclaredField("monitorApplication");
+        f.setAccessible(true);
+        return f.getBoolean(instance);
+    }
+
+    @Test
+    public void testConstructor_setsMonitorApplication_true() throws Exception {
+        BPGApplication inst = new BPGApplication(true);
+        boolean val = readMonitorFieldFromInstance(inst);
+        assertTrue(val, "Constructor with true should set monitorApplication = true");
+    }
+
+
+
+
+
+}
+
+/*
+ * Minimal BuildInfo stub to satisfy references from BPGApplication.main.
+ * Placed in the same package so the class loader will find it when BPGApplication references it.
+ */
+class BuildInfo {
+
+    public static final String Version = "test-version";
+
+    public static final String Revision = "test-revision";
+}
+
+
+The error chatMessage is:
+
+src/test/java/com/apple/spark/BPGApplication_main_0_0_Test_testConstructor_setsMonitorApplication_false.java:[133,1] duplicate class: com.apple.spark.BuildInfo
+
+The unit test is testing the method `main(String[])` in the class `BPGApplication`.
+
+Focal method source code:
+
+public static void main(final String[] args) throws Exception {
+    logger.info(
+        "Starting server, version: {}, revision: {}", BuildInfo.Version, BuildInfo.Revision);
+
+    String value = System.getProperty(MONITOR_APPLICATION_SYSTEM_PROPERTY_NAME);
+    boolean monitorApplication = value != null && value.equalsIgnoreCase("true");
+
+    new BPGApplication(monitorApplication).run(args);
+  }
+
+Focal class skeleton (imports + fields + method signatures):
+
+import static com.apple.spark.core.Constants.QUEUE_INFO;
+import static com.apple.spark.core.Constants.SERVICE_ABBR;
+import com.apple.spark.core.ApplicationMonitor;
+import com.apple.spark.core.BPGStatsdConfig;
+import com.apple.spark.core.Constants;
+import com.apple.spark.core.ThrowableExceptionMapper;
+import com.apple.spark.health.BPGHealthCheck;
+import com.apple.spark.rest.AdminRest;
+import com.apple.spark.rest.ApplicationGetLogRest;
+import com.apple.spark.rest.ApplicationSubmissionRest;
+import com.apple.spark.rest.HealthcheckRest;
+import com.apple.spark.rest.CloudStorageRest;
+import com.apple.spark.security.User;
+import com.apple.spark.security.UserNameAuthFilter;
+import com.apple.spark.security.UserNameBasicAuthenticator;
+import com.apple.spark.security.UserUnauthorizedHandler;
+import com.apple.spark.util.CounterMetricContainer;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.SharedMetricRegistries;
+import io.dropwizard.Application;
+import io.dropwizard.auth.AuthDynamicFeature;
+import io.dropwizard.auth.AuthValueFactoryProvider;
+import io.dropwizard.auth.basic.BasicCredentialAuthFilter;
+import io.dropwizard.auth.basic.BasicCredentials;
+import io.dropwizard.auth.chained.ChainedAuthFilter;
+import io.dropwizard.setup.Bootstrap;
+import io.dropwizard.setup.Environment;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
+import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
+import io.swagger.v3.oas.integration.SwaggerConfiguration;
+import io.swagger.v3.oas.models.OpenAPI;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+public class BPGApplication {
+private static final Logger logger = ...;
+private static final String MONITOR_APPLICATION_SYSTEM_PROPERTY_NAME = ...;
+private final boolean monitorApplication;
+public BPGApplication(){}
+public BPGApplication(boolean monitorApplication){}
+public static void main(final String[] args) throws Exception{}
+@Override
+  public String getName(){}
+@Override
+  public void initialize(final Bootstrap<AppConfig> bootstrap){}
+@Override
+  public void run(final AppConfig configuration, final Environment environment){}
+private void sendPeriodicMetrics(AppConfig configuration, MeterRegistry meterRegistry){}
+private void sendQueueInfoMetrics(
+      AppConfig configuration, CounterMetricContainer periodicMetrics){}
+public BPGApplication(){}
+public BPGApplication(boolean monitorApplication){}
+}
+
+To help you correctly fix the unit test file, we provide the brief information about the dependency
+
+The brief information of dependent class `org.slf4j.Logger` is
+```[java]
+info(String, Object, Object)
+```
+
+The brief information of dependent class `io.dropwizard.Application` is
+```[java]
+run(String[])
+```
+
+Please fix the error and return the whole fixed unit test. You can use Junit 5, and Mockito 3. Adhere to Java 8 language style. No explanation is needed.
+Return only the fixed unit test.

@@ -1,0 +1,207 @@
+I need you to fix an error in a unit test. An error occurred while compiling or executing.
+
+Below are a few examples of unit tests with their error messages and their correct fixes.
+
+========================
+EXAMPLE 1
+========================
+Original Unit Test:
+
+```java
+"public class Options_getOptionGroup_9_0_Test {
+    static class OptionGroup {
+        private final String id;
+        OptionGroup(String id) {
+            this.id = id;
+        }
+        String getId() {
+            return id;
+        }
+    }
+    
+    testGetOptionGroupReturnsNullWhenMissing() throws Exception {
+    Options options = new Options();
+    Option opt = new Option(""b"", ""desc"");
+    OptionGroup result = options.getOptionGroup(opt);
+    assertNull(result, ""Expected null when no OptionGroup is associated with the option key"");
+    
+}
+```
+
+Error chatMessage:
+ Error in Options_getOptionGroup_9_0_Test: line 46 : incompatible types: org.apache.commons.cli.OptionGroup cannot be converted to org.apache.commons.cli.Options_getOptionGroup_9_0_Test.OptionGroup,
+ Error in Options_getOptionGroup_9_0_Test: line 55 : incompatible types: org.apache.commons.cli.OptionGroup cannot be converted to org.apache.commons.cli.Options_getOptionGroup_9_0_Test.OptionGroup
+
+Fixed Unit Test:
+
+```java
+"public class Options_getOptionGroup_9_0_Test {
+   
+   testGetOptionGroupReturnsNullWhenMissing() throws Exception {
+    Options options = new Options();
+    Option opt = new Option(""b"", ""desc"");
+    OptionGroup result = options.getOptionGroup(opt);
+    assertNull(result, ""Expected null when no OptionGroup is associated with the option key"");
+}
+}
+
+```
+
+========================
+EXAMPLE 2
+========================
+Original Unit Test:
+
+```java
+public class CommandLine_getParsedOptionValues_46_0_Test {
+
+    @Test
+    void testNullOptionGroupReturnsDefault() throws Exception {
+        // Arrange
+        CommandLine cmd = new CommandLine();
+        Supplier<String[]> supplier = () -> new String[] { "default1", "default2" };
+        // Act
+        String[] result = cmd.getParsedOptionValues(null, supplier);
+        // Assert
+        assertArrayEquals(supplier.get(), result);
+    }
+}
+```
+
+Error chatMessage:
+Error in CommandLine_getParsedOptionValues_46_0_Test: line 30 : reference to getParsedOptionValues is ambiguous
+  both method <T>getParsedOptionValues(org.apache.commons.cli.OptionGroup,java.util.function.Supplier<T[]>) in org.apache.commons.cli.CommandLine and method <T>getParsedOptionValues(java.lang.String,java.util.function.Supplier<T[]>) in org.apache.commons.cli.CommandLine match
+
+Fixed Unit Test:
+
+```java
+public class CommandLine_getParsedOptionValues_46_0_Test {
+
+    @Test
+    void testNullOptionGroupReturnsDefault() throws Exception {
+        // Arrange
+        CommandLine cmd = new CommandLine();
+        Supplier<String[]> supplier = () -> new String[] { "default1", "default2" };
+        // Act
+        String[] result = cmd.getParsedOptionValues((OptionGroup) null, supplier);
+        // Assert
+        assertArrayEquals(supplier.get(), result);
+    }
+}
+```
+
+========================
+Now, fix the following.
+
+The unit test is:
+
+package com.apple.spark.util;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Method;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+class EndAwareInputStream_read_2_0_Test_testReadWhenNotEnd_callsUnderlyingAndDoesNotRunEndingAction {
+
+    @Test
+    void testReadWhenNotEnd_callsUnderlyingAndDoesNotRunEndingAction() throws Exception {
+        AtomicBoolean endingCalled = new AtomicBoolean(false);
+        InputStream under = new InputStream() {
+
+            @Override
+            public int read() {
+                // not used
+                return -1;
+            }
+
+            @Override
+            public int read(byte[] b, int off, int len) {
+                // fill with predictable bytes and return 2
+                if (len <= 0)
+                    return 0;
+                int toWrite = Math.min(2, len);
+                if (off + toWrite > b.length)
+                    return -1;
+                b[off] = 11;
+                b[off + 1] = 22;
+                return toWrite;
+            }
+        };
+        EndAwareInputStream eis = new EndAwareInputStream(under, endingCalled::set);
+        byte[] buffer = new byte[4];
+        int read = eis.read(buffer, 1, 3);
+        assertEquals(2, read, "Should return number of bytes read from underlying stream");
+        assertEquals(0, buffer[0], "Byte outside written range unchanged");
+        assertEquals(11, buffer[1], "First written byte");
+        assertEquals(22, buffer[2], "Second written byte");
+        assertFalse(endingCalled.get(), "endingAction should not have been called for non -1 read");
+    }
+
+
+
+
+}
+
+
+The error chatMessage is:
+
+src/test/java/com/apple/spark/util/EndAwareInputStream_read_2_0_Test_testReadWhenNotEnd_callsUnderlyingAndDoesNotRunEndingAction.java:[41,66] incompatible types: invalid method reference
+method set in class java.util.concurrent.atomic.AtomicBoolean cannot be applied to given types
+required: boolean
+found:    no arguments
+reason: actual and formal argument lists differ in length
+
+The unit test is testing the method `read(byte[], int, int)` in the class `EndAwareInputStream`.
+
+Focal method source code:
+
+@Override
+  public int read(byte[] b, int off, int len) throws IOException {
+    int result = executeWithResultValue(() -> inputStream.read(b, off, len));
+    if (result == -1) {
+      executeEndingAction();
+    }
+    return result;
+  }
+
+Focal class skeleton (imports + fields + method signatures):
+
+import java.io.IOException;
+import java.io.InputStream;
+public class EndAwareInputStream {
+private final InputStream inputStream;
+private final Runnable endingAction;
+public EndAwareInputStream(InputStream inputStream, Runnable endingAction){}
+@Override
+  public int read() throws IOException{}
+@Override
+  public int read(byte[] b) throws IOException{}
+@Override
+  public int read(byte[] b, int off, int len) throws IOException{}
+@Override
+  public long skip(long n) throws IOException{}
+@Override
+  public int available() throws IOException{}
+@Override
+  public void close() throws IOException{}
+@Override
+  public void mark(int readlimit){}
+@Override
+  public void reset() throws IOException{}
+@Override
+  public boolean markSupported(){}
+private <T> T executeWithResultValue(CallableWithIOException<T> callable) throws IOException{}
+private void executeWithoutResultValue(RunnableWithIOException callable) throws IOException{}
+private void executeEndingAction(){}
+public EndAwareInputStream(InputStream inputStream, Runnable endingAction){}
+}
+Please fix the error and return the whole fixed unit test. You can use Junit 5, and Mockito 3. Adhere to Java 8 language style. No explanation is needed.
+Return only the fixed unit test.

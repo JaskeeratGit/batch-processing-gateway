@@ -1,0 +1,35 @@
+package com.apple.spark.util;
+
+import com.codahale.metrics.Meter;
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.lang.reflect.Field;
+
+public class ExceptionUtils_meterRuntimeException_5_0_Test_meterRuntimeException_marksMeter_once {
+
+    private Field runtimeExceptionMeterField;
+
+    @BeforeEach
+    void setUp() throws Exception {
+        // Access the private static final field (read-only)
+        runtimeExceptionMeterField = ExceptionUtils.class.getDeclaredField("runtimeExceptionMeter");
+        runtimeExceptionMeterField.setAccessible(true);
+    }
+
+    @Test
+    void meterRuntimeException_marksMeter_once() throws Exception {
+        Meter meter = (Meter) runtimeExceptionMeterField.get(null);
+        assertNotNull(meter, "runtimeExceptionMeter field should not be null");
+
+        // Record count before invoking
+        long before = meter.getCount();
+
+        // Invoke the method under test
+        ExceptionUtils.meterRuntimeException();
+
+        // Verify the meter was marked once
+        long after = meter.getCount();
+        assertEquals(before + 1L, after, "meterRuntimeException should mark the meter once");
+    }
+}
