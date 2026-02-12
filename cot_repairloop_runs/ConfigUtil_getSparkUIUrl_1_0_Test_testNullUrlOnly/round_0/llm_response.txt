@@ -1,0 +1,50 @@
+<<Generation Begin>>
+package com.apple.spark.util;
+
+import com.apple.spark.AppConfig;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ * Unit tests for ConfigUtil.getSparkUIUrl(SparkCluster, String)
+ */
+public class ConfigUtilTest {
+
+    @Test
+    void testNormal() {
+        AppConfig.SparkCluster cluster = new AppConfig.SparkCluster("http://spark-ui", "ns");
+        String result = ConfigUtil.getSparkUIUrl(cluster, "sid");
+        assertEquals("http://spark-ui/ns/sid", result);
+    }
+
+    @Test
+    void testNullUrlOnly() {
+        AppConfig.SparkCluster cluster = new AppConfig.SparkCluster(null, "ns");
+        String result = ConfigUtil.getSparkUIUrl(cluster, "sid");
+        // String.format will convert null to "null"
+        assertEquals("null/ns/sid", result);
+    }
+
+    @Test
+    void testNullNamespaceOnly() {
+        AppConfig.SparkCluster cluster = new AppConfig.SparkCluster("http://spark-ui", null);
+        String result = ConfigUtil.getSparkUIUrl(cluster, "sid");
+        assertEquals("http://spark-ui/null/sid", result);
+    }
+
+    @Test
+    void testNullSubmissionIdOnly() {
+        AppConfig.SparkCluster cluster = new AppConfig.SparkCluster("http://spark-ui", "ns");
+        String result = ConfigUtil.getSparkUIUrl(cluster, null);
+        assertEquals("http://spark-ui/ns/null", result);
+    }
+
+    @Test
+    void testAllNulls() {
+        AppConfig.SparkCluster cluster = new AppConfig.SparkCluster(null, null);
+        String result = ConfigUtil.getSparkUIUrl(cluster, null);
+        assertEquals("null/null/null", result);
+    }
+}
+<<Generation Over>>

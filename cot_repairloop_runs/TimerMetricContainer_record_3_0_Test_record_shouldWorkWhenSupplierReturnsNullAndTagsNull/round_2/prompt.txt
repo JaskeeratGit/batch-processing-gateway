@@ -1,0 +1,163 @@
+Hello. You are a talented Java programmer. Here you're going to help the user fix the unit test file with error.
+Here is the information of the method-to-test:
+
+The focal method is `record(Supplier, String, Collection)` in the focal class `TimerMetricContainer`, and their information is
+```[java]
+public <T> T record(Supplier<T> runnable, String metricName, Collection<Tag> tags) {
+    Timer timer = getTimer(metricName, tags);
+    return timer.record(runnable);
+  }
+```
+
+To help you correctly fix the unit test file, we provide the brief information about the dependency
+
+The brief information of dependent class `io.micrometer.core.instrument.Timer` is
+```[java]
+record(SupplierT)
+```
+
+# Unit Test to Fix
+
+Here's the unit test that needs fixing.
+
+```java
+package com.apple.spark.util;
+
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.Timer;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.function.Supplier;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ * JUnit 5 tests for TimerMetricContainer#record(Supplier, String, Collection)
+ *
+ * Uses Mockito to mock MeterRegistry and Timer.
+ */
+@ExtendWith(MockitoExtension.class)
+class TimerMetricContainer_record_3_0_Test_record_shouldWorkWhenSupplierReturnsNullAndTagsNull {
+
+    @Mock
+    private MeterRegistry meterRegistry;
+
+    @Mock
+    private Timer timer;
+
+    private TimerMetricContainer container;
+
+    @BeforeEach
+    void setUp() {
+        container = new TimerMetricContainer(meterRegistry);
+    }
+
+    @Test
+    void record_shouldWorkWhenSupplierReturnsNullAndTagsNull() {
+        String metricName = "null.metric";
+        // Instead of passing null (which causes the production code to call tags.stream() and NPE),
+        // pass an empty collection to represent "no tags".
+        Collection<Tag> tags = Collections.emptyList();
+
+        // Disambiguate the overloaded MeterRegistry.timer(...) by forcing the iterable<Tag> matcher
+        when(meterRegistry.timer(eq(metricName), Mockito.<Iterable<Tag>>any())).thenReturn(timer);
+
+        // Disambiguate the overloaded Timer.record(...) by forcing the Supplier<?> matcher
+        when(timer.record(ArgumentMatchers.<Supplier<Object>>any())).thenAnswer(invocation -> {
+            Supplier<?> s = (Supplier<?>) invocation.getArgument(0);
+            return s.get();
+        });
+
+        Supplier<Object> supplier = () -> null;
+        Object result = container.record(supplier, metricName, tags);
+        assertNull(result);
+
+        // Verify calls - disambiguate overloaded timer(...) verification similarly
+        verify(meterRegistry).timer(eq(metricName), Mockito.<Iterable<Tag>>any());
+        // Disambiguate the Timer.record(...) verification by casting to Supplier<Object>
+        verify(timer).record((Supplier<Object>) supplier);
+    }
+
+}
+```
+
+The error encountered when running this unit test is:
+
+```
+timeout
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:147)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:127)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:90)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:55)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:102)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:54)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86)
+	at org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86)
+	at org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:55)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:223)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:175)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:139)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:456)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:169)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:595)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:581)
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Errors: 
+[ERROR]   TimerMetricContainer_record_3_0_Test_record_shouldWorkWhenSupplierReturnsNullAndTagsNull.record_shouldWorkWhenSupplierReturnsNullAndTagsNull:54 » NullPointer Cannot invoke "io.micrometer.core.instrument.MeterRegistry$Config.pauseDetector()" because the return value of "io.micrometer.core.
+```
+
+# Procedures for Fixing the Unit Test:
+Let's proceed step by step:
+
+1. Pick out the statements that the errors occur
+2. Reason about the causes of the errors
+3. Reason about solutions on how to fix the errors
+3. Provide the complete fixed unit test, utilizing JUnit 5 and Mockito 3 if required.
+
+# Requirements and Considerations for the Unit Test Fix:
+- Ensure the unit tests are executable without compile errors, runtime errors, or timeouts.
+- Aim for high coverage scores, covering as many instructions and branches of the method under test as possible.
+- Avoid modifying the method under test.
+- Generate the entire unit test file, including package declaration and imports.
+- Ensure correct testing of the method under test:
+    - The method under test is defined in TimerMetricContainer.
+    - The method under test is TimerMetricContainer.record.
+- Utilize correct tools and adhere to Java 8 language style:
+    - You can use JUnit 5 and Mockito 3.
+    - The language style should follow Java 8 conventions.
+
+# Output Format
+To facilitate generating the desired unit test, follow these instructions:
+
+<<Generation Begin>>
+{complete unit test}
+<<Generation Over>>
+
+Please proceed with generating the fixed unit test.
+Ensure all generations are provided in a single response.

@@ -1,0 +1,472 @@
+Hello. You are a talented Java programmer. Here you're going to help the user fix the unit test file with error.
+Here is the information of the method-to-test:
+
+The focal method is `run(AppConfig, Environment)` in the focal class `BPGApplication`, and their information is
+```[java]
+@Override
+  public void run(final AppConfig configuration, final Environment environment) {
+    String applicationContextPath = configuration.getApplicationContextPath();
+    if (applicationContextPath == null || applicationContextPath.isEmpty()) {
+      applicationContextPath = Constants.DEFAULT_APPLICATION_CONTEXT_PATH;
+    }
+    environment.getApplicationContext().setContextPath(applicationContextPath);
+
+    // Get the application's metric registry
+    MetricRegistry registry = environment.metrics();
+    SharedMetricRegistries.add(Constants.DEFAULT_METRIC_REGISTRY, registry);
+
+    MeterRegistry meterRegistry = BPGStatsdConfig.createMeterRegistry();
+
+    // Register all resources
+    final ApplicationSubmissionRest applicationSubmissionRest =
+        new ApplicationSubmissionRest(configuration, meterRegistry);
+    environment.jersey().register(applicationSubmissionRest);
+
+    final ApplicationGetLogRest applicationGetLogRest =
+        new ApplicationGetLogRest(configuration, meterRegistry);
+    environment.jersey().register(applicationGetLogRest);
+
+    final CloudStorageRest cloudStorageRest = new CloudStorageRest(configuration, meterRegistry);
+    environment.jersey().register(cloudStorageRest);
+
+    final AdminRest adminRest = new AdminRest(configuration, meterRegistry);
+    environment.jersey().register(adminRest);
+
+    final HealthcheckRest healthcheckRest = new HealthcheckRest(configuration, meterRegistry);
+    environment.jersey().register(healthcheckRest);
+
+    environment.jersey().register(new ThrowableExceptionMapper(environment.metrics()));
+
+    // To accept a username header
+    UserNameAuthFilter<User> userNameAuthFilter =
+        new UserNameAuthFilter.Builder<User>()
+            .setAuthenticator(
+                new UserNameBasicAuthenticator(
+                    configuration.getAllowedUsers(), configuration.getBlockedUsers()))
+            .setRealm(Constants.REALM)
+            .setUnauthorizedHandler(new UserUnauthorizedHandler())
+            .buildAuthFilter();
+
+    // To accept basic authentication
+    BasicCredentialAuthFilter<User> basicCredentialAuthFilter =
+        new BasicCredentialAuthFilter.Builder<User>()
+            .setAuthenticator(
+                new UserNameBasicAuthenticator(
+                    configuration.getAllowedUsers(), configuration.getBlockedUsers()))
+            .setRealm(Constants.REALM)
+            .setUnauthorizedHandler(new UserUnauthorizedHandler())
+            .buildAuthFilter();
+
+    // The auth will pass if any of the auth filters pass
+    ChainedAuthFilter<BasicCredentials, User> chainedAuthFilter =
+        new ChainedAuthFilter<>(Arrays.asList(userNameAuthFilter, basicCredentialAuthFilter));
+
+    environment.jersey().register(new AuthDynamicFeature(chainedAuthFilter));
+
+    // To use @Auth to inject a User Principal type into REST resource
+    environment.jersey().register(new AuthValueFactoryProvider.Binder<>(User.class));
+
+    final BPGHealthCheck healthCheck = new BPGHealthCheck(configuration.getSparkClusters());
+    environment.healthChecks().register("sparkClusters", healthCheck);
+
+    // Support OpenAPI spec for all components under com.apple.spark.rest
+    OpenAPI openAPI = new OpenAPI();
+    SwaggerConfiguration oasConfig =
+        new SwaggerConfiguration()
+            .openAPI(openAPI)
+            .prettyPrint(true)
+            .resourcePackages(new HashSet<>(Arrays.asList("com.apple.spark.rest")));
+
+    environment.jersey().register(new OpenApiResource().openApiConfiguration(oasConfig));
+
+    // This code block is for enabling CORS so that they can be reachable from
+    // different domain/port
+    // Opening this up can be risky but leaving the commented code here in case we are able to
+    // enable it after evaluating the risks
+    /*
+    final FilterRegistration.Dynamic cors =
+            environment.servlets().addFilter("CORS", CrossOriginFilter.class);
+
+    cors.setInitParameter("allowedOrigins", "*");
+    cors.setInitParameter("allowedHeaders", "X-Requested-With,Content-Type,Accept,Origin");
+    cors.setInitParameter("allowedMethods", "OPTIONS,GET,PUT,POST,DELETE,HEAD");
+
+    cors.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
+     */
+
+    if (monitorApplication) {
+      logger.info("Starting application monitor");
+      new ApplicationMonitor(configuration, meterRegistry).start();
+    }
+
+    sendPeriodicMetrics(configuration, meterRegistry);
+  }
+```
+
+To help you correctly fix the unit test file, we provide the brief information about the dependency
+
+The brief information of dependent class `com.apple.spark.AppConfig` is
+```[java]
+import com.apple.spark.core.ConfigValue;
+import com.apple.spark.operator.DriverSpec;
+import com.apple.spark.operator.ExecutorSpec;
+import com.apple.spark.operator.SparkUIConfiguration;
+import com.apple.spark.operator.Volume;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.dropwizard.Configuration;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class AppConfig {
+private String applicationContextPath;
+private Map<String, String> defaultSparkConf;
+private Map<String, String> fixedSparkConf;
+private List<SparkCluster> sparkClusters;
+private List<SparkImage> sparkImages;
+private String s3Bucket;
+private String s3Folder;
+private String sparkLogS3Bucket;
+private String sparkLogIndex;
+private final int batchFileLimit = ...;
+private String sparkHistoryDns;
+private String gatewayDns;
+private String eksCluster;
+private String sparkHistoryUrl;
+private List<String> allowedUsers;
+private List<String> blockedUsers;
+private List<String> adminUsers;
+private List<QueueConfig> queues;
+private QueueTokenConfig queueTokenSOPS;
+private DBStorage dbStorageSOPS;
+private Double memoryMbSecondCost;
+private Double vCoreSecondCost;
+private Long statusCacheExpireMillis;
+public AppConfig(){}
+public String getApplicationContextPath(){}
+public List<SparkCluster> getSparkClusters(){}
+public List<String> getAllowedUsers(){}
+public List<String> getBlockedUsers(){}
+}
+```
+
+The brief information of dependent class `com.apple.spark.core.BPGStatsdConfig` is
+```[java]
+import io.micrometer.core.instrument.Clock;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.logging.LoggingMeterRegistry;
+import io.micrometer.statsd.StatsdConfig;
+import io.micrometer.statsd.StatsdFlavor;
+import io.micrometer.statsd.StatsdMeterRegistry;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+public class BPGStatsdConfig {
+private static final Logger logger = ...;
+private static final String STATSD_SERVER_IP_ENV_NAME = ...;
+private static final String STATSD_SERVER_PORT_ENV_NAME = ...;
+public static MeterRegistry createMeterRegistry(){}
+}
+```
+
+The brief information of dependent class `com.apple.spark.core.ApplicationMonitor` is
+```[java]
+import static com.apple.spark.core.Constants.*;
+import com.apple.spark.AppConfig;
+import com.apple.spark.operator.DriverSpec;
+import com.apple.spark.operator.ExecutorSpec;
+import com.apple.spark.operator.SparkApplication;
+import com.apple.spark.operator.SparkApplicationSpec;
+import com.apple.spark.util.CounterMetricContainer;
+import com.apple.spark.util.DateTimeUtils;
+import com.apple.spark.util.GaugeMetricContainer;
+import com.apple.spark.util.KubernetesClusterAndNamespace;
+import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
+import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
+import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
+import io.fabric8.kubernetes.internal.KubernetesDeserializer;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+public class ApplicationMonitor {
+private static final Logger logger = ...;
+private static final long RESYNC_MILLIS = ...;
+private static final HashSet<String> driverInfoCollectedSubIds = ...;
+private final CounterMetricContainer requestCounters;
+private final GaugeMetricContainer gaugeMetricContainer;
+private final AppConfig appConfig;
+private final LogDao logDao;
+private final List<KubernetesClient> clients = ...;
+private final List<SharedInformerFactory> informerFactories = ...;
+private final MeterRegistry meterRegistry;
+private final ArrayBlockingQueue<ApplicationUpdateEvent> applicationUpdateEventQueue = ...;
+private final AtomicLong droppedEvents = ...;
+public ApplicationMonitor(AppConfig appConfig, MeterRegistry meterRegistry){}
+public void start(){}
+private void start(AppConfig.SparkCluster sparkCluster, Timer timer){}
+}
+```
+
+The brief information of dependent class `com.apple.spark.AppConfig` is
+```[java]
+getSparkClusters()
+getAllowedUsers()
+getBlockedUsers()
+getApplicationContextPath()
+```
+
+The brief information of dependent class `io.dropwizard.setup.Environment` is
+```[java]
+getApplicationContext()
+healthChecks()
+metrics()
+jersey()
+```
+
+The brief information of dependent class `org.eclipse.jetty.server.handler.ContextHandler` is
+```[java]
+setContextPath(String)
+```
+
+The brief information of dependent class `com.codahale.metrics.SharedMetricRegistries` is
+```[java]
+add(String, MetricRegistry)
+```
+
+The brief information of dependent class `com.apple.spark.core.BPGStatsdConfig` is
+```[java]
+createMeterRegistry()
+```
+
+The brief information of dependent class `io.dropwizard.jersey.setup.JerseyEnvironment` is
+```[java]
+register(Object)
+```
+
+The brief information of dependent class `io.dropwizard.auth.AuthFilter.AuthFilterBuilder` is
+```[java]
+setAuthenticator(AuthenticatorC, P)
+```
+
+The brief information of dependent class `com.codahale.metrics.health.HealthCheckRegistry` is
+```[java]
+register(String, HealthCheck)
+```
+
+The brief information of dependent class `io.swagger.v3.oas.integration.SwaggerConfiguration` is
+```[java]
+prettyPrint(Boolean)
+openAPI(OpenAPI)
+resourcePackages(String)
+```
+
+The brief information of dependent class `io.swagger.v3.jaxrs2.integration.resources.BaseOpenApiResource` is
+```[java]
+openApiConfiguration(OpenAPIConfiguration)
+```
+
+The brief information of dependent class `org.slf4j.Logger` is
+```[java]
+info(String)
+```
+
+The brief information of dependent class `com.apple.spark.core.ApplicationMonitor` is
+```[java]
+start()
+```
+
+# Unit Test to Fix
+
+Here's the unit test that needs fixing.
+
+```java
+package com.apple.spark;
+
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.health.HealthCheckRegistry;
+import com.apple.spark.core.BPGStatsdConfig;
+import io.dropwizard.jersey.setup.JerseyEnvironment;
+import io.dropwizard.jetty.MutableServletContextHandler;
+import io.dropwizard.setup.Environment;
+import io.micrometer.core.instrument.MeterRegistry;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+/**
+ * Fixed unit test for BPGApplication.run(...) that avoids static mocking (which requires
+ * mockito-inline). This test uses Mockito to mock the Dropwizard Environment and its
+ * subcomponents, and verifies key side-effects of run(...):
+ *  - default application context path is applied when configuration value is null
+ *  - environment.metrics() is invoked and returns the provided metric registry
+ *  - jersey resources are registered
+ *  - health check registration occurs for "sparkClusters"
+ *
+ * Notes:
+ *  - We construct BPGApplication with monitorApplication = false to avoid starting the
+ *    ApplicationMonitor background thread during the test.
+ *  - This test does not attempt to stub static methods (SharedMetricRegistries.add,
+ *    BPGStatsdConfig.createMeterRegistry). If your project uses mockito-inline and you
+ *    prefer static stubbing, you can adapt the test accordingly; however, static stubbing
+ *    is deliberately avoided here to keep the test compatible with mockito-core.
+ */
+public class BPGApplication_run_3_0_Test_testRun_nullContextPath_usesDefaultAndRegistersResources {
+
+  private Environment environment;
+  private JerseyEnvironment jerseyEnvironment;
+  private MutableServletContextHandler servletContextHandler;
+  private HealthCheckRegistry healthCheckRegistry;
+  private MetricRegistry metricRegistry;
+
+  @BeforeEach
+  public void setUp() {
+    environment = mock(Environment.class);
+    jerseyEnvironment = mock(JerseyEnvironment.class);
+    // Use Dropwizard's MutableServletContextHandler as the application context handler type
+    servletContextHandler = mock(MutableServletContextHandler.class);
+    healthCheckRegistry = mock(HealthCheckRegistry.class);
+    metricRegistry = new MetricRegistry();
+
+    when(environment.jersey()).thenReturn(jerseyEnvironment);
+    when(environment.getApplicationContext()).thenReturn(servletContextHandler);
+    when(environment.metrics()).thenReturn(metricRegistry);
+    when(environment.healthChecks()).thenReturn(healthCheckRegistry);
+
+    // Allow registering anything without side effects
+    doNothing().when(jerseyEnvironment).register(any());
+  }
+
+  @Test
+  public void testRun_nullContextPath_usesDefaultAndRegistersResources() {
+    AppConfig config = new AppConfig();
+    // explicit set to null to exercise null branch
+    config.setApplicationContextPath(null);
+    config.setAllowedUsers(Arrays.asList("allowed"));
+    config.setBlockedUsers(Arrays.asList("blocked"));
+    config.setSparkClusters(null);
+
+    // Do not mock static methods (SharedMetricRegistries.add or BPGStatsdConfig.createMeterRegistry)
+    // to avoid requiring mockito-inline. Allow the real static methods to run.
+    BPGApplication app = new BPGApplication(false);
+    app.run(config, environment);
+
+    // Verify context path set to default when null
+    verify(servletContextHandler).setContextPath(org.mockito.ArgumentMatchers.anyString());
+    // capture and assert the actual value set
+    org.mockito.ArgumentCaptor<String> contextCaptor = org.mockito.ArgumentCaptor.forClass(String.class);
+    verify(servletContextHandler).setContextPath(contextCaptor.capture());
+    String contextPathSet = contextCaptor.getValue();
+    assertNotNull(contextPathSet);
+    assertFalse(contextPathSet.isEmpty());
+    assertEquals(com.apple.spark.core.Constants.DEFAULT_APPLICATION_CONTEXT_PATH, contextPathSet);
+
+    // Verify environment.metrics() was invoked and returns the same registry we provided.
+    verify(environment, atLeastOnce()).metrics();
+    assertSame(metricRegistry, environment.metrics());
+
+    // Verify resources registration (at least one register call)
+    verify(jerseyEnvironment, atLeast(1)).register(any());
+
+    // Verify healthcheck registration called with "sparkClusters"
+    verify(healthCheckRegistry).register(eq("sparkClusters"), any());
+  }
+}
+```
+
+The error encountered when running this unit test is:
+
+```
+timeout
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:147)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:127)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:90)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:55)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:102)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:54)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86)
+	at org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86)
+	at org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:55)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:223)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:175)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:139)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:456)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:169)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:595)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:581)
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Errors: 
+[ERROR]   BPGApplication_run_3_0_Test_testRun_nullContextPath_usesDefaultAndRegistersResources.testRun_nullContextPath_usesDefaultAndRegistersResources:73 » IllegalState Default registry name has not been set.
+[INFO] 
+[ERROR] Tests run: 1, Failures: 0, Errors: 1, Skipped: 0
+[INFO] 
+[INFO] ---------
+```
+
+# Procedures for Fixing the Unit Test:
+Let's proceed step by step:
+
+1. Pick out the statements that the errors occur
+2. Reason about the causes of the errors
+3. Reason about solutions on how to fix the errors
+3. Provide the complete fixed unit test, utilizing JUnit 5 and Mockito 3 if required.
+
+# Requirements and Considerations for the Unit Test Fix:
+- Ensure the unit tests are executable without compile errors, runtime errors, or timeouts.
+- Aim for high coverage scores, covering as many instructions and branches of the method under test as possible.
+- Avoid modifying the method under test.
+- Generate the entire unit test file, including package declaration and imports.
+- Ensure correct testing of the method under test:
+    - The method under test is defined in BPGApplication.
+    - The method under test is BPGApplication.run.
+- Utilize correct tools and adhere to Java 8 language style:
+    - You can use JUnit 5 and Mockito 3.
+    - The language style should follow Java 8 conventions.
+
+# Output Format
+To facilitate generating the desired unit test, follow these instructions:
+
+<<Generation Begin>>
+{complete unit test}
+<<Generation Over>>
+
+Please proceed with generating the fixed unit test.
+Ensure all generations are provided in a single response.

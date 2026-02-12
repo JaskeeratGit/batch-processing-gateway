@@ -1,0 +1,166 @@
+Hello. You are a talented Java programmer. Here you're going to help the user fix the unit test file with error.
+Here is the information of the method-to-test:
+
+The focal method is `meterRuntimeException()` in the focal class `ExceptionUtils`, and their information is
+```[java]
+public static void meterRuntimeException() {
+    runtimeExceptionMeter.mark();
+  }
+```
+
+To help you correctly fix the unit test file, we provide the brief information about the dependency
+
+The brief information of dependent class `com.codahale.metrics.Meter` is
+```[java]
+mark()
+```
+
+# Unit Test to Fix
+
+Here's the unit test that needs fixing.
+
+```java
+package com.apple.spark.util;
+
+import com.codahale.metrics.Meter;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.concurrent.atomic.AtomicInteger;
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ * Unit tests for ExceptionUtils.meterRuntimeException()
+ */
+public class ExceptionUtils_meterRuntimeException_5_0_Test_meterRuntimeException_whenMeterIsNull_throwsNullPointerException {
+
+    private Field runtimeExceptionMeterField;
+    private Object originalRuntimeExceptionMeter;
+    private Field modifiersField;
+
+    @BeforeEach
+    void setUp() throws Exception {
+        // Access the private static final field
+        runtimeExceptionMeterField = ExceptionUtils.class.getDeclaredField("runtimeExceptionMeter");
+        runtimeExceptionMeterField.setAccessible(true);
+        // Keep original to restore later
+        originalRuntimeExceptionMeter = runtimeExceptionMeterField.get(null);
+        // Remove final modifier so we can set the field
+        modifiersField = Field.class.getDeclaredField("modifiers");
+        modifiersField.setAccessible(true);
+        modifiersField.setInt(runtimeExceptionMeterField, runtimeExceptionMeterField.getModifiers() & ~Modifier.FINAL);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        // Restore original value (most important)
+        runtimeExceptionMeterField.set(null, originalRuntimeExceptionMeter);
+    }
+
+    // A simple Meter subclass that counts mark invocations
+    static class CountingMeter extends Meter {
+
+        private final AtomicInteger count = new AtomicInteger(0);
+
+        @Override
+        public void mark() {
+            count.incrementAndGet();
+        }
+
+        @Override
+        public void mark(long n) {
+            // Meter.mark(long) accepts long; keep simple counting semantics
+            count.addAndGet((int) n);
+        }
+
+        // Must be public to match Metered.getCount() visibility
+        public int getCount() {
+            return count.get();
+        }
+    }
+
+    @Test
+    void meterRuntimeException_whenMeterIsNull_throwsNullPointerException() throws Exception {
+        // Set the metric field to null to exercise behavior when field is null
+        runtimeExceptionMeterField.set(null, null);
+        assertThrows(NullPointerException.class,
+            () -> ExceptionUtils.meterRuntimeException(),
+            "Calling meterRuntimeException when the meter is null should throw NPE");
+    }
+
+    @Test
+    void meterRuntimeException_marksMeter_whenMeterIsPresent() throws Exception {
+        // Set a counting meter and ensure meterRuntimeException invokes mark()
+        CountingMeter cm = new CountingMeter();
+        runtimeExceptionMeterField.set(null, cm);
+
+        // call method under test
+        ExceptionUtils.meterRuntimeException();
+
+        // verify the meter was marked exactly once
+        assertEquals(1, cm.getCount(), "meterRuntimeException should call mark() once on the meter");
+    }
+}
+```
+
+The error encountered when running this unit test is:
+
+```
+compile
+[INFO] BPGApplication_initialize_2_0_Test_testInitialize_withMockBootstrap_doesNotThrow.java: BPGApplication_initialize_2_0_Test_testInitialize_withMockBootstrap_doesNotThrow.java uses unchecked or unsafe operations.
+[INFO] BPGApplication_initialize_2_0_Test_testInitialize_withMockBootstrap_doesNotThrow.java: Recompile with -Xlint:unchecked for details.
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] ExceptionUtils_meterRuntimeException_5_0_Test_meterRuntimeException_whenMeterIsNull_throwsNullPointerException.java:[55,20] getCount() in com.apple.spark.util.ExceptionUtils_meterRuntimeException_5_0_Test_meterRuntimeException_whenMeterIsNull_throwsNullPointerException.CountingMeter cannot implement getCount() in com.codahale.metrics.Metered
+  return type int is not compatible with long
+[INFO] 1 error
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.301 s
+[INFO] Finished at: 2026-01-11T17:19:10-07:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.8.1:testCompile (default-testCompile) on project bpg: Compilation failure
+[ERROR] ExceptionUtils_meterRuntimeException_5_0_Test_meterRuntimeException_whenMeterIsNull_throwsNullPointerException.java:[55,20] getCount() in com.apple.spark.util.ExceptionUtils_meterRuntimeException_5_0_Test_meterRuntimeException_whenMeterIsNull_throwsNullPointerException.CountingMeter cannot implement getCount() in com.codahale.metrics.Metered
+[ERROR]   return type int is not compatible with long
+[ERROR] 
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+```
+
+# Procedures for Fixing the Unit Test:
+Let's proceed step by step:
+
+1. Pick out the statements that the errors occur
+2. Reason about the causes of the errors
+3. Reason about solutions on how to fix the errors
+3. Provide the complete fixed unit test, utilizing JUnit 5 and Mockito 3 if required.
+
+# Requirements and Considerations for the Unit Test Fix:
+- Ensure the unit tests are executable without compile errors, runtime errors, or timeouts.
+- Aim for high coverage scores, covering as many instructions and branches of the method under test as possible.
+- Avoid modifying the method under test.
+- Generate the entire unit test file, including package declaration and imports.
+- Ensure correct testing of the method under test:
+    - The method under test is defined in ExceptionUtils.
+    - The method under test is ExceptionUtils.meterRuntimeException.
+- Utilize correct tools and adhere to Java 8 language style:
+    - You can use JUnit 5 and Mockito 3.
+    - The language style should follow Java 8 conventions.
+
+# Output Format
+To facilitate generating the desired unit test, follow these instructions:
+
+<<Generation Begin>>
+{complete unit test}
+<<Generation Over>>
+
+Please proceed with generating the fixed unit test.
+Ensure all generations are provided in a single response.

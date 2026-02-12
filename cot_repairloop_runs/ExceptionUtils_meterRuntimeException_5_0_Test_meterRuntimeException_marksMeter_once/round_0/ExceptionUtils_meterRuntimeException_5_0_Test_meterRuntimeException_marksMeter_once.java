@@ -1,0 +1,69 @@
+package com.apple.spark.util;
+
+import com.codahale.metrics.Meter;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.concurrent.atomic.AtomicInteger;
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+@ExtendWith(MockitoExtension.class)
+public class ExceptionUtils_meterRuntimeException_5_0_Test_meterRuntimeException_marksMeter_once {
+
+    private Field runtimeExceptionMeterField;
+
+    private Object originalRuntimeExceptionMeter;
+
+    private Field modifiersField;
+
+    @BeforeEach
+    void setUp() throws Exception {
+        // Access the private static final field
+        runtimeExceptionMeterField = ExceptionUtils.class.getDeclaredField("runtimeExceptionMeter");
+        runtimeExceptionMeterField.setAccessible(true);
+        // Keep original to restore later
+        originalRuntimeExceptionMeter = runtimeExceptionMeterField.get(null);
+        // Remove final modifier so we can set the field
+        modifiersField = Field.class.getDeclaredField("modifiers");
+        modifiersField.setAccessible(true);
+        modifiersField.setInt(runtimeExceptionMeterField, runtimeExceptionMeterField.getModifiers() & ~Modifier.FINAL);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        // Restore original value (most important)
+        runtimeExceptionMeterField.set(null, originalRuntimeExceptionMeter);
+    }
+
+    // A simple Meter subclass that counts mark invocations
+    static class CountingMeter extends Meter {
+
+        private final AtomicInteger count = new AtomicInteger(0);
+
+        @Override
+        public void mark() {
+            count.incrementAndGet();
+        }
+
+        @Override
+        public void mark(long n) {
+            count.addAndGet((int) n);
+        }
+
+        // Implement the Metered#getCount contract: public long getCount()
+        @Override
+        public long getCount() {
+            return count.get();
+        }
+    }
+
+    @Test
+    void meterRuntimeException_marksMeter_once() throws Exception {
+        CountingMeter cm = new CountingMeter();
+        runtimeExceptionMeterField.set(null, cm);
+        ExceptionUtils.meterRuntimeException();
+        assertEquals(1L, cm.getCount(), "meterRuntimeException should mark the meter once");
+    }
+}

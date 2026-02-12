@@ -1,0 +1,134 @@
+package com.apple.spark.core;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
+
+import com.apple.spark.util.CounterMetricContainer;
+import com.apple.spark.util.TimerMetricContainer;
+import io.micrometer.core.instrument.Tag;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.Collection;
+import java.util.List;
+import java.util.function.Supplier;
+
+/**
+ * Fixed unit test for LogDao.logApplicationId behavior when the underlying implementation
+ * throws an exception (simulated by having a null DB connection). This test exercises the
+ * public logApplicationId(...) method and wires a TimerMetricContainer that actually
+ * executes the passed Runnable so the private implementation runs and (due to null DB)
+ * increments the failure metric. Reflection is used to inject the mock CounterMetricContainer
+ * and the stubbed TimerMetricContainer into the LogDao instance.
+ */
+public class LogDao_logApplicationId_5_0_Test_test_logApplicationIdImpl_onException_incrementsFailureMetric {
+
+    private static void setFieldByType(Object target, Class<?> fieldType, Object value) throws Exception {
+        Field found = null;
+        for (Field f : LogDao.class.getDeclaredFields()) {
+            if (fieldType.isAssignableFrom(f.getType())) {
+                found = f;
+                break;
+            }
+        }
+        if (found == null) {
+            throw new NoSuchFieldException("No field of type " + fieldType + " in LogDao");
+        }
+        found.setAccessible(true);
+        if (Modifier.isStatic(found.getModifiers())) {
+            found.set(null, value);
+        } else {
+            found.set(target, value);
+        }
+    }
+
+    private static Object getStaticField(String fieldName) throws Exception {
+        Field f = LogDao.class.getDeclaredField(fieldName);
+        f.setAccessible(true);
+        return f.get(null);
+    }
+
+    @Test
+    public void test_logApplicationIdImpl_onException_incrementsFailureMetric() throws Exception {
+        // Create LogDao with empty connection string so dbConnection==null (original behavior)
+        LogDao dao = new LogDao("", "u", "p", "db");
+
+        // Mock failureMetrics and inject into dao by type (robust if field name differs)
+        CounterMetricContainer mockFailureMetrics = mock(CounterMetricContainer.class);
+        setFieldByType(dao, CounterMetricContainer.class, mockFailureMetrics);
+
+        // Provide a TimerMetricContainer that simply executes the runnable immediately.
+        // This avoids complex Mockito varargs matching issues and avoids recursive mocking problems.
+        TimerMetricContainer executingTimer = new TimerMetricContainer(null) {
+            @Override
+            public void record(Runnable runnable, String metricName, Tag... tags) {
+                // run the passed runnable so the implementation logic executes
+                runnable.run();
+            }
+
+            @Override
+            public void record(Runnable runnable, String metricName, Collection<Tag> tags) {
+                runnable.run();
+            }
+
+            @Override
+            public <T> T record(Supplier<T> runnable, String metricName, Tag... tags) {
+                return runnable.get();
+            }
+
+            @Override
+            public <T> T record(Supplier<T> runnable, String metricName, Collection<Tag> tags) {
+                return runnable.get();
+            }
+        };
+
+        // Inject the executing timer into dao (by type)
+        setFieldByType(dao, TimerMetricContainer.class, executingTimer);
+
+        // Ensure bypassLog is false so the public method will attempt to log
+        Field bypassField = LogDao.class.getDeclaredField("bypassLog");
+        bypassField.setAccessible(true);
+        bypassField.setBoolean(dao, false);
+
+        // Call the public method under test. The injected TimerMetricContainer will execute the
+        // internal implementation, which (due to null DB) should handle an exception and
+        // increment the failure metric on our mockFailureMetrics.
+        dao.logApplicationId("s-ex", "a-ex");
+
+        // Verify failureMetrics.increment was called with expected metric name and tags.
+        String expectedFailureMetric = (String) getStaticField("DB_FAILURE_METRIC_NAME");
+
+        // Capture varargs Tag elements. Mockito flattens varargs into individual captured Tag instances,
+        // so capture Tag (not Tag[]), and then inspect collected Tag objects.
+        @SuppressWarnings("unchecked")
+        ArgumentCaptor<Tag> tagCaptor = ArgumentCaptor.forClass(Tag.class);
+
+        verify(mockFailureMetrics, atLeastOnce()).increment(eq(expectedFailureMetric), tagCaptor.capture());
+
+        List<Tag> capturedTags = tagCaptor.getAllValues();
+        assertFalse(capturedTags.isEmpty(), "Expected at least one tag captured from increment invocation(s)");
+
+        boolean hasOp = false;
+        boolean hasEx = false;
+        for (Tag t : capturedTags) {
+            if (t == null) {
+                continue;
+            }
+            if ("operation".equals(t.getKey()) && "log_app_id".equals(t.getValue())) {
+                hasOp = true;
+            }
+            if ("exception".equals(t.getKey()) && t.getValue() != null &&
+                    t.getValue().contains("NullPointerException")) {
+                hasEx = true;
+            }
+            if (hasOp && hasEx) {
+                break;
+            }
+        }
+
+        assertTrue(hasOp && hasEx, "Expected failure metric increment to include operation=log_app_id and exception=NullPointerException tags");
+    }
+}

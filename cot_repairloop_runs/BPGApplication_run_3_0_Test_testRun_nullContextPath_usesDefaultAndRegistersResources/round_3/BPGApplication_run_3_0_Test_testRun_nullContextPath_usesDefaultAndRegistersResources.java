@@ -1,0 +1,95 @@
+package com.apple.spark;
+
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.health.HealthCheckRegistry;
+import com.apple.spark.core.BPGStatsdConfig;
+import io.dropwizard.jersey.setup.JerseyEnvironment;
+import io.dropwizard.jetty.MutableServletContextHandler;
+import io.dropwizard.setup.Environment;
+import io.micrometer.core.instrument.MeterRegistry;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+/**
+ * Fixed unit test for BPGApplication.run(...) that avoids static mocking (which requires
+ * mockito-inline). This test uses Mockito to mock the Dropwizard Environment and its
+ * subcomponents, and verifies key side-effects of run(...):
+ *  - default application context path is applied when configuration value is null
+ *  - environment.metrics() is invoked and returns the provided metric registry
+ *  - jersey resources are registered
+ *  - health check registration occurs for "sparkClusters"
+ *
+ * Notes:
+ *  - We construct BPGApplication with monitorApplication = false to avoid starting the
+ *    ApplicationMonitor background thread during the test.
+ *  - This test does not attempt to stub static methods (SharedMetricRegistries.add,
+ *    BPGStatsdConfig.createMeterRegistry). If your project uses mockito-inline and you
+ *    prefer static stubbing, you can adapt the test accordingly; however, static stubbing
+ *    is deliberately avoided here to keep the test compatible with mockito-core.
+ */
+public class BPGApplication_run_3_0_Test_testRun_nullContextPath_usesDefaultAndRegistersResources {
+
+  private Environment environment;
+  private JerseyEnvironment jerseyEnvironment;
+  private MutableServletContextHandler servletContextHandler;
+  private HealthCheckRegistry healthCheckRegistry;
+  private MetricRegistry metricRegistry;
+
+  @BeforeEach
+  public void setUp() {
+    environment = mock(Environment.class);
+    jerseyEnvironment = mock(JerseyEnvironment.class);
+    // Use Dropwizard's MutableServletContextHandler as the application context handler type
+    servletContextHandler = mock(MutableServletContextHandler.class);
+    healthCheckRegistry = mock(HealthCheckRegistry.class);
+    metricRegistry = new MetricRegistry();
+
+    when(environment.jersey()).thenReturn(jerseyEnvironment);
+    when(environment.getApplicationContext()).thenReturn(servletContextHandler);
+    when(environment.metrics()).thenReturn(metricRegistry);
+    when(environment.healthChecks()).thenReturn(healthCheckRegistry);
+
+    // Allow registering anything without side effects
+    doNothing().when(jerseyEnvironment).register(any());
+  }
+
+  @Test
+  public void testRun_nullContextPath_usesDefaultAndRegistersResources() {
+    AppConfig config = new AppConfig();
+    // explicit set to null to exercise null branch
+    config.setApplicationContextPath(null);
+    config.setAllowedUsers(Arrays.asList("allowed"));
+    config.setBlockedUsers(Arrays.asList("blocked"));
+    config.setSparkClusters(null);
+
+    // Do not mock static methods (SharedMetricRegistries.add or BPGStatsdConfig.createMeterRegistry)
+    // to avoid requiring mockito-inline. Allow the real static methods to run.
+    BPGApplication app = new BPGApplication(false);
+    app.run(config, environment);
+
+    // Verify context path set to default when null
+    verify(servletContextHandler).setContextPath(org.mockito.ArgumentMatchers.anyString());
+    // capture and assert the actual value set
+    org.mockito.ArgumentCaptor<String> contextCaptor = org.mockito.ArgumentCaptor.forClass(String.class);
+    verify(servletContextHandler).setContextPath(contextCaptor.capture());
+    String contextPathSet = contextCaptor.getValue();
+    assertNotNull(contextPathSet);
+    assertFalse(contextPathSet.isEmpty());
+    assertEquals(com.apple.spark.core.Constants.DEFAULT_APPLICATION_CONTEXT_PATH, contextPathSet);
+
+    // Verify environment.metrics() was invoked and returns the same registry we provided.
+    verify(environment, atLeastOnce()).metrics();
+    assertSame(metricRegistry, environment.metrics());
+
+    // Verify resources registration (at least one register call)
+    verify(jerseyEnvironment, atLeast(1)).register(any());
+
+    // Verify healthcheck registration called with "sparkClusters"
+    verify(healthCheckRegistry).register(eq("sparkClusters"), any());
+  }
+}

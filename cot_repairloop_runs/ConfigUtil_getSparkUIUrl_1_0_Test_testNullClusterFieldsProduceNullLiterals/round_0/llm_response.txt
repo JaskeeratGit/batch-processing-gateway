@@ -1,0 +1,58 @@
+<<Generation Begin>>
+package com.apple.spark.util;
+
+import com.apple.spark.AppConfig;
+import com.apple.spark.AppConfig.SparkCluster;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ * Unit tests for ConfigUtil.getSparkUIUrl(SparkCluster, String)
+ */
+@ExtendWith(MockitoExtension.class)
+public class ConfigUtilTest {
+
+    @Test
+    void testNullClusterFieldsProduceNullLiterals() {
+        SparkCluster cluster = mock(AppConfig.SparkCluster.class);
+        when(cluster.getSparkUIUrl()).thenReturn(null);
+        when(cluster.getSparkApplicationNamespace()).thenReturn(null);
+
+        String result = ConfigUtil.getSparkUIUrl(cluster, null);
+
+        assertEquals("null/null/null", result);
+    }
+
+    @Test
+    void testNonNullFieldsComposeUrl() {
+        SparkCluster cluster = mock(AppConfig.SparkCluster.class);
+        when(cluster.getSparkUIUrl()).thenReturn("http://spark-ui");
+        when(cluster.getSparkApplicationNamespace()).thenReturn("mynamespace");
+
+        String result = ConfigUtil.getSparkUIUrl(cluster, "submission-123");
+
+        assertEquals("http://spark-ui/mynamespace/submission-123", result);
+    }
+
+    @Test
+    void testNullSubmissionIdProducesNullLiteral() {
+        SparkCluster cluster = mock(AppConfig.SparkCluster.class);
+        when(cluster.getSparkUIUrl()).thenReturn("http://spark-ui");
+        when(cluster.getSparkApplicationNamespace()).thenReturn("mynamespace");
+
+        String result = ConfigUtil.getSparkUIUrl(cluster, null);
+
+        assertEquals("http://spark-ui/mynamespace/null", result);
+    }
+
+    @Test
+    void testNullClusterThrowsNpe() {
+        // The method dereferences cluster, so passing null should produce a NullPointerException
+        assertThrows(NullPointerException.class, () -> ConfigUtil.getSparkUIUrl(null, "id"));
+    }
+}
+<<Generation Over>>

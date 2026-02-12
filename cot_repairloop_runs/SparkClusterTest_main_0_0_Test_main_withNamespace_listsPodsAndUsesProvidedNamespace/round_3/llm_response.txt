@@ -1,0 +1,124 @@
+<<Generation Begin>>
+package com.apple.spark.core;
+
+import com.apple.spark.AppConfig;
+import com.apple.spark.tools.SparkClusterTest;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.api.model.PodStatus;
+import io.fabric8.kubernetes.client.DefaultKubernetesClient;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.util.Arrays;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ * Unit test for SparkClusterTest.main(...)
+ *
+ * NOTE: This test places a test-double KubernetesHelper in the same package
+ * (com.apple.spark.core). Test classes are loaded before main classes on the test
+ * classpath, so SparkClusterTest will resolve KubernetesHelper to the test one
+ * defined below. That avoids relying on static-mocking (mockito-inline), which
+ * may not be available in the environment.
+ */
+public class SparkClusterTest_main_0_0_Test_main_withNamespace_listsPodsAndUsesProvidedNamespace {
+
+    private final PrintStream originalOut = System.out;
+
+    @AfterEach
+    public void restoreSystemOut() {
+        System.setOut(originalOut);
+        // Clean up the test KubernetesHelper client reference to avoid leaking between tests
+        KubernetesHelper.CLIENT_TO_RETURN = null;
+    }
+
+    @Test
+    public void main_withNamespace_listsPodsAndUsesProvidedNamespace() throws Exception {
+        // Arrange: capture stdout
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(baos));
+
+        // Create a client mock (no deep stubs) and a mocked operation chain for pods()
+        DefaultKubernetesClient clientMock = mock(DefaultKubernetesClient.class);
+
+        // Prepare PodList with two pods
+        Pod pod1 = mock(Pod.class);
+        ObjectMeta meta1 = mock(ObjectMeta.class);
+        PodStatus status1 = mock(PodStatus.class);
+        when(meta1.getName()).thenReturn("pod-a");
+        when(status1.getPhase()).thenReturn("Running");
+        when(pod1.getMetadata()).thenReturn(meta1);
+        when(pod1.getStatus()).thenReturn(status1);
+
+        Pod pod2 = mock(Pod.class);
+        ObjectMeta meta2 = mock(ObjectMeta.class);
+        PodStatus status2 = mock(PodStatus.class);
+        when(meta2.getName()).thenReturn("pod-b");
+        when(status2.getPhase()).thenReturn("Pending");
+        when(pod2.getMetadata()).thenReturn(meta2);
+        when(pod2.getStatus()).thenReturn(status2);
+
+        PodList podListMock = mock(PodList.class);
+        when(podListMock.getItems()).thenReturn(Arrays.asList(pod1, pod2));
+
+        // Mock the pods() -> inNamespace("myns") -> list() chain using MixedOperation
+        @SuppressWarnings("unchecked")
+        MixedOperation podsOp = mock(MixedOperation.class);
+        when(clientMock.pods()).thenReturn(podsOp);
+        when(podsOp.inNamespace("myns")).thenReturn(podsOp);
+        when(podsOp.list()).thenReturn(podListMock);
+
+        // Instead of static-mocking KubernetesHelper, use the test-double KubernetesHelper
+        KubernetesHelper.CLIENT_TO_RETURN = clientMock;
+
+        try {
+            // Act: call main with various args including namespace
+            String[] args = new String[] {
+                    "-api-server", "https://api",
+                    "-user", "u",
+                    "-token", "t",
+                    "-ca-cert", "ca",
+                    "-http-proxy", "http://p",
+                    "-https-proxy", "https://p",
+                    "-namespace", "myns"
+            };
+            SparkClusterTest.main(args);
+
+            // Assert: output contains expected lines and pod info
+            String output = baos.toString();
+            assertTrue(output.contains("Listing pods in cluster https://api namespace myns"),
+                    "Should announce listing including master URL and namespace");
+            assertTrue(output.contains("Pod pod-a Running"), "Should list pod-a with Running phase");
+            assertTrue(output.contains("Pod pod-b Pending"), "Should list pod-b with Pending phase");
+        } finally {
+            // ensure we don't keep the mock referenced
+            KubernetesHelper.CLIENT_TO_RETURN = null;
+        }
+    }
+
+}
+
+/*
+ * Test-double KubernetesHelper that will be used by the code under test.
+ * Placing this test-double in the same package (com.apple.spark.core) causes
+ * the test classloader to resolve KubernetesHelper to this class instead of the
+ * production one (test-classes are earlier on the test classpath). This allows
+ * us to control the behavior of getK8sClient(...) without using Mockito's
+ * static mocking.
+ */
+class KubernetesHelper {
+    // test will set this to the mocked DefaultKubernetesClient it wants returned
+    static DefaultKubernetesClient CLIENT_TO_RETURN = null;
+
+    // Keep signature compatible with production: accepts SparkCluster and returns DefaultKubernetesClient
+    public static DefaultKubernetesClient getK8sClient(AppConfig.SparkCluster sparkCluster) {
+        return CLIENT_TO_RETURN;
+    }
+}
+<<Generation Over>>

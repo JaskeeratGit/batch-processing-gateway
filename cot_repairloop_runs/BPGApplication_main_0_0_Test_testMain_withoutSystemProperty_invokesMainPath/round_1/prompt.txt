@@ -1,0 +1,243 @@
+Hello. You are a talented Java programmer. Here you're going to help the user fix the unit test file with error.
+Here is the information of the method-to-test:
+
+The focal method is `main(String[])` in the focal class `BPGApplication`, and their information is
+```[java]
+public static void main(final String[] args) throws Exception {
+    logger.info(
+        "Starting server, version: {}, revision: {}", BuildInfo.Version, BuildInfo.Revision);
+
+    String value = System.getProperty(MONITOR_APPLICATION_SYSTEM_PROPERTY_NAME);
+    boolean monitorApplication = value != null && value.equalsIgnoreCase("true");
+
+    new BPGApplication(monitorApplication).run(args);
+  }
+```
+
+To help you correctly fix the unit test file, we provide the brief information about the dependency
+
+The brief information of dependent class `org.slf4j.Logger` is
+```[java]
+info(String, Object, Object)
+```
+
+The brief information of dependent class `io.dropwizard.Application` is
+```[java]
+run(String[])
+```
+
+# Unit Test to Fix
+
+Here's the unit test that needs fixing.
+
+```java
+package com.apple.spark;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import static com.apple.spark.core.Constants.QUEUE_INFO;
+import static com.apple.spark.core.Constants.SERVICE_ABBR;
+import com.apple.spark.core.ApplicationMonitor;
+import com.apple.spark.core.BPGStatsdConfig;
+import com.apple.spark.core.Constants;
+import com.apple.spark.core.ThrowableExceptionMapper;
+import com.apple.spark.health.BPGHealthCheck;
+import com.apple.spark.rest.AdminRest;
+import com.apple.spark.rest.ApplicationGetLogRest;
+import com.apple.spark.rest.ApplicationSubmissionRest;
+import com.apple.spark.rest.HealthcheckRest;
+import com.apple.spark.rest.CloudStorageRest;
+import com.apple.spark.security.User;
+import com.apple.spark.security.UserNameAuthFilter;
+import com.apple.spark.security.UserNameBasicAuthenticator;
+import com.apple.spark.security.UserUnauthorizedHandler;
+import com.apple.spark.util.CounterMetricContainer;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.SharedMetricRegistries;
+import io.dropwizard.Application;
+import io.dropwizard.auth.AuthDynamicFeature;
+import io.dropwizard.auth.AuthValueFactoryProvider;
+import io.dropwizard.auth.basic.BasicCredentialAuthFilter;
+import io.dropwizard.auth.basic.BasicCredentials;
+import io.dropwizard.auth.chained.ChainedAuthFilter;
+import io.dropwizard.setup.Bootstrap;
+import io.dropwizard.setup.Environment;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
+import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
+import io.swagger.v3.oas.integration.SwaggerConfiguration;
+import io.swagger.v3.oas.models.OpenAPI;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Generated unit tests for BPGApplication.main(String[]).
+ *
+ * Notes:
+ * - main(...) is invoked reflectively in a separate thread with a timeout to avoid blocking the test run
+ *   in case the real run(...) would attempt to start a server.
+ * - Reflection is used to read the private field 'monitorApplication' after constructing instances
+ *   via the public constructors in order to validate constructor behavior and the boolean semantics.
+ */
+public class BPGApplication_main_0_0_Test_testMain_withoutSystemProperty_invokesMainPath {
+
+    private static final String MONITOR_PROPERTY = "monitorApplication";
+
+    @AfterEach
+    public void tearDown() {
+        System.clearProperty(MONITOR_PROPERTY);
+    }
+
+    // Helper to call the main method reflectively with a timeout
+    private void invokeMainWithTimeout(String[] args, long timeoutMillis) throws Exception {
+        Method main = BPGApplication.class.getMethod("main", String[].class);
+        ExecutorService exec = Executors.newSingleThreadExecutor();
+        try {
+            Callable<Object> task = () -> {
+                try {
+                    // varargs-safe invocation
+                    return main.invoke(null, (Object) args);
+                } catch (InvocationTargetException e) {
+                    // rethrow the underlying cause so the test can see it
+                    Throwable cause = e.getCause();
+                    if (cause instanceof Exception) {
+                        throw (Exception) cause;
+                    } else {
+                        throw new RuntimeException(cause);
+                    }
+                }
+            };
+            Future<Object> fut = exec.submit(task);
+            try {
+                fut.get(timeoutMillis, TimeUnit.MILLISECONDS);
+            } catch (java.util.concurrent.TimeoutException te) {
+                // cancel the invocation if it times out (to avoid blocking test suite)
+                fut.cancel(true);
+                // allow tests to continue; if main blocks it will be considered covered for invocation purposes
+            }
+        } finally {
+            exec.shutdownNow();
+        }
+    }
+
+    // Helper to construct BPGApplication(boolean) and read private field
+    private boolean readMonitorFieldFromInstance(BPGApplication instance) throws Exception {
+        Field f = BPGApplication.class.getDeclaredField("monitorApplication");
+        f.setAccessible(true);
+        return f.getBoolean(instance);
+    }
+
+
+
+
+    @Test
+    public void testMain_withoutSystemProperty_invokesMainPath() throws Exception {
+        System.clearProperty(MONITOR_PROPERTY);
+        // Call main reflectively; run(...) may block or do work, so use timeout to prevent test hang.
+        invokeMainWithTimeout(new String[] { "arg0" }, 2000);
+        // No exceptions thrown is considered success for this invocation path
+    }
+
+
+}
+```
+
+The error encountered when running this unit test is:
+
+```
+test
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /home/jaskeerat/paper1/bpg_latest_stable/cot/batch-processing-gateway/src/test/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:testCompile (default-testCompile) @ bpg ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 2 source files to /home/jaskeerat/paper1/bpg_latest_stable/cot/batch-processing-gateway/target/test-classes
+[INFO] BPGApplication_initialize_2_0_Test_testInitialize_withMockBootstrap_doesNotThrow.java: BPGApplication_initialize_2_0_Test_testInitialize_withMockBootstrap_doesNotThrow.java uses unchecked or unsafe operations.
+[INFO] BPGApplication_initialize_2_0_Test_testInitialize_withMockBootstrap_doesNotThrow.java: Recompile with -Xlint:unchecked for details.
+[INFO] 
+[INFO] --- maven-surefire-plugin:3.0.0-M7:test (default-test) @ bpg ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.apple.spark.BPGApplication_main_0_0_Test_testMain_withoutSystemProperty_invokesMainPath
+16:52:46.078 [pool-2-thread-1] INFO com.apple.spark.BPGApplication - Starting server, version: 1.1, revision: 0a3eaa15ae028f9b234e8345c3c5a6ce27aed11d
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 0, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  2.425 s
+[INFO] Finished at: 2026-01-11T16:52:46-07:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.0.0-M7:test (default-test) on project bpg: 
+[ERROR] 
+[ERROR] Please refer to /home/jaskeerat/paper1/bpg_latest_stable/cot/batch-processing-gateway/target/surefire-reports for the individual test results.
+[ERROR] Please refer to dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] The forked VM terminated without properly saying goodbye. VM crash or System.exit called?
+[ERROR] Command was /bin/sh -c cd '/home/jaskeerat/paper1/bpg_latest_stable/cot/batch-processing-gateway' && '/usr/lib/jvm/java-17-openjdk-amd64/bin/java' '-jar' '/home/jaskeerat/paper1/bpg_latest_stable/cot/batch-processing-gateway/target/surefire/surefirebooter-20260111165245671_3.jar' '/home/jaskeerat/paper1/bpg_latest_stable/cot/batch-processing-gateway/target/surefire' '2026-01-11T16-52-45_591-jvmRun1' 'surefire-20260111165245671_1tmp' 'surefire_0-20260111165245671_2tmp'
+[ERROR] Error occurred in starting fork, check output in log
+[ERROR] Process Exit Code: 1
+[ERROR] Crashed tests:
+[ERROR] com.apple.spark.BPGApplication_main_0_0_Test_testMain_withoutSystemProperty_invokesMainPath
+[ERROR] org.apache.maven.surefire.booter.SurefireBooterForkException: The forked VM terminated without properly saying goodbye. VM crash or System.exit called?
+[ERROR] Command was /bin/sh -c cd '/home/jaskeerat/paper1/bpg_latest_stable/cot/batch-processing-gateway' && '/usr/lib/jvm/java-17-openjdk-amd64/bin/java' '-jar' '/home/jaskeerat/paper1/bpg_latest_stable/cot/batch-processing-gateway/target/surefire/surefirebooter-20260111165245671_3.jar' '/home/jaskeerat/paper1/bpg_latest_stable/cot/batch-processing-gateway/target/surefire' '2026-01-11T16-52-45_591-jvmRun1' 'surefire-20260111165245671_1tmp' 'surefire_0-20260111165245671_2tmp'
+[ERROR] Error occurred in starting fork, check output in log
+[ERROR] Process Exit Code: 1
+[ERROR] Crashed tests:
+[ERROR] com.apple.spark.BPGApplication_main_0_0_Test_testMain_withoutSystemProperty_invokesMainPath
+[ERROR] 	at org.apache.maven.plugin.surefire.booterclient.ForkStarter.fork(ForkStarter.java:714)
+[ERROR] 	at org.apache.maven.plugi
+```
+
+# Procedures for Fixing the Unit Test:
+Let's proceed step by step:
+
+1. Pick out the statements that the errors occur
+2. Reason about the causes of the errors
+3. Reason about solutions on how to fix the errors
+3. Provide the complete fixed unit test, utilizing JUnit 5 and Mockito 3 if required.
+
+# Requirements and Considerations for the Unit Test Fix:
+- Ensure the unit tests are executable without compile errors, runtime errors, or timeouts.
+- Aim for high coverage scores, covering as many instructions and branches of the method under test as possible.
+- Avoid modifying the method under test.
+- Generate the entire unit test file, including package declaration and imports.
+- Ensure correct testing of the method under test:
+    - The method under test is defined in BPGApplication.
+    - The method under test is BPGApplication.main.
+- Utilize correct tools and adhere to Java 8 language style:
+    - You can use JUnit 5 and Mockito 3.
+    - The language style should follow Java 8 conventions.
+
+# Output Format
+To facilitate generating the desired unit test, follow these instructions:
+
+<<Generation Begin>>
+{complete unit test}
+<<Generation Over>>
+
+Please proceed with generating the fixed unit test.
+Ensure all generations are provided in a single response.

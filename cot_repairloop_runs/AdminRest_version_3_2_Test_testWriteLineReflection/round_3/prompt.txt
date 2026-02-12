@@ -1,0 +1,309 @@
+Hello. You are a talented Java programmer. Here you're going to help the user fix the unit test file with error.
+Here is the information of the method-to-test:
+
+The focal method is `version()` in the focal class `AdminRest`, and their information is
+```[java]
+@GET
+  @Path("version")
+  @Timed
+  @Operation(
+      summary = "Show the version",
+      tags = {"Admin"})
+  @ApiResponse(
+          responseCode = "200",
+          content = @Content(mediaType = "application/json", schema = @Schema(type = "string")),
+          description = "OK")
+  public Response version() {
+    VersionInfo verInfo = ConfigUtil.readVersion();
+    return Response.ok(
+            new RestStreamingOutput() {
+              @Override
+              public void write(OutputStream outputStream) throws WebApplicationException {
+                try {
+                  ObjectMapper mapper = new ObjectMapper();
+                  String verJson =
+                      mapper.writerWithDefaultPrettyPrinter().writeValueAsString(verInfo);
+                  writeLine(outputStream, verJson);
+
+                  outputStream.flush();
+                } catch (Throwable ex) {
+                  logger.warn("Failed to get version info", ex);
+                  ExceptionUtils.meterException();
+                }
+              }
+            })
+        .build();
+  }
+```
+
+To help you correctly fix the unit test file, we provide the brief information about the dependency
+
+The brief information of dependent class `com.apple.spark.util.ConfigUtil` is
+```[java]
+import static com.apple.spark.AppConfig.SparkCluster;
+import com.apple.spark.AppConfig;
+import com.apple.spark.core.DBConnection;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+import org.jdbi.v3.core.Jdbi;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+public class ConfigUtil {
+private static final Logger logger = ...;
+public static VersionInfo readVersion(){}
+}
+```
+
+The brief information of dependent class `com.apple.spark.core.RestStreamingOutput` is
+```[java]
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
+import javax.ws.rs.core.StreamingOutput;
+public abstract class RestStreamingOutput {
+protected void writeLine(OutputStream outputStream, String line) throws IOException{}
+}
+```
+
+The brief information of dependent class `com.apple.spark.util.ExceptionUtils` is
+```[java]
+import com.apple.spark.core.Constants;
+import com.codahale.metrics.Meter;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.SharedMetricRegistries;
+public class ExceptionUtils {
+private static final MetricRegistry registry;
+private static final Meter jsonProcessingExceptionMeter;
+private static final Meter ioExceptionMeter;
+private static final Meter runtimeExceptionMeter;
+private static final Meter exceptionMeter;
+public static void meterException(){}
+}
+```
+
+The brief information of dependent class `com.apple.spark.util.ConfigUtil` is
+```[java]
+readVersion()
+```
+
+The brief information of dependent class `com.fasterxml.jackson.databind.ObjectWriter` is
+```[java]
+writeValueAsString(Object)
+```
+
+The brief information of dependent class `com.fasterxml.jackson.databind.ObjectMapper` is
+```[java]
+writerWithDefaultPrettyPrinter()
+```
+
+The brief information of dependent class `com.apple.spark.core.RestStreamingOutput` is
+```[java]
+writeLine(OutputStream, String)
+```
+
+The brief information of dependent class `org.slf4j.Logger` is
+```[java]
+warn(String, Throwable)
+```
+
+The brief information of dependent class `com.apple.spark.util.ExceptionUtils` is
+```[java]
+meterException()
+```
+
+# Unit Test to Fix
+
+Here's the unit test that needs fixing.
+
+```java
+package com.apple.spark.rest;
+
+import com.apple.spark.AppConfig;
+import com.apple.spark.core.RestStreamingOutput;
+import io.micrometer.core.instrument.MeterRegistry;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.lang.reflect.Method;
+import javax.ws.rs.core.Response;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+
+/**
+ * Fixed unit tests:
+ * - implement the abstract write method when instantiating RestStreamingOutput anonymously
+ *   so the anonymous class is not abstract and compiles.
+ * - supply required constructor args for AdminRest (AppConfig and MeterRegistry).
+ * - removed static mocking of ConfigUtil.readVersion() because the test environment's Mockito
+ *   setup does not support static mocking (mockito-inline is not available). This test now
+ *   exercises AdminRest.version() without attempting to mock that static method.
+ */
+public class AdminRest_version_3_2_Test_testWriteLineReflection {
+
+    @Test
+    public void testWriteLineReflection() throws Exception {
+        // Create a simple RestStreamingOutput instance and implement the abstract write method
+        RestStreamingOutput rso = new RestStreamingOutput() {
+            @Override
+            public void write(OutputStream output) throws IOException {
+                // no-op implementation for the abstract method; not used in this reflection test
+            }
+        };
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        // Find the protected writeLine(OutputStream, String) method reflectively
+        Method target = null;
+        for (Method m : RestStreamingOutput.class.getDeclaredMethods()) {
+            if ("writeLine".equals(m.getName())
+                    && m.getParameterCount() == 2
+                    && m.getParameterTypes()[0] == OutputStream.class
+                    && m.getParameterTypes()[1] == String.class) {
+                target = m;
+                break;
+            }
+        }
+        assertNotNull(target, "writeLine method should exist on RestStreamingOutput");
+        target.setAccessible(true);
+
+        String payload = "hello-world";
+        target.invoke(rso, baos, payload);
+
+        String out = baos.toString("UTF-8");
+        assertEquals(payload + System.lineSeparator(), out);
+    }
+
+    @Test
+    public void testAdminRestVersionProducesStreamingOutput() throws Exception {
+        // NOTE: We avoid static mocking of ConfigUtil.readVersion() because the running test
+        // environment does not have mockito-inline enabled. Instead we exercise AdminRest.version()
+        // as-is and assert the response and streaming behavior. This keeps the test compatible
+        // with standard Mockito setups.
+
+        // Provide mocked constructor arguments required by AdminRest
+        AppConfig mockAppConfig = mock(AppConfig.class);
+        MeterRegistry mockRegistry = mock(MeterRegistry.class);
+
+        // Create the AdminRest and call the version() method
+        AdminRest admin = new AdminRest(mockAppConfig, mockRegistry);
+        Response resp = admin.version();
+
+        // Basic response checks
+        assertNotNull(resp);
+        assertEquals(Response.Status.OK.getStatusCode(), resp.getStatus());
+
+        Object entity = resp.getEntity();
+        assertNotNull(entity, "Response entity should not be null");
+        assertTrue(entity instanceof javax.ws.rs.core.StreamingOutput,
+                "Entity should be a StreamingOutput");
+
+        // Execute the StreamingOutput to capture its output
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        javax.ws.rs.core.StreamingOutput streaming = (javax.ws.rs.core.StreamingOutput) entity;
+
+        // The StreamingOutput implementation swallows exceptions internally (logs + meters) so
+        // invoking write shouldn't throw; capture whatever is written.
+        streaming.write(baos);
+        String out = baos.toString("UTF-8");
+
+        // Ensure some output was produced and that it ends with a line separator (writeLine appends it).
+        assertFalse(out.isEmpty(), "Output should not be empty");
+        assertTrue(out.endsWith(System.lineSeparator()), "Output should end with a line separator");
+
+        // Trimmed content (excluding the trailing newline) should be non-empty in typical cases.
+        // But don't fail the test if real serialization produced "null" or "{}" — just ensure trimmed
+        // string is present (not purely whitespace/newline).
+        String trimmed = out.trim();
+        assertFalse(trimmed.isEmpty(), "Trimmed output should not be empty");
+    }
+}
+```
+
+The error encountered when running this unit test is:
+
+```
+timeout
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:147)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:127)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:90)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:55)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:102)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:54)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86)
+	at org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86)
+	at org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:55)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:223)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:175)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:139)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:456)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:169)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:595)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:581)
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Errors: 
+[ERROR]   AdminRest_version_3_2_Test_testWriteLineReflection.testAdminRestVersionProducesStreamingOutput:72 » IllegalState Default registry name has not been set.
+[INFO] 
+[ERROR] Tests run: 2, Failures: 0, Errors: 1, Skipped: 0
+[INFO] 
+[INFO] --------------------------------------------------------
+```
+
+# Procedures for Fixing the Unit Test:
+Let's proceed step by step:
+
+1. Pick out the statements that the errors occur
+2. Reason about the causes of the errors
+3. Reason about solutions on how to fix the errors
+3. Provide the complete fixed unit test, utilizing JUnit 5 and Mockito 3 if required.
+
+# Requirements and Considerations for the Unit Test Fix:
+- Ensure the unit tests are executable without compile errors, runtime errors, or timeouts.
+- Aim for high coverage scores, covering as many instructions and branches of the method under test as possible.
+- Avoid modifying the method under test.
+- Generate the entire unit test file, including package declaration and imports.
+- Ensure correct testing of the method under test:
+    - The method under test is defined in AdminRest.
+    - The method under test is AdminRest.version.
+- Utilize correct tools and adhere to Java 8 language style:
+    - You can use JUnit 5 and Mockito 3.
+    - The language style should follow Java 8 conventions.
+
+# Output Format
+To facilitate generating the desired unit test, follow these instructions:
+
+<<Generation Begin>>
+{complete unit test}
+<<Generation Over>>
+
+Please proceed with generating the fixed unit test.
+Ensure all generations are provided in a single response.

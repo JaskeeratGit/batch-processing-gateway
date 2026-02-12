@@ -1,0 +1,92 @@
+<<Generation Begin>>
+package com.apple.spark;
+
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+import com.apple.spark.health.BPGHealthCheck;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.SharedMetricRegistries;
+import io.dropwizard.jersey.setup.JerseyEnvironment;
+import io.dropwizard.setup.Environment;
+import io.dropwizard.jetty.MutableServletContextHandler;
+import io.micrometer.core.instrument.MeterRegistry;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.ArrayList;
+import java.util.Set;
+
+@ExtendWith(MockitoExtension.class)
+public class BPGApplication_run_3_1_Test_testRun_whenApplicationContextPathIsNull_usesDefaultAndRegistersResources_monitorFalse {
+
+    @BeforeEach
+    public void setup() {
+        // Ensure shared metric registries are cleared between tests
+        SharedMetricRegistries.clear();
+    }
+
+    @Test
+    public void testRun_whenApplicationContextPathIsNull_usesDefaultAndRegistersResources_monitorFalse() throws Exception {
+        // Arrange
+        AppConfig config = mock(AppConfig.class);
+        // explicitly set null (default), to test branch where getApplicationContextPath() == null
+        when(config.getApplicationContextPath()).thenReturn(null);
+        when(config.getAllowedUsers()).thenReturn(new ArrayList<>());
+        when(config.getBlockedUsers()).thenReturn(new ArrayList<>());
+        when(config.getSparkClusters()).thenReturn(new ArrayList<>());
+
+        Environment env = mock(Environment.class);
+        MutableServletContextHandler appContext = mock(MutableServletContextHandler.class);
+        JerseyEnvironment jersey = mock(JerseyEnvironment.class);
+        com.codahale.metrics.health.HealthCheckRegistry healthChecks = mock(com.codahale.metrics.health.HealthCheckRegistry.class);
+        MetricRegistry metricRegistry = new MetricRegistry();
+
+        when(env.getApplicationContext()).thenReturn(appContext);
+        when(env.metrics()).thenReturn(metricRegistry);
+        when(env.jersey()).thenReturn(jersey);
+        when(env.healthChecks()).thenReturn(healthChecks);
+
+        // monitorApplication = false
+        BPGApplication app = new BPGApplication(false);
+
+        // Act
+        // Do not attempt to mock the static BPGStatsdConfig.createMeterRegistry() to avoid requiring
+        // the mockito-inline dependency. Use the real static method instead.
+        app.run(config, env);
+
+        // Assert
+        // application context path should be set to default constant
+        verify(appContext).setContextPath(com.apple.spark.core.Constants.DEFAULT_APPLICATION_CONTEXT_PATH);
+
+        // SharedMetricRegistries should contain the metric registry under DEFAULT_METRIC_REGISTRY
+        // Avoid calling getOrCreate(...) because SharedMetricRegistries may require a default name to be set
+        // instead, verify the registry name is present in the registry names set.
+        Set<String> names = SharedMetricRegistries.names();
+        assertTrue(names.contains(com.apple.spark.core.Constants.DEFAULT_METRIC_REGISTRY),
+                "SharedMetricRegistries should contain the default metric registry name");
+
+        // Jersey should have been asked to register multiple resources and features.
+        // basic smoke check (at least majority)
+        verify(jersey, atLeast(6)).register(any());
+
+        // Specifically verify that ApplicationSubmissionRest and ApplicationGetLogRest got registered
+        ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
+        verify(jersey, atLeast(1)).register(captor.capture());
+        boolean foundSubmission = captor.getAllValues().stream()
+                .anyMatch(o -> o != null && o.getClass().getSimpleName().equals("ApplicationSubmissionRest"));
+        boolean foundGetLog = captor.getAllValues().stream()
+                .anyMatch(o -> o != null && o.getClass().getSimpleName().equals("ApplicationGetLogRest"));
+        // At least one of the captured registrations should match those classes
+        assertTrue(foundSubmission || foundGetLog);
+
+        // Health check registration should be called with "sparkClusters" and a BPGHealthCheck instance
+        verify(healthChecks).register(eq("sparkClusters"), any(BPGHealthCheck.class));
+    }
+
+}
+<<Generation Over>>

@@ -1,0 +1,129 @@
+Hello. You are a talented Java programmer. Here you're going to help the user fix the unit test file with error.
+Here is the information of the method-to-test:
+
+The focal method is `record(Supplier, String, Collection)` in the focal class `TimerMetricContainer`, and their information is
+```[java]
+public <T> T record(Supplier<T> runnable, String metricName, Collection<Tag> tags) {
+    Timer timer = getTimer(metricName, tags);
+    return timer.record(runnable);
+  }
+```
+
+To help you correctly fix the unit test file, we provide the brief information about the dependency
+
+The brief information of dependent class `io.micrometer.core.instrument.Timer` is
+```[java]
+record(SupplierT)
+```
+
+# Unit Test to Fix
+
+Here's the unit test that needs fixing.
+
+```java
+package com.apple.spark.util;
+
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.Timer;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.function.Supplier;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
+
+/**
+ * JUnit 5 tests for TimerMetricContainer#record(Supplier, String, Collection)
+ *
+ * Uses Mockito to mock MeterRegistry and Timer.
+ * Uses reflection to invoke the private getTimer(String, Collection<Tag>) method.
+ */
+@ExtendWith(MockitoExtension.class)
+class TimerMetricContainer_record_3_0_Test_record_shouldDelegateToTimerAndReturnValue {
+
+    @Mock
+    private MeterRegistry meterRegistry;
+
+    @Mock
+    private Timer timer;
+
+    private TimerMetricContainer container;
+
+    @BeforeEach
+    void setUp() {
+        container = new TimerMetricContainer(meterRegistry);
+    }
+
+    @Test
+    void record_shouldDelegateToTimerAndReturnValue() {
+        String metricName = "test.metric";
+        Tag t1 = mock(Tag.class);
+        Tag t2 = mock(Tag.class);
+        Collection<Tag> tags = Arrays.asList(t1, t2);
+        // Make meterRegistry.timer(...) return our mocked timer
+        when(meterRegistry.timer(eq(metricName), eq(tags))).thenReturn(timer);
+        // Make timer.record call the supplied Supplier so we exercise supplier logic and return its value.
+        when(timer.record(ArgumentMatchers.any())).thenAnswer(invocation -> {
+            Supplier<?> supplied = invocation.getArgument(0);
+            // noinspection unchecked
+            return supplied.get();
+        });
+        Supplier<String> supplier = () -> "ok-value";
+        String result = container.record(supplier, metricName, tags);
+        assertEquals("ok-value", result);
+        verify(meterRegistry).timer(metricName, tags);
+        verify(timer).record(supplier);
+    }
+
+
+
+}
+
+```
+
+The error encountered when running this unit test is:
+
+```
+compilation
+src/test/java/com/apple/spark/util/TimerMetricContainer_record_3_0_Test_record_shouldDelegateToTimerAndReturnValue.java:[52,19] reference to record is ambiguous
+both method <T>record(java.util.function.Supplier<T>) in io.micrometer.core.instrument.Timer and method record(java.lang.Runnable) in io.micrometer.core.instrument.Timer match
+```
+
+# Procedures for Fixing the Unit Test:
+Let's proceed step by step:
+
+1. Pick out the statements that the errors occur
+2. Reason about the causes of the errors
+3. Reason about solutions on how to fix the errors
+3. Provide the complete fixed unit test, utilizing JUnit 5 and Mockito 3 if required.
+
+# Requirements and Considerations for the Unit Test Fix:
+- Ensure the unit tests are executable without compile errors, runtime errors, or timeouts.
+- Aim for high coverage scores, covering as many instructions and branches of the method under test as possible.
+- Avoid modifying the method under test.
+- Generate the entire unit test file, including package declaration and imports.
+- Ensure correct testing of the method under test:
+    - The method under test is defined in TimerMetricContainer.
+    - The method under test is TimerMetricContainer.record.
+- Utilize correct tools and adhere to Java 8 language style:
+    - You can use JUnit 5 and Mockito 3.
+    - The language style should follow Java 8 conventions.
+
+# Output Format
+To facilitate generating the desired unit test, follow these instructions:
+
+<<Generation Begin>>
+{complete unit test}
+<<Generation Over>>
+
+Please proceed with generating the fixed unit test.
+Ensure all generations are provided in a single response.

@@ -1,0 +1,74 @@
+package com.apple.spark.core;
+
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+import com.apple.spark.util.TimerMetricContainer;
+import com.apple.spark.util.CounterMetricContainer;
+import io.micrometer.core.instrument.Tag;
+import org.junit.jupiter.api.Test;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
+/**
+ * Fixed unit test for LogDao.logApplicationId behavior when the underlying implementation
+ * throws an exception (simulated by having a null DB connection). This test exercises the
+ * public logApplicationId(...) method and wires a mocked TimerMetricContainer to ensure
+ * the Runnable passed to it is executed, so that internal exception handling and failure
+ * metric incrementation can be verified.
+ */
+public class LogDao_logApplicationId_5_0_Test_test_logApplicationIdImpl_onException_incrementsFailureMetric {
+
+    private static void setFinalField(Object target, String fieldName, Object value) throws Exception {
+        Field field = LogDao.class.getDeclaredField(fieldName);
+        field.setAccessible(true);
+        field.set(target, value);
+    }
+
+    private static Object getStaticField(String fieldName) throws Exception {
+        Field f = LogDao.class.getDeclaredField(fieldName);
+        f.setAccessible(true);
+        return f.get(null);
+    }
+
+    @Test
+    public void test_logApplicationIdImpl_onException_incrementsFailureMetric() throws Exception {
+        // Create LogDao with empty connection string so dbConnection==null (original behavior)
+        LogDao dao = new LogDao("", "u", "p", "db");
+
+        // Mock failureMetrics and inject into dao
+        CounterMetricContainer mockFailureMetrics = mock(CounterMetricContainer.class);
+        setFinalField(dao, "failureMetrics", mockFailureMetrics);
+
+        // Mock TimerMetricContainer and inject into dao. We need the Runnable passed to record(...)
+        // to actually run so the internal implementation (which will encounter a null DB connection)
+        // executes and triggers the failure metric increment.
+        TimerMetricContainer mockTimer = mock(TimerMetricContainer.class);
+        // record(Runnable, String, Tag...) is a void method; use doAnswer to run the passed Runnable.
+        doAnswer(invocation -> {
+            Runnable runnable = invocation.getArgument(0);
+            runnable.run();
+            return null;
+        }).when(mockTimer).record(any(Runnable.class), anyString(), any(Tag[].class));
+
+        setFinalField(dao, "timerMetrics", mockTimer);
+
+        // Ensure bypassLog is false so the public method will attempt to log
+        Field bypassField = LogDao.class.getDeclaredField("bypassLog");
+        bypassField.setAccessible(true);
+        bypassField.setBoolean(dao, false);
+
+        // Call the public method under test. The mocked timer will execute the internal Runnable,
+        // causing the private implementation to run and (due to null DB) handle an exception and
+        // increment the failure metric.
+        dao.logApplicationId("s-ex", "a-ex");
+
+        // Verify failureMetrics.increment was called with expected metric name and tags
+        String expectedFailureMetric = (String) getStaticField("DB_FAILURE_METRIC_NAME");
+        // The operation tag name used by the implementation
+        // (we only need the metric name and that tags were provided; exact tag values may be verified by other tests)
+        verify(mockFailureMetrics, atLeastOnce()).increment(eq(expectedFailureMetric), any(Tag[].class));
+    }
+}

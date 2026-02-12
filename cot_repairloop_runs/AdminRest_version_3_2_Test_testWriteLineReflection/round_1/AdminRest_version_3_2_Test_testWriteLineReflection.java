@@ -1,0 +1,104 @@
+package com.apple.spark.rest;
+
+import com.apple.spark.AppConfig;
+import com.apple.spark.core.RestStreamingOutput;
+import com.apple.spark.util.ConfigUtil;
+import com.apple.spark.util.VersionInfo;
+import io.micrometer.core.instrument.MeterRegistry;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.lang.reflect.Method;
+import javax.ws.rs.core.Response;
+import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
+
+/**
+ * Fixed unit tests:
+ * - implement the abstract write method when instantiating RestStreamingOutput anonymously
+ *   so the anonymous class is not abstract and compiles.
+ * - supply required constructor args for AdminRest (AppConfig and MeterRegistry).
+ * - add a test that exercises AdminRest.version() while mocking ConfigUtil.readVersion() (static).
+ */
+public class AdminRest_version_3_2_Test_testWriteLineReflection {
+
+    @Test
+    public void testWriteLineReflection() throws Exception {
+        // Create a simple RestStreamingOutput instance and implement the abstract write method
+        RestStreamingOutput rso = new RestStreamingOutput() {
+            @Override
+            public void write(OutputStream output) throws IOException {
+                // no-op implementation for the abstract method; not used in this reflection test
+            }
+        };
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        // Find the protected writeLine(OutputStream, String) method reflectively
+        Method target = null;
+        for (Method m : RestStreamingOutput.class.getDeclaredMethods()) {
+            if ("writeLine".equals(m.getName())
+                    && m.getParameterCount() == 2
+                    && m.getParameterTypes()[0] == OutputStream.class
+                    && m.getParameterTypes()[1] == String.class) {
+                target = m;
+                break;
+            }
+        }
+        assertNotNull(target, "writeLine method should exist on RestStreamingOutput");
+        target.setAccessible(true);
+
+        String payload = "hello-world";
+        target.invoke(rso, baos, payload);
+
+        String out = baos.toString("UTF-8");
+        assertEquals(payload + System.lineSeparator(), out);
+    }
+
+    @Test
+    public void testAdminRestVersionProducesStreamingOutput() throws Exception {
+        // Mock the static ConfigUtil.readVersion() to return a simple mock VersionInfo instance
+        VersionInfo mockVersion = mock(VersionInfo.class);
+
+        try (MockedStatic<ConfigUtil> sc = mockStatic(ConfigUtil.class)) {
+            sc.when(ConfigUtil::readVersion).thenReturn(mockVersion);
+
+            // Provide mocked constructor arguments required by AdminRest
+            AppConfig mockAppConfig = mock(AppConfig.class);
+            MeterRegistry mockRegistry = mock(MeterRegistry.class);
+
+            // Create the AdminRest and call the version() method
+            AdminRest admin = new AdminRest(mockAppConfig, mockRegistry);
+            Response resp = admin.version();
+
+            // Basic response checks
+            assertNotNull(resp);
+            assertEquals(Response.Status.OK.getStatusCode(), resp.getStatus());
+
+            Object entity = resp.getEntity();
+            assertNotNull(entity, "Response entity should not be null");
+            assertTrue(entity instanceof javax.ws.rs.core.StreamingOutput,
+                    "Entity should be a StreamingOutput");
+
+            // Execute the StreamingOutput to capture its output
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            javax.ws.rs.core.StreamingOutput streaming = (javax.ws.rs.core.StreamingOutput) entity;
+            streaming.write(baos);
+            String out = baos.toString("UTF-8");
+
+            // The method writes a JSON representation followed by a line separator.
+            // We assert that the output is non-empty and ends with the system line separator.
+            assertFalse(out.isEmpty(), "Output should not be empty");
+            assertTrue(out.endsWith(System.lineSeparator()), "Output should end with a line separator");
+
+            // The JSON could be "{}" or "null" depending on how Jackson serializes the mock,
+            // so we just check that trimmed content is non-empty (excluding the newline).
+            String trimmed = out.trim();
+            assertFalse(trimmed.isEmpty(), "Trimmed output should not be empty");
+        }
+    }
+}

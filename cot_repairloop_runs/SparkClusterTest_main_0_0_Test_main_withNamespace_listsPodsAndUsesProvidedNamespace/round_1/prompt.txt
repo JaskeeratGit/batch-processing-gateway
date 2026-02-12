@@ -1,0 +1,339 @@
+Hello. You are a talented Java programmer. Here you're going to help the user fix the unit test file with error.
+Here is the information of the method-to-test:
+
+The focal method is `main(String[])` in the focal class `SparkClusterTest`, and their information is
+```[java]
+public static void main(String[] args) {
+    String apiServer = "";
+    String user = "";
+    String token = "";
+    String caCert = "";
+    String httpProxy = null;
+    String httpsProxy = null;
+    String namespace = "";
+
+    for (int i = 0; i < args.length; ) {
+      String argName = args[i++];
+      if (argName.equalsIgnoreCase("-api-server")) {
+        apiServer = args[i++];
+      } else if (argName.equalsIgnoreCase("-user")) {
+        user = args[i++];
+      } else if (argName.equalsIgnoreCase("-token")) {
+        token = args[i++];
+      } else if (argName.equalsIgnoreCase("-ca-cert")) {
+        caCert = args[i++];
+      } else if (argName.equalsIgnoreCase("-http-proxy")) {
+        httpProxy = args[i++];
+      } else if (argName.equalsIgnoreCase("-https-proxy")) {
+        httpsProxy = args[i++];
+      } else if (argName.equalsIgnoreCase("-namespace")) {
+        namespace = args[i++];
+      } else {
+        throw new RuntimeException(String.format("Unsupported argument: %s", argName));
+      }
+    }
+
+    AppConfig.SparkCluster sparkCluster = new AppConfig.SparkCluster();
+    sparkCluster.setMasterUrl(apiServer);
+    sparkCluster.setUserName(user);
+    sparkCluster.setUserTokenSOPS(token);
+    sparkCluster.setCaCertDataSOPS(caCert);
+    sparkCluster.setHttpProxy(httpProxy);
+    sparkCluster.setHttpsProxy(httpsProxy);
+    sparkCluster.setSparkApplicationNamespace(namespace);
+
+    System.out.println(
+        String.format(
+            "Listing pods in cluster %s namespace %s",
+            sparkCluster.getMasterUrl(), sparkCluster.getSparkApplicationNamespace()));
+    try (DefaultKubernetesClient client = KubernetesHelper.getK8sClient(sparkCluster)) {
+      PodList podList =
+          client.pods().inNamespace(sparkCluster.getSparkApplicationNamespace()).list();
+      for (Pod pod : podList.getItems()) {
+        System.out.println(
+            String.format("Pod %s %s", pod.getMetadata().getName(), pod.getStatus().getPhase()));
+      }
+    }
+  }
+```
+
+To help you correctly fix the unit test file, we provide the brief information about the dependency
+
+The brief information of dependent class `com.apple.spark.AppConfig.SparkCluster` is
+```[java]
+import com.apple.spark.core.ConfigValue;
+import com.apple.spark.operator.DriverSpec;
+import com.apple.spark.operator.ExecutorSpec;
+import com.apple.spark.operator.SparkUIConfiguration;
+import com.apple.spark.operator.Volume;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.dropwizard.Configuration;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class AppConfig {
+private String applicationContextPath;
+private Map<String, String> defaultSparkConf;
+private Map<String, String> fixedSparkConf;
+private List<SparkCluster> sparkClusters;
+private List<SparkImage> sparkImages;
+private String s3Bucket;
+private String s3Folder;
+private String sparkLogS3Bucket;
+private String sparkLogIndex;
+private final int batchFileLimit = ...;
+private String sparkHistoryDns;
+private String gatewayDns;
+private String eksCluster;
+private String sparkHistoryUrl;
+private List<String> allowedUsers;
+private List<String> blockedUsers;
+private List<String> adminUsers;
+private List<QueueConfig> queues;
+private QueueTokenConfig queueTokenSOPS;
+private DBStorage dbStorageSOPS;
+private Double memoryMbSecondCost;
+private Double vCoreSecondCost;
+private Long statusCacheExpireMillis;
+public AppConfig(){}
+}
+```
+
+The brief information of dependent class `com.apple.spark.core.KubernetesHelper` is
+```[java]
+import com.apple.spark.AppConfig;
+import com.apple.spark.util.EndAwareInputStream;
+import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.client.*;
+import io.fabric8.kubernetes.client.dsl.LogWatch;
+import io.fabric8.kubernetes.client.dsl.PodResource;
+import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import java.io.Closeable;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+public class KubernetesHelper {
+public static final String SERVICE_ACCOUNT_FOLDER = ...;
+public static final String SERVICE_ACCOUNT_NAMESPACE_FILE = ...;
+public static final String SERVICE_ACCOUNT_CA_CERT_FILE = ...;
+public static final String SERVICE_ACCOUNT_TOKEN_FILE = ...;
+public static final String LOCAL_API_SERVER_URL = ...;
+public static final int MAX_LABEL_VALUE_LENGTH = ...;
+private static final Logger logger = ...;
+private static final long DEFAULT_TIMEOUT_MILLIS = ...;
+public static DefaultKubernetesClient getK8sClient(AppConfig.SparkCluster sparkCluster){}
+}
+```
+
+The brief information of dependent class `com.apple.spark.AppConfig.SparkCluster` is
+```[java]
+setHttpProxy(String)
+setHttpsProxy(String)
+setCaCertDataSOPS(String)
+getMasterUrl()
+setMasterUrl(String)
+setUserName(String)
+setSparkApplicationNamespace(String)
+setUserTokenSOPS(String)
+getSparkApplicationNamespace()
+```
+
+The brief information of dependent class `com.apple.spark.core.KubernetesHelper` is
+```[java]
+getK8sClient(SparkCluster)
+```
+
+The brief information of dependent class `io.fabric8.kubernetes.client.dsl.Namespaceable` is
+```[java]
+inNamespace(String)
+```
+
+The brief information of dependent class `io.fabric8.kubernetes.client.NamespacedKubernetesClientAdapter` is
+```[java]
+pods()
+```
+
+The brief information of dependent class `io.fabric8.kubernetes.api.model.PodList` is
+```[java]
+getItems()
+```
+
+The brief information of dependent class `io.fabric8.kubernetes.api.model.ObjectMeta` is
+```[java]
+getName()
+```
+
+The brief information of dependent class `io.fabric8.kubernetes.api.model.Pod` is
+```[java]
+getMetadata()
+getStatus()
+```
+
+The brief information of dependent class `io.fabric8.kubernetes.api.model.PodStatus` is
+```[java]
+getPhase()
+```
+
+# Unit Test to Fix
+
+Here's the unit test that needs fixing.
+
+```java
+package com.apple.spark.tools;
+
+import com.apple.spark.core.KubernetesHelper;
+import com.apple.spark.AppConfig;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.api.model.PodStatus;
+import io.fabric8.kubernetes.client.DefaultKubernetesClient;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.util.Arrays;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+@ExtendWith(MockitoExtension.class)
+public class SparkClusterTest_main_0_0_Test_main_withNamespace_listsPodsAndUsesProvidedNamespace {
+
+    private final PrintStream originalOut = System.out;
+
+    @AfterEach
+    public void restoreSystemOut() {
+        System.setOut(originalOut);
+    }
+
+    @Test
+    public void main_withNamespace_listsPodsAndUsesProvidedNamespace() throws Exception {
+        // Arrange: capture stdout
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(baos));
+
+        // Mock client and fluent pod operation
+        DefaultKubernetesClient clientMock = mock(DefaultKubernetesClient.class);
+
+        // NOTE: MixedOperation in the test environment expects 3 type parameters.
+        @SuppressWarnings("unchecked")
+        MixedOperation<Pod, PodList, ?> podsOp = mock(MixedOperation.class);
+
+        // Prepare PodList with two pods
+        Pod pod1 = mock(Pod.class);
+        ObjectMeta meta1 = mock(ObjectMeta.class);
+        PodStatus status1 = mock(PodStatus.class);
+        when(meta1.getName()).thenReturn("pod-a");
+        when(status1.getPhase()).thenReturn("Running");
+        when(pod1.getMetadata()).thenReturn(meta1);
+        when(pod1.getStatus()).thenReturn(status1);
+
+        Pod pod2 = mock(Pod.class);
+        ObjectMeta meta2 = mock(ObjectMeta.class);
+        PodStatus status2 = mock(PodStatus.class);
+        when(meta2.getName()).thenReturn("pod-b");
+        when(status2.getPhase()).thenReturn("Pending");
+        when(pod2.getMetadata()).thenReturn(meta2);
+        when(pod2.getStatus()).thenReturn(status2);
+
+        PodList podListMock = mock(PodList.class);
+        when(podListMock.getItems()).thenReturn(Arrays.asList(pod1, pod2));
+
+        // Wire mocks: client.pods().inNamespace(ns).list() -> podListMock
+        when(clientMock.pods()).thenReturn(podsOp);
+        when(podsOp.inNamespace("myns")).thenReturn(podsOp);
+        when(podsOp.list()).thenReturn(podListMock);
+
+        // Mock static KubernetesHelper.getK8sClient(...) to return our clientMock
+        try (MockedStatic<KubernetesHelper> k8sMock = Mockito.mockStatic(KubernetesHelper.class)) {
+            k8sMock.when(() -> KubernetesHelper.getK8sClient(Mockito.any(AppConfig.SparkCluster.class)))
+                    .thenReturn(clientMock);
+
+            // Act: call main with various args including namespace
+            String[] args = new String[] {
+                    "-api-server", "https://api",
+                    "-user", "u",
+                    "-token", "t",
+                    "-ca-cert", "ca",
+                    "-http-proxy", "http://p",
+                    "-https-proxy", "https://p",
+                    "-namespace", "myns"
+            };
+            SparkClusterTest.main(args);
+
+            // Assert: output contains expected lines and pod info
+            String output = baos.toString();
+            assertTrue(output.contains("Listing pods in cluster https://api namespace myns"),
+                    "Should announce listing including master URL and namespace");
+            assertTrue(output.contains("Pod pod-a Running"), "Should list pod-a with Running phase");
+            assertTrue(output.contains("Pod pod-b Pending"), "Should list pod-b with Pending phase");
+
+            // Also assert KubernetesHelper.getK8sClient was invoked with a SparkCluster instance
+            k8sMock.verify(() -> KubernetesHelper.getK8sClient(Mockito.any(AppConfig.SparkCluster.class)));
+        }
+    }
+
+}
+```
+
+The error encountered when running this unit test is:
+
+```
+compile
+[INFO] BPGApplication_initialize_2_0_Test_testInitialize_withMockBootstrap_doesNotThrow.java: BPGApplication_initialize_2_0_Test_testInitialize_withMockBootstrap_doesNotThrow.java uses unchecked or unsafe operations.
+[INFO] BPGApplication_initialize_2_0_Test_testInitialize_withMockBootstrap_doesNotThrow.java: Recompile with -Xlint:unchecked for details.
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] SparkClusterTest_main_0_0_Test_main_withNamespace_listsPodsAndUsesProvidedNamespace.java:[20,2] cannot find symbol
+  symbol: class ExtendWith
+[ERROR] SparkClusterTest_main_0_0_Test_main_withNamespace_listsPodsAndUsesProvidedNamespace.java:[64,32] no suitable method found for thenReturn(io.fabric8.kubernetes.client.dsl.MixedOperation<io.fabric8.kubernetes.api.model.Pod,io.fabric8.kubernetes.api.model.PodList,capture#1 of ?>)
+    method org.mockito.stubbing.OngoingStubbing.thenReturn(io.fabric8.kubernetes.client.dsl.MixedOperation<io.fabric8.kubernetes.api.model.Pod,io.fabric8.kubernetes.api.model.PodList,io.fabric8.kubernetes.client.dsl.PodResource>) is not applicable
+      (argument mismatch; io.fabric8.kubernetes.client.dsl.MixedOperation<io.fabric8.kubernetes.api.model.Pod,io.fabric8.kubernetes.api.model.PodList,capture#1 of ?> cannot be converted to io.fabric8.kubernetes.client.dsl.MixedOperation<io.fabric8.kubernetes.api.model.Pod,io.fabric8.kubernetes.api.model.PodList,io.fabric8.kubernetes.client.dsl.PodResource>)
+    method org.mockito.stubbing.OngoingStubbing.thenReturn(io.fabric8.kubernetes.client.dsl.MixedOperation<io.fabric8.kubernetes.api.model.Pod,io.fabric8.kubernetes.api.model.PodList,io.fabric8.kubernetes.client.dsl.PodResource>,io.fabric8.kubernetes.client.dsl.MixedOperation<io.fabric8.kubernetes.api.model.Pod,io.fabric8.kubernetes.api.model.PodList,io.fabric8.kubernetes.client.dsl.PodResource>...) is not applicable
+      (argument mismatch; io.fabric8.kubernetes.client.dsl.MixedOperation<io.fabric8.kubernetes.api.model.Pod,io.fabric8.kubernetes.api.model.PodList,capture#1 of ?> cannot be converted to io.fabric8.kubernetes.client.dsl.MixedOperation<io.fabric8.kubernetes.api.model.Pod,io.fabric8.kubernetes.api.model.PodList,io.fabric8.kubernetes.client.dsl.PodResource>)
+[ERROR] SparkClusterTest_main_0_0_Test_main_withNamespace_listsPodsAndUsesProvidedNamespace.java:[65,41] no suitable method found for thenReturn(io.fabric8.kubernetes.client.dsl.MixedOperation<io.fabric8.kubernetes.api.model.Pod,io.fabric8.kubernetes.api.model.PodList,capture#2 of ?>)
+    method org.mockito.stubbing.OngoingStubbing.thenReturn(io.fabric8.kubernetes.client.dsl.NonNamespaceOperation<io.fabric8.kubernetes.api.model.Pod,io.fabric8.kubernetes.api.model.PodList,capture#3 of ?>) is not applicable
+      (argument mismatch; io.fabric8.kubernetes.client.dsl.MixedOperation<io.fabric8.kubernetes.api.model.Pod,io.fabric8.kubernetes.api.model.PodList,capture#2 of ?> cannot be converted to io.fabric8.kubernetes.client.dsl.NonNamespaceOperation<io.fabric8.kubernetes.api.model.Pod,io.fabric8.kubernetes.api.model.PodList,capture#3 of ?>)
+    method org.mockito.stubbing.OngoingStubbing.thenReturn(io.fabric8.kubernetes.client.dsl.NonNamespaceOperation<io.fabric8.kubernetes.api.model.Pod,io.fabric8.kubernetes.api.model.PodList,capture#3 of ?>,io.fabric8.kubernetes.client.dsl.NonNamespaceOperation<io.fabric8.kubernetes.api.model.Pod,io.fabric8.kubernetes.api.model.PodList,capture#3 of ?>...) is not applicable
+      (argument mismatch; io.fabric8.kubernetes.client.dsl.MixedOperation<io.fabric8.kubernetes.api.model.Pod,io.fabric8.kubernetes.api.model.PodList,capture#2 of ?> cannot be converted to io.fabric8.kubernetes.client.dsl.NonNamespaceOperation<io.fabric8.kubernetes.api.model.Pod,io.fabric8.kubernetes.api.model.PodList,capture#3 of ?>)
+[INFO] 3 errors 
+[INFO] -------------------------------------------------------------
+[INFO]
+```
+
+# Procedures for Fixing the Unit Test:
+Let's proceed step by step:
+
+1. Pick out the statements that the errors occur
+2. Reason about the causes of the errors
+3. Reason about solutions on how to fix the errors
+3. Provide the complete fixed unit test, utilizing JUnit 5 and Mockito 3 if required.
+
+# Requirements and Considerations for the Unit Test Fix:
+- Ensure the unit tests are executable without compile errors, runtime errors, or timeouts.
+- Aim for high coverage scores, covering as many instructions and branches of the method under test as possible.
+- Avoid modifying the method under test.
+- Generate the entire unit test file, including package declaration and imports.
+- Ensure correct testing of the method under test:
+    - The method under test is defined in SparkClusterTest.
+    - The method under test is SparkClusterTest.main.
+- Utilize correct tools and adhere to Java 8 language style:
+    - You can use JUnit 5 and Mockito 3.
+    - The language style should follow Java 8 conventions.
+
+# Output Format
+To facilitate generating the desired unit test, follow these instructions:
+
+<<Generation Begin>>
+{complete unit test}
+<<Generation Over>>
+
+Please proceed with generating the fixed unit test.
+Ensure all generations are provided in a single response.

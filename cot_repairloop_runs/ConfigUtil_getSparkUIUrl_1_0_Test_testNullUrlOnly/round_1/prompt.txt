@@ -1,0 +1,195 @@
+Hello. You are a talented Java programmer. Here you're going to help the user fix the unit test file with error.
+Here is the information of the method-to-test:
+
+The focal method is `getSparkUIUrl(SparkCluster, String)` in the focal class `ConfigUtil`, and their information is
+```[java]
+public static String getSparkUIUrl(SparkCluster cluster, String submissionId) {
+    return String.format(
+        "%s/%s/%s", cluster.getSparkUIUrl(), cluster.getSparkApplicationNamespace(), submissionId);
+  }
+```
+
+To help you correctly fix the unit test file, we provide the brief information about the dependency
+
+The brief information of dependent class `com.apple.spark.AppConfig.SparkCluster` is
+```[java]
+import com.apple.spark.core.ConfigValue;
+import com.apple.spark.operator.DriverSpec;
+import com.apple.spark.operator.ExecutorSpec;
+import com.apple.spark.operator.SparkUIConfiguration;
+import com.apple.spark.operator.Volume;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.dropwizard.Configuration;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class AppConfig {
+private String applicationContextPath;
+private Map<String, String> defaultSparkConf;
+private Map<String, String> fixedSparkConf;
+private List<SparkCluster> sparkClusters;
+private List<SparkImage> sparkImages;
+private String s3Bucket;
+private String s3Folder;
+private String sparkLogS3Bucket;
+private String sparkLogIndex;
+private final int batchFileLimit = ...;
+private String sparkHistoryDns;
+private String gatewayDns;
+private String eksCluster;
+private String sparkHistoryUrl;
+private List<String> allowedUsers;
+private List<String> blockedUsers;
+private List<String> adminUsers;
+private List<QueueConfig> queues;
+private QueueTokenConfig queueTokenSOPS;
+private DBStorage dbStorageSOPS;
+private Double memoryMbSecondCost;
+private Double vCoreSecondCost;
+private Long statusCacheExpireMillis;
+public AppConfig(){}
+}
+```
+
+The brief information of dependent class `com.apple.spark.AppConfig.SparkCluster` is
+```[java]
+getSparkUIUrl()
+getSparkApplicationNamespace()
+```
+
+# Unit Test to Fix
+
+Here's the unit test that needs fixing.
+
+```java
+package com.apple.spark.util;
+
+import com.apple.spark.AppConfig;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ * Unit tests for ConfigUtil.getSparkUIUrl(SparkCluster, String)
+ */
+public class ConfigUtilTest {
+
+    @Test
+    void testNormal() {
+        AppConfig.SparkCluster cluster = new AppConfig.SparkCluster("http://spark-ui", "ns");
+        String result = ConfigUtil.getSparkUIUrl(cluster, "sid");
+        assertEquals("http://spark-ui/ns/sid", result);
+    }
+
+    @Test
+    void testNullUrlOnly() {
+        AppConfig.SparkCluster cluster = new AppConfig.SparkCluster(null, "ns");
+        String result = ConfigUtil.getSparkUIUrl(cluster, "sid");
+        // String.format will convert null to "null"
+        assertEquals("null/ns/sid", result);
+    }
+
+    @Test
+    void testNullNamespaceOnly() {
+        AppConfig.SparkCluster cluster = new AppConfig.SparkCluster("http://spark-ui", null);
+        String result = ConfigUtil.getSparkUIUrl(cluster, "sid");
+        assertEquals("http://spark-ui/null/sid", result);
+    }
+
+    @Test
+    void testNullSubmissionIdOnly() {
+        AppConfig.SparkCluster cluster = new AppConfig.SparkCluster("http://spark-ui", "ns");
+        String result = ConfigUtil.getSparkUIUrl(cluster, null);
+        assertEquals("http://spark-ui/ns/null", result);
+    }
+
+    @Test
+    void testAllNulls() {
+        AppConfig.SparkCluster cluster = new AppConfig.SparkCluster(null, null);
+        String result = ConfigUtil.getSparkUIUrl(cluster, null);
+        assertEquals("null/null/null", result);
+    }
+}
+```
+
+The error encountered when running this unit test is:
+
+```
+compile
+[INFO] BPGApplication_initialize_2_0_Test_testInitialize_withMockBootstrap_doesNotThrow.java: BPGApplication_initialize_2_0_Test_testInitialize_withMockBootstrap_doesNotThrow.java uses unchecked or unsafe operations.
+[INFO] BPGApplication_initialize_2_0_Test_testInitialize_withMockBootstrap_doesNotThrow.java: Recompile with -Xlint:unchecked for details.
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] ConfigUtilTest.java:[15,42] constructor SparkCluster in class com.apple.spark.AppConfig.SparkCluster cannot be applied to given types;
+  required: no arguments
+  found:    java.lang.String,java.lang.String
+  reason: actual and formal argument lists differ in length
+[ERROR] ConfigUtilTest.java:[22,42] constructor SparkCluster in class com.apple.spark.AppConfig.SparkCluster cannot be applied to given types;
+  required: no arguments
+  found:    <nulltype>,java.lang.String
+  reason: actual and formal argument lists differ in length
+[ERROR] ConfigUtilTest.java:[30,42] constructor SparkCluster in class com.apple.spark.AppConfig.SparkCluster cannot be applied to given types;
+  required: no arguments
+  found:    java.lang.String,<nulltype>
+  reason: actual and formal argument lists differ in length
+[ERROR] ConfigUtilTest.java:[37,42] constructor SparkCluster in class com.apple.spark.AppConfig.SparkCluster cannot be applied to given types;
+  required: no arguments
+  found:    java.lang.String,java.lang.String
+  reason: actual and formal argument lists differ in length
+[ERROR] ConfigUtilTest.java:[44,42] constructor SparkCluster in class com.apple.spark.AppConfig.SparkCluster cannot be applied to given types;
+  required: no arguments
+  found:    <nulltype>,<nulltype>
+  reason: actual and formal argument lists differ in length
+[INFO] 5 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.296 s
+[INFO] Finished at: 2026-01-11T17:15:42-07:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.8.1:testCompile (default-testCompile) on project bpg: Compilation failure: Compilation failure: 
+[ERROR] ConfigUtilTest.java:[15,42] constructor SparkCluster in class com.apple.spark.AppConfig.SparkCluster cannot be applied to given types;
+[ERROR]   required: no arguments
+[ERROR]   found:    java.lang.String,java.lang.String
+[ERROR]   reason: actual and formal argument lists differ in length
+[ERROR] ConfigUtilTest.java:[22,42] constructor SparkCluster in class com.apple.spark.AppConfig.SparkCluster cannot be applied to given types;
+[ERROR]   required: no arguments
+[ERROR]   found:    <nulltype>,java.lang.String
+[ERROR]   reason: actual and formal argument lists differ in length
+[ERROR] ConfigUtilTest.java:[30,42] constructor SparkCluster in class com.apple.spark.AppConfig.SparkCluster cannot be applied to given types;
+[ERROR]   required: no arguments
+[ERROR]   found:    java.lang.String,<nulltype>
+```
+
+# Procedures for Fixing the Unit Test:
+Let's proceed step by step:
+
+1. Pick out the statements that the errors occur
+2. Reason about the causes of the errors
+3. Reason about solutions on how to fix the errors
+3. Provide the complete fixed unit test, utilizing JUnit 5 and Mockito 3 if required.
+
+# Requirements and Considerations for the Unit Test Fix:
+- Ensure the unit tests are executable without compile errors, runtime errors, or timeouts.
+- Aim for high coverage scores, covering as many instructions and branches of the method under test as possible.
+- Avoid modifying the method under test.
+- Generate the entire unit test file, including package declaration and imports.
+- Ensure correct testing of the method under test:
+    - The method under test is defined in ConfigUtil.
+    - The method under test is ConfigUtil.getSparkUIUrl.
+- Utilize correct tools and adhere to Java 8 language style:
+    - You can use JUnit 5 and Mockito 3.
+    - The language style should follow Java 8 conventions.
+
+# Output Format
+To facilitate generating the desired unit test, follow these instructions:
+
+<<Generation Begin>>
+{complete unit test}
+<<Generation Over>>
+
+Please proceed with generating the fixed unit test.
+Ensure all generations are provided in a single response.

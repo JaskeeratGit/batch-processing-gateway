@@ -1,0 +1,54 @@
+package com.apple.spark.util;
+
+import com.apple.spark.AppConfig;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+/**
+ * Unit tests for ConfigUtil.getSparkUIUrl(SparkCluster, String)
+ */
+@ExtendWith(MockitoExtension.class)
+public class ConfigUtilGetSparkUIUrlTest {
+
+    @Mock
+    private AppConfig.SparkCluster cluster;
+
+    @Test
+    void testEmptyNamespaceProducesDoubleSlash() {
+        when(cluster.getSparkUIUrl()).thenReturn("http://host:8080");
+        when(cluster.getSparkApplicationNamespace()).thenReturn("");
+        String submissionId = "id";
+
+        String result = com.apple.spark.util.ConfigUtil.getSparkUIUrl(cluster, submissionId);
+
+        assertEquals("http://host:8080//id", result);
+    }
+
+    @Test
+    void testNonEmptyNamespaceProducesSingleSlash() {
+        when(cluster.getSparkUIUrl()).thenReturn("http://host:8080");
+        when(cluster.getSparkApplicationNamespace()).thenReturn("appNS");
+        String submissionId = "id";
+
+        String result = com.apple.spark.util.ConfigUtil.getSparkUIUrl(cluster, submissionId);
+
+        assertEquals("http://host:8080/appNS/id", result);
+    }
+
+    @Test
+    void testNullNamespaceProducesLiteralNullSegment() {
+        when(cluster.getSparkUIUrl()).thenReturn("http://host:8080");
+        when(cluster.getSparkApplicationNamespace()).thenReturn(null);
+        String submissionId = "id";
+
+        String result = com.apple.spark.util.ConfigUtil.getSparkUIUrl(cluster, submissionId);
+
+        // String.format will substitute "null" for null reference, so we assert that behavior
+        assertEquals("http://host:8080/null/id", result);
+    }
+}

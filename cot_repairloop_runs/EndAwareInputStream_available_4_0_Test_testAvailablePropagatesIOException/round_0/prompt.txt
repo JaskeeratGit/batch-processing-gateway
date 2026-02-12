@@ -1,0 +1,147 @@
+Hello. You are a talented Java programmer. Here you're going to help the user fix the unit test file with error.
+Here is the information of the method-to-test:
+
+The focal method is `available()` in the focal class `EndAwareInputStream`, and their information is
+```[java]
+@Override
+  public int available() throws IOException {
+    return executeWithResultValue(() -> inputStream.available());
+  }
+```
+
+To help you correctly fix the unit test file, we provide the brief information about the dependency
+
+# Unit Test to Fix
+
+Here's the unit test that needs fixing.
+
+```java
+package com.apple.spark.util;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.concurrent.atomic.AtomicBoolean;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+public class EndAwareInputStream_available_4_0_Test_testAvailablePropagatesIOException {
+
+    // Helper InputStream that returns a fixed available() value.
+    private static class FixedAvailableInputStream extends InputStream {
+
+        private final int availableValue;
+
+        FixedAvailableInputStream(int availableValue) {
+            this.availableValue = availableValue;
+        }
+
+        @Override
+        public int read() {
+            // not used in these tests
+            return -1;
+        }
+
+        @Override
+        public int available() {
+            return availableValue;
+        }
+    }
+
+    // Helper InputStream that throws IOException from available()
+    private static class ThrowingAvailableInputStream extends InputStream {
+
+        private final IOException exception;
+
+        ThrowingAvailableInputStream(IOException exception) {
+            this.exception = exception;
+        }
+
+        @Override
+        public int read() {
+            return -1;
+        }
+
+        @Override
+        public int available() throws IOException {
+            throw exception;
+        }
+    }
+
+
+    @Test
+    public void testAvailablePropagatesIOException() throws Throwable {
+        // Arrange
+        IOException ioException = new IOException("boom");
+        ThrowingAvailableInputStream delegate = new ThrowingAvailableInputStream(ioException);
+        AtomicBoolean endingActionCalled = new AtomicBoolean(false);
+        EndAwareInputStream subject = new EndAwareInputStream(delegate, () -> endingActionCalled.set(true));
+        Method availableMethod = EndAwareInputStream.class.getMethod("available");
+        // Act & Assert
+        Throwable thrown = assertThrows(Throwable.class, () -> {
+            try {
+                availableMethod.invoke(subject);
+            } catch (InvocationTargetException e) {
+                // unwrap the underlying exception thrown by the invoked method
+                throw e.getCause();
+            }
+        });
+        // The available() signature declares IOException, so we expect that as the root cause
+        assertTrue(thrown instanceof IOException, "Expected an IOException to be thrown");
+        assertEquals("boom", thrown.getMessage());
+        // We do not make strict assumptions about whether endingAction is invoked on exception,
+        // but ensure the Runnable is callable and the flag mechanism works if invoked by implementation.
+        // (This verifies the provided Runnable can be triggered by the class under test.)
+        // reset and invoke manually to sanity check
+        endingActionCalled.set(false);
+        subject = new EndAwareInputStream(delegate, () -> endingActionCalled.set(true));
+        // Manually run ending action to verify it toggles the flag (sanity)
+        Runnable endingAction = () -> endingActionCalled.set(true);
+        endingAction.run();
+        assertTrue(endingActionCalled.get());
+    }
+}
+
+```
+
+The error encountered when running this unit test is:
+
+```
+compilation
+src/test/java/com/apple/spark/util/EndAwareInputStream_available_4_0_Test_testAvailablePropagatesIOException.java:[70,40] local variables referenced from a lambda expression must be final or effectively final
+```
+
+# Procedures for Fixing the Unit Test:
+Let's proceed step by step:
+
+1. Pick out the statements that the errors occur
+2. Reason about the causes of the errors
+3. Reason about solutions on how to fix the errors
+3. Provide the complete fixed unit test, utilizing JUnit 5 and Mockito 3 if required.
+
+# Requirements and Considerations for the Unit Test Fix:
+- Ensure the unit tests are executable without compile errors, runtime errors, or timeouts.
+- Aim for high coverage scores, covering as many instructions and branches of the method under test as possible.
+- Avoid modifying the method under test.
+- Generate the entire unit test file, including package declaration and imports.
+- Ensure correct testing of the method under test:
+    - The method under test is defined in EndAwareInputStream.
+    - The method under test is EndAwareInputStream.available.
+- Utilize correct tools and adhere to Java 8 language style:
+    - You can use JUnit 5 and Mockito 3.
+    - The language style should follow Java 8 conventions.
+
+# Output Format
+To facilitate generating the desired unit test, follow these instructions:
+
+<<Generation Begin>>
+{complete unit test}
+<<Generation Over>>
+
+Please proceed with generating the fixed unit test.
+Ensure all generations are provided in a single response.

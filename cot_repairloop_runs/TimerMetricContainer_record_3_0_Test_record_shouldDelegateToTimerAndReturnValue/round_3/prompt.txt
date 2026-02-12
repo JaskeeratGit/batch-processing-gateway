@@ -1,0 +1,206 @@
+Hello. You are a talented Java programmer. Here you're going to help the user fix the unit test file with error.
+Here is the information of the method-to-test:
+
+The focal method is `record(Supplier, String, Collection)` in the focal class `TimerMetricContainer`, and their information is
+```[java]
+public <T> T record(Supplier<T> runnable, String metricName, Collection<Tag> tags) {
+    Timer timer = getTimer(metricName, tags);
+    return timer.record(runnable);
+  }
+```
+
+To help you correctly fix the unit test file, we provide the brief information about the dependency
+
+The brief information of dependent class `io.micrometer.core.instrument.Timer` is
+```[java]
+record(SupplierT)
+```
+
+# Unit Test to Fix
+
+Here's the unit test that needs fixing.
+
+```java
+package com.apple.spark.util;
+
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.Timer;
+import io.micrometer.core.instrument.util.PauseDetector;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.*;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.function.Supplier;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers;
+import static org.mockito.Mockito.*;
+
+/**
+ * JUnit 5 tests for TimerMetricContainer#record(Supplier, String, Collection)
+ *
+ * Uses Mockito to mock MeterRegistry and Timer.
+ */
+@ExtendWith(MockitoExtension.class)
+class TimerMetricContainer_record_3_0_Test_record_shouldDelegateToTimerAndReturnValue {
+
+    @Mock
+    private MeterRegistry meterRegistry;
+
+    @Mock
+    private Timer timer;
+
+    private TimerMetricContainer container;
+
+    @BeforeEach
+    void setUp() {
+        // meterRegistry is a mock; some MeterRegistry implementations may be queried during
+        // the construction or usage of TimerMetricContainer (e.g. config().pauseDetector()).
+        // Ensure config() does not return null to avoid NPEs.
+        MeterRegistry.Config mockConfig = mock(MeterRegistry.Config.class);
+        PauseDetector mockPauseDetector = mock(PauseDetector.class);
+        when(mockConfig.pauseDetector()).thenReturn(mockPauseDetector);
+        when(meterRegistry.config()).thenReturn(mockConfig);
+
+        container = new TimerMetricContainer(meterRegistry);
+    }
+
+    @Test
+    void record_shouldDelegateToTimerAndReturnValue() {
+        String metricName = "test.metric";
+
+        // Use simple concrete Tag implementations to avoid Mockito-created tags returning null for getKey()/getValue()
+        Tag t1 = new Tag() {
+            @Override
+            public String getKey() {
+                return "k1";
+            }
+
+            @Override
+            public String getValue() {
+                return "v1";
+            }
+        };
+        Tag t2 = new Tag() {
+            @Override
+            public String getKey() {
+                return "k2";
+            }
+
+            @Override
+            public String getValue() {
+                return "v2";
+            }
+        };
+        Collection<Tag> tags = Arrays.asList(t1, t2);
+
+        // Make meterRegistry.timer(...) return our mocked timer
+        when(meterRegistry.timer(eq(metricName), eq(tags))).thenReturn(timer);
+
+        // Disambiguate overloaded Timer.record(...) by specifying the Supplier type matcher
+        when(timer.record(ArgumentMatchers.<Supplier<?>>any())).thenAnswer((InvocationOnMock invocation) -> {
+            @SuppressWarnings("unchecked")
+            Supplier<?> supplied = (Supplier<?>) invocation.getArgument(0);
+            return supplied.get();
+        });
+
+        Supplier<String> supplier = () -> "ok-value";
+        String result = container.record(supplier, metricName, tags);
+        assertEquals("ok-value", result);
+
+        verify(meterRegistry).timer(metricName, tags);
+        // verify supplier overload called; cast to Supplier to avoid any potential overload ambiguity at compile time
+        @SuppressWarnings("unchecked")
+        Supplier<String> castSupplier = (Supplier<String>) supplier;
+        verify(timer).record(castSupplier);
+    }
+
+}
+```
+
+The error encountered when running this unit test is:
+
+```
+compile
+[INFO] BPGApplication_initialize_2_0_Test_testInitialize_withMockBootstrap_doesNotThrow.java: BPGApplication_initialize_2_0_Test_testInitialize_withMockBootstrap_doesNotThrow.java uses unchecked or unsafe operations.
+[INFO] BPGApplication_initialize_2_0_Test_testInitialize_withMockBootstrap_doesNotThrow.java: Recompile with -Xlint:unchecked for details.
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] TimerMetricContainer_record_3_0_Test_record_shouldDelegateToTimerAndReturnValue.java:[6,42] cannot find symbol
+  symbol:   class PauseDetector
+  location: package io.micrometer.core.instrument.util
+[ERROR] TimerMetricContainer_record_3_0_Test_record_shouldDelegateToTimerAndReturnValue.java:[19,18] cannot find symbol
+  symbol:   class mockito
+  location: package org
+[ERROR] TimerMetricContainer_record_3_0_Test_record_shouldDelegateToTimerAndReturnValue.java:[19,1] static import only from classes and interfaces
+[ERROR] TimerMetricContainer_record_3_0_Test_record_shouldDelegateToTimerAndReturnValue.java:[44,9] cannot find symbol
+  symbol:   class PauseDetector
+  location: class com.apple.spark.util.TimerMetricContainer_record_3_0_Test_record_shouldDelegateToTimerAndReturnValue
+[ERROR] TimerMetricContainer_record_3_0_Test_record_shouldDelegateToTimerAndReturnValue.java:[44,48] cannot find symbol
+  symbol:   class PauseDetector
+  location: class com.apple.spark.util.TimerMetricContainer_record_3_0_Test_record_shouldDelegateToTimerAndReturnValue
+[INFO] 5 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.314 s
+[INFO] Finished at: 2026-01-11T17:37:20-07:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.8.1:testCompile (default-testCompile) on project bpg: Compilation failure: Compilation failure: 
+[ERROR] TimerMetricContainer_record_3_0_Test_record_shouldDelegateToTimerAndReturnValue.java:[6,42] cannot find symbol
+[ERROR]   symbol:   class PauseDetector
+[ERROR]   location: package io.micrometer.core.instrument.util
+[ERROR] TimerMetricContainer_record_3_0_Test_record_shouldDelegateToTimerAndReturnValue.java:[19,18] cannot find symbol
+[ERROR]   symbol:   class mockito
+[ERROR]   location: package org
+[ERROR] TimerMetricContainer_record_3_0_Test_record_shouldDelegateToTimerAndReturnValue.java:[19,1] static import only from classes and interfaces
+[ERROR] TimerMetricContainer_record_3_0_Test_record_shouldDelegateToTimerAndReturnValue.java:[44,9] cannot find symbol
+[ERROR]   symbol:   class PauseDetector
+[ERROR]   location: class com.apple.spark.util.TimerMetricContainer_record_3_0_Test_record_shouldDelegateToTimerAndReturnValue
+[ERROR] TimerMetricContainer_record_3_0_Test_record_shouldDelegateToTimerAndReturnValue.java:[44,48] cannot find symbol
+[ERROR]   symbol:   class PauseDetector
+[ERROR]   location: class com.apple.spark.util.TimerMetricContainer_record_3_0_Test_record_shouldDelegateToTimerAndReturnValue
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+```
+
+# Procedures for Fixing the Unit Test:
+Let's proceed step by step:
+
+1. Pick out the statements that the errors occur
+2. Reason about the causes of the errors
+3. Reason about solutions on how to fix the errors
+3. Provide the complete fixed unit test, utilizing JUnit 5 and Mockito 3 if required.
+
+# Requirements and Considerations for the Unit Test Fix:
+- Ensure the unit tests are executable without compile errors, runtime errors, or timeouts.
+- Aim for high coverage scores, covering as many instructions and branches of the method under test as possible.
+- Avoid modifying the method under test.
+- Generate the entire unit test file, including package declaration and imports.
+- Ensure correct testing of the method under test:
+    - The method under test is defined in TimerMetricContainer.
+    - The method under test is TimerMetricContainer.record.
+- Utilize correct tools and adhere to Java 8 language style:
+    - You can use JUnit 5 and Mockito 3.
+    - The language style should follow Java 8 conventions.
+
+# Output Format
+To facilitate generating the desired unit test, follow these instructions:
+
+<<Generation Begin>>
+{complete unit test}
+<<Generation Over>>
+
+Please proceed with generating the fixed unit test.
+Ensure all generations are provided in a single response.

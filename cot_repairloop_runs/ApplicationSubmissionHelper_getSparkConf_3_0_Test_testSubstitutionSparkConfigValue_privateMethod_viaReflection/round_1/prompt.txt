@@ -1,0 +1,529 @@
+Hello. You are a talented Java programmer. Here you're going to help the user fix the unit test file with error.
+Here is the information of the method-to-test:
+
+The focal method is `getSparkConf(String, SubmitApplicationRequest, AppConfig, AppConfig.SparkCluster)` in the focal class `ApplicationSubmissionHelper`, and their information is
+```[java]
+public static Map<String, String> getSparkConf(
+      String submissionId,
+      SubmitApplicationRequest request,
+      AppConfig appConfig,
+      AppConfig.SparkCluster sparkCluster) {
+
+    Map<String, String> sparkConf = null;
+    Map<String, String> defaultSparkConf = appConfig.getDefaultSparkConf();
+    Map<String, String> fixedSparkConf = appConfig.getFixedSparkConf();
+
+    if (defaultSparkConf != null) {
+      if (sparkConf == null) {
+        sparkConf = new HashMap<>();
+      }
+      Map<String, String> filteredDefaultSparkConf = applyFeatureGate(request, defaultSparkConf);
+
+      for (Map.Entry<String, String> entry : filteredDefaultSparkConf.entrySet()) {
+        sparkConf.put(entry.getKey(), substitutionSparkConfigValue(entry.getValue(), submissionId));
+      }
+    }
+
+    if (sparkCluster.getSparkConf() != null) {
+      if (sparkConf == null) {
+        sparkConf = new HashMap<>();
+      }
+      for (Map.Entry<String, String> entry : sparkCluster.getSparkConf().entrySet()) {
+        sparkConf.put(entry.getKey(), substitutionSparkConfigValue(entry.getValue(), submissionId));
+      }
+    }
+
+    if (request.getSparkConf() != null) {
+      if (sparkConf == null) {
+        sparkConf = new HashMap<>();
+      }
+      for (Map.Entry<String, String> entry : request.getSparkConf().entrySet()) {
+        sparkConf.put(entry.getKey(), entry.getValue());
+      }
+    }
+
+    if (fixedSparkConf != null) {
+      if (sparkConf == null) {
+        sparkConf = new HashMap<>();
+      }
+      sparkConf.putAll(fixedSparkConf);
+    }
+
+    if (!StringUtils.isEmpty(request.getApplicationName())) {
+      if (sparkConf == null) {
+        sparkConf = new HashMap<>();
+      }
+      sparkConf.put(SparkConstants.SPARK_APP_NAME_CONFIG, request.getApplicationName());
+    }
+
+    return sparkConf;
+  }
+```
+
+To help you correctly fix the unit test file, we provide the brief information about the dependency
+
+The brief information of dependent class `com.apple.spark.api.SubmitApplicationRequest` is
+```[java]
+import com.apple.spark.operator.Dependencies;
+import com.apple.spark.operator.DriverSpec;
+import com.apple.spark.operator.ExecutorSpec;
+import com.apple.spark.operator.RestartPolicy;
+import com.apple.spark.operator.Volume;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
+import java.util.Map;
+@JsonInclude(JsonInclude.Include.NON_NULL)
+// only serialize non-null values, and deserialize missing values as null.
+@Schema(description = "Submit Application Request")
+public class SubmitApplicationRequest {
+@Schema(description = ...;
+@Schema( description = ...;
+@Schema( description = ...;
+@Hidden private String mode;
+private String image;
+@Schema( description = ...;
+@Schema( required = ...;
+@Schema( description = ...;
+@Schema( required = ...;
+private List<String> arguments;
+private Map<String, String> sparkConf;
+@Hidden private List<Volume> volumes;
+@Schema(required = ...;
+@Schema(required = ...;
+@Hidden private Double driverOverheadFactor;
+@Hidden private Double executorOverheadFactor;
+@Hidden private Double overheadFactor;
+private Dependencies deps;
+private String pythonVersion;
+@Hidden private String imagePullPolicy;
+@Hidden private RestartPolicy restartPolicy;
+@Hidden private String clusterId;
+@Schema(description = ...;
+@Hidden private String queueToken;
+public String getApplicationName(){}
+public Map<String, String> getSparkConf(){}
+}
+```
+
+The brief information of dependent class `com.apple.spark.AppConfig` is
+```[java]
+import com.apple.spark.core.ConfigValue;
+import com.apple.spark.operator.DriverSpec;
+import com.apple.spark.operator.ExecutorSpec;
+import com.apple.spark.operator.SparkUIConfiguration;
+import com.apple.spark.operator.Volume;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.dropwizard.Configuration;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class AppConfig {
+private String applicationContextPath;
+private Map<String, String> defaultSparkConf;
+private Map<String, String> fixedSparkConf;
+private List<SparkCluster> sparkClusters;
+private List<SparkImage> sparkImages;
+private String s3Bucket;
+private String s3Folder;
+private String sparkLogS3Bucket;
+private String sparkLogIndex;
+private final int batchFileLimit = ...;
+private String sparkHistoryDns;
+private String gatewayDns;
+private String eksCluster;
+private String sparkHistoryUrl;
+private List<String> allowedUsers;
+private List<String> blockedUsers;
+private List<String> adminUsers;
+private List<QueueConfig> queues;
+private QueueTokenConfig queueTokenSOPS;
+private DBStorage dbStorageSOPS;
+private Double memoryMbSecondCost;
+private Double vCoreSecondCost;
+private Long statusCacheExpireMillis;
+public AppConfig(){}
+public Map<String, String> getDefaultSparkConf(){}
+public Map<String, String> getFixedSparkConf(){}
+}
+```
+
+The brief information of dependent class `com.apple.spark.AppConfig.SparkCluster` is
+```[java]
+import com.apple.spark.core.ConfigValue;
+import com.apple.spark.operator.DriverSpec;
+import com.apple.spark.operator.ExecutorSpec;
+import com.apple.spark.operator.SparkUIConfiguration;
+import com.apple.spark.operator.Volume;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.dropwizard.Configuration;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class AppConfig {
+private String applicationContextPath;
+private Map<String, String> defaultSparkConf;
+private Map<String, String> fixedSparkConf;
+private List<SparkCluster> sparkClusters;
+private List<SparkImage> sparkImages;
+private String s3Bucket;
+private String s3Folder;
+private String sparkLogS3Bucket;
+private String sparkLogIndex;
+private final int batchFileLimit = ...;
+private String sparkHistoryDns;
+private String gatewayDns;
+private String eksCluster;
+private String sparkHistoryUrl;
+private List<String> allowedUsers;
+private List<String> blockedUsers;
+private List<String> adminUsers;
+private List<QueueConfig> queues;
+private QueueTokenConfig queueTokenSOPS;
+private DBStorage dbStorageSOPS;
+private Double memoryMbSecondCost;
+private Double vCoreSecondCost;
+private Long statusCacheExpireMillis;
+public AppConfig(){}
+}
+```
+
+The brief information of dependent class `com.apple.spark.api.SubmitApplicationRequest` is
+```[java]
+getApplicationName()
+getSparkConf()
+```
+
+The brief information of dependent class `com.apple.spark.AppConfig` is
+```[java]
+getFixedSparkConf()
+getDefaultSparkConf()
+```
+
+The brief information of dependent class `com.apple.spark.AppConfig.SparkCluster` is
+```[java]
+getSparkConf()
+```
+
+The brief information of dependent class `org.apache.commons.lang3.StringUtils` is
+```[java]
+isEmpty(CharSequence)
+```
+
+# Unit Test to Fix
+
+Here's the unit test that needs fixing.
+
+```java
+package com.apple.spark.core;
+
+import org.junit.jupiter.api.Test;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+/*
+ This test file includes minimal implementations of dependent classes and constants
+ to allow compiling and testing ApplicationSubmissionHelper.getSparkConf in isolation.
+*/
+
+/* Minimal Constants class used by ApplicationSubmissionHelper.substitutionSparkConfigValue */
+class Constants {
+    public static final String SPARK_APPLICATION_RESOURCE_NAME_VAR = "${SUBMISSION_ID}";
+}
+
+/* Minimal SparkConstants used by ApplicationSubmissionHelper.getSparkConf */
+class SparkConstants {
+    public static final String SPARK_APP_NAME_CONFIG = "spark.app.name";
+}
+
+/* Simple StringUtils replacement for org.apache.commons.lang3.StringUtils.isEmpty */
+class StringUtils {
+    public static boolean isEmpty(CharSequence cs) {
+        return cs == null || cs.length() == 0;
+    }
+}
+
+/* Minimal AppConfig and nested SparkCluster used by ApplicationSubmissionHelper.getSparkConf */
+class AppConfig {
+
+    private Map<String, String> defaultSparkConf;
+    private Map<String, String> fixedSparkConf;
+
+    public Map<String, String> getDefaultSparkConf() {
+        return defaultSparkConf;
+    }
+
+    public void setDefaultSparkConf(Map<String, String> defaultSparkConf) {
+        this.defaultSparkConf = defaultSparkConf;
+    }
+
+    public Map<String, String> getFixedSparkConf() {
+        return fixedSparkConf;
+    }
+
+    public void setFixedSparkConf(Map<String, String> fixedSparkConf) {
+        this.fixedSparkConf = fixedSparkConf;
+    }
+
+    public static class SparkCluster {
+        private Map<String, String> sparkConf;
+
+        public Map<String, String> getSparkConf() {
+            return sparkConf;
+        }
+
+        public void setSparkConf(Map<String, String> sparkConf) {
+            this.sparkConf = sparkConf;
+        }
+    }
+}
+
+/* Minimal SubmitApplicationRequest used by ApplicationSubmissionHelper.getSparkConf */
+class SubmitApplicationRequest {
+
+    private String applicationName;
+    private Map<String, String> sparkConf;
+
+    public String getApplicationName() {
+        return applicationName;
+    }
+
+    public void setApplicationName(String applicationName) {
+        this.applicationName = applicationName;
+    }
+
+    public Map<String, String> getSparkConf() {
+        return sparkConf;
+    }
+
+    public void setSparkConf(Map<String, String> sparkConf) {
+        this.sparkConf = sparkConf;
+    }
+}
+
+/* The class under test (kept minimal but faithful to behavior described) */
+class ApplicationSubmissionHelper {
+
+    public static Map<String, String> getSparkConf(String submissionId, SubmitApplicationRequest request, AppConfig appConfig, AppConfig.SparkCluster sparkCluster) {
+        Map<String, String> sparkConf = null;
+        Map<String, String> defaultSparkConf = appConfig == null ? null : appConfig.getDefaultSparkConf();
+        Map<String, String> fixedSparkConf = appConfig == null ? null : appConfig.getFixedSparkConf();
+
+        if (defaultSparkConf != null) {
+            if (sparkConf == null) {
+                sparkConf = new HashMap<>();
+            }
+            Map<String, String> filteredDefaultSparkConf = applyFeatureGate(request, defaultSparkConf);
+
+            for (Map.Entry<String, String> entry : filteredDefaultSparkConf.entrySet()) {
+                sparkConf.put(entry.getKey(), substitutionSparkConfigValue(entry.getValue(), submissionId));
+            }
+        }
+
+        if (sparkCluster != null && sparkCluster.getSparkConf() != null) {
+            if (sparkConf == null) {
+                sparkConf = new HashMap<>();
+            }
+            for (Map.Entry<String, String> entry : sparkCluster.getSparkConf().entrySet()) {
+                sparkConf.put(entry.getKey(), substitutionSparkConfigValue(entry.getValue(), submissionId));
+            }
+        }
+
+        if (request != null && request.getSparkConf() != null) {
+            if (sparkConf == null) {
+                sparkConf = new HashMap<>();
+            }
+            for (Map.Entry<String, String> entry : request.getSparkConf().entrySet()) {
+                sparkConf.put(entry.getKey(), entry.getValue());
+            }
+        }
+
+        if (fixedSparkConf != null) {
+            if (sparkConf == null) {
+                sparkConf = new HashMap<>();
+            }
+            sparkConf.putAll(fixedSparkConf);
+        }
+
+        if (request != null && !StringUtils.isEmpty(request.getApplicationName())) {
+            if (sparkConf == null) {
+                sparkConf = new HashMap<>();
+            }
+            sparkConf.put(SparkConstants.SPARK_APP_NAME_CONFIG, request.getApplicationName());
+        }
+
+        return sparkConf;
+    }
+
+    // included minimal feature gate behavior: in original code this filters based on request features.
+    private static Map<String, String> applyFeatureGate(SubmitApplicationRequest request, Map<String, String> defaults) {
+        // For testing purposes, return the defaults unchanged.
+        return defaults;
+    }
+
+    private static String substitutionSparkConfigValue(String value, String submissionId) {
+        if (value != null) {
+            value = value.replace(Constants.SPARK_APPLICATION_RESOURCE_NAME_VAR, submissionId);
+        }
+        return value;
+    }
+}
+
+/* Test class */
+public class ApplicationSubmissionHelperTest {
+
+    @Test
+    public void testSubstitutionSparkConfigValue_privateMethod_viaReflection() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Method method = ApplicationSubmissionHelper.class.getDeclaredMethod("substitutionSparkConfigValue", String.class, String.class);
+        method.setAccessible(true);
+        // null input should return null
+        Object resNull = method.invoke(null, (String) null, "id");
+        assertNull(resNull);
+
+        // substitution should occur
+        String template = "prefix-" + Constants.SPARK_APPLICATION_RESOURCE_NAME_VAR + "-suffix";
+        Object res = method.invoke(null, template, "SUB123");
+        assertTrue(res instanceof String);
+        assertEquals("prefix-SUB123-suffix", res);
+    }
+
+    @Test
+    public void testGetSparkConf_combinedSources_and_overrides_and_substitution() {
+        String submissionId = "S1";
+
+        // default spark conf with substitution variable and a key that will be overridden later
+        Map<String, String> defaultConf = new HashMap<>();
+        defaultConf.put("a", "val-" + Constants.SPARK_APPLICATION_RESOURCE_NAME_VAR);
+        defaultConf.put("b", "default-b");
+
+        // cluster conf with substitution variable overriding "b" and providing "c"
+        AppConfig.SparkCluster sparkCluster = new AppConfig.SparkCluster();
+        Map<String, String> clusterConf = new HashMap<>();
+        clusterConf.put("b", "cluster-" + Constants.SPARK_APPLICATION_RESOURCE_NAME_VAR);
+        clusterConf.put("c", "clusterOnly");
+        sparkCluster.setSparkConf(clusterConf);
+
+        // request conf that overrides "c" and adds "d"
+        SubmitApplicationRequest request = new SubmitApplicationRequest();
+        Map<String, String> requestConf = new HashMap<>();
+        requestConf.put("c", "requestC");
+        requestConf.put("d", "requestOnly");
+        request.setSparkConf(requestConf);
+        request.setApplicationName("myApp");
+
+        // fixed conf that should be applied last and thus take precedence over previous values
+        AppConfig appConfig = new AppConfig();
+        appConfig.setDefaultSparkConf(defaultConf);
+        Map<String, String> fixedConf = new HashMap<>();
+        fixedConf.put("e", "fixed");
+        appConfig.setFixedSparkConf(fixedConf);
+
+        Map<String, String> result = ApplicationSubmissionHelper.getSparkConf(submissionId, request, appConfig, sparkCluster);
+
+        assertNotNull(result);
+        // substitution applied for default 'a'
+        assertEquals("val-S1", result.get("a"));
+        // cluster override applied for 'b' with substitution
+        assertEquals("cluster-S1", result.get("b"));
+        // request override applied for 'c'
+        assertEquals("requestC", result.get("c"));
+        // request-provided key 'd'
+        assertEquals("requestOnly", result.get("d"));
+        // fixed conf present
+        assertEquals("fixed", result.get("e"));
+        // application name set
+        assertEquals("myApp", result.get(SparkConstants.SPARK_APP_NAME_CONFIG));
+    }
+
+    @Test
+    public void testGetSparkConf_allNullInputs_returnsNull() {
+        Map<String, String> result = ApplicationSubmissionHelper.getSparkConf("id", null, null, null);
+        assertNull(result, "Expected null when no configuration sources and no application name provided");
+    }
+
+    @Test
+    public void testGetSparkConf_applicationNameOnly_returnsMapWithAppName() {
+        SubmitApplicationRequest request = new SubmitApplicationRequest();
+        request.setApplicationName("onlyAppName");
+        Map<String, String> result = ApplicationSubmissionHelper.getSparkConf("id", request, null, null);
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertEquals("onlyAppName", result.get(SparkConstants.SPARK_APP_NAME_CONFIG));
+    }
+}
+```
+
+The error encountered when running this unit test is:
+
+```
+unrelated
+[INFO] BPGApplication_initialize_2_0_Test_testInitialize_withMockBootstrap_doesNotThrow.java: BPGApplication_initialize_2_0_Test_testInitialize_withMockBootstrap_doesNotThrow.java uses unchecked or unsafe operations.
+[INFO] BPGApplication_initialize_2_0_Test_testInitialize_withMockBootstrap_doesNotThrow.java: Recompile with -Xlint:unchecked for details.
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] BPGApplication_initialize_2_0_Test_testInitialize_withMockBootstrap_doesNotThrow.java:[28,35] com.apple.spark.core.Constants is not public in com.apple.spark.core; cannot be accessed from outside package
+[ERROR] BPGApplication_initialize_2_0_Test_testInitialize_withMockBootstrap_doesNotThrow.java:[28,1] static import only from classes and interfaces
+[ERROR] BPGApplication_initialize_2_0_Test_testInitialize_withMockBootstrap_doesNotThrow.java:[29,35] com.apple.spark.core.Constants is not public in com.apple.spark.core; cannot be accessed from outside package
+[ERROR] BPGApplication_initialize_2_0_Test_testInitialize_withMockBootstrap_doesNotThrow.java:[29,1] static import only from classes and interfaces
+[ERROR] BPGApplication_initialize_2_0_Test_testInitialize_withMockBootstrap_doesNotThrow.java:[32,28] com.apple.spark.core.Constants is not public in com.apple.spark.core; cannot be accessed from outside package
+[INFO] 5 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.311 s
+[INFO] Finished at: 2026-01-11T16:41:46-07:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.8.1:testCompile (default-testCompile) on project bpg: Compilation failure: Compilation failure: 
+[ERROR] BPGApplication_initialize_2_0_Test_testInitialize_withMockBootstrap_doesNotThrow.java:[28,35] com.apple.spark.core.Constants is not public in com.apple.spark.core; cannot be accessed from outside package
+[ERROR] BPGApplication_initialize_2_0_Test_testInitialize_withMockBootstrap_doesNotThrow.java:[28,1] static import only from classes and interfaces
+[ERROR] BPGApplication_initialize_2_0_Test_testInitialize_withMockBootstrap_doesNotThrow.java:[29,35] com.apple.spark.core.Constants is not public in com.apple.spark.core; cannot be accessed from outside package
+[ERROR] BPGApplication_initialize_2_0_Test_testInitialize_withMockBootstrap_doesNotThrow.java:[29,1] static import only from classes and interfaces
+[ERROR] BPGApplication_initialize_2_0_Test_testInitialize_withMockBootstrap_doesNotThrow.java:[32,28] com.apple.spark.core.Constants is not public in com.apple.spark.core; cannot be accessed from outside package
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+```
+
+# Procedures for Fixing the Unit Test:
+Let's proceed step by step:
+
+1. Pick out the statements that the errors occur
+2. Reason about the causes of the errors
+3. Reason about solutions on how to fix the errors
+3. Provide the complete fixed unit test, utilizing JUnit 5 and Mockito 3 if required.
+
+# Requirements and Considerations for the Unit Test Fix:
+- Ensure the unit tests are executable without compile errors, runtime errors, or timeouts.
+- Aim for high coverage scores, covering as many instructions and branches of the method under test as possible.
+- Avoid modifying the method under test.
+- Generate the entire unit test file, including package declaration and imports.
+- Ensure correct testing of the method under test:
+    - The method under test is defined in ApplicationSubmissionHelper.
+    - The method under test is ApplicationSubmissionHelper.getSparkConf.
+- Utilize correct tools and adhere to Java 8 language style:
+    - You can use JUnit 5 and Mockito 3.
+    - The language style should follow Java 8 conventions.
+
+# Output Format
+To facilitate generating the desired unit test, follow these instructions:
+
+<<Generation Begin>>
+{complete unit test}
+<<Generation Over>>
+
+Please proceed with generating the fixed unit test.
+Ensure all generations are provided in a single response.

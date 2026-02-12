@@ -1,0 +1,292 @@
+package com.apple.spark.core;
+
+import com.apple.spark.AppConfig;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.*;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ * Unit tests for ApplicationSubmissionHelper.validateQueueToken
+ *
+ * This test file provides a test-local replacement of com.apple.spark.core.QueueTokenVerifier
+ * (placed below) to avoid depending on the production verifier. The replacement must match
+ * the production API (constants and method signatures).
+ */
+public class ApplicationSubmissionHelper_validateQueueToken_Test {
+
+    // Helper to create an instance of the nested class com.apple.spark.AppConfig$QueueConfig
+    private Object createQueueConfig(String name, Boolean secure) {
+        try {
+            Class<?> qcClass = Class.forName("com.apple.spark.AppConfig$QueueConfig");
+            Object qc = qcClass.getDeclaredConstructor().newInstance();
+            // try setter setName
+            try {
+                Method m = qcClass.getMethod("setName", String.class);
+                m.invoke(qc, name);
+            } catch (NoSuchMethodException e) {
+                // try field
+                try {
+                    Field f = qcClass.getDeclaredField("name");
+                    f.setAccessible(true);
+                    f.set(qc, name);
+                } catch (NoSuchFieldException ex) {
+                    // ignore - best effort
+                }
+            }
+            // set secure via setSecure(Boolean) or setSecure(boolean) or field
+            if (secure != null) {
+                try {
+                    Method m = qcClass.getMethod("setSecure", Boolean.class);
+                    m.invoke(qc, secure);
+                } catch (NoSuchMethodException e) {
+                    try {
+                        Method m2 = qcClass.getMethod("setSecure", boolean.class);
+                        m2.invoke(qc, secure);
+                    } catch (NoSuchMethodException ex) {
+                        try {
+                            Field f = qcClass.getDeclaredField("secure");
+                            f.setAccessible(true);
+                            f.set(qc, secure);
+                        } catch (NoSuchFieldException exc) {
+                            // ignore
+                        }
+                    }
+                }
+            } else {
+                // leave secure null; try to set actual null if setter exists
+                try {
+                    Method m = qcClass.getMethod("setSecure", Boolean.class);
+                    m.invoke(qc, new Object[] { null });
+                } catch (Exception ignored) {
+                }
+            }
+            return qc;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to create QueueConfig reflectively", e);
+        }
+    }
+
+    // Helper to create an instance of com.apple.spark.AppConfig$QueueTokenConfig and set secrets list
+    private Object createQueueTokenConfig(List<String> secrets) {
+        try {
+            Class<?> qtcClass = Class.forName("com.apple.spark.AppConfig$QueueTokenConfig");
+            Object qtc = qtcClass.getDeclaredConstructor().newInstance();
+            // try setter setSecrets
+            try {
+                Method m = qtcClass.getMethod("setSecrets", List.class);
+                m.invoke(qtc, secrets);
+            } catch (NoSuchMethodException e) {
+                // try field
+                try {
+                    Field f = qtcClass.getDeclaredField("secrets");
+                    f.setAccessible(true);
+                    f.set(qtc, secrets);
+                } catch (NoSuchFieldException ex) {
+                    // ignore
+                }
+            }
+            return qtc;
+        } catch (ClassNotFoundException e) {
+            // If the nested class is not present, return the raw list (fallback)
+            return secrets;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to create QueueTokenConfig reflectively", e);
+        }
+    }
+
+    // Utility to set a field or call setter on AppConfig (or other target) if present
+    private void setFieldIfPossible(Object target, String fieldName, Object value) {
+        try {
+            // try setter
+            Method setter = null;
+            Method[] methods = target.getClass().getMethods();
+            String setterName = "set" + Character.toUpperCase(fieldName.charAt(0)) + fieldName.substring(1);
+            for (Method m : methods) {
+                if (m.getName().equals(setterName) && m.getParameterCount() == 1) {
+                    setter = m;
+                    break;
+                }
+            }
+            if (setter != null) {
+                setter.invoke(target, value);
+                return;
+            }
+            // fallback to field
+            Field f = target.getClass().getDeclaredField(fieldName);
+            f.setAccessible(true);
+            f.set(target, value);
+        } catch (NoSuchFieldException | IllegalArgumentException nsf) {
+            // ignore quietly if not present
+            try {
+                // last resort: try to set via a loose approach using declared fields
+                Field f = target.getClass().getDeclaredField(fieldName);
+                f.setAccessible(true);
+                f.set(target, value);
+            } catch (Exception e) {
+                // ignore
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to set field " + fieldName, e);
+        }
+    }
+
+    @BeforeEach
+    public void beforeEach() {
+        // reset the test-local verifier
+        QueueTokenVerifier.reset();
+    }
+
+    @Test
+    public void testNoQueuesDoesNothing() {
+        AppConfig appConfig = new AppConfig();
+        // no queues -> set to null reflectively or via setter if available
+        setFieldIfPossible(appConfig, "queues", null);
+
+        // should not throw
+        ApplicationSubmissionHelper.validateQueueToken("any", "token", appConfig);
+
+        // verifier must not be called
+        assertFalse(QueueTokenVerifier.wasCalled());
+    }
+
+    @Test
+    public void testNonSecureQueueDoesNothing() {
+        AppConfig appConfig = new AppConfig();
+        Object qc = createQueueConfig("q1", Boolean.FALSE);
+        List<Object> queues = new ArrayList<>();
+        queues.add(qc);
+        setFieldIfPossible(appConfig, "queues", queues);
+
+        // token null should not matter for non-secure queue
+        ApplicationSubmissionHelper.validateQueueToken("q1", null, appConfig);
+
+        assertFalse(QueueTokenVerifier.wasCalled());
+    }
+
+    @Test
+    public void testSecureQueueMissingTokenThrowsBadRequest() {
+        AppConfig appConfig = new AppConfig();
+        Object qc = createQueueConfig("secure-q", Boolean.TRUE);
+        setFieldIfPossible(appConfig, "queues", Collections.singletonList(qc));
+
+        WebApplicationException ex = assertThrows(WebApplicationException.class, () ->
+            ApplicationSubmissionHelper.validateQueueToken("secure-q", null, appConfig)
+        );
+
+        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), ex.getResponse().getStatus());
+        assertFalse(QueueTokenVerifier.wasCalled());
+    }
+
+    @Test
+    public void testSecureQueueWithTokenButNoQueueTokenSOPSThrowsInternalServerError() {
+        AppConfig appConfig = new AppConfig();
+        Object qc = createQueueConfig("secure-q", Boolean.TRUE);
+        setFieldIfPossible(appConfig, "queues", Collections.singletonList(qc));
+        // ensure queueTokenSOPS is null
+        setFieldIfPossible(appConfig, "queueTokenSOPS", null);
+
+        WebApplicationException ex = assertThrows(WebApplicationException.class, () ->
+            ApplicationSubmissionHelper.validateQueueToken("secure-q", "some-token", appConfig)
+        );
+
+        assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), ex.getResponse().getStatus());
+        assertFalse(QueueTokenVerifier.wasCalled());
+    }
+
+    @Test
+    public void testSecureQueueWithTokenAndSopsVerifies() {
+        AppConfig appConfig = new AppConfig();
+        Object qc = createQueueConfig("secure-q", Boolean.TRUE);
+        setFieldIfPossible(appConfig, "queues", Collections.singletonList(qc));
+
+        List<String> secrets = Arrays.asList("s1", "s2");
+        Object qtc = createQueueTokenConfig(secrets);
+        setFieldIfPossible(appConfig, "queueTokenSOPS", qtc);
+
+        // valid token should result in verifier being called and not throwing
+        ApplicationSubmissionHelper.validateQueueToken("secure-q", "good-token", appConfig);
+
+        assertTrue(QueueTokenVerifier.wasCalled());
+        assertEquals("good-token", QueueTokenVerifier.getLastToken());
+        assertEquals(secrets, QueueTokenVerifier.getLastSecrets());
+        assertEquals("secure-q", QueueTokenVerifier.getLastQueue());
+    }
+
+    @Test
+    public void testVerifierThrowsUnauthorizedPropagates() {
+        AppConfig appConfig = new AppConfig();
+        Object qc = createQueueConfig("secure-q", Boolean.TRUE);
+        setFieldIfPossible(appConfig, "queues", Collections.singletonList(qc));
+
+        List<String> secrets = Arrays.asList("s1");
+        Object qtc = createQueueTokenConfig(secrets);
+        setFieldIfPossible(appConfig, "queueTokenSOPS", qtc);
+
+        WebApplicationException ex = assertThrows(WebApplicationException.class, () ->
+            ApplicationSubmissionHelper.validateQueueToken("secure-q", "invalid-token", appConfig)
+        );
+
+        assertEquals(Response.Status.UNAUTHORIZED.getStatusCode(), ex.getResponse().getStatus());
+        assertTrue(QueueTokenVerifier.wasCalled());
+    }
+
+}
+
+/**
+ * Test-local replacement/shadow of the production com.apple.spark.core.QueueTokenVerifier.
+ *
+ * Placed in the same package so ApplicationSubmissionHelper resolves this class during tests.
+ * This replacement matches the expected production API:
+ *   - public static final String ISSUER_ADMIN / ISSUER_AIRFLOW
+ *   - public static final String CLAIM_ALLOWED_QUEUES
+ *   - public static void verify(String token, List<String> secrets, String queue)
+ */
+class QueueTokenVerifier {
+
+    public static final String ISSUER_ADMIN = "admin-issuer";
+    public static final String ISSUER_AIRFLOW = "airflow-issuer";
+    public static final String CLAIM_ALLOWED_QUEUES = "allowed_queues";
+
+    static volatile boolean called = false;
+    static volatile String lastToken = null;
+    static volatile List<String> lastSecrets = null;
+    static volatile String lastQueue = null;
+
+    public static void verify(String token, List<String> secrets, String queue) {
+        called = true;
+        lastToken = token;
+        lastSecrets = secrets;
+        lastQueue = queue;
+        // Simulate a validation pass for token "good-token", throw for "invalid-token"
+        if ("invalid-token".equals(token)) {
+            throw new WebApplicationException("invalid token", Response.Status.UNAUTHORIZED);
+        }
+    }
+
+    static void reset() {
+        called = false;
+        lastToken = null;
+        lastSecrets = null;
+        lastQueue = null;
+    }
+
+    static boolean wasCalled() {
+        return called;
+    }
+
+    static String getLastToken() {
+        return lastToken;
+    }
+
+    static List<String> getLastSecrets() {
+        return lastSecrets;
+    }
+
+    static String getLastQueue() {
+        return lastQueue;
+    }
+}

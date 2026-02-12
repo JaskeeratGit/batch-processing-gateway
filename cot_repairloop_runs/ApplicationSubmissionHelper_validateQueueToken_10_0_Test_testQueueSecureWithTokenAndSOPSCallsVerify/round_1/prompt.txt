@@ -1,0 +1,472 @@
+Hello. You are a talented Java programmer. Here you're going to help the user fix the unit test file with error.
+Here is the information of the method-to-test:
+
+The focal method is `validateQueueToken(String, String, AppConfig)` in the focal class `ApplicationSubmissionHelper`, and their information is
+```[java]
+public static void validateQueueToken(String queue, String queueToken, AppConfig appConfig) {
+    if (appConfig.getQueues() != null) {
+      final String queueNameToFilter = queue;
+      Optional<AppConfig.QueueConfig> queueConfigOptional =
+          appConfig.getQueues().stream()
+              .filter(q -> q.getName().equalsIgnoreCase(queueNameToFilter))
+              .findFirst();
+      boolean queueSecure = false;
+      if (queueConfigOptional.isPresent()) {
+        AppConfig.QueueConfig queueConfig = queueConfigOptional.get();
+        if (queueConfig.getSecure() != null) {
+          queueSecure = queueConfig.getSecure();
+        }
+      }
+      if (queueSecure) {
+        if (queueToken == null || queueToken.isEmpty()) {
+          String errorMessage = String.format("Please specify queueToken for queue %s", queue);
+          throw new WebApplicationException(errorMessage, Response.Status.BAD_REQUEST);
+        }
+
+        if (appConfig.getQueueTokenSOPS() == null) {
+          throw new WebApplicationException(
+              "Server hit configuration error: no queue token configure",
+              Response.Status.INTERNAL_SERVER_ERROR);
+        }
+
+        QueueTokenVerifier.verify(queueToken, appConfig.getQueueTokenSOPS().getSecrets(), queue);
+      }
+    }
+  }
+```
+
+To help you correctly fix the unit test file, we provide the brief information about the dependency
+
+The brief information of dependent class `com.apple.spark.AppConfig` is
+```[java]
+import com.apple.spark.core.ConfigValue;
+import com.apple.spark.operator.DriverSpec;
+import com.apple.spark.operator.ExecutorSpec;
+import com.apple.spark.operator.SparkUIConfiguration;
+import com.apple.spark.operator.Volume;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.dropwizard.Configuration;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class AppConfig {
+private String applicationContextPath;
+private Map<String, String> defaultSparkConf;
+private Map<String, String> fixedSparkConf;
+private List<SparkCluster> sparkClusters;
+private List<SparkImage> sparkImages;
+private String s3Bucket;
+private String s3Folder;
+private String sparkLogS3Bucket;
+private String sparkLogIndex;
+private final int batchFileLimit = ...;
+private String sparkHistoryDns;
+private String gatewayDns;
+private String eksCluster;
+private String sparkHistoryUrl;
+private List<String> allowedUsers;
+private List<String> blockedUsers;
+private List<String> adminUsers;
+private List<QueueConfig> queues;
+private QueueTokenConfig queueTokenSOPS;
+private DBStorage dbStorageSOPS;
+private Double memoryMbSecondCost;
+private Double vCoreSecondCost;
+private Long statusCacheExpireMillis;
+public AppConfig(){}
+public List<QueueConfig> getQueues(){}
+public QueueTokenConfig getQueueTokenSOPS(){}
+}
+```
+
+The brief information of dependent class `com.apple.spark.AppConfig.QueueConfig` is
+```[java]
+import com.apple.spark.core.ConfigValue;
+import com.apple.spark.operator.DriverSpec;
+import com.apple.spark.operator.ExecutorSpec;
+import com.apple.spark.operator.SparkUIConfiguration;
+import com.apple.spark.operator.Volume;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.dropwizard.Configuration;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class AppConfig {
+private String applicationContextPath;
+private Map<String, String> defaultSparkConf;
+private Map<String, String> fixedSparkConf;
+private List<SparkCluster> sparkClusters;
+private List<SparkImage> sparkImages;
+private String s3Bucket;
+private String s3Folder;
+private String sparkLogS3Bucket;
+private String sparkLogIndex;
+private final int batchFileLimit = ...;
+private String sparkHistoryDns;
+private String gatewayDns;
+private String eksCluster;
+private String sparkHistoryUrl;
+private List<String> allowedUsers;
+private List<String> blockedUsers;
+private List<String> adminUsers;
+private List<QueueConfig> queues;
+private QueueTokenConfig queueTokenSOPS;
+private DBStorage dbStorageSOPS;
+private Double memoryMbSecondCost;
+private Double vCoreSecondCost;
+private Long statusCacheExpireMillis;
+public AppConfig(){}
+}
+```
+
+The brief information of dependent class `com.apple.spark.core.QueueTokenVerifier` is
+```[java]
+import com.apple.spark.util.JwtUtils;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.Claim;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+public class QueueTokenVerifier {
+public static final String ISSUER_ADMIN = ...;
+public static final String ISSUER_AIRFLOW = ...;
+public static final String CLAIM_ALLOWED_QUEUES = ...;
+private static final Logger logger = ...;
+public static void verify(String token, List<String> secretCandidates, String queue){}
+}
+```
+
+The brief information of dependent class `com.apple.spark.AppConfig.QueueTokenConfig` is
+```[java]
+import com.apple.spark.core.ConfigValue;
+import com.apple.spark.operator.DriverSpec;
+import com.apple.spark.operator.ExecutorSpec;
+import com.apple.spark.operator.SparkUIConfiguration;
+import com.apple.spark.operator.Volume;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.dropwizard.Configuration;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class AppConfig {
+private String applicationContextPath;
+private Map<String, String> defaultSparkConf;
+private Map<String, String> fixedSparkConf;
+private List<SparkCluster> sparkClusters;
+private List<SparkImage> sparkImages;
+private String s3Bucket;
+private String s3Folder;
+private String sparkLogS3Bucket;
+private String sparkLogIndex;
+private final int batchFileLimit = ...;
+private String sparkHistoryDns;
+private String gatewayDns;
+private String eksCluster;
+private String sparkHistoryUrl;
+private List<String> allowedUsers;
+private List<String> blockedUsers;
+private List<String> adminUsers;
+private List<QueueConfig> queues;
+private QueueTokenConfig queueTokenSOPS;
+private DBStorage dbStorageSOPS;
+private Double memoryMbSecondCost;
+private Double vCoreSecondCost;
+private Long statusCacheExpireMillis;
+public AppConfig(){}
+}
+```
+
+The brief information of dependent class `com.apple.spark.AppConfig` is
+```[java]
+getQueueTokenSOPS()
+getQueues()
+```
+
+The brief information of dependent class `com.apple.spark.AppConfig.QueueConfig` is
+```[java]
+getSecure()
+getName()
+```
+
+The brief information of dependent class `com.apple.spark.core.QueueTokenVerifier` is
+```[java]
+verify(String, String, String)
+```
+
+The brief information of dependent class `com.apple.spark.AppConfig.QueueTokenConfig` is
+```[java]
+getSecrets()
+```
+
+# Unit Test to Fix
+
+Here's the unit test that needs fixing.
+
+```java
+package com.apple.spark.core;
+
+import com.apple.spark.AppConfig;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+/**
+ * Unit tests for ApplicationSubmissionHelper.validateQueueToken
+ *
+ * This test uses Mockito's static mocking to intercept calls to the production
+ * QueueTokenVerifier.verify(...) method rather than providing a test-local
+ * replacement class (which can collide with other tests).
+ */
+public class ApplicationSubmissionHelperValidateQueueTokenTest {
+
+    // Helper to create an instance of the nested class com.apple.spark.AppConfig$QueueConfig
+    private Object createQueueConfig(String name, Boolean secure) {
+        try {
+            Class<?> qcClass = Class.forName("com.apple.spark.AppConfig$QueueConfig");
+            Object qc = qcClass.getDeclaredConstructor().newInstance();
+
+            // try setter setName(String) first
+            try {
+                Method m = qcClass.getMethod("setName", String.class);
+                m.invoke(qc, name);
+            } catch (NoSuchMethodException e) {
+                // fallback to field
+                try {
+                    Field f = qcClass.getDeclaredField("name");
+                    f.setAccessible(true);
+                    f.set(qc, name);
+                } catch (NoSuchFieldException ex) {
+                    // ignore - best effort
+                }
+            }
+
+            // set secure via setSecure(Boolean) or setSecure(boolean) or field
+            if (secure != null) {
+                boolean set = false;
+                try {
+                    Method m = qcClass.getMethod("setSecure", Boolean.class);
+                    m.invoke(qc, secure);
+                    set = true;
+                } catch (NoSuchMethodException ignored) {
+                }
+                if (!set) {
+                    try {
+                        Method m2 = qcClass.getMethod("setSecure", boolean.class);
+                        m2.invoke(qc, secure);
+                        set = true;
+                    } catch (NoSuchMethodException ignored) {
+                    }
+                }
+                if (!set) {
+                    try {
+                        Field f = qcClass.getDeclaredField("secure");
+                        f.setAccessible(true);
+                        f.set(qc, secure);
+                    } catch (NoSuchFieldException ignored) {
+                    }
+                }
+            } else {
+                // try to set explicit null if setter exists
+                try {
+                    Method m = qcClass.getMethod("setSecure", Boolean.class);
+                    m.invoke(qc, new Object[] { null });
+                } catch (Exception ignored) {
+                }
+            }
+            return qc;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to create QueueConfig reflectively", e);
+        }
+    }
+
+    // Helper to create an instance of com.apple.spark.AppConfig$QueueTokenConfig and set secrets list
+    private Object createQueueTokenConfig(List<String> secrets) {
+        try {
+            Class<?> qtcClass = Class.forName("com.apple.spark.AppConfig$QueueTokenConfig");
+            Object qtc = qtcClass.getDeclaredConstructor().newInstance();
+            // try setter setSecrets(List)
+            try {
+                Method m = qtcClass.getMethod("setSecrets", List.class);
+                m.invoke(qtc, secrets);
+            } catch (NoSuchMethodException e) {
+                // try field
+                try {
+                    Field f = qtcClass.getDeclaredField("secrets");
+                    f.setAccessible(true);
+                    f.set(qtc, secrets);
+                } catch (NoSuchFieldException ex) {
+                    // ignore
+                }
+            }
+            return qtc;
+        } catch (ClassNotFoundException e) {
+            // If nested class is not present, just return the list (fallback)
+            return secrets;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to create QueueTokenConfig reflectively", e);
+        }
+    }
+
+    // Utility to set a field or call setter on AppConfig if present
+    private void setFieldIfPossible(Object target, String fieldName, Object value) {
+        try {
+            // try setter
+            Method setter = null;
+            Method[] methods = target.getClass().getMethods();
+            String setterName = "set" + Character.toUpperCase(fieldName.charAt(0)) + fieldName.substring(1);
+            for (Method m : methods) {
+                if (m.getName().equals(setterName) && m.getParameterCount() == 1) {
+                    setter = m;
+                    break;
+                }
+            }
+            if (setter != null) {
+                setter.invoke(target, value);
+                return;
+            }
+            // fallback to field
+            Field f = target.getClass().getDeclaredField(fieldName);
+            f.setAccessible(true);
+            f.set(target, value);
+        } catch (NoSuchFieldException | IllegalArgumentException nsf) {
+            // ignore quietly if not present; last resort try declared field
+            try {
+                Field f = target.getClass().getDeclaredField(fieldName);
+                f.setAccessible(true);
+                f.set(target, value);
+            } catch (Exception e) {
+                // ignore
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to set field " + fieldName, e);
+        }
+    }
+
+    @Test
+    public void testQueueSecureWithTokenAndSOPSCallsVerify() {
+        AppConfig appConfig = new AppConfig();
+
+        // create queue config list with one secure queue named "secureQ"
+        List<Object> queues = new ArrayList<>();
+        queues.add(createQueueConfig("secureQ", Boolean.TRUE));
+        setFieldIfPossible(appConfig, "queues", queues);
+
+        // create queueTokenSOPS with a secrets list (production verify expects a List)
+        List<String> secretsList = new ArrayList<>();
+        secretsList.add("secret1");
+        Object qtc = createQueueTokenConfig(secretsList);
+        setFieldIfPossible(appConfig, "queueTokenSOPS", qtc);
+
+        // Use Mockito static mock to intercept calls to the production QueueTokenVerifier.verify(...)
+        try (org.mockito.MockedStatic<QueueTokenVerifier> mocked =
+                     mockStatic(QueueTokenVerifier.class)) {
+
+            // set up behavior to simply record invocation (no exception)
+            mocked.when(() -> QueueTokenVerifier.verify(eq("good-token"), eq(secretsList), eq("secureQ")))
+                    .thenAnswer(invocation -> {
+                        // no-op, just emulate successful verification
+                        return null;
+                    });
+
+            // call - should invoke QueueTokenVerifier.verify and not throw
+            ApplicationSubmissionHelper.validateQueueToken("secureQ", "good-token", appConfig);
+
+            // verify it was invoked
+            mocked.verify(() -> QueueTokenVerifier.verify("good-token", secretsList, "secureQ"), times(1));
+        }
+    }
+}
+```
+
+The error encountered when running this unit test is:
+
+```
+timeout
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:147)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:127)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:90)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:55)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:102)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:54)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86)
+	at org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86)
+	at org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:55)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:223)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:175)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:139)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:456)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:169)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:595)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:581)
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Errors: 
+[ERROR]   ApplicationSubmissionHelperValidateQueueTokenTest.testQueueSecureWithTokenAndSOPSCallsVerify:160 Mockito 
+The used MockMaker SubclassByteBuddyMockMaker does not support the creation of static mocks
+Mockito's inline mock maker supports static mocks based on the Instrumentation API.
+You can simply enable this mock mode, by placing the 'mockito-inline' artifact where you are currently using 'mockito-core'.
+Note that Mockito's inline mock maker is not supported on Android.
+[INFO] 
+[ERROR] Tests run: 1, Failures: 0, Errors: 1, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ---------------------------------------
+```
+
+# Procedures for Fixing the Unit Test:
+Let's proceed step by step:
+
+1. Pick out the statements that the errors occur
+2. Reason about the causes of the errors
+3. Reason about solutions on how to fix the errors
+3. Provide the complete fixed unit test, utilizing JUnit 5 and Mockito 3 if required.
+
+# Requirements and Considerations for the Unit Test Fix:
+- Ensure the unit tests are executable without compile errors, runtime errors, or timeouts.
+- Aim for high coverage scores, covering as many instructions and branches of the method under test as possible.
+- Avoid modifying the method under test.
+- Generate the entire unit test file, including package declaration and imports.
+- Ensure correct testing of the method under test:
+    - The method under test is defined in ApplicationSubmissionHelper.
+    - The method under test is ApplicationSubmissionHelper.validateQueueToken.
+- Utilize correct tools and adhere to Java 8 language style:
+    - You can use JUnit 5 and Mockito 3.
+    - The language style should follow Java 8 conventions.
+
+# Output Format
+To facilitate generating the desired unit test, follow these instructions:
+
+<<Generation Begin>>
+{complete unit test}
+<<Generation Over>>
+
+Please proceed with generating the fixed unit test.
+Ensure all generations are provided in a single response.

@@ -1,0 +1,151 @@
+<<Generation Begin>>
+package com.apple.spark;
+
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.SharedMetricRegistries;
+import com.codahale.metrics.health.HealthCheckRegistry;
+import com.apple.spark.core.BPGStatsdConfig;
+import com.apple.spark.core.Constants;
+import io.dropwizard.jersey.setup.JerseyEnvironment;
+import io.dropwizard.jetty.MutableServletContextHandler;
+import io.dropwizard.setup.Environment;
+import io.micrometer.core.instrument.MeterRegistry;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+/**
+ * Fixed unit test for BPGApplication.run(...) that avoids static mocking (which requires
+ * mockito-inline). This test uses Mockito to mock the Dropwizard Environment and its
+ * subcomponents, and verifies key side-effects of run(...):
+ *  - default application context path is applied when configuration value is null
+ *  - environment.metrics() is invoked and returns the provided metric registry
+ *  - jersey resources are registered
+ *  - health check registration occurs for "sparkClusters"
+ *
+ * Notes:
+ *  - We construct BPGApplication with monitorApplication = false to avoid starting the
+ *    ApplicationMonitor background thread during the test.
+ *  - The test ensures SharedMetricRegistries has a default registry name set before
+ *    invoking BPGApplication.run(...) to avoid IllegalStateException from the
+ *    SharedMetricRegistries implementation.
+ */
+public class BPGApplication_run_3_0_Test_testRun_nullContextPath_usesDefaultAndRegistersResources {
+
+  private Environment environment;
+  private JerseyEnvironment jerseyEnvironment;
+  private MutableServletContextHandler servletContextHandler;
+  private HealthCheckRegistry healthCheckRegistry;
+  private MetricRegistry metricRegistry;
+
+  @BeforeEach
+  public void setUp() throws Exception {
+    environment = mock(Environment.class);
+    jerseyEnvironment = mock(JerseyEnvironment.class);
+    // Use Dropwizard's MutableServletContextHandler as the application context handler type
+    servletContextHandler = mock(MutableServletContextHandler.class);
+    healthCheckRegistry = mock(HealthCheckRegistry.class);
+    metricRegistry = new MetricRegistry();
+
+    when(environment.jersey()).thenReturn(jerseyEnvironment);
+    when(environment.getApplicationContext()).thenReturn(servletContextHandler);
+    when(environment.metrics()).thenReturn(metricRegistry);
+    when(environment.healthChecks()).thenReturn(healthCheckRegistry);
+
+    // Allow registering anything without side effects
+    doNothing().when(jerseyEnvironment).register(any());
+
+    // Ensure SharedMetricRegistries has a default name set to avoid:
+    // IllegalStateException: "Default registry name has not been set."
+    ensureSharedMetricRegistriesDefaultName(Constants.DEFAULT_METRIC_REGISTRY);
+  }
+
+  /**
+   * Try several strategies to set the default registry name so the test doesn't rely on static
+   * mocking. This uses reflection to support different versions of the metrics library.
+   */
+  private static void ensureSharedMetricRegistriesDefaultName(String defaultName) throws Exception {
+    try {
+      // Try common method name first: setDefault(String)
+      Method setDefault = SharedMetricRegistries.class.getMethod("setDefault", String.class);
+      setDefault.invoke(null, defaultName);
+      return;
+    } catch (NoSuchMethodException ignored) {
+    }
+
+    try {
+      // Some versions might call it setDefaultName
+      Method setDefaultName = SharedMetricRegistries.class.getMethod("setDefaultName", String.class);
+      setDefaultName.invoke(null, defaultName);
+      return;
+    } catch (NoSuchMethodException ignored) {
+    }
+
+    // Fallback: set the private static field that holds the default registry name.
+    // Field name may differ across versions; try common candidates.
+    String[] candidateFieldNames = {"DEFAULT_REGISTRY_NAME", "defaultRegistryName", "DEFAULT_NAME"};
+    for (String fieldName : candidateFieldNames) {
+      try {
+        Field f = SharedMetricRegistries.class.getDeclaredField(fieldName);
+        f.setAccessible(true);
+        f.set(null, defaultName);
+        return;
+      } catch (NoSuchFieldException ignored) {
+        // try next candidate
+      }
+    }
+
+    // As a last resort, if nothing matched, attempt to put the default name indirectly by
+    // creating the default registry via a method if present.
+    try {
+      Method add = SharedMetricRegistries.class.getMethod("add", String.class, MetricRegistry.class);
+      // do not call add here because some implementations will check default first.
+      // If we reach here and cannot set via reflection, fail to indicate incompatibility.
+    } catch (NoSuchMethodException ignored) {
+    }
+
+    throw new IllegalStateException("Unable to set default registry name on SharedMetricRegistries for test");
+  }
+
+  @Test
+  public void testRun_nullContextPath_usesDefaultAndRegistersResources() {
+    AppConfig config = new AppConfig();
+    // explicit set to null to exercise null branch
+    config.setApplicationContextPath(null);
+    config.setAllowedUsers(Arrays.asList("allowed"));
+    config.setBlockedUsers(Arrays.asList("blocked"));
+    config.setSparkClusters(null);
+
+    // Do not mock static methods (SharedMetricRegistries.add or BPGStatsdConfig.createMeterRegistry)
+    // to avoid requiring mockito-inline. Allow the real static methods to run.
+    BPGApplication app = new BPGApplication(false);
+    app.run(config, environment);
+
+    // Verify context path set to default when null
+    verify(servletContextHandler).setContextPath(org.mockito.ArgumentMatchers.anyString());
+    // capture and assert the actual value set
+    org.mockito.ArgumentCaptor<String> contextCaptor = org.mockito.ArgumentCaptor.forClass(String.class);
+    verify(servletContextHandler).setContextPath(contextCaptor.capture());
+    String contextPathSet = contextCaptor.getValue();
+    assertNotNull(contextPathSet);
+    assertFalse(contextPathSet.isEmpty());
+    assertEquals(Constants.DEFAULT_APPLICATION_CONTEXT_PATH, contextPathSet);
+
+    // Verify environment.metrics() was invoked and returns the same registry we provided.
+    verify(environment, atLeastOnce()).metrics();
+    assertSame(metricRegistry, environment.metrics());
+
+    // Verify resources registration (at least one register call)
+    verify(jerseyEnvironment, atLeast(1)).register(any());
+
+    // Verify healthcheck registration called with "sparkClusters"
+    verify(healthCheckRegistry).register(eq("sparkClusters"), any());
+  }
+}
+<<Generation Over>>

@@ -1,0 +1,13 @@
+WARNING: A terminally deprecated method in java.lang.System has been called
+WARNING: System::setSecurityManager has been called by com.apple.spark.BPGApplication_main_0_0_Test_testMain_withoutSystemProperty_invokesMainPath (file:/home/jaskeerat/paper1/bpg_latest_stable/cot/batch-processing-gateway/target/test-classes/)
+WARNING: Please consider reporting this to the maintainers of com.apple.spark.BPGApplication_main_0_0_Test_testMain_withoutSystemProperty_invokesMainPath
+WARNING: System::setSecurityManager will be removed in a future release
+invalid choice: 'arg0' (choose from 'server', 'check')
+usage: java -jar project.jar [-h] [-v] {server,check} ...
+
+positional arguments:
+  {server,check}         available commands
+
+named arguments:
+  -h, --help             show this help message and exit
+  -v, --version          show the application version and exit
