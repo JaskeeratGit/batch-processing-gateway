@@ -1,0 +1,9 @@
+invalid choice: 'arg0' (choose from 'server', 'check')
+usage: java -jar project.jar [-h] [-v] {server,check} ...
+
+positional arguments:
+  {server,check}         available commands
+
+named arguments:
+  -h, --help             show this help message and exit
+  -v, --version          show the application version and exit

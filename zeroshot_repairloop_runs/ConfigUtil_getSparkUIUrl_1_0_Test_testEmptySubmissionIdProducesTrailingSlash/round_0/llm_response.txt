@@ -1,0 +1,27 @@
+package com.apple.spark.util;
+
+import com.apple.spark.AppConfig;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ * Unit tests for ConfigUtil.getSparkUIUrl(SparkCluster, String)
+ */
+@ExtendWith(MockitoExtension.class)
+public class ConfigUtil_getSparkUIUrl_1_0_Test_testEmptySubmissionIdProducesTrailingSlash {
+
+    @Test
+    public void testEmptySubmissionIdProducesTrailingSlash() throws Exception {
+        AppConfig.SparkCluster cluster = mock(AppConfig.SparkCluster.class);
+        when(cluster.getSparkUIUrl()).thenReturn("http://host");
+        when(cluster.getSparkApplicationNamespace()).thenReturn("ns");
+
+        String submissionId = "";
+        String result = ConfigUtil.getSparkUIUrl(cluster, submissionId);
+        assertEquals("http://host/ns/", result);
+    }
+}

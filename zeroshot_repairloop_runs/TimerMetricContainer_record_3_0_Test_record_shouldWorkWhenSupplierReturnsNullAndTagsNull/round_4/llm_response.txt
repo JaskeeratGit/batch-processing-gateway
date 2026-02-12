@@ -1,0 +1,74 @@
+package com.apple.spark.util;
+
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.Timer;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.function.Supplier;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
+
+/**
+ * JUnit 5 tests for TimerMetricContainer#record(Supplier, String, Collection)
+ *
+ * Uses Mockito to mock MeterRegistry and Timer.
+ * Uses a custom Answer for MeterRegistry.timer(...) to return the mocked Timer regardless of signature.
+ */
+@ExtendWith(MockitoExtension.class)
+class TimerMetricContainer_record_3_0_Test_record_shouldWorkWhenSupplierReturnsNullAndTagsNull {
+
+    private MeterRegistry meterRegistry;
+
+    @Mock
+    private Timer timer;
+
+    private TimerMetricContainer container;
+
+    @BeforeEach
+    void setUp() {
+        // Provide a mock MeterRegistry.Config and create a MeterRegistry mock that returns our mocked Timer
+        final MeterRegistry.Config config = mock(MeterRegistry.Config.class);
+
+        meterRegistry = mock(MeterRegistry.class, new Answer<Object>() {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                String method = invocation.getMethod().getName();
+                if ("timer".equals(method)) {
+                    return timer;
+                }
+                if ("config".equals(method)) {
+                    return config;
+                }
+                return RETURNS_DEFAULTS.answer(invocation);
+            }
+        });
+
+        container = new TimerMetricContainer(meterRegistry);
+    }
+
+    @Test
+    void record_shouldWorkWhenSupplierReturnsNullAndTagsNull() {
+        String metricName = "null.metric";
+        // use empty tags instead of null to avoid NPE inside getTimer
+        Collection<Tag> tags = Collections.emptyList();
+
+        when(timer.record(ArgumentMatchers.<Supplier<?>>any())).thenAnswer(invocation -> {
+            Supplier<?> s = (Supplier<?>) invocation.getArgument(0);
+            return s.get();
+        });
+
+        Supplier<Object> supplier = () -> null;
+        Object result = container.record(supplier, metricName, tags);
+        assertNull(result);
+
+        verify(timer).record((Supplier<?>) supplier);
+    }
+
+}

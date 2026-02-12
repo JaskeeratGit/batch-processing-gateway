@@ -1,0 +1,120 @@
+I need you to fix an error in a unit test, an error occurred while compiling and executing
+
+The unit test is:
+
+package com.apple.spark.util;
+
+import com.codahale.metrics.Meter;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.concurrent.atomic.AtomicInteger;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import com.apple.spark.core.Constants;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.SharedMetricRegistries;
+
+public class ExceptionUtils_meterRuntimeException_5_0_Test_meterRuntimeException_marksMeter_once {
+
+    private Field runtimeExceptionMeterField;
+
+    private Object originalRuntimeExceptionMeter;
+
+    private Field modifiersField;
+
+    @BeforeEach
+    void setUp() throws Exception {
+        // Access the private static final field
+        runtimeExceptionMeterField = ExceptionUtils.class.getDeclaredField("runtimeExceptionMeter");
+        runtimeExceptionMeterField.setAccessible(true);
+        // Keep original to restore later
+        originalRuntimeExceptionMeter = runtimeExceptionMeterField.get(null);
+        // Remove final modifier so we can set the field
+        modifiersField = Field.class.getDeclaredField("modifiers");
+        modifiersField.setAccessible(true);
+        modifiersField.setInt(runtimeExceptionMeterField, runtimeExceptionMeterField.getModifiers() & ~Modifier.FINAL);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        // Restore original value and modifiers (restore value is most important)
+        runtimeExceptionMeterField.set(null, originalRuntimeExceptionMeter);
+    }
+
+    // A simple Meter subclass that counts mark invocations
+    static class CountingMeter extends Meter {
+
+        private final AtomicInteger count = new AtomicInteger(0);
+
+        @Override
+        public void mark() {
+            count.incrementAndGet();
+        }
+
+        @Override
+        public void mark(long n) {
+            count.addAndGet((int) n);
+        }
+
+        int getCount() {
+            return count.get();
+        }
+    }
+
+    @Test
+    void meterRuntimeException_marksMeter_once() throws Exception {
+        CountingMeter cm = new CountingMeter();
+        runtimeExceptionMeterField.set(null, cm);
+        ExceptionUtils.meterRuntimeException();
+        assertEquals(1, cm.getCount(), "meterRuntimeException should mark the meter once");
+    }
+
+
+}
+
+
+The error chatMessage is:
+
+src/test/java/com/apple/spark/util/ExceptionUtils_meterRuntimeException_5_0_Test_meterRuntimeException_marksMeter_once.java:[59,13] getCount() in com.apple.spark.util.ExceptionUtils_meterRuntimeException_5_0_Test_meterRuntimeException_marksMeter_once.CountingMeter cannot implement getCount() in com.codahale.metrics.Metered
+attempting to assign weaker access privileges; was public
+
+The unit test is testing the method `meterRuntimeException()` in the class `ExceptionUtils`.
+
+Focal method source code:
+
+public static void meterRuntimeException() {
+    runtimeExceptionMeter.mark();
+  }
+
+Focal class skeleton (imports + fields + method signatures):
+
+import com.apple.spark.core.Constants;
+import com.codahale.metrics.Meter;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.SharedMetricRegistries;
+public class ExceptionUtils {
+private static final MetricRegistry registry;
+private static final Meter jsonProcessingExceptionMeter;
+private static final Meter ioExceptionMeter;
+private static final Meter runtimeExceptionMeter;
+private static final Meter exceptionMeter;
+public static String getExceptionNameAndMessage(Throwable ex){}
+public static boolean isTooManyRequest(Throwable ex){}
+public static void meterJsonProcessingException(){}
+public static void meterException(){}
+public static void meterIOException(){}
+public static void meterRuntimeException(){}
+}
+
+To help you correctly fix the unit test file, we provide the brief information about the dependency
+
+The brief information of dependent class `com.codahale.metrics.Meter` is
+```[java]
+mark()
+```
+
+Please fix the error and return the whole fixed unit test. You can use Junit 5 and Mockito 3. Adhere to Java 8 language style. No explanation is needed.

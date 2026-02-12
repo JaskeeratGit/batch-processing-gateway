@@ -1,0 +1,327 @@
+I need you to fix an error in a unit test, an error occurred while compiling and executing
+
+The unit test is:
+
+package com.apple.spark.core;
+
+import com.apple.spark.AppConfig;
+import com.apple.spark.operator.SparkApplication;
+import com.apple.spark.operator.SparkApplicationStatus;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+import java.lang.reflect.Field;
+import java.time.Instant;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Timer;
+import java.util.concurrent.ConcurrentHashMap;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import static com.apple.spark.core.Constants.MONITOR_KILLED_APPS;
+import static com.apple.spark.core.Constants.MONITOR_RUNNING_APPS;
+import com.apple.spark.operator.DriverInfo;
+import com.apple.spark.operator.SparkApplicationResourceList;
+import com.apple.spark.util.CounterMetricContainer;
+import com.apple.spark.util.DateTimeUtils;
+import com.apple.spark.util.GaugeMetricContainer;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.Resource;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
+import java.util.List;
+import java.util.TimerTask;
+import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Unit tests for RunningApplicationMonitor.onUpdate(...)
+ *
+ * These tests use Mockito to create SparkApplication and related objects, and reflection to inspect
+ * the private runningApplications map inside RunningApplicationMonitor.
+ */
+public class RunningApplicationMonitor_onUpdate_1_0_Test_testOnUpdate_nameNull_logsAndDoesNothing {
+
+    private Timer timer;
+
+    private SimpleMeterRegistry meterRegistry;
+
+    private AppConfig.SparkCluster sparkClusterMock;
+
+    private RunningApplicationMonitor monitor;
+
+    @BeforeEach
+    public void setup() {
+        timer = new Timer(true);
+        meterRegistry = new SimpleMeterRegistry();
+        sparkClusterMock = Mockito.mock(AppConfig.SparkCluster.class);
+        // return empty strings for tags to avoid null handling in constructor logging/registration
+        when(sparkClusterMock.getEksCluster()).thenReturn("");
+        when(sparkClusterMock.getSparkApplicationNamespace()).thenReturn("");
+        // Use a large delete interval to avoid TimerTask triggering during tests
+        monitor = new RunningApplicationMonitor(sparkClusterMock, timer, 60 * 60 * 1000L, meterRegistry);
+    }
+
+    @AfterEach
+    public void teardown() {
+        timer.cancel();
+    }
+
+    private ConcurrentHashMap<?, ?> getRunningApplicationsMap() throws Exception {
+        Field f = RunningApplicationMonitor.class.getDeclaredField("runningApplications");
+        f.setAccessible(true);
+        @SuppressWarnings("unchecked")
+        ConcurrentHashMap<?, ?> map = (ConcurrentHashMap<?, ?>) f.get(monitor);
+        return map;
+    }
+
+
+    @Test
+    public void testOnUpdate_nameNull_logsAndDoesNothing() throws Exception {
+        SparkApplication curr = Mockito.mock(SparkApplication.class);
+        // setup status.applicationState.state = "RUNNING"
+        SparkApplicationStatus statusMock = Mockito.mock(SparkApplicationStatus.class);
+        Object appState = Mockito.mock(Object.class);
+        // appState has a getState method at runtime; instead of mocking that specific type,
+        // we mock SparkApplicationResourceHelper.getState via providing a status that the helper expects.
+        // To keep compile-time-safe, create a small dynamic proxy-like object using Mockito to return the state when called via the helper.
+        // But simpler: Mockito can mock a class that has getApplicationState method. Assume SparkApplicationStatus has it.
+        try {
+            // try to configure a getApplicationState() -> mock with getState()
+            Object applicationStateMock = Mockito.mock(Object.class);
+            // set up via reflection if needed
+            // set statusMock.getApplicationState() to return an object whose getState() returns "RUNNING"
+            // We attempt to set using Mockito when; if method names/types exist, it will work.
+            when(statusMock.getApplicationState()).thenReturn(applicationStateMock);
+            try {
+                when(applicationStateMock.getClass().getMethod("getState").invoke(applicationStateMock)).thenReturn("RUNNING");
+            } catch (Exception ignore) {
+                // If we cannot stub via reflection invocation, fallback to stubbing SparkApplicationResourceHelper by ensuring
+                // curr.getStatus() returns statusMock and SparkApplicationResourceHelper will be able to get state via real methods
+            }
+        } catch (Throwable ignored) {
+            // If the above assumptions about classes/methods don't hold, fallback to simpler approach:
+        }
+        // Instead use a direct approach: create a small subclass instance via anonymous subclass overriding getStatus() to provide an object
+        // However, SparkApplication is an interface-like class; mocking getStatus to a mock that returns an applicationState with a getState method
+        // For robustness, create a simple proxy using a small inner class if possible, but keep using Mockito to return status mock.
+        when(curr.getStatus()).thenReturn(statusMock);
+        // metadata mock with null name
+        ObjectMeta meta = Mockito.mock(ObjectMeta.class);
+        when(curr.getMetadata()).thenReturn(meta);
+        when(meta.getName()).thenReturn(null);
+        // However SparkApplicationResourceHelper.getState reads status.applicationState.state via real methods.
+        // To ensure getState returns "RUNNING", we will use a small helper: create a lightweight status class that has getApplicationState method.
+        // But due to variations across versions we attempt to stub by using a second-level mock for applicationState with a getState() method via Mockito's RETURNS_DEEP_STUBS.
+        SparkApplication currDeep = Mockito.mock(SparkApplication.class, Mockito.RETURNS_DEEP_STUBS);
+        when(currDeep.getStatus().getApplicationState().getState()).thenReturn("RUNNING");
+        when(currDeep.getMetadata()).thenReturn(meta);
+        monitor.onUpdate(null, currDeep);
+        ConcurrentHashMap<?, ?> map = getRunningApplicationsMap();
+        assertEquals(0, map.size());
+    }
+
+
+
+
+}
+
+
+The error chatMessage is:
+
+src/test/java/com/apple/spark/core/RunningApplicationMonitor_onUpdate_1_0_Test_testOnUpdate_nameNull_logsAndDoesNothing.java:[96,51] no suitable method found for thenReturn(java.lang.Object)
+method org.mockito.stubbing.OngoingStubbing.thenReturn(com.apple.spark.operator.ApplicationState) is not applicable
+(argument mismatch; java.lang.Object cannot be converted to com.apple.spark.operator.ApplicationState)
+method org.mockito.stubbing.OngoingStubbing.thenReturn(com.apple.spark.operator.ApplicationState,com.apple.spark.operator.ApplicationState...) is not applicable
+(argument mismatch; java.lang.Object cannot be converted to com.apple.spark.operator.ApplicationState)
+
+The unit test is testing the method `onUpdate(SparkApplication, SparkApplication)` in the class `RunningApplicationMonitor`.
+
+Focal method source code:
+
+public void onUpdate(
+          SparkApplication prevCRDState, SparkApplication currCRDState) {
+    String newState = SparkApplicationResourceHelper.getState(currCRDState);
+    if (SparkConstants.RUNNING_STATE.equalsIgnoreCase(newState)) {
+      String name = currCRDState.getMetadata().getName();
+      if (name == null) {
+        logger.warn("Did not get name for spark application");
+        return;
+      }
+      String creationTimeStr = currCRDState.getMetadata().getCreationTimestamp();
+      if (creationTimeStr == null) {
+        logger.warn("Did not get creation timestamp for {}", name);
+        return;
+      }
+      Long creationTime = DateTimeUtils.parseOrNull(creationTimeStr);
+      if (creationTime == null) {
+        logger.warn("Failed to parse creation timestamp {} for {}", creationTimeStr, name);
+        return;
+      }
+      String namespace = currCRDState.getMetadata().getNamespace();
+      if (namespace == null) {
+        logger.warn("Did not get namespace for {}", name);
+        return;
+      }
+
+      NamespaceAndName namespaceAndName = new NamespaceAndName(namespace, name);
+      if (SparkConstants.isApplicationStopped(newState)) {
+        runningApplications.remove(namespaceAndName);
+      } else {
+        long maxRunningTime = getMaxRunningMillis(currCRDState);
+        runningApplications.put(namespaceAndName, new RunningAppInfo(creationTime, maxRunningTime));
+      }
+    }
+  }
+
+Focal class skeleton (imports + fields + method signatures):
+
+import static com.apple.spark.core.Constants.MONITOR_KILLED_APPS;
+import static com.apple.spark.core.Constants.MONITOR_RUNNING_APPS;
+import com.apple.spark.AppConfig;
+import com.apple.spark.operator.DriverInfo;
+import com.apple.spark.operator.SparkApplication;
+import com.apple.spark.operator.SparkApplicationResourceList;
+import com.apple.spark.util.CounterMetricContainer;
+import com.apple.spark.util.DateTimeUtils;
+import com.apple.spark.util.GaugeMetricContainer;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.Resource;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+public class RunningApplicationMonitor {
+private static final Logger logger = ...;
+private static final long DEFAULT_INTERVAL = ...;
+private final ConcurrentHashMap<NamespaceAndName, RunningAppInfo> runningApplications;
+private final GaugeMetricContainer gaugeMetricContainer;
+private final CounterMetricContainer counterMetricContainer;
+private final long deleteInterval;
+private final AppConfig.SparkCluster sparkCluster;
+public RunningApplicationMonitor(
+      AppConfig.SparkCluster sparkCluster, Timer timer, MeterRegistry meterRegistry){}
+public RunningApplicationMonitor(
+      AppConfig.SparkCluster sparkCluster,
+      Timer timer,
+      long deleteIntervalMillis,
+      MeterRegistry meterRegistry){}
+public static long getMaxRunningMillis(SparkApplication sparkApplication){}
+public void onUpdate(
+          SparkApplication prevCRDState, SparkApplication currCRDState){}
+public void deleteLongRunningApplications(){}
+public int getApplicationCount(){}
+protected void killApplication(String namespace, String appName){}
+public RunningApplicationMonitor(
+      AppConfig.SparkCluster sparkCluster, Timer timer, MeterRegistry meterRegistry){}
+public RunningApplicationMonitor(
+      AppConfig.SparkCluster sparkCluster,
+      Timer timer,
+      long deleteIntervalMillis,
+      MeterRegistry meterRegistry){}
+}
+
+To help you correctly fix the unit test file, we provide the brief information about the dependency
+
+The brief information of dependent class `com.apple.spark.core.SparkApplicationResourceHelper` is
+```[java]
+import com.apple.spark.operator.SparkApplication;
+public class SparkApplicationResourceHelper {
+public static String getState(SparkApplication sparkApp){}
+}
+```
+
+The brief information of dependent class `com.apple.spark.util.DateTimeUtils` is
+```[java]
+import static java.time.format.DateTimeFormatter.ISO_INSTANT;
+import java.time.Instant;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+public class DateTimeUtils {
+private static final Logger logger = ...;
+public static Long parseOrNull(String str){}
+}
+```
+
+The brief information of dependent class `com.apple.spark.core.SparkConstants` is
+```[java]
+public class SparkConstants {
+public static final String CLUSTER_MODE = ...;
+public static final String SPARK_APP_NAME_CONFIG = ...;
+public static final String COMPLETED_STATE = ...;
+public static final String RUNNING_STATE = ...;
+public static final String FAILED_STATE = ...;
+public static final String SUBMITTED_STATE = ...;
+public static final String FAILED_SUBMISSION_STATE = ...;
+public static final String UNKNOWN_PHASE = ...;
+public static final String PENDING_PHASE = ...;
+public static final String CRD_SCOPE = ...;
+public static final String CRD_VERSION = ...;
+public static final String SPARK_APP_NAME_LABEL = ...;
+public static final String SPARK_APPLICATION_CRD_GROUP = ...;
+public static final String SPARK_APPLICATION_CRD_PLURAL = ...;
+public static final String SPARK_APPLICATION_KIND = ...;
+public static final String SPARK_OPERATOR_API_VERSION = ...;
+public static final Double OVERHEAD_FACTOR_DEFAULT = ...;
+public static final Double OVERHEAD_FACTOR_PYSPARK_DEFAULT = ...;
+public static final Integer CORE_LIMIT_RATIO = ...;
+public static final Integer NUM_EXECUTORS_DEFAULT = ...;
+public static final Integer DRIVER_CORE_DEFAULT = ...;
+public static final String DRIVER_MEM_DEFAULT = ...;
+public static final Integer EXECUTOR_CORE_DEFAULT = ...;
+public static final String EXECUTOR_MEM_DEFAULT = ...;
+public static final double DRIVER_MEM_BUFFER_RATIO = ...;
+public static final double EXECUTOR_MEM_BUFFER_RATIO = ...;
+public static final double DRIVER_CPU_BUFFER_RATIO = ...;
+public static final double EXECUTOR_CPU_BUFFER_RATIO = ...;
+public static final String SPARK_CONF_EXECUTOR_INSTANCES = ...;
+public static boolean isApplicationStopped(String state){}
+}
+```
+
+The brief information of dependent class `com.apple.spark.core.SparkApplicationResourceHelper` is
+```[java]
+getState(SparkApplication)
+```
+
+The brief information of dependent class `io.fabric8.kubernetes.api.model.ObjectMeta` is
+```[java]
+getName()
+getCreationTimestamp()
+getNamespace()
+```
+
+The brief information of dependent class `io.fabric8.kubernetes.client.CustomResource` is
+```[java]
+getMetadata()
+```
+
+The brief information of dependent class `org.slf4j.Logger` is
+```[java]
+warn(String)
+warn(String, Object)
+warn(String, Object, Object)
+```
+
+The brief information of dependent class `com.apple.spark.util.DateTimeUtils` is
+```[java]
+parseOrNull(String)
+```
+
+The brief information of dependent class `com.apple.spark.core.SparkConstants` is
+```[java]
+isApplicationStopped(String)
+```
+
+Please fix the error and return the whole fixed unit test. You can use Junit 5 and Mockito 3. Adhere to Java 8 language style. No explanation is needed.

@@ -1,0 +1,163 @@
+package com.apple.spark.util;
+
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.Timer;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.function.Supplier;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import java.lang.reflect.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ * JUnit 5 tests for TimerMetricContainer#record(Supplier, String, Collection)
+ *
+ * Uses Mockito to mock MeterRegistry and Timer.
+ * Uses reflection to pre-populate the private timers map so the Timer builder
+ * (which would try to use meterRegistry.config()) is not invoked during the test.
+ */
+@ExtendWith(MockitoExtension.class)
+class TimerMetricContainer_record_3_0_Test_record_shouldPropagateExceptionThrownBySupplierViaTimer {
+
+    @Mock
+    private MeterRegistry meterRegistry;
+
+    @Mock
+    private Timer timer;
+
+    private TimerMetricContainer container;
+
+    @BeforeEach
+    void setUp() {
+        container = new TimerMetricContainer(meterRegistry);
+    }
+
+
+    @Test
+    void record_shouldPropagateExceptionThrownBySupplierViaTimer() throws Exception {
+        String metricName = "error.metric";
+        Collection<Tag> tags = Collections.emptyList();
+
+        Class<?> containerClass = TimerMetricContainer.class;
+
+        // Access the timers field to determine the key type (MetricId or similar)
+        Field timersField = containerClass.getDeclaredField("timers");
+        timersField.setAccessible(true);
+
+        // Determine the MetricId-like class from the generic type of timers
+        Class<?> metricIdClass = null;
+        Type generic = timersField.getGenericType();
+        if (generic instanceof ParameterizedType) {
+            Type keyType = ((ParameterizedType) generic).getActualTypeArguments()[0];
+            if (keyType instanceof Class) {
+                metricIdClass = (Class<?>) keyType;
+            } else if (keyType instanceof ParameterizedType) {
+                metricIdClass = (Class<?>) ((ParameterizedType) keyType).getRawType();
+            }
+        }
+
+        // Fallback: search declared classes for something that looks like MetricId
+        if (metricIdClass == null) {
+            for (Class<?> nested : containerClass.getDeclaredClasses()) {
+                if (nested.getSimpleName().toLowerCase().contains("metric")
+                        || nested.getSimpleName().toLowerCase().contains("id")
+                        || nested.getSimpleName().toLowerCase().contains("key")) {
+                    metricIdClass = nested;
+                    break;
+                }
+            }
+        }
+
+        if (metricIdClass == null) {
+            throw new IllegalStateException("Unable to determine MetricId-like class via reflection");
+        }
+
+        // Try to construct an instance of the MetricId-like class by probing its constructors.
+        Object metricIdKey = null;
+        for (Constructor<?> ctor : metricIdClass.getDeclaredConstructors()) {
+            ctor.setAccessible(true);
+            Class<?>[] paramTypes = ctor.getParameterTypes();
+
+            boolean isInnerLike = paramTypes.length >= 1 && paramTypes[0].equals(containerClass);
+            int offset = isInnerLike ? 1 : 0;
+
+            Object[] args = new Object[paramTypes.length];
+            if (isInnerLike) {
+                args[0] = container;
+            }
+
+            // Try to place metricName at the first non-outer parameter
+            if (paramTypes.length >= offset + 1) {
+                if (String.class.isAssignableFrom(paramTypes[offset])) {
+                    args[offset] = metricName;
+                } else {
+                    // if first param isn't String, this ctor likely doesn't match our expectations
+                    continue;
+                }
+            } else {
+                // ctor without enough params; skip
+                continue;
+            }
+
+            if (paramTypes.length >= offset + 2) {
+                Class<?> second = paramTypes[offset + 1];
+                if (Collection.class.isAssignableFrom(second)) {
+                    args[offset + 1] = tags;
+                } else if (second.isArray() && Tag.class.isAssignableFrom(second.getComponentType())) {
+                    args[offset + 1] = tags.toArray(new Tag[0]);
+                } else if (java.util.List.class.isAssignableFrom(second)) {
+                    args[offset + 1] = new ArrayList<>(tags);
+                } else {
+                    // last resort: try to pass the collection directly
+                    args[offset + 1] = tags;
+                }
+            }
+
+            // fill remaining args with nulls
+            for (int i = offset + 2; i < paramTypes.length; i++) {
+                args[i] = null;
+            }
+
+            try {
+                metricIdKey = ctor.newInstance(args);
+                break;
+            } catch (Exception e) {
+                // try next constructor
+            }
+        }
+
+        if (metricIdKey == null) {
+            throw new IllegalStateException("Unable to construct MetricId-like nested class instance via reflection");
+        }
+
+        @SuppressWarnings("unchecked")
+        ConcurrentHashMap<Object, Timer> timersMap = (ConcurrentHashMap<Object, Timer>) timersField.get(container);
+        timersMap.put(metricIdKey, timer);
+
+        // timer.record will invoke the supplier and therefore throw
+        when(timer.record(ArgumentMatchers.<Supplier<?>>any())).thenAnswer(invocation -> {
+            Supplier<?> s = (Supplier<?>) invocation.getArgument(0);
+            return s.get();
+        });
+
+        Supplier<String> throwingSupplier = () -> {
+            throw new IllegalStateException("boom");
+        };
+        IllegalStateException ex = assertThrows(IllegalStateException.class, () -> container.record(throwingSupplier, metricName, tags));
+        assertEquals("boom", ex.getMessage());
+
+        // verify the timer's record was invoked with the supplier
+        verify(timer).record((Supplier<String>) throwingSupplier);
+    }
+
+
+}

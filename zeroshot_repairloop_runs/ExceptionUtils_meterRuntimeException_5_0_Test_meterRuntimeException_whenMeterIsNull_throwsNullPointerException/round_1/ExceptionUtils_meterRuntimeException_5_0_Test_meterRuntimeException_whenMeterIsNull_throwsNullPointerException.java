@@ -1,0 +1,83 @@
+package com.apple.spark.util;
+
+import com.codahale.metrics.Meter;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.concurrent.atomic.AtomicInteger;
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+public class ExceptionUtils_meterRuntimeException_5_0_Test_meterRuntimeException_whenMeterIsNull_throwsNullPointerException {
+
+    private Field runtimeExceptionMeterField;
+
+    private Object originalRuntimeExceptionMeter;
+
+    private Field modifiersField;
+
+    @BeforeEach
+    void setUp() throws Exception {
+        // Access the private static final field
+        runtimeExceptionMeterField = ExceptionUtils.class.getDeclaredField("runtimeExceptionMeter");
+        runtimeExceptionMeterField.setAccessible(true);
+        // Keep original to restore later
+        originalRuntimeExceptionMeter = runtimeExceptionMeterField.get(null);
+        // Try to remove final modifier so we can set the field (best-effort; may not work on all JVMs)
+        try {
+            modifiersField = Field.class.getDeclaredField("modifiers");
+            modifiersField.setAccessible(true);
+            modifiersField.setInt(runtimeExceptionMeterField, runtimeExceptionMeterField.getModifiers() & ~Modifier.FINAL);
+        } catch (Exception e) {
+            // Ignored: on some JVMs this is not permitted; tests will still attempt to set and restore in best-effort manner
+        }
+    }
+
+    @AfterEach
+    void tearDown() {
+        // Best-effort restore original value and modifiers. Ignore failures to avoid masking test results.
+        try {
+            if (runtimeExceptionMeterField != null) {
+                runtimeExceptionMeterField.setAccessible(true);
+                runtimeExceptionMeterField.set(null, originalRuntimeExceptionMeter);
+            }
+            if (modifiersField != null && runtimeExceptionMeterField != null) {
+                try {
+                    modifiersField.setInt(runtimeExceptionMeterField, runtimeExceptionMeterField.getModifiers() | Modifier.FINAL);
+                } catch (Exception ignored) {
+                    // ignore
+                }
+            }
+        } catch (Throwable ignored) {
+            // ignore any exception during teardown to avoid failing the test due to JVM reflection restrictions
+        }
+    }
+
+    // A simple Meter subclass that counts mark invocations
+    static class CountingMeter extends Meter {
+
+        private final AtomicInteger count = new AtomicInteger(0);
+
+        @Override
+        public void mark() {
+            count.incrementAndGet();
+        }
+
+        @Override
+        public void mark(long n) {
+            count.addAndGet((int) n);
+        }
+
+        // Must be public to match Metered#getCount() signature
+        public long getCount() {
+            return count.get();
+        }
+    }
+
+    @Test
+    void meterRuntimeException_whenMeterIsNull_throwsNullPointerException() throws Exception {
+        // Set the metric field to null to exercise behavior when field is null
+        runtimeExceptionMeterField.setAccessible(true);
+        runtimeExceptionMeterField.set(null, null);
+        assertThrows(NullPointerException.class, () -> ExceptionUtils.meterRuntimeException(), "Calling meterRuntimeException when the meter is null should throw NPE");
+    }
+}
