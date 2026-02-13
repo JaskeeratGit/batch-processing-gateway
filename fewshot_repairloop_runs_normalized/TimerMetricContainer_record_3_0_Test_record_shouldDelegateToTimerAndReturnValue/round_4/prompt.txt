@@ -1,0 +1,269 @@
+ROLE: You are an expert Java test engineer specializing in fixing failing JUnit tests.
+
+TASK: Fix the provided unit test so it compiles and runs successfully.
+CONSTRAINTS:
+- Fix ONLY the provided unit test. Do NOT add new test methods, new test classes, or new files.
+- Do NOT introduce additional tests beyond what already exists in the given unit test.
+- Do NOT change the focal method or production code.
+- Keep the test’s intent the same; make the smallest change necessary to fix the failure.
+- You may adjust imports, annotations, types, mocks, stubs, assertions, and setup within the given test file.
+- Use JUnit 5 and Mockito 3 if needed.
+- Adhere to Java 8 conventions.
+OUTPUT:
+- Return ONLY the complete fixed unit test file (including package and imports if present).
+- No explanation.
+
+FEW-SHOT EXAMPLES (error -> minimal fix):
+
+========================
+EXAMPLE 1
+========================
+Original Unit Test:
+
+```java
+public class Options_getOptionGroup_9_0_Test {
+    static class OptionGroup {
+        private final String id;
+        OptionGroup(String id) { this.id = id; }
+        String getId() { return id; }
+    }
+
+    @Test
+    void testGetOptionGroupReturnsNullWhenMissing() throws Exception {
+        Options options = new Options();
+        Option opt = new Option("b", "desc");
+        OptionGroup result = options.getOptionGroup(opt);
+        assertNull(result, "Expected null when no OptionGroup is associated with the option key");
+    }
+}
+```
+
+Observed error:
+```
+incompatible types: org.apache.commons.cli.OptionGroup cannot be converted to Options_getOptionGroup_9_0_Test.OptionGroup
+```
+
+Fixed Unit Test:
+
+```java
+public class Options_getOptionGroup_9_0_Test {
+    @Test
+    void testGetOptionGroupReturnsNullWhenMissing() throws Exception {
+        Options options = new Options();
+        Option opt = new Option("b", "desc");
+        org.apache.commons.cli.OptionGroup result = options.getOptionGroup(opt);
+        assertNull(result, "Expected null when no OptionGroup is associated with the option key");
+    }
+}
+```
+
+========================
+EXAMPLE 2
+========================
+Original Unit Test:
+
+```java
+public class CommandLine_getParsedOptionValues_46_0_Test {
+    @Test
+    void testNullOptionGroupReturnsDefault() throws Exception {
+        CommandLine cmd = new CommandLine();
+        Supplier<String[]> supplier = () -> new String[] { "default1", "default2" };
+        String[] result = cmd.getParsedOptionValues(null, supplier);
+        assertArrayEquals(supplier.get(), result);
+    }
+}
+```
+
+Observed error:
+```
+reference to getParsedOptionValues is ambiguous
+```
+
+Fixed Unit Test:
+
+```java
+public class CommandLine_getParsedOptionValues_46_0_Test {
+    @Test
+    void testNullOptionGroupReturnsDefault() throws Exception {
+        CommandLine cmd = new CommandLine();
+        Supplier<String[]> supplier = () -> new String[] { "default1", "default2" };
+        String[] result = cmd.getParsedOptionValues((OptionGroup) null, supplier);
+        assertArrayEquals(supplier.get(), result);
+    }
+}
+```
+
+========================
+
+NOW FIX THIS INPUT:
+
+Unit test to fix:
+
+```java
+package com.apple.spark.util;
+
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.Timer;
+import io.micrometer.core.instrument.config.PauseDetector;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.function.Supplier;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import java.util.concurrent.ConcurrentHashMap;
+
+/**
+ * JUnit 5 tests for TimerMetricContainer#record(Supplier, String, Collection)
+ *
+ * Uses Mockito to mock MeterRegistry and Timer.
+ * Uses reflection to invoke the private getTimer(String, Collection<Tag>) method.
+ */
+@ExtendWith(MockitoExtension.class)
+class TimerMetricContainer_record_3_0_Test_record_shouldDelegateToTimerAndReturnValue {
+
+    @Mock
+    private MeterRegistry meterRegistry;
+
+    @Mock
+    private Timer timer;
+
+    private TimerMetricContainer container;
+
+    @BeforeEach
+    void setUp() {
+        // meterRegistry.config() is called by TimerMetricContainer; stub it to avoid NPE on the mock
+        MeterRegistry.Config config = mock(MeterRegistry.Config.class);
+        when(meterRegistry.config()).thenReturn(config);
+        // config.pauseDetector() may be invoked; provide a mock PauseDetector
+        PauseDetector pd = mock(PauseDetector.class);
+        when(config.pauseDetector()).thenReturn(pd);
+
+        container = new TimerMetricContainer(meterRegistry);
+    }
+
+    @Test
+    void record_shouldDelegateToTimerAndReturnValue() {
+        String metricName = "test.metric";
+        Tag t1 = mock(Tag.class);
+        Tag t2 = mock(Tag.class);
+        // Stub tag keys/values to avoid NullPointerException when tag key/value are accessed
+        when(t1.getKey()).thenReturn("k1");
+        when(t1.getValue()).thenReturn("v1");
+        when(t2.getKey()).thenReturn("k2");
+        when(t2.getValue()).thenReturn("v2");
+
+        Collection<Tag> tags = Arrays.asList(t1, t2);
+        // Make meterRegistry.timer(...) return our mocked timer without invoking default methods
+        doReturn(timer).when(meterRegistry).timer(eq(metricName), any(Iterable.class));
+        // Make timer.record call the supplied Supplier so we exercise supplier logic and return its value.
+        when(timer.record(ArgumentMatchers.<Supplier<?>>any())).thenAnswer(invocation -> {
+            Supplier<?> supplied = (Supplier<?>) invocation.getArgument(0);
+            // noinspection unchecked
+            return supplied.get();
+        });
+        Supplier<String> supplier = () -> "ok-value";
+        String result = container.record(supplier, metricName, tags);
+        assertEquals("ok-value", result);
+        verify(meterRegistry).timer(eq(metricName), any(Iterable.class));
+        verify(timer).record((Supplier<String>) supplier);
+    }
+
+
+
+}
+```
+
+Observed error:
+
+```
+[INFO] TimerMetricContainer_record_3_0_Test_record_shouldDelegateToTimerAndReturnValue.java: TimerMetricContainer_record_3_0_Test_record_shouldDelegateToTimerAndReturnValue.java uses unchecked or unsafe operations.
+[INFO] TimerMetricContainer_record_3_0_Test_record_shouldDelegateToTimerAndReturnValue.java: Recompile with -Xlint:unchecked for details.
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] TimerMetricContainer_record_3_0_Test_record_shouldDelegateToTimerAndReturnValue.java:[6,44] cannot find symbol
+  symbol:   class PauseDetector
+  location: package io.micrometer.core.instrument.config
+[ERROR] TimerMetricContainer_record_3_0_Test_record_shouldDelegateToTimerAndReturnValue.java:[41,9] cannot find symbol
+  symbol:   class PauseDetector
+  location: class com.apple.spark.util.TimerMetricContainer_record_3_0_Test_record_shouldDelegateToTimerAndReturnValue
+[ERROR] TimerMetricContainer_record_3_0_Test_record_shouldDelegateToTimerAndReturnValue.java:[41,33] cannot find symbol
+  symbol:   class PauseDetector
+  location: class com.apple.spark.util.TimerMetricContainer_record_3_0_Test_record_shouldDelegateToTimerAndReturnValue
+[INFO] 3 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.285 s
+[INFO] Finished at: 2026-02-13T01:30:14-07:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.8.1:testCompile (default-testCompile) on project bpg: Compilation failure: Compilation failure: 
+[ERROR] TimerMetricContainer_record_3_0_Test_record_shouldDelegateToTimerAndReturnValue.java:[6,44] cannot find symbol
+[ERROR]   symbol:   class PauseDetector
+[ERROR]   location: package io.micrometer.core.instrument.config
+[ERROR] TimerMetricContainer_record_3_0_Test_record_shouldDelegateToTimerAndReturnValue.java:[41,9] cannot find symbol
+[ERROR]   symbol:   class PauseDetector
+[ERROR]   location: class com.apple.spark.util.TimerMetricContainer_record_3_0_Test_record_shouldDelegateToTimerAndReturnValue
+[ERROR] TimerMetricContainer_record_3_0_Test_record_shouldDelegateToTimerAndReturnValue.java:[41,33] cannot find symbol
+[ERROR]   symbol:   class PauseDetector
+[ERROR]   location: class com.apple.spark.util.TimerMetricContainer_record_3_0_Test_record_shouldDelegateToTimerAndReturnValue
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+```
+
+Target under test: method `record(Supplier, String, Collection)` in class `TimerMetricContainer`.
+
+Focal method source:
+
+```java
+public <T> T record(Supplier<T> runnable, String metricName, Collection<Tag> tags) {
+    Timer timer = getTimer(metricName, tags);
+    return timer.record(runnable);
+  }
+```
+
+Focal class skeleton (imports + fields + method signatures):
+
+```java
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.Timer;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+public class TimerMetricContainer {
+private final MeterRegistry meterRegistry;
+private final ConcurrentHashMap<MetricId, Timer> timers = ...;
+public TimerMetricContainer(MeterRegistry meterRegistry){}
+public void record(Runnable runnable, String metricName, Tag... tags){}
+public void record(Runnable runnable, String metricName, Collection<Tag> tags){}
+public <T> T record(Supplier<T> runnable, String metricName, Tag... tags){}
+public <T> T record(Supplier<T> runnable, String metricName, Collection<Tag> tags){}
+private Timer getTimer(String metricName, Collection<Tag> tags){}
+public TimerMetricContainer(MeterRegistry meterRegistry){}
+}
+```
+
+
+To help you correctly fix the unit test file, we provide the brief information about the dependency
+
+The brief information of dependent class `io.micrometer.core.instrument.Timer` is
+```[java]
+record(SupplierT)
+```
+
+Return ONLY the complete fixed unit test file.

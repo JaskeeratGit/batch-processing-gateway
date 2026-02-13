@@ -1,0 +1,547 @@
+ROLE: You are an expert Java test engineer specializing in fixing failing JUnit tests.
+
+TASK: Fix the provided unit test so it compiles and runs successfully.
+CONSTRAINTS:
+- Fix ONLY the provided unit test. Do NOT add new test methods, new test classes, or new files.
+- Do NOT introduce additional tests beyond what already exists in the given unit test.
+- Do NOT change the focal method or production code.
+- Keep the test’s intent the same; make the smallest change necessary to fix the failure.
+- You may adjust imports, annotations, types, mocks, stubs, assertions, and setup within the given test file.
+- Use JUnit 5 and Mockito 3 if needed.
+- Adhere to Java 8 conventions.
+OUTPUT:
+- Return ONLY the complete fixed unit test file (including package and imports if present).
+- No explanation.
+
+FEW-SHOT EXAMPLES (error -> minimal fix):
+
+========================
+EXAMPLE 1
+========================
+Original Unit Test:
+
+```java
+public class Options_getOptionGroup_9_0_Test {
+    static class OptionGroup {
+        private final String id;
+        OptionGroup(String id) { this.id = id; }
+        String getId() { return id; }
+    }
+
+    @Test
+    void testGetOptionGroupReturnsNullWhenMissing() throws Exception {
+        Options options = new Options();
+        Option opt = new Option("b", "desc");
+        OptionGroup result = options.getOptionGroup(opt);
+        assertNull(result, "Expected null when no OptionGroup is associated with the option key");
+    }
+}
+```
+
+Observed error:
+```
+incompatible types: org.apache.commons.cli.OptionGroup cannot be converted to Options_getOptionGroup_9_0_Test.OptionGroup
+```
+
+Fixed Unit Test:
+
+```java
+public class Options_getOptionGroup_9_0_Test {
+    @Test
+    void testGetOptionGroupReturnsNullWhenMissing() throws Exception {
+        Options options = new Options();
+        Option opt = new Option("b", "desc");
+        org.apache.commons.cli.OptionGroup result = options.getOptionGroup(opt);
+        assertNull(result, "Expected null when no OptionGroup is associated with the option key");
+    }
+}
+```
+
+========================
+EXAMPLE 2
+========================
+Original Unit Test:
+
+```java
+public class CommandLine_getParsedOptionValues_46_0_Test {
+    @Test
+    void testNullOptionGroupReturnsDefault() throws Exception {
+        CommandLine cmd = new CommandLine();
+        Supplier<String[]> supplier = () -> new String[] { "default1", "default2" };
+        String[] result = cmd.getParsedOptionValues(null, supplier);
+        assertArrayEquals(supplier.get(), result);
+    }
+}
+```
+
+Observed error:
+```
+reference to getParsedOptionValues is ambiguous
+```
+
+Fixed Unit Test:
+
+```java
+public class CommandLine_getParsedOptionValues_46_0_Test {
+    @Test
+    void testNullOptionGroupReturnsDefault() throws Exception {
+        CommandLine cmd = new CommandLine();
+        Supplier<String[]> supplier = () -> new String[] { "default1", "default2" };
+        String[] result = cmd.getParsedOptionValues((OptionGroup) null, supplier);
+        assertArrayEquals(supplier.get(), result);
+    }
+}
+```
+
+========================
+
+NOW FIX THIS INPUT:
+
+Unit test to fix:
+
+```java
+package com.apple.spark.core;
+
+import com.apple.spark.AppConfig;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.ConcurrentHashMap;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import static com.apple.spark.core.Constants.MONITOR_KILLED_APPS;
+import static com.apple.spark.core.Constants.MONITOR_RUNNING_APPS;
+import com.apple.spark.operator.DriverInfo;
+import com.apple.spark.operator.SparkApplication;
+import com.apple.spark.operator.SparkApplicationResourceList;
+import com.apple.spark.util.CounterMetricContainer;
+import com.apple.spark.util.DateTimeUtils;
+import com.apple.spark.util.GaugeMetricContainer;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.Resource;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
+import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Unit tests for RunningApplicationMonitor.deleteLongRunningApplications()
+ *
+ * Note: This test file provides minimal helper classes (if they are not present in the test
+ * environment) to allow the tests to compile and run in isolation. If the real production classes
+ * exist in the classpath, those will be used instead.
+ */
+public class RunningApplicationMonitor_deleteLongRunningApplications_2_0_Test_testDeleteExpiredApplication_killsApp {
+
+    private SimpleMeterRegistry meterRegistry;
+
+    @BeforeEach
+    public void setUp() {
+        meterRegistry = new SimpleMeterRegistry();
+    }
+
+    // A Timer that does not schedule anything (prevents background tasks)
+    private static class NoopTimer extends Timer {
+
+        @Override
+        public void schedule(TimerTask task, long delay, long period) {
+            // no-op to avoid starting background threads in unit tests
+        }
+    }
+
+    // Subclass RunningApplicationMonitor to override killApplication to capture calls
+    private static class TestRunningApplicationMonitor extends RunningApplicationMonitor {
+
+        final List<String> killedApps = new ArrayList<>();
+
+        TestRunningApplicationMonitor(com.apple.spark.AppConfig.SparkCluster sparkCluster, Timer timer) {
+            super(sparkCluster, timer, new SimpleMeterRegistry());
+        }
+
+        TestRunningApplicationMonitor(com.apple.spark.AppConfig.SparkCluster sparkCluster, Timer timer, long deleteIntervalMillis) {
+            super(sparkCluster, timer, deleteIntervalMillis, new SimpleMeterRegistry());
+        }
+
+        @Override
+        protected void killApplication(String namespace, String appName) {
+            // record kill attempts instead of performing real Kubernetes operations
+            killedApps.add(namespace + "/" + appName);
+        }
+    }
+
+    @Test
+    public void testDeleteExpiredApplication_killsApp() throws Exception {
+        com.apple.spark.AppConfig.SparkCluster sparkCluster = new com.apple.spark.AppConfig.SparkCluster();
+        sparkCluster.setEksCluster("eks1");
+        sparkCluster.setSparkApplicationNamespace("ns1");
+        TestRunningApplicationMonitor monitor = new TestRunningApplicationMonitor(sparkCluster, new NoopTimer());
+        // Access the private runningApplications map via reflection and populate it
+        Field runningAppsField = RunningApplicationMonitor.class.getDeclaredField("runningApplications");
+        runningAppsField.setAccessible(true);
+        @SuppressWarnings("unchecked")
+        ConcurrentHashMap<NamespaceAndName, RunningAppInfo> map = new ConcurrentHashMap<>();
+        // Add an expired application: creation time far in the past, and a small maxRunningMillis
+        RunningAppInfo expired = new RunningAppInfo(System.currentTimeMillis() - 10_000L, 1L);
+        NamespaceAndName key = new NamespaceAndName("my-ns", "my-app");
+        map.put(key, expired);
+        runningAppsField.set(monitor, map);
+        // Call the focal method
+        monitor.deleteLongRunningApplications();
+        // Verify that killApplication was invoked for the expired app
+        assertEquals(1, monitor.killedApps.size());
+        assertEquals("my-ns/my-app", monitor.killedApps.get(0));
+        // Also ensure the map no longer contains the app
+        assertFalse(map.containsKey(key));
+    }
+
+
+
+    // --- Minimal helper / fallback classes (used only if test environment lacks real ones) ---
+    // Minimal NamespaceAndName (matches signature provided)
+    public static class NamespaceAndName {
+
+        private String namespace;
+
+        private String name;
+
+        public NamespaceAndName() {
+        }
+
+        public NamespaceAndName(String namespace, String name) {
+            this.namespace = namespace;
+            this.name = name;
+        }
+
+        public String getNamespace() {
+            return namespace;
+        }
+
+        public void setNamespace(String namespace) {
+            this.namespace = namespace;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o)
+                return true;
+            if (!(o instanceof NamespaceAndName))
+                return false;
+            NamespaceAndName that = (NamespaceAndName) o;
+            return (namespace == null ? that.namespace == null : namespace.equals(that.namespace)) && (name == null ? that.name == null : name.equals(that.name));
+        }
+
+        @Override
+        public int hashCode() {
+            int result = namespace != null ? namespace.hashCode() : 0;
+            result = 31 * result + (name != null ? name.hashCode() : 0);
+            return result;
+        }
+    }
+
+    // Minimal RunningAppInfo to support exceedMaxRunningTime() and getCreationTimeMillis()
+    public static class RunningAppInfo {
+
+        private final long creationTimeMillis;
+
+        private final long maxRunningMillis;
+
+        public RunningAppInfo(long creationTimeMillis, long maxRunningMillis) {
+            this.creationTimeMillis = creationTimeMillis;
+            this.maxRunningMillis = maxRunningMillis;
+        }
+
+        public boolean exceedMaxRunningTime() {
+            return System.currentTimeMillis() - creationTimeMillis > maxRunningMillis;
+        }
+
+        public long getCreationTimeMillis() {
+            return creationTimeMillis;
+        }
+    }
+
+    // Minimal AppConfig and nested SparkCluster if not present in classpath
+    public static class AppConfig {
+
+        public static class SparkCluster {
+
+            private String eksCluster;
+
+            private String sparkApplicationNamespace;
+
+            public String getEksCluster() {
+                return eksCluster;
+            }
+
+            public void setEksCluster(String eksCluster) {
+                this.eksCluster = eksCluster;
+            }
+
+            public String getSparkApplicationNamespace() {
+                return sparkApplicationNamespace;
+            }
+
+            public void setSparkApplicationNamespace(String sparkApplicationNamespace) {
+                this.sparkApplicationNamespace = sparkApplicationNamespace;
+            }
+        }
+    }
+
+    // Minimal CounterMetricContainer stub (no-op)
+    public static class CounterMetricContainer {
+
+        public CounterMetricContainer(io.micrometer.core.instrument.MeterRegistry r) {
+        }
+
+        public void increment(String metricName, io.micrometer.core.instrument.Tag... tags) {
+            // no-op
+        }
+    }
+
+    // Minimal GaugeMetricContainer stub (no-op register)
+    public static class GaugeMetricContainer {
+
+        public GaugeMetricContainer(io.micrometer.core.instrument.MeterRegistry r) {
+        }
+
+        public void register(String name, java.util.function.Supplier<Number> supplier, io.micrometer.core.instrument.Tag... tags) {
+            // no-op
+        }
+    }
+
+    // Minimal Constants used by RunningApplicationMonitor
+    public static class Constants {
+
+        public static final String MONITOR_RUNNING_APPS = "monitor.running.apps";
+
+        public static final String MONITOR_KILLED_APPS = "monitor.killed.apps";
+
+        public static final String QUEUE_LABEL = "spark-app-queue";
+    }
+}
+```
+
+Observed error:
+
+```
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:147)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:127)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:90)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:55)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:102)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:54)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86)
+	at org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86)
+	at org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:55)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:223)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:175)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:139)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:456)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:169)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:595)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:581)
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Errors: 
+[ERROR]   RunningApplicationMonitor_deleteLongRunningApplications_2_0_Test_testDeleteExpiredApplication_killsApp.testDeleteExpiredApplication_killsApp:97 » ClassCast class com.apple.spark.core.RunningApplicationMonitor_deleteLongRunningApplications_2_0_Test_testDeleteExpiredApplication_killsApp$Run
+```
+
+Target under test: method `deleteLongRunningApplications()` in class `RunningApplicationMonitor`.
+
+Focal method source:
+
+```java
+public void deleteLongRunningApplications() {
+    List<NamespaceAndName> expiredApplications =
+        runningApplications.entrySet().stream()
+            .filter(t -> t.getValue().exceedMaxRunningTime())
+            .map(t -> t.getKey())
+            .collect(Collectors.toList());
+    for (NamespaceAndName app : expiredApplications) {
+      RunningAppInfo runningAppInfo = runningApplications.remove(app);
+      if (runningAppInfo != null) {
+        logger.info(
+            "Killing application {}/{} due to running too long ({} milliseconds)",
+            app.getNamespace(),
+            app.getName(),
+            System.currentTimeMillis() - runningAppInfo.getCreationTimeMillis());
+        try {
+          killApplication(app.getNamespace(), app.getName());
+        } catch (Throwable ex) {
+          logger.warn(
+              String.format("Failed to kill application %s/%s", app.getNamespace(), app.getName()),
+              ex);
+        }
+      }
+    }
+  }
+```
+
+Focal class skeleton (imports + fields + method signatures):
+
+```java
+import static com.apple.spark.core.Constants.MONITOR_KILLED_APPS;
+import static com.apple.spark.core.Constants.MONITOR_RUNNING_APPS;
+import com.apple.spark.AppConfig;
+import com.apple.spark.operator.DriverInfo;
+import com.apple.spark.operator.SparkApplication;
+import com.apple.spark.operator.SparkApplicationResourceList;
+import com.apple.spark.util.CounterMetricContainer;
+import com.apple.spark.util.DateTimeUtils;
+import com.apple.spark.util.GaugeMetricContainer;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.Resource;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+public class RunningApplicationMonitor {
+private static final Logger logger = ...;
+private static final long DEFAULT_INTERVAL = ...;
+private final ConcurrentHashMap<NamespaceAndName, RunningAppInfo> runningApplications;
+private final GaugeMetricContainer gaugeMetricContainer;
+private final CounterMetricContainer counterMetricContainer;
+private final long deleteInterval;
+private final AppConfig.SparkCluster sparkCluster;
+public RunningApplicationMonitor(
+      AppConfig.SparkCluster sparkCluster, Timer timer, MeterRegistry meterRegistry){}
+public RunningApplicationMonitor(
+      AppConfig.SparkCluster sparkCluster,
+      Timer timer,
+      long deleteIntervalMillis,
+      MeterRegistry meterRegistry){}
+public static long getMaxRunningMillis(SparkApplication sparkApplication){}
+public void onUpdate(
+          SparkApplication prevCRDState, SparkApplication currCRDState){}
+public void deleteLongRunningApplications(){}
+public int getApplicationCount(){}
+protected void killApplication(String namespace, String appName){}
+public RunningApplicationMonitor(
+      AppConfig.SparkCluster sparkCluster, Timer timer, MeterRegistry meterRegistry){}
+public RunningApplicationMonitor(
+      AppConfig.SparkCluster sparkCluster,
+      Timer timer,
+      long deleteIntervalMillis,
+      MeterRegistry meterRegistry){}
+}
+```
+
+
+To help you correctly fix the unit test file, we provide the brief information about the dependency
+
+The brief information of dependent class `com.apple.spark.core.RunningApplicationMonitor.RunningAppInfo` is
+```[java]
+import static com.apple.spark.core.Constants.MONITOR_KILLED_APPS;
+import static com.apple.spark.core.Constants.MONITOR_RUNNING_APPS;
+import com.apple.spark.AppConfig;
+import com.apple.spark.operator.DriverInfo;
+import com.apple.spark.operator.SparkApplication;
+import com.apple.spark.operator.SparkApplicationResourceList;
+import com.apple.spark.util.CounterMetricContainer;
+import com.apple.spark.util.DateTimeUtils;
+import com.apple.spark.util.GaugeMetricContainer;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.Resource;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+public class RunningApplicationMonitor {
+private static final Logger logger = ...;
+private static final long DEFAULT_INTERVAL = ...;
+private final ConcurrentHashMap<NamespaceAndName, RunningAppInfo> runningApplications;
+private final GaugeMetricContainer gaugeMetricContainer;
+private final CounterMetricContainer counterMetricContainer;
+private final long deleteInterval;
+private final AppConfig.SparkCluster sparkCluster;
+public RunningApplicationMonitor(
+      AppConfig.SparkCluster sparkCluster, Timer timer, MeterRegistry meterRegistry){}
+public RunningApplicationMonitor(
+      AppConfig.SparkCluster sparkCluster,
+      Timer timer,
+      long deleteIntervalMillis,
+      MeterRegistry meterRegistry){}
+}
+```
+
+The brief information of dependent class `com.apple.spark.core.NamespaceAndName` is
+```[java]
+import java.util.Objects;
+public class NamespaceAndName {
+private String namespace;
+private String name;
+public NamespaceAndName(){}
+public NamespaceAndName(String namespace, String name){}
+public String getNamespace(){}
+public String getName(){}
+}
+```
+
+The brief information of dependent class `com.apple.spark.core.RunningApplicationMonitor.RunningAppInfo` is
+```[java]
+exceedMaxRunningTime()
+getCreationTimeMillis()
+```
+
+The brief information of dependent class `org.slf4j.Logger` is
+```[java]
+warn(String, Throwable)
+info(String, Object[])
+```
+
+The brief information of dependent class `com.apple.spark.core.NamespaceAndName` is
+```[java]
+getName()
+getNamespace()
+```
+
+Return ONLY the complete fixed unit test file.

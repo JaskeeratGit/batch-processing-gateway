@@ -1,0 +1,286 @@
+ROLE: You are an expert Java test engineer specializing in fixing failing JUnit tests.
+
+TASK: Fix the provided unit test so it compiles and runs successfully.
+CONSTRAINTS:
+- Fix ONLY the provided unit test. Do NOT add new test methods, new test classes, or new files.
+- Do NOT introduce additional tests beyond what already exists in the given unit test.
+- Do NOT change the focal method or production code.
+- Keep the test’s intent the same; make the smallest change necessary to fix the failure.
+- You may adjust imports, annotations, types, mocks, stubs, assertions, and setup within the given test file.
+- Use JUnit 5 and Mockito 3 if needed.
+- Adhere to Java 8 conventions.
+OUTPUT:
+- Return ONLY the complete fixed unit test file (including package and imports if present).
+- No explanation.
+
+FEW-SHOT EXAMPLES (error -> minimal fix):
+
+========================
+EXAMPLE 1
+========================
+Original Unit Test:
+
+```java
+public class Options_getOptionGroup_9_0_Test {
+    static class OptionGroup {
+        private final String id;
+        OptionGroup(String id) { this.id = id; }
+        String getId() { return id; }
+    }
+
+    @Test
+    void testGetOptionGroupReturnsNullWhenMissing() throws Exception {
+        Options options = new Options();
+        Option opt = new Option("b", "desc");
+        OptionGroup result = options.getOptionGroup(opt);
+        assertNull(result, "Expected null when no OptionGroup is associated with the option key");
+    }
+}
+```
+
+Observed error:
+```
+incompatible types: org.apache.commons.cli.OptionGroup cannot be converted to Options_getOptionGroup_9_0_Test.OptionGroup
+```
+
+Fixed Unit Test:
+
+```java
+public class Options_getOptionGroup_9_0_Test {
+    @Test
+    void testGetOptionGroupReturnsNullWhenMissing() throws Exception {
+        Options options = new Options();
+        Option opt = new Option("b", "desc");
+        org.apache.commons.cli.OptionGroup result = options.getOptionGroup(opt);
+        assertNull(result, "Expected null when no OptionGroup is associated with the option key");
+    }
+}
+```
+
+========================
+EXAMPLE 2
+========================
+Original Unit Test:
+
+```java
+public class CommandLine_getParsedOptionValues_46_0_Test {
+    @Test
+    void testNullOptionGroupReturnsDefault() throws Exception {
+        CommandLine cmd = new CommandLine();
+        Supplier<String[]> supplier = () -> new String[] { "default1", "default2" };
+        String[] result = cmd.getParsedOptionValues(null, supplier);
+        assertArrayEquals(supplier.get(), result);
+    }
+}
+```
+
+Observed error:
+```
+reference to getParsedOptionValues is ambiguous
+```
+
+Fixed Unit Test:
+
+```java
+public class CommandLine_getParsedOptionValues_46_0_Test {
+    @Test
+    void testNullOptionGroupReturnsDefault() throws Exception {
+        CommandLine cmd = new CommandLine();
+        Supplier<String[]> supplier = () -> new String[] { "default1", "default2" };
+        String[] result = cmd.getParsedOptionValues((OptionGroup) null, supplier);
+        assertArrayEquals(supplier.get(), result);
+    }
+}
+```
+
+========================
+
+NOW FIX THIS INPUT:
+
+Unit test to fix:
+
+```java
+package com.apple.spark.util;
+
+import com.codahale.metrics.Meter;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.concurrent.atomic.AtomicInteger;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import com.apple.spark.core.Constants;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.SharedMetricRegistries;
+
+public class ExceptionUtils_meterRuntimeException_5_0_Test_meterRuntimeException_whenMeterIsNull_throwsNullPointerException {
+
+    private Field runtimeExceptionMeterField;
+
+    private Object originalRuntimeExceptionMeter;
+
+    private Field modifiersField;
+
+    @BeforeEach
+    void setUp() throws Exception {
+        // Access the private static final field
+        runtimeExceptionMeterField = ExceptionUtils.class.getDeclaredField("runtimeExceptionMeter");
+        runtimeExceptionMeterField.setAccessible(true);
+        // Keep original to restore later
+        originalRuntimeExceptionMeter = runtimeExceptionMeterField.get(null);
+        // Try to remove final modifier so we can set the field, but some JVMs don't have the modifiers field
+        try {
+            modifiersField = Field.class.getDeclaredField("modifiers");
+            modifiersField.setAccessible(true);
+            modifiersField.setInt(runtimeExceptionMeterField, runtimeExceptionMeterField.getModifiers() & ~Modifier.FINAL);
+        } catch (NoSuchFieldException ignored) {
+            modifiersField = null;
+        }
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        // Restore original value and modifiers (restore value is most important)
+        try {
+            runtimeExceptionMeterField.set(null, originalRuntimeExceptionMeter);
+        } catch (IllegalAccessException | IllegalArgumentException ex) {
+            // Some JVMs prevent resetting static final fields via reflection; ignore if we cannot restore.
+        }
+    }
+
+    // A simple Meter subclass that counts mark invocations
+    static class CountingMeter extends Meter {
+
+        private final AtomicInteger count = new AtomicInteger(0);
+
+        @Override
+        public void mark() {
+            count.incrementAndGet();
+        }
+
+        @Override
+        public void mark(long n) {
+            count.addAndGet((int) n);
+        }
+
+        @Override
+        public long getCount() {
+            return count.get();
+        }
+    }
+
+
+
+    @Test
+    void meterRuntimeException_whenMeterIsNull_throwsNullPointerException() throws Exception {
+        // Try to set the metric field to null to exercise behavior when field is null.
+        // If we cannot set it to null due to JVM restrictions, set it to a Meter whose mark() throws NPE
+        try {
+            runtimeExceptionMeterField.set(null, null);
+        } catch (IllegalAccessException | IllegalArgumentException e) {
+            try {
+                runtimeExceptionMeterField.set(null, new Meter() {
+                    @Override
+                    public void mark() {
+                        throw new NullPointerException();
+                    }
+                });
+            } catch (IllegalAccessException | IllegalArgumentException ex) {
+                fail("Could not modify runtimeExceptionMeter field for test: " + ex);
+            }
+        }
+
+        assertThrows(NullPointerException.class, () -> ExceptionUtils.meterRuntimeException(), "Calling meterRuntimeException when the meter is null should throw NPE");
+    }
+}
+```
+
+Observed error:
+
+```
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:147)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:127)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:90)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:55)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:102)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:54)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86)
+	at org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86)
+	at org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:55)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:223)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:175)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:139)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:456)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:169)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:595)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:581)
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   ExceptionUtils_meterRuntimeException_5_0_Test_meterRuntimeException_whenMeterIsNull_throwsNullPointerException.meterRuntimeException_whenMeterIsNull_throwsNullPointerException:90 Could not modify runtimeExceptionMeter field for test: java.lang.IllegalAccessException: Can not set static 
+```
+
+Target under test: method `meterRuntimeException()` in class `ExceptionUtils`.
+
+Focal method source:
+
+```java
+public static void meterRuntimeException() {
+    runtimeExceptionMeter.mark();
+  }
+```
+
+Focal class skeleton (imports + fields + method signatures):
+
+```java
+import com.apple.spark.core.Constants;
+import com.codahale.metrics.Meter;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.SharedMetricRegistries;
+public class ExceptionUtils {
+private static final MetricRegistry registry;
+private static final Meter jsonProcessingExceptionMeter;
+private static final Meter ioExceptionMeter;
+private static final Meter runtimeExceptionMeter;
+private static final Meter exceptionMeter;
+public static String getExceptionNameAndMessage(Throwable ex){}
+public static boolean isTooManyRequest(Throwable ex){}
+public static void meterJsonProcessingException(){}
+public static void meterException(){}
+public static void meterIOException(){}
+public static void meterRuntimeException(){}
+}
+```
+
+
+To help you correctly fix the unit test file, we provide the brief information about the dependency
+
+The brief information of dependent class `com.codahale.metrics.Meter` is
+```[java]
+mark()
+```
+
+Return ONLY the complete fixed unit test file.

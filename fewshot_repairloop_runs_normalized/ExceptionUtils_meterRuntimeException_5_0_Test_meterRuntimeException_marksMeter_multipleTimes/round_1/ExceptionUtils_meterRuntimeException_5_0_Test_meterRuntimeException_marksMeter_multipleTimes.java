@@ -1,0 +1,41 @@
+package com.apple.spark.util;
+
+import com.codahale.metrics.Meter;
+import java.lang.reflect.Field;
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.SharedMetricRegistries;
+
+public class ExceptionUtils_meterRuntimeException_5_0_Test_meterRuntimeException_marksMeter_multipleTimes {
+
+    private Field runtimeExceptionMeterField;
+
+    private Object originalRuntimeExceptionMeter;
+
+    @BeforeEach
+    void setUp() throws Exception {
+        // Access the private static final field
+        runtimeExceptionMeterField = ExceptionUtils.class.getDeclaredField("runtimeExceptionMeter");
+        runtimeExceptionMeterField.setAccessible(true);
+        // Keep original for potential inspection (but do not attempt to reassign the final field)
+        originalRuntimeExceptionMeter = runtimeExceptionMeterField.get(null);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        // Do not attempt to modify the final field back via reflection (may be restricted).
+        // Nothing to restore since we didn't change the field.
+    }
+
+    @Test
+    void meterRuntimeException_marksMeter_multipleTimes() throws Exception {
+        Meter meter = (Meter) runtimeExceptionMeterField.get(null);
+        long before = meter.getCount();
+        ExceptionUtils.meterRuntimeException();
+        ExceptionUtils.meterRuntimeException();
+        long after = meter.getCount();
+        assertEquals(2, after - before, "meterRuntimeException called twice should increment meter twice");
+    }
+
+}

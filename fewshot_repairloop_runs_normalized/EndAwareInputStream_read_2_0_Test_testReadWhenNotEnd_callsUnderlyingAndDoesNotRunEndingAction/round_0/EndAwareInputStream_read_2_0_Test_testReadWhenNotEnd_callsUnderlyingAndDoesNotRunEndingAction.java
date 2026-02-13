@@ -1,0 +1,54 @@
+package com.apple.spark.util;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Method;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+class EndAwareInputStream_read_2_0_Test_testReadWhenNotEnd_callsUnderlyingAndDoesNotRunEndingAction {
+
+    @Test
+    void testReadWhenNotEnd_callsUnderlyingAndDoesNotRunEndingAction() throws Exception {
+        AtomicBoolean endingCalled = new AtomicBoolean(false);
+        InputStream under = new InputStream() {
+
+            @Override
+            public int read() {
+                // not used
+                return -1;
+            }
+
+            @Override
+            public int read(byte[] b, int off, int len) {
+                // fill with predictable bytes and return 2
+                if (len <= 0)
+                    return 0;
+                int toWrite = Math.min(2, len);
+                if (off + toWrite > b.length)
+                    return -1;
+                b[off] = 11;
+                b[off + 1] = 22;
+                return toWrite;
+            }
+        };
+        EndAwareInputStream eis = new EndAwareInputStream(under, () -> endingCalled.set(true));
+        byte[] buffer = new byte[4];
+        int read = eis.read(buffer, 1, 3);
+        assertEquals(2, read, "Should return number of bytes read from underlying stream");
+        assertEquals(0, buffer[0], "Byte outside written range unchanged");
+        assertEquals(11, buffer[1], "First written byte");
+        assertEquals(22, buffer[2], "Second written byte");
+        assertFalse(endingCalled.get(), "endingAction should not have been called for non -1 read");
+    }
+
+
+
+
+}

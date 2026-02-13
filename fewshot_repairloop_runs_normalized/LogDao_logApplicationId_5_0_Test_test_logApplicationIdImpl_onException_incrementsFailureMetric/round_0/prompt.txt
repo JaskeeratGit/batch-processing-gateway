@@ -1,0 +1,356 @@
+ROLE: You are an expert Java test engineer specializing in fixing failing JUnit tests.
+
+TASK: Fix the provided unit test so it compiles and runs successfully.
+CONSTRAINTS:
+- Fix ONLY the provided unit test. Do NOT add new test methods, new test classes, or new files.
+- Do NOT introduce additional tests beyond what already exists in the given unit test.
+- Do NOT change the focal method or production code.
+- Keep the test’s intent the same; make the smallest change necessary to fix the failure.
+- You may adjust imports, annotations, types, mocks, stubs, assertions, and setup within the given test file.
+- Use JUnit 5 and Mockito 3 if needed.
+- Adhere to Java 8 conventions.
+OUTPUT:
+- Return ONLY the complete fixed unit test file (including package and imports if present).
+- No explanation.
+
+FEW-SHOT EXAMPLES (error -> minimal fix):
+
+========================
+EXAMPLE 1
+========================
+Original Unit Test:
+
+```java
+public class Options_getOptionGroup_9_0_Test {
+    static class OptionGroup {
+        private final String id;
+        OptionGroup(String id) { this.id = id; }
+        String getId() { return id; }
+    }
+
+    @Test
+    void testGetOptionGroupReturnsNullWhenMissing() throws Exception {
+        Options options = new Options();
+        Option opt = new Option("b", "desc");
+        OptionGroup result = options.getOptionGroup(opt);
+        assertNull(result, "Expected null when no OptionGroup is associated with the option key");
+    }
+}
+```
+
+Observed error:
+```
+incompatible types: org.apache.commons.cli.OptionGroup cannot be converted to Options_getOptionGroup_9_0_Test.OptionGroup
+```
+
+Fixed Unit Test:
+
+```java
+public class Options_getOptionGroup_9_0_Test {
+    @Test
+    void testGetOptionGroupReturnsNullWhenMissing() throws Exception {
+        Options options = new Options();
+        Option opt = new Option("b", "desc");
+        org.apache.commons.cli.OptionGroup result = options.getOptionGroup(opt);
+        assertNull(result, "Expected null when no OptionGroup is associated with the option key");
+    }
+}
+```
+
+========================
+EXAMPLE 2
+========================
+Original Unit Test:
+
+```java
+public class CommandLine_getParsedOptionValues_46_0_Test {
+    @Test
+    void testNullOptionGroupReturnsDefault() throws Exception {
+        CommandLine cmd = new CommandLine();
+        Supplier<String[]> supplier = () -> new String[] { "default1", "default2" };
+        String[] result = cmd.getParsedOptionValues(null, supplier);
+        assertArrayEquals(supplier.get(), result);
+    }
+}
+```
+
+Observed error:
+```
+reference to getParsedOptionValues is ambiguous
+```
+
+Fixed Unit Test:
+
+```java
+public class CommandLine_getParsedOptionValues_46_0_Test {
+    @Test
+    void testNullOptionGroupReturnsDefault() throws Exception {
+        CommandLine cmd = new CommandLine();
+        Supplier<String[]> supplier = () -> new String[] { "default1", "default2" };
+        String[] result = cmd.getParsedOptionValues((OptionGroup) null, supplier);
+        assertArrayEquals(supplier.get(), result);
+    }
+}
+```
+
+========================
+
+NOW FIX THIS INPUT:
+
+Unit test to fix:
+
+```java
+package com.apple.spark.core;
+
+import static org.mockito.ArgumentMatchers.*;
+import com.apple.spark.util.TimerMetricContainer;
+import com.apple.spark.util.CounterMetricContainer;
+import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.logging.LoggingMeterRegistry;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.concurrent.atomic.AtomicReference;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import static com.apple.spark.core.Constants.DEFAULT_DB_NAME;
+import static com.apple.spark.core.SparkConstants.RUNNING_STATE;
+import static com.apple.spark.core.SparkConstants.SUBMITTED_STATE;
+import com.apple.spark.api.SubmitApplicationRequest;
+import com.apple.spark.util.CustomSerDe;
+import io.micrometer.core.instrument.MeterRegistry;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import javax.sql.rowset.CachedRowSet;
+import javax.sql.rowset.RowSetProvider;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class LogDao_logApplicationId_5_0_Test_test_logApplicationIdImpl_onException_incrementsFailureMetric {
+
+    private static void setFinalField(Object target, String fieldName, Object value) throws Exception {
+        Field field = LogDao.class.getDeclaredField(fieldName);
+        field.setAccessible(true);
+        // Remove final modifier so we can set the field
+        Field modifiersField = Field.class.getDeclaredField("modifiers");
+        modifiersField.setAccessible(true);
+        modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+        field.set(target, value);
+    }
+
+    private static Object getStaticField(String fieldName) throws Exception {
+        Field f = LogDao.class.getDeclaredField(fieldName);
+        f.setAccessible(true);
+        return f.get(null);
+    }
+
+
+
+    @Test
+    public void test_logApplicationIdImpl_onException_incrementsFailureMetric() throws Exception {
+        // Create LogDao with empty connection string so dbConnection==null and bypassLog==true
+        LogDao dao = new LogDao("", "u", "p", "db");
+        // Replace failureMetrics with a Mockito mock to verify increment invocation
+        CounterMetricContainer mockFailureMetrics = mock(CounterMetricContainer.class);
+        setFinalField(dao, "failureMetrics", mockFailureMetrics);
+        // Ensure bypassLog is false so private impl could be invoked directly if needed
+        Field bypassField = LogDao.class.getDeclaredField("bypassLog");
+        bypassField.setAccessible(true);
+        bypassField.setBoolean(dao, false);
+        // Invoke private method logApplicationIdImpl via reflection
+        Method impl = LogDao.class.getDeclaredMethod("logApplicationIdImpl", String.class, String.class);
+        impl.setAccessible(true);
+        // Call with dbConnection == null to force a NullPointerException inside impl,
+        // which should be caught and result in failureMetrics.increment(...)
+        impl.invoke(dao, "s-ex", "a-ex");
+        // Verify failureMetrics.increment was called with expected metric name and tags
+        String expectedFailureMetric = (String) getStaticField("DB_FAILURE_METRIC_NAME");
+        String expectedOp = (String) getStaticField("LOG_APP_ID_OPERATION");
+        // We cannot easily match Tag objects directly without knowing the exact method signature,
+        // so verify increment was called at least once with the metric name supplied.
+        verify(mockFailureMetrics, atLeastOnce()).increment(eq(expectedFailureMetric), any());
+    }
+}
+
+```
+
+Observed error:
+
+```
+src/test/java/com/apple/spark/core/LogDao_logApplicationId_5_0_Test_test_logApplicationIdImpl_onException_incrementsFailureMetric.java:[76,50] reference to increment is ambiguous
+both method increment(java.lang.String,io.micrometer.core.instrument.Tag...) in com.apple.spark.util.CounterMetricContainer and method increment(java.lang.String,java.util.Collection<io.micrometer.core.instrument.Tag>) in com.apple.spark.util.CounterMetricContainer match
+```
+
+Target under test: method `logApplicationId(String, String)` in class `LogDao`.
+
+Focal method source:
+
+```java
+public void logApplicationId(String submissionId, String applicationId) {
+    if (bypassLog) {
+      return;
+    }
+
+    timerMetrics.record(
+        () -> logApplicationIdImpl(submissionId, applicationId),
+        DB_TIMER_METRIC_NAME,
+        Tag.of(OPERATION_TAG, LOG_APP_ID_OPERATION));
+  }
+```
+
+Focal class skeleton (imports + fields + method signatures):
+
+```java
+import static com.apple.spark.core.Constants.DEFAULT_DB_NAME;
+import static com.apple.spark.core.SparkConstants.RUNNING_STATE;
+import static com.apple.spark.core.SparkConstants.SUBMITTED_STATE;
+import com.apple.spark.api.SubmitApplicationRequest;
+import com.apple.spark.util.CounterMetricContainer;
+import com.apple.spark.util.CustomSerDe;
+import com.apple.spark.util.TimerMetricContainer;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.logging.LoggingMeterRegistry;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import javax.sql.rowset.CachedRowSet;
+import javax.sql.rowset.RowSetProvider;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+public class LogDao {
+private static final Logger logger = ...;
+private static final String DB_FAILURE_METRIC_NAME = ...;
+private static final String DB_TIMER_METRIC_NAME = ...;
+private static final String OPERATION_TAG = ...;
+private static final String EXCEPTION_TAG = ...;
+private static final String LOG_SUBMISSION_OPERATION = ...;
+private static final String QUERY_SUBMISSION_OPERATION = ...;
+private static final String QUERY_LOGINDEX_OPERATION = ...;
+private static final String INSERT_LOGINDEX_OPERATION = ...;
+private static final String LOG_APP_ID_OPERATION = ...;
+private static final String LOG_APP_STATUS_OPERATION = ...;
+private static final String UPDATE_SPARK_APP_INFO_OPERATION = ...;
+private static final String UPDATE_SPARK_EXECUTOR_INFO_OPERATION = ...;
+private static final String LOG_APP_FINISHED_OPERATION = ...;
+private final DBConnection dbConnection;
+private final String dbName;
+private final CounterMetricContainer failureMetrics;
+private final TimerMetricContainer timerMetrics;
+private volatile boolean bypassLog = ...;
+public LogDao(String connectionString, String user, String password, String dbName){}
+public LogDao(
+      String connectionString,
+      String user,
+      String password,
+      String dbName,
+      MeterRegistry meterRegistry){}
+public static void verifyDBName(String dbName){}
+public String getSubmissionIdFromAppId(String appId){}
+private String getSubmissionIdFromAppIdImpl(String appId){}
+public void logApplicationSubmission(
+      String submissionId, String user, SubmitApplicationRequest submission){}
+private void logApplicationSubmissionImpl(
+      String submissionId, String user, SubmitApplicationRequest submission, String requestBody){}
+public void logApplicationId(String submissionId, String applicationId){}
+private void logApplicationIdImpl(String submissionId, String applicationId){}
+public void logApplicationStatus(String submissionId, String status){}
+private void logApplicationStatusImpl(String submissionId, String status){}
+public void logApplicationFinished(
+      String submissionId,
+      String status,
+      Timestamp finishedTime,
+      Double vCoreSecondCost,
+      Double memoryMbSecondCost){}
+private void logApplicationFinishedImpl(
+      String submissionId,
+      String status,
+      Timestamp finishedTime,
+      Double vCoreSecondCost,
+      Double memoryMbSecondCost){}
+private void createDatabase(){}
+public boolean updateJobInfo(
+      String submissionId,
+      Timestamp startTime,
+      int driverCore,
+      int driverMemoryMB,
+      int executorInstances,
+      String dagName,
+      String taskName,
+      String appName){}
+private boolean updateJobInfoImpl(
+      String submissionId,
+      Timestamp startTime,
+      int driverCore,
+      int driverMemoryMB,
+      int executorInstances,
+      String dagName,
+      String taskName,
+      String appName){}
+private void createApplicationSubmissionTable(){}
+private void createLogIndexTable(){}
+public ResultSet getJobInfoQuery(String status, String user, int queryLimit, int numDaysToShow){}
+private ResultSet getJobInfoQueryImpl(
+      String status, String user, int queryLimit, int numDaysToShow){}
+public boolean updateExecutorInfo(String submissionId, int executorCore, int executorMemoryMB){}
+private boolean updateExecutorInfoImpl(
+      String submissionId, int executorCore, int executorMemoryMB){}
+public ArrayList<String> getKeyList(String podPrefix, String execId){}
+private ArrayList<String> getKeyListImpl(String podPrefix, String execId){}
+public ResultSet dbQuery(String sql){}
+private ResultSet dbQueryImpl(String sql){}
+public LogDao(String connectionString, String user, String password, String dbName){}
+public LogDao(
+      String connectionString,
+      String user,
+      String password,
+      String dbName,
+      MeterRegistry meterRegistry){}
+}
+```
+
+
+To help you correctly fix the unit test file, we provide the brief information about the dependency
+
+The brief information of dependent class `com.apple.spark.util.TimerMetricContainer` is
+```[java]
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.Timer;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+public class TimerMetricContainer {
+private final MeterRegistry meterRegistry;
+private final ConcurrentHashMap<MetricId, Timer> timers = ...;
+public TimerMetricContainer(MeterRegistry meterRegistry){}
+public void record(Runnable runnable, String metricName, Tag... tags){}
+public void record(Runnable runnable, String metricName, Collection<Tag> tags){}
+public <T> T record(Supplier<T> runnable, String metricName, Tag... tags){}
+public <T> T record(Supplier<T> runnable, String metricName, Collection<Tag> tags){}
+}
+```
+
+The brief information of dependent class `com.apple.spark.util.TimerMetricContainer` is
+```[java]
+record(Runnable, String, Tag[])
+```
+
+The brief information of dependent class `io.micrometer.core.instrument.Tag` is
+```[java]
+of(String, String)
+```
+
+Return ONLY the complete fixed unit test file.

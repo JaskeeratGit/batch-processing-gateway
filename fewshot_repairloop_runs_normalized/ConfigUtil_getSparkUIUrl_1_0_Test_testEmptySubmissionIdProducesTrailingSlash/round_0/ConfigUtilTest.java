@@ -1,0 +1,27 @@
+package com.apple.spark.util;
+
+import com.apple.spark.AppConfig;
+import org.junit.jupiter.api.Test;
+import java.lang.reflect.Method;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
+
+public class ConfigUtilTest {
+
+    private Method getSparkUIUrlMethod() throws NoSuchMethodException {
+        Method m = ConfigUtil.class.getDeclaredMethod("getSparkUIUrl", AppConfig.SparkCluster.class, String.class);
+        m.setAccessible(true);
+        return m;
+    }
+
+    @Test
+    void testEmptySubmissionIdProducesTrailingSlash() throws Exception {
+        Method m = getSparkUIUrlMethod();
+        AppConfig.SparkCluster cluster = mock(AppConfig.SparkCluster.class);
+        when(cluster.getSparkUIUrl()).thenReturn("http://host");
+        when(cluster.getSparkApplicationNamespace()).thenReturn("ns");
+        String submissionId = "";
+        String result = (String) m.invoke(null, cluster, submissionId);
+        assertEquals("http://host/ns/", result);
+    }
+}

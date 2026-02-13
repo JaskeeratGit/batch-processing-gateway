@@ -1,0 +1,73 @@
+package com.apple.spark.util;
+
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.Timer;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.function.Supplier;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import java.util.concurrent.ConcurrentHashMap;
+
+/**
+ * JUnit 5 tests for TimerMetricContainer#record(Supplier, String, Collection)
+ *
+ * Uses Mockito to mock MeterRegistry and Timer.
+ * Uses reflection to invoke the private getTimer(String, Collection<Tag>) method.
+ */
+@ExtendWith(MockitoExtension.class)
+class TimerMetricContainer_record_3_0_Test_record_shouldDelegateToTimerAndReturnValue {
+
+    @Mock
+    private MeterRegistry meterRegistry;
+
+    @Mock
+    private Timer timer;
+
+    private TimerMetricContainer container;
+
+    @BeforeEach
+    void setUp() {
+        // meterRegistry.config() is called by TimerMetricContainer; stub it to avoid NPE on the mock
+        MeterRegistry.Config config = mock(MeterRegistry.Config.class);
+        when(meterRegistry.config()).thenReturn(config);
+        // Note: Do not reference PauseDetector (may not be present on classpath); returning null is acceptable for this test.
+
+        container = new TimerMetricContainer(meterRegistry);
+    }
+
+    @Test
+    void record_shouldDelegateToTimerAndReturnValue() {
+        String metricName = "test.metric";
+        Tag t1 = mock(Tag.class);
+        Tag t2 = mock(Tag.class);
+        // Stub tag keys/values to avoid NullPointerException when tag key/value are accessed
+        when(t1.getKey()).thenReturn("k1");
+        when(t1.getValue()).thenReturn("v1");
+        when(t2.getKey()).thenReturn("k2");
+        when(t2.getValue()).thenReturn("v2");
+
+        Collection<Tag> tags = Arrays.asList(t1, t2);
+        // Make meterRegistry.timer(...) return our mocked timer without invoking default methods
+        doReturn(timer).when(meterRegistry).timer(eq(metricName), any(Iterable.class));
+        // Make timer.record call the supplied Supplier so we exercise supplier logic and return its value.
+        when(timer.record(ArgumentMatchers.<Supplier<?>>any())).thenAnswer(invocation -> {
+            Supplier<?> supplied = (Supplier<?>) invocation.getArgument(0);
+            // noinspection unchecked
+            return supplied.get();
+        });
+        Supplier<String> supplier = () -> "ok-value";
+        String result = container.record(supplier, metricName, tags);
+        assertEquals("ok-value", result);
+        verify(meterRegistry).timer(eq(metricName), any(Iterable.class));
+        verify(timer).record((Supplier<String>) supplier);
+    }
+
+
+
+}

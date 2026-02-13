@@ -1,0 +1,226 @@
+ROLE: You are an expert Java test engineer specializing in fixing failing JUnit tests.
+
+TASK: Fix the provided unit test so it compiles and runs successfully.
+CONSTRAINTS:
+- Fix ONLY the provided unit test. Do NOT add new test methods, new test classes, or new files.
+- Do NOT introduce additional tests beyond what already exists in the given unit test.
+- Do NOT change the focal method or production code.
+- Keep the test’s intent the same; make the smallest change necessary to fix the failure.
+- You may adjust imports, annotations, types, mocks, stubs, assertions, and setup within the given test file.
+- Use JUnit 5 and Mockito 3 if needed.
+- Adhere to Java 8 conventions.
+OUTPUT:
+- Return ONLY the complete fixed unit test file (including package and imports if present).
+- No explanation.
+
+FEW-SHOT EXAMPLES (error -> minimal fix):
+
+========================
+EXAMPLE 1
+========================
+Original Unit Test:
+
+```java
+public class Options_getOptionGroup_9_0_Test {
+    static class OptionGroup {
+        private final String id;
+        OptionGroup(String id) { this.id = id; }
+        String getId() { return id; }
+    }
+
+    @Test
+    void testGetOptionGroupReturnsNullWhenMissing() throws Exception {
+        Options options = new Options();
+        Option opt = new Option("b", "desc");
+        OptionGroup result = options.getOptionGroup(opt);
+        assertNull(result, "Expected null when no OptionGroup is associated with the option key");
+    }
+}
+```
+
+Observed error:
+```
+incompatible types: org.apache.commons.cli.OptionGroup cannot be converted to Options_getOptionGroup_9_0_Test.OptionGroup
+```
+
+Fixed Unit Test:
+
+```java
+public class Options_getOptionGroup_9_0_Test {
+    @Test
+    void testGetOptionGroupReturnsNullWhenMissing() throws Exception {
+        Options options = new Options();
+        Option opt = new Option("b", "desc");
+        org.apache.commons.cli.OptionGroup result = options.getOptionGroup(opt);
+        assertNull(result, "Expected null when no OptionGroup is associated with the option key");
+    }
+}
+```
+
+========================
+EXAMPLE 2
+========================
+Original Unit Test:
+
+```java
+public class CommandLine_getParsedOptionValues_46_0_Test {
+    @Test
+    void testNullOptionGroupReturnsDefault() throws Exception {
+        CommandLine cmd = new CommandLine();
+        Supplier<String[]> supplier = () -> new String[] { "default1", "default2" };
+        String[] result = cmd.getParsedOptionValues(null, supplier);
+        assertArrayEquals(supplier.get(), result);
+    }
+}
+```
+
+Observed error:
+```
+reference to getParsedOptionValues is ambiguous
+```
+
+Fixed Unit Test:
+
+```java
+public class CommandLine_getParsedOptionValues_46_0_Test {
+    @Test
+    void testNullOptionGroupReturnsDefault() throws Exception {
+        CommandLine cmd = new CommandLine();
+        Supplier<String[]> supplier = () -> new String[] { "default1", "default2" };
+        String[] result = cmd.getParsedOptionValues((OptionGroup) null, supplier);
+        assertArrayEquals(supplier.get(), result);
+    }
+}
+```
+
+========================
+
+NOW FIX THIS INPUT:
+
+Unit test to fix:
+
+```java
+package com.apple.spark.util;
+
+import com.codahale.metrics.Meter;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.concurrent.atomic.AtomicInteger;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import com.apple.spark.core.Constants;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.SharedMetricRegistries;
+
+public class ExceptionUtils_meterRuntimeException_5_0_Test_meterRuntimeException_marksMeter_once {
+
+    private Field runtimeExceptionMeterField;
+
+    private Object originalRuntimeExceptionMeter;
+
+    private Field modifiersField;
+
+    @BeforeEach
+    void setUp() throws Exception {
+        // Access the private static final field
+        runtimeExceptionMeterField = ExceptionUtils.class.getDeclaredField("runtimeExceptionMeter");
+        runtimeExceptionMeterField.setAccessible(true);
+        // Keep original to restore later
+        originalRuntimeExceptionMeter = runtimeExceptionMeterField.get(null);
+        // Remove final modifier so we can set the field
+        modifiersField = Field.class.getDeclaredField("modifiers");
+        modifiersField.setAccessible(true);
+        modifiersField.setInt(runtimeExceptionMeterField, runtimeExceptionMeterField.getModifiers() & ~Modifier.FINAL);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        // Restore original value and modifiers (restore value is most important)
+        runtimeExceptionMeterField.set(null, originalRuntimeExceptionMeter);
+    }
+
+    // A simple Meter subclass that counts mark invocations
+    static class CountingMeter extends Meter {
+
+        private final AtomicInteger count = new AtomicInteger(0);
+
+        @Override
+        public void mark() {
+            count.incrementAndGet();
+        }
+
+        @Override
+        public void mark(long n) {
+            count.addAndGet((int) n);
+        }
+
+        int getCount() {
+            return count.get();
+        }
+    }
+
+    @Test
+    void meterRuntimeException_marksMeter_once() throws Exception {
+        CountingMeter cm = new CountingMeter();
+        runtimeExceptionMeterField.set(null, cm);
+        ExceptionUtils.meterRuntimeException();
+        assertEquals(1, cm.getCount(), "meterRuntimeException should mark the meter once");
+    }
+
+
+}
+
+```
+
+Observed error:
+
+```
+src/test/java/com/apple/spark/util/ExceptionUtils_meterRuntimeException_5_0_Test_meterRuntimeException_marksMeter_once.java:[59,13] getCount() in com.apple.spark.util.ExceptionUtils_meterRuntimeException_5_0_Test_meterRuntimeException_marksMeter_once.CountingMeter cannot implement getCount() in com.codahale.metrics.Metered
+attempting to assign weaker access privileges; was public
+```
+
+Target under test: method `meterRuntimeException()` in class `ExceptionUtils`.
+
+Focal method source:
+
+```java
+public static void meterRuntimeException() {
+    runtimeExceptionMeter.mark();
+  }
+```
+
+Focal class skeleton (imports + fields + method signatures):
+
+```java
+import com.apple.spark.core.Constants;
+import com.codahale.metrics.Meter;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.SharedMetricRegistries;
+public class ExceptionUtils {
+private static final MetricRegistry registry;
+private static final Meter jsonProcessingExceptionMeter;
+private static final Meter ioExceptionMeter;
+private static final Meter runtimeExceptionMeter;
+private static final Meter exceptionMeter;
+public static String getExceptionNameAndMessage(Throwable ex){}
+public static boolean isTooManyRequest(Throwable ex){}
+public static void meterJsonProcessingException(){}
+public static void meterException(){}
+public static void meterIOException(){}
+public static void meterRuntimeException(){}
+}
+```
+
+
+To help you correctly fix the unit test file, we provide the brief information about the dependency
+
+The brief information of dependent class `com.codahale.metrics.Meter` is
+```[java]
+mark()
+```
+
+Return ONLY the complete fixed unit test file.

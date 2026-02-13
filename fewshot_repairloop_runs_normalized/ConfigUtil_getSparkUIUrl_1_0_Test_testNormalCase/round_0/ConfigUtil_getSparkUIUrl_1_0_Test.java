@@ -1,0 +1,31 @@
+package com.apple.spark.util;
+
+import com.apple.spark.AppConfig;
+import com.apple.spark.util.ConfigUtil;
+import java.lang.reflect.Method;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+/**
+ * Unit tests for ConfigUtil.getSparkUIUrl(SparkCluster, String)
+ */
+public class ConfigUtil_getSparkUIUrl_1_0_Test {
+
+    private Method getSparkUIUrlMethod() throws NoSuchMethodException {
+        Method m = ConfigUtil.class.getDeclaredMethod("getSparkUIUrl", AppConfig.SparkCluster.class, String.class);
+        m.setAccessible(true);
+        return m;
+    }
+
+    @Test
+    void testNormalCase() throws Exception {
+        Method m = getSparkUIUrlMethod();
+        AppConfig.SparkCluster cluster = mock(AppConfig.SparkCluster.class);
+        when(cluster.getSparkUIUrl()).thenReturn("http://host:8080");
+        when(cluster.getSparkApplicationNamespace()).thenReturn("namespace");
+        String submissionId = "sub123";
+        String result = (String) m.invoke(null, cluster, submissionId);
+        assertEquals("http://host:8080/namespace/sub123", result);
+    }
+}
