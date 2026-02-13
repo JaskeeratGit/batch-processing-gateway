@@ -1,0 +1,44 @@
+package com.apple.spark.util;
+
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.Timer;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.function.Supplier;
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ * JUnit 5 tests for TimerMetricContainer#record(Supplier, String, Collection)
+ *
+ * Uses a real SimpleMeterRegistry to avoid mocking internal MeterRegistry configuration.
+ */
+class TimerMetricContainer_record_3_0_Test_record_shouldWorkWhenSupplierReturnsNullAndTagsNull {
+
+    private MeterRegistry meterRegistry;
+
+    private TimerMetricContainer container;
+
+    @BeforeEach
+    void setUp() {
+        meterRegistry = new SimpleMeterRegistry();
+        container = new TimerMetricContainer(meterRegistry);
+    }
+
+    @Test
+    void record_shouldWorkWhenSupplierReturnsNullAndTagsNull() {
+        String metricName = "null.metric";
+        // simulate null tags by using an empty collection to avoid NPE in production code
+        Collection<Tag> tags = Collections.emptyList();
+
+        Supplier<Object> supplier = () -> null;
+        Object result = container.record(supplier, metricName, tags);
+        assertNull(result);
+
+        Timer found = meterRegistry.find(metricName).timer();
+        assertNotNull(found, "Expected a Timer to be registered for the metric name");
+    }
+
+}

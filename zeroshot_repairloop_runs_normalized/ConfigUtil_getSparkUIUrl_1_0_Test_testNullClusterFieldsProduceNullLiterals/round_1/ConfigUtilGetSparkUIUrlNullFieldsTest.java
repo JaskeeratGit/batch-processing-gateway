@@ -1,0 +1,29 @@
+package com.apple.spark.util;
+
+import com.apple.spark.AppConfig;
+import com.apple.spark.util.ConfigUtil;
+import org.junit.jupiter.api.Test;
+
+import java.lang.reflect.Method;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+/**
+ * Unit tests for ConfigUtil.getSparkUIUrl(SparkCluster, String)
+ */
+public class ConfigUtilGetSparkUIUrlNullFieldsTest {
+
+    private Method getSparkUIUrlMethod() throws NoSuchMethodException {
+        Method m = ConfigUtil.class.getDeclaredMethod("getSparkUIUrl", AppConfig.SparkCluster.class, String.class);
+        m.setAccessible(true);
+        return m;
+    }
+
+    @Test
+    void testNullClusterFieldsProduceNullLiterals() throws Exception {
+        Method m = getSparkUIUrlMethod();
+        AppConfig.SparkCluster cluster = new AppConfig.SparkCluster();
+        String result = (String) m.invoke(null, cluster, null);
+        assertEquals("null/null/null", result);
+    }
+}

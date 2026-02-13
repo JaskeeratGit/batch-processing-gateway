@@ -1,0 +1,140 @@
+ROLE: You are an expert Java test engineer specializing in fixing failing JUnit tests.
+
+TASK: Fix the provided unit test so it compiles and runs successfully.
+CONSTRAINTS:
+- Fix ONLY the provided unit test. Do NOT add new test methods, new test classes, or new files.
+- Do NOT introduce additional tests beyond what already exists in the given unit test.
+- Do NOT change the focal method or production code.
+- Keep the test’s intent the same; make the smallest change necessary to fix the failure.
+- You may adjust imports, annotations, types, mocks, stubs, assertions, and setup within the given test file.
+- Use JUnit 5 and Mockito 3 if needed.
+- Adhere to Java 8 conventions.
+OUTPUT:
+- Return ONLY the complete fixed unit test file (including package and imports if present).
+- No explanation.
+
+INPUTS:
+Unit test to fix:
+
+```java
+package com.apple.spark.util;
+
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.Timer;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.function.Supplier;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
+
+/**
+ * JUnit 5 tests for TimerMetricContainer#record(Supplier, String, Collection)
+ *
+ * Uses Mockito to mock MeterRegistry and Timer.
+ * Uses reflection to invoke the private getTimer(String, Collection<Tag>) method.
+ */
+@ExtendWith(MockitoExtension.class)
+class TimerMetricContainer_record_3_0_Test_record_shouldDelegateToTimerAndReturnValue {
+
+    @Mock
+    private MeterRegistry meterRegistry;
+
+    @Mock
+    private Timer timer;
+
+    private TimerMetricContainer container;
+
+    @BeforeEach
+    void setUp() {
+        container = new TimerMetricContainer(meterRegistry);
+    }
+
+    @Test
+    void record_shouldDelegateToTimerAndReturnValue() {
+        String metricName = "test.metric";
+        Tag t1 = mock(Tag.class);
+        Tag t2 = mock(Tag.class);
+        Collection<Tag> tags = Arrays.asList(t1, t2);
+        // Make meterRegistry.timer(...) return our mocked timer
+        when(meterRegistry.timer(eq(metricName), eq(tags))).thenReturn(timer);
+        // Make timer.record call the supplied Supplier so we exercise supplier logic and return its value.
+        when(timer.record(ArgumentMatchers.any())).thenAnswer(invocation -> {
+            Supplier<?> supplied = invocation.getArgument(0);
+            // noinspection unchecked
+            return supplied.get();
+        });
+        Supplier<String> supplier = () -> "ok-value";
+        String result = container.record(supplier, metricName, tags);
+        assertEquals("ok-value", result);
+        verify(meterRegistry).timer(metricName, tags);
+        verify(timer).record(supplier);
+    }
+
+
+
+}
+
+```
+
+Observed error:
+
+```
+src/test/java/com/apple/spark/util/TimerMetricContainer_record_3_0_Test_record_shouldDelegateToTimerAndReturnValue.java:[52,19] reference to record is ambiguous
+both method <T>record(java.util.function.Supplier<T>) in io.micrometer.core.instrument.Timer and method record(java.lang.Runnable) in io.micrometer.core.instrument.Timer match
+```
+
+Target under test: method `record(Supplier, String, Collection)` in class `TimerMetricContainer`.
+
+Focal method source:
+
+```java
+public <T> T record(Supplier<T> runnable, String metricName, Collection<Tag> tags) {
+    Timer timer = getTimer(metricName, tags);
+    return timer.record(runnable);
+  }
+```
+
+Focal class skeleton (imports + fields + method signatures):
+
+```java
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.Timer;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+public class TimerMetricContainer {
+private final MeterRegistry meterRegistry;
+private final ConcurrentHashMap<MetricId, Timer> timers = ...;
+public TimerMetricContainer(MeterRegistry meterRegistry){}
+public void record(Runnable runnable, String metricName, Tag... tags){}
+public void record(Runnable runnable, String metricName, Collection<Tag> tags){}
+public <T> T record(Supplier<T> runnable, String metricName, Tag... tags){}
+public <T> T record(Supplier<T> runnable, String metricName, Collection<Tag> tags){}
+private Timer getTimer(String metricName, Collection<Tag> tags){}
+public TimerMetricContainer(MeterRegistry meterRegistry){}
+}
+```
+
+
+To help you correctly fix the unit test file, we provide the brief information about the dependency
+
+The brief information of dependent class `io.micrometer.core.instrument.Timer` is
+```[java]
+record(SupplierT)
+```
+
+Return the complete fixed unit test file now.

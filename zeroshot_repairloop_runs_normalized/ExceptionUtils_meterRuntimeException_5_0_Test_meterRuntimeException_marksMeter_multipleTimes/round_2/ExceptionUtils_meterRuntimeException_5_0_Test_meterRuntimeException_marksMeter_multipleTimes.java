@@ -1,0 +1,88 @@
+package com.apple.spark.util;
+
+import com.codahale.metrics.Meter;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.concurrent.atomic.AtomicInteger;
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+public class ExceptionUtils_meterRuntimeException_5_0_Test_meterRuntimeException_marksMeter_multipleTimes {
+
+    private Field runtimeExceptionMeterField;
+
+    private Object originalRuntimeExceptionMeter;
+
+    private Field modifiersField;
+
+    @BeforeEach
+    void setUp() throws Exception {
+        // Access the private static final field
+        runtimeExceptionMeterField = ExceptionUtils.class.getDeclaredField("runtimeExceptionMeter");
+        runtimeExceptionMeterField.setAccessible(true);
+        // Keep original to restore later
+        originalRuntimeExceptionMeter = runtimeExceptionMeterField.get(null);
+        // Try to remove final modifier so we can set the field; if not possible on this JVM, continue without failing
+        try {
+            modifiersField = Field.class.getDeclaredField("modifiers");
+            modifiersField.setAccessible(true);
+            modifiersField.setInt(runtimeExceptionMeterField, runtimeExceptionMeterField.getModifiers() & ~Modifier.FINAL);
+        } catch (NoSuchFieldException e) {
+            // Some JVMs do not expose the 'modifiers' field; skip removing final modifier
+            modifiersField = null;
+        }
+    }
+
+    @AfterEach
+    void tearDown() {
+        // Restore original value if possible; ignore if not allowed on this JVM
+        try {
+            runtimeExceptionMeterField.set(null, originalRuntimeExceptionMeter);
+        } catch (IllegalAccessException e) {
+            // Some JVMs disallow setting back static final fields via reflection; ignore to avoid test failure
+        } catch (Exception e) {
+            // Ignore any other exceptions during teardown
+        }
+    }
+
+    // A simple Meter subclass that counts mark invocations
+    static class CountingMeter extends Meter {
+
+        private final AtomicInteger count = new AtomicInteger(0);
+
+        @Override
+        public void mark() {
+            count.incrementAndGet();
+        }
+
+        @Override
+        public void mark(long n) {
+            count.addAndGet((int) n);
+        }
+
+        @Override
+        public long getCount() {
+            return count.get();
+        }
+    }
+
+
+    @Test
+    void meterRuntimeException_marksMeter_multipleTimes() throws Exception {
+        CountingMeter cm = new CountingMeter();
+        boolean replaced = false;
+        try {
+            runtimeExceptionMeterField.set(null, cm);
+            replaced = true;
+        } catch (IllegalAccessException e) {
+            // Could not replace the final field on this JVM; we'll observe the original meter instead
+        }
+
+        Meter targetMeter = replaced ? cm : (Meter) runtimeExceptionMeterField.get(null);
+        long before = targetMeter.getCount();
+        ExceptionUtils.meterRuntimeException();
+        ExceptionUtils.meterRuntimeException();
+        assertEquals(before + 2, targetMeter.getCount(), "meterRuntimeException called twice should increment meter twice");
+    }
+
+}

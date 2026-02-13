@@ -1,0 +1,36 @@
+package com.apple.spark.util;
+
+import com.apple.spark.AppConfig;
+import org.junit.jupiter.api.Test;
+import java.lang.reflect.Method;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+/**
+ * Unit tests for ConfigUtil.getSparkUIUrl(SparkCluster, String)
+ */
+public class ConfigUtil_getSparkUIUrl_1_0_Test_testNullUrlOnly {
+
+    private Method getSparkUIUrlMethod() throws NoSuchMethodException {
+        Method m = ConfigUtil.class.getDeclaredMethod("getSparkUIUrl", AppConfig.SparkCluster.class, String.class);
+        m.setAccessible(true);
+        return m;
+    }
+
+    @Test
+    void testNullUrlOnly() throws Exception {
+        Method m = getSparkUIUrlMethod();
+        AppConfig.SparkCluster cluster = new AppConfig.SparkCluster() {
+            @Override
+            public String getSparkUIUrl() {
+                return null;
+            }
+
+            @Override
+            public String getSparkApplicationNamespace() {
+                return "ns";
+            }
+        };
+        String result = (String) m.invoke(null, cluster, "sid");
+        assertEquals("null/ns/sid", result);
+    }
+}

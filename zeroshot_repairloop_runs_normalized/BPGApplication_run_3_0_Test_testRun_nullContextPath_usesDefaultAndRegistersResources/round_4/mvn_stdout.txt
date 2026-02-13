@@ -1,0 +1,243 @@
+[[1;34mINFO[m] Scanning for projects...
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m------------------------< [0;36mcom.apple.spark:bpg[0;1m >-------------------------[m
+[[1;34mINFO[m] [1mBuilding batch-processing-gateway 1.1[m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mjacoco-maven-plugin:0.8.11:prepare-agent[m [1m(jacoco-prepare-agent)[m @ [36mbpg[0;1m ---[m
+[[1;34mINFO[m] argLine set to -javaagent:/home/jaskeerat/.m2/repository/org/jacoco/org.jacoco.agent/0.8.11/org.jacoco.agent-0.8.11-runtime.jar=destfile=/home/jaskeerat/paper1/bpg_latest_stable/zero_shot/batch-processing-gateway/target/jacoco.exec,append=false
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-antrun-plugin:1.8:run[m [1m(generate-build-info)[m @ [36mbpg[0;1m ---[m
+[[1;34mINFO[m] Executing tasks
+
+main:
+     [exec] Generating build info file: /home/jaskeerat/paper1/bpg_latest_stable/zero_shot/batch-processing-gateway/target/extra-resources/build-info.properties
+[[1;34mINFO[m] Executed tasks
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:resources[m [1m(default-resources)[m @ [36mbpg[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] Copying 1 resource
+[[1;34mINFO[m] Copying 1 resource
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.8.1:compile[m [1m(default-compile)[m @ [36mbpg[0;1m ---[m
+[[1;34mINFO[m] Nothing to compile - all classes are up to date
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:testResources[m [1m(default-testResources)[m @ [36mbpg[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] skip non existing resourceDirectory /home/jaskeerat/paper1/bpg_latest_stable/zero_shot/batch-processing-gateway/src/test/resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.8.1:testCompile[m [1m(default-testCompile)[m @ [36mbpg[0;1m ---[m
+[[1;34mINFO[m] Changes detected - recompiling the module!
+[[1;34mINFO[m] Compiling 1 source file to /home/jaskeerat/paper1/bpg_latest_stable/zero_shot/batch-processing-gateway/target/test-classes
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-surefire-plugin:3.0.0-M7:test[m [1m(default-test)[m @ [36mbpg[0;1m ---[m
+[[1;34mINFO[m] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[[1;34mINFO[m] 
+[[1;34mINFO[m] -------------------------------------------------------
+[[1;34mINFO[m]  T E S T S
+[[1;34mINFO[m] -------------------------------------------------------
+[[1;34mINFO[m] Running com.apple.spark.[1mBPGApplication_run_3_0_Test_testRun_nullContextPath_usesDefaultAndRegistersResources[m
+01:14:26.616 [main] DEBUG org.eclipse.jetty.util.log - Logging to Logger[org.eclipse.jetty.util.log] via org.eclipse.jetty.util.log.Slf4jLog
+01:14:26.621 [main] INFO org.eclipse.jetty.util.log - Logging initialized @1622ms to org.eclipse.jetty.util.log.Slf4jLog
+[[1;31mERROR[m] [1;31mTests [0;1mrun: [0;1m1[m, [1;31mFailures: [0;1;31m1[m, Errors: 0, Skipped: 0, Time elapsed: 1.986 s[1;31m <<< FAILURE![m - in com.apple.spark.[1mBPGApplication_run_3_0_Test_testRun_nullContextPath_usesDefaultAndRegistersResources[m
+[[1;31mERROR[m] com.apple.spark.BPGApplication_run_3_0_Test_testRun_nullContextPath_usesDefaultAndRegistersResources.testRun_nullContextPath_usesDefaultAndRegistersResources  Time elapsed: 1.964 s  <<< FAILURE!
+Wanted but not invoked:
+jerseyEnvironment.register(<any>);
+-> at com.apple.spark.BPGApplication_run_3_0_Test_testRun_nullContextPath_usesDefaultAndRegistersResources.testRun_nullContextPath_usesDefaultAndRegistersResources(BPGApplication_run_3_0_Test_testRun_nullContextPath_usesDefaultAndRegistersResources.java:147)
+
+However, there were exactly 9 interactions with this mock:
+jerseyEnvironment.register(
+    com.apple.spark.rest.ApplicationSubmissionRest@7f19430f
+);
+-> at com.apple.spark.BPGApplication.run(BPGApplication.java:116)
+
+jerseyEnvironment.register(
+    com.apple.spark.rest.ApplicationGetLogRest@5e89e527
+);
+-> at com.apple.spark.BPGApplication.run(BPGApplication.java:120)
+
+jerseyEnvironment.register(
+    com.apple.spark.rest.CloudStorageRest@41f84bb1
+);
+-> at com.apple.spark.BPGApplication.run(BPGApplication.java:123)
+
+jerseyEnvironment.register(
+    com.apple.spark.rest.AdminRest@5013c6bc
+);
+-> at com.apple.spark.BPGApplication.run(BPGApplication.java:126)
+
+jerseyEnvironment.register(
+    com.apple.spark.rest.HealthcheckRest@6527f68a
+);
+-> at com.apple.spark.BPGApplication.run(BPGApplication.java:129)
+
+jerseyEnvironment.register(
+    com.apple.spark.core.ThrowableExceptionMapper@741687d4
+);
+-> at com.apple.spark.BPGApplication.run(BPGApplication.java:131)
+
+jerseyEnvironment.register(
+    io.dropwizard.auth.AuthDynamicFeature@77b0ff24
+);
+-> at com.apple.spark.BPGApplication.run(BPGApplication.java:157)
+
+jerseyEnvironment.register(
+    io.dropwizard.auth.AuthValueFactoryProvider$Binder@240fa4ad
+);
+-> at com.apple.spark.BPGApplication.run(BPGApplication.java:160)
+
+jerseyEnvironment.register(
+    io.swagger.v3.jaxrs2.integration.resources.OpenApiResource@4fb3c670
+);
+-> at com.apple.spark.BPGApplication.run(BPGApplication.java:173)
+
+
+	at com.apple.spark.BPGApplication_run_3_0_Test_testRun_nullContextPath_usesDefaultAndRegistersResources.testRun_nullContextPath_usesDefaultAndRegistersResources(BPGApplication_run_3_0_Test_testRun_nullContextPath_usesDefaultAndRegistersResources.java:147)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:727)
+	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:156)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:147)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestMethod(TimeoutExtension.java:86)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(InterceptingExecutableInvoker.java:103)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.lambda$invoke$0(InterceptingExecutableInvoker.java:93)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:106)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:64)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:45)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:37)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:92)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:86)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$7(TestMethodTestDescriptor.java:217)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:213)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:138)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:68)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:151)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:147)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:127)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:90)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:55)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:102)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:54)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86)
+	at org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86)
+	at org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:55)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:223)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:175)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:139)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:456)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:169)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:595)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:581)
+
+[[1;34mINFO[m] 
+[[1;34mINFO[m] Results:
+[[1;34mINFO[m] 
+[[1;31mERROR[m] [1;31mFailures: [m
+[[1;31mERROR[m] [1;31m  BPGApplication_run_3_0_Test_testRun_nullContextPath_usesDefaultAndRegistersResources.testRun_nullContextPath_usesDefaultAndRegistersResources:147 
+Wanted but not invoked:
+jerseyEnvironment.register(<any>);
+-> at com.apple.spark.BPGApplication_run_3_0_Test_testRun_nullContextPath_usesDefaultAndRegistersResources.testRun_nullContextPath_usesDefaultAndRegistersResources(BPGApplication_run_3_0_Test_testRun_nullContextPath_usesDefaultAndRegistersResources.java:147)
+
+However, there were exactly 9 interactions with this mock:
+jerseyEnvironment.register(
+    com.apple.spark.rest.ApplicationSubmissionRest@7f19430f
+);
+-> at com.apple.spark.BPGApplication.run(BPGApplication.java:116)
+
+jerseyEnvironment.register(
+    com.apple.spark.rest.ApplicationGetLogRest@5e89e527
+);
+-> at com.apple.spark.BPGApplication.run(BPGApplication.java:120)
+
+jerseyEnvironment.register(
+    com.apple.spark.rest.CloudStorageRest@41f84bb1
+);
+-> at com.apple.spark.BPGApplication.run(BPGApplication.java:123)
+
+jerseyEnvironment.register(
+    com.apple.spark.rest.AdminRest@5013c6bc
+);
+-> at com.apple.spark.BPGApplication.run(BPGApplication.java:126)
+
+jerseyEnvironment.register(
+    com.apple.spark.rest.HealthcheckRest@6527f68a
+);
+-> at com.apple.spark.BPGApplication.run(BPGApplication.java:129)
+
+jerseyEnvironment.register(
+    com.apple.spark.core.ThrowableExceptionMapper@741687d4
+);
+-> at com.apple.spark.BPGApplication.run(BPGApplication.java:131)
+
+jerseyEnvironment.register(
+    io.dropwizard.auth.AuthDynamicFeature@77b0ff24
+);
+-> at com.apple.spark.BPGApplication.run(BPGApplication.java:157)
+
+jerseyEnvironment.register(
+    io.dropwizard.auth.AuthValueFactoryProvider$Binder@240fa4ad
+);
+-> at com.apple.spark.BPGApplication.run(BPGApplication.java:160)
+
+jerseyEnvironment.register(
+    io.swagger.v3.jaxrs2.integration.resources.OpenApiResource@4fb3c670
+);
+-> at com.apple.spark.BPGApplication.run(BPGApplication.java:173)
+
+[m
+[[1;34mINFO[m] 
+[[1;31mERROR[m] [1;31mTests run: 1, Failures: 1, Errors: 0, Skipped: 0[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1;31mBUILD FAILURE[m
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] Total time:  4.269 s
+[[1;34mINFO[m] Finished at: 2026-02-13T01:14:27-07:00
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;31mERROR[m] Failed to execute goal [32morg.apache.maven.plugins:maven-surefire-plugin:3.0.0-M7:test[m [1m(default-test)[m on project [36mbpg[m: [1;31mThere are test failures.[m
+[[1;31mERROR[m] [1;31m[m
+[[1;31mERROR[m] [1;31mPlease refer to /home/jaskeerat/paper1/bpg_latest_stable/zero_shot/batch-processing-gateway/target/surefire-reports for the individual test results.[m
+[[1;31mERROR[m] [1;31mPlease refer to dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.[m
+[[1;31mERROR[m] -> [1m[Help 1][m
+[[1;31mERROR[m] 
+[[1;31mERROR[m] To see the full stack trace of the errors, re-run Maven with the [1m-e[m switch.
+[[1;31mERROR[m] Re-run Maven using the [1m-X[m switch to enable full debug logging.
+[[1;31mERROR[m] 
+[[1;31mERROR[m] For more information about the errors and possible solutions, please read the following articles:
+[[1;31mERROR[m] [1m[Help 1][m http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

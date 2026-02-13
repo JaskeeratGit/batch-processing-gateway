@@ -226,7 +226,9 @@
                 <version>3.0.0-M7</version>
                 <configuration>
                     <includes>
+                        <include>**/*.class</include>
                         <include>**/*_Test_*.java</include>
+                        <include>**/*.java</include>
                     </includes>
                     <excludes>
                         <exclude>**/*IntegrationTest</exclude>

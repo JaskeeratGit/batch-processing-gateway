@@ -1,0 +1,55 @@
+[[1;34mINFO[m] Scanning for projects...
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m------------------------< [0;36mcom.apple.spark:bpg[0;1m >-------------------------[m
+[[1;34mINFO[m] [1mBuilding batch-processing-gateway 1.1[m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mjacoco-maven-plugin:0.8.11:prepare-agent[m [1m(jacoco-prepare-agent)[m @ [36mbpg[0;1m ---[m
+[[1;34mINFO[m] argLine set to -javaagent:/home/jaskeerat/.m2/repository/org/jacoco/org.jacoco.agent/0.8.11/org.jacoco.agent-0.8.11-runtime.jar=destfile=/home/jaskeerat/paper1/bpg_latest_stable/zero_shot/batch-processing-gateway/target/jacoco.exec,append=false
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-antrun-plugin:1.8:run[m [1m(generate-build-info)[m @ [36mbpg[0;1m ---[m
+[[1;34mINFO[m] Executing tasks
+
+main:
+     [exec] Generating build info file: /home/jaskeerat/paper1/bpg_latest_stable/zero_shot/batch-processing-gateway/target/extra-resources/build-info.properties
+[[1;34mINFO[m] Executed tasks
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:resources[m [1m(default-resources)[m @ [36mbpg[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] Copying 1 resource
+[[1;34mINFO[m] Copying 1 resource
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.8.1:compile[m [1m(default-compile)[m @ [36mbpg[0;1m ---[m
+[[1;34mINFO[m] Nothing to compile - all classes are up to date
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:testResources[m [1m(default-testResources)[m @ [36mbpg[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] skip non existing resourceDirectory /home/jaskeerat/paper1/bpg_latest_stable/zero_shot/batch-processing-gateway/src/test/resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.8.1:testCompile[m [1m(default-testCompile)[m @ [36mbpg[0;1m ---[m
+[[1;34mINFO[m] Changes detected - recompiling the module!
+[[1;34mINFO[m] Compiling 1 source file to /home/jaskeerat/paper1/bpg_latest_stable/zero_shot/batch-processing-gateway/target/test-classes
+[[1;34mINFO[m] Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+[[1;34mINFO[m] -------------------------------------------------------------
+[[1;31mERROR[m] COMPILATION ERROR : 
+[[1;34mINFO[m] -------------------------------------------------------------
+[[1;31mERROR[m] /home/jaskeerat/paper1/bpg_latest_stable/zero_shot/batch-processing-gateway/src/test/java/com/apple/spark/core/RunningApplicationMonitor_deleteLongRunningApplications_2_0_Test_testDeleteExpiredApplication_killsApp.java:[65,19] incompatible types: com.apple.spark.core.RunningApplicationMonitor_deleteLongRunningApplications_2_0_Test_testDeleteExpiredApplication_killsApp.AppConfig.SparkCluster cannot be converted to com.apple.spark.AppConfig.SparkCluster
+[[1;31mERROR[m] /home/jaskeerat/paper1/bpg_latest_stable/zero_shot/batch-processing-gateway/src/test/java/com/apple/spark/core/RunningApplicationMonitor_deleteLongRunningApplications_2_0_Test_testDeleteExpiredApplication_killsApp.java:[69,19] incompatible types: com.apple.spark.core.RunningApplicationMonitor_deleteLongRunningApplications_2_0_Test_testDeleteExpiredApplication_killsApp.AppConfig.SparkCluster cannot be converted to com.apple.spark.AppConfig.SparkCluster
+[[1;34mINFO[m] 2 errors 
+[[1;34mINFO[m] -------------------------------------------------------------
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1;31mBUILD FAILURE[m
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] Total time:  1.823 s
+[[1;34mINFO[m] Finished at: 2026-02-13T01:28:57-07:00
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;31mERROR[m] Failed to execute goal [32morg.apache.maven.plugins:maven-compiler-plugin:3.8.1:testCompile[m [1m(default-testCompile)[m on project [36mbpg[m: [1;31mCompilation failure[m: Compilation failure: 
+[[1;31mERROR[m] /home/jaskeerat/paper1/bpg_latest_stable/zero_shot/batch-processing-gateway/src/test/java/com/apple/spark/core/RunningApplicationMonitor_deleteLongRunningApplications_2_0_Test_testDeleteExpiredApplication_killsApp.java:[65,19] incompatible types: com.apple.spark.core.RunningApplicationMonitor_deleteLongRunningApplications_2_0_Test_testDeleteExpiredApplication_killsApp.AppConfig.SparkCluster cannot be converted to com.apple.spark.AppConfig.SparkCluster
+[[1;31mERROR[m] /home/jaskeerat/paper1/bpg_latest_stable/zero_shot/batch-processing-gateway/src/test/java/com/apple/spark/core/RunningApplicationMonitor_deleteLongRunningApplications_2_0_Test_testDeleteExpiredApplication_killsApp.java:[69,19] incompatible types: com.apple.spark.core.RunningApplicationMonitor_deleteLongRunningApplications_2_0_Test_testDeleteExpiredApplication_killsApp.AppConfig.SparkCluster cannot be converted to com.apple.spark.AppConfig.SparkCluster
+[[1;31mERROR[m] -> [1m[Help 1][m
+[[1;31mERROR[m] 
+[[1;31mERROR[m] To see the full stack trace of the errors, re-run Maven with the [1m-e[m switch.
+[[1;31mERROR[m] Re-run Maven using the [1m-X[m switch to enable full debug logging.
+[[1;31mERROR[m] 
+[[1;31mERROR[m] For more information about the errors and possible solutions, please read the following articles:
+[[1;31mERROR[m] [1m[Help 1][m http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

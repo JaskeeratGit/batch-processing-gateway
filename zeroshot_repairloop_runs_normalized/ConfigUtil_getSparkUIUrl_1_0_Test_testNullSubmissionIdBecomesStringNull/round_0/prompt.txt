@@ -1,0 +1,195 @@
+ROLE: You are an expert Java test engineer specializing in fixing failing JUnit tests.
+
+TASK: Fix the provided unit test so it compiles and runs successfully.
+CONSTRAINTS:
+- Fix ONLY the provided unit test. Do NOT add new test methods, new test classes, or new files.
+- Do NOT introduce additional tests beyond what already exists in the given unit test.
+- Do NOT change the focal method or production code.
+- Keep the test’s intent the same; make the smallest change necessary to fix the failure.
+- You may adjust imports, annotations, types, mocks, stubs, assertions, and setup within the given test file.
+- Use JUnit 5 and Mockito 3 if needed.
+- Adhere to Java 8 conventions.
+OUTPUT:
+- Return ONLY the complete fixed unit test file (including package and imports if present).
+- No explanation.
+
+INPUTS:
+Unit test to fix:
+
+```java
+package com.apple.spark.util;
+
+import com.apple.spark.util.ConfigUtil;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import static com.apple.spark.AppConfig.SparkCluster;
+import com.apple.spark.AppConfig;
+import com.apple.spark.core.DBConnection;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+import org.jdbi.v3.core.Jdbi;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Unit tests for ConfigUtil.getSparkUIUrl(SparkCluster, String)
+ */
+public class ConfigUtil_getSparkUIUrl_1_0_Test_testNullSubmissionIdBecomesStringNull {
+
+    public static class SparkCluster {
+
+        private final String sparkUIUrl;
+
+        private final String sparkApplicationNamespace;
+
+        public SparkCluster(String sparkUIUrl, String sparkApplicationNamespace) {
+            this.sparkUIUrl = sparkUIUrl;
+            this.sparkApplicationNamespace = sparkApplicationNamespace;
+        }
+
+        public String getSparkUIUrl() {
+            return sparkUIUrl;
+        }
+
+        public String getSparkApplicationNamespace() {
+            return sparkApplicationNamespace;
+        }
+    }
+}
+
+class ConfigUtilTest {
+
+    private Method getSparkUIUrlMethod() throws NoSuchMethodException {
+        Method m = ConfigUtil.class.getDeclaredMethod("getSparkUIUrl", AppConfig.SparkCluster.class, String.class);
+        m.setAccessible(true);
+        return m;
+    }
+
+
+
+
+    @Test
+    void testNullSubmissionIdBecomesStringNull() throws Exception {
+        Method m = getSparkUIUrlMethod();
+        AppConfig.SparkCluster cluster = new AppConfig.SparkCluster("u", "n");
+        String result = (String) m.invoke(null, cluster, null);
+        assertEquals("u/n/null", result);
+    }
+
+
+
+
+}
+
+```
+
+Observed error:
+
+```
+src/test/java/com/apple/spark/util/ConfigUtil_getSparkUIUrl_1_0_Test_testNullSubmissionIdBecomesStringNull.java:[54,1] duplicate class: com.apple.spark.util.ConfigUtilTest
+```
+
+Target under test: method `getSparkUIUrl(SparkCluster, String)` in class `ConfigUtil`.
+
+Focal method source:
+
+```java
+public static String getSparkUIUrl(SparkCluster cluster, String submissionId) {
+    return String.format(
+        "%s/%s/%s", cluster.getSparkUIUrl(), cluster.getSparkApplicationNamespace(), submissionId);
+  }
+```
+
+Focal class skeleton (imports + fields + method signatures):
+
+```java
+import static com.apple.spark.AppConfig.SparkCluster;
+import com.apple.spark.AppConfig;
+import com.apple.spark.core.DBConnection;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+import org.jdbi.v3.core.Jdbi;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+public class ConfigUtil {
+private static final Logger logger = ...;
+public static void mergeConfig(AppConfig config){}
+public static String getSparkUIUrl(SparkCluster cluster, String submissionId){}
+public static String getSparkHistoryUrl(String sparkHistoryDns, String appId){}
+public static List<SparkCluster> merge(List<SparkCluster> c1, List<SparkCluster> c2){}
+public static List<SparkCluster> getConfFromDB(AppConfig config){}
+public static VersionInfo readVersion(){}
+}
+```
+
+
+To help you correctly fix the unit test file, we provide the brief information about the dependency
+
+The brief information of dependent class `com.apple.spark.AppConfig.SparkCluster` is
+```[java]
+import com.apple.spark.core.ConfigValue;
+import com.apple.spark.operator.DriverSpec;
+import com.apple.spark.operator.ExecutorSpec;
+import com.apple.spark.operator.SparkUIConfiguration;
+import com.apple.spark.operator.Volume;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.dropwizard.Configuration;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class AppConfig {
+private String applicationContextPath;
+private Map<String, String> defaultSparkConf;
+private Map<String, String> fixedSparkConf;
+private List<SparkCluster> sparkClusters;
+private List<SparkImage> sparkImages;
+private String s3Bucket;
+private String s3Folder;
+private String sparkLogS3Bucket;
+private String sparkLogIndex;
+private final int batchFileLimit = ...;
+private String sparkHistoryDns;
+private String gatewayDns;
+private String eksCluster;
+private String sparkHistoryUrl;
+private List<String> allowedUsers;
+private List<String> blockedUsers;
+private List<String> adminUsers;
+private List<QueueConfig> queues;
+private QueueTokenConfig queueTokenSOPS;
+private DBStorage dbStorageSOPS;
+private Double memoryMbSecondCost;
+private Double vCoreSecondCost;
+private Long statusCacheExpireMillis;
+public AppConfig(){}
+}
+```
+
+The brief information of dependent class `com.apple.spark.AppConfig.SparkCluster` is
+```[java]
+getSparkUIUrl()
+getSparkApplicationNamespace()
+```
+
+Return the complete fixed unit test file now.

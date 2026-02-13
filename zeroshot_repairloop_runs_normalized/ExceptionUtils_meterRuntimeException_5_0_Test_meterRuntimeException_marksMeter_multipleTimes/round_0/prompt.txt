@@ -1,0 +1,144 @@
+ROLE: You are an expert Java test engineer specializing in fixing failing JUnit tests.
+
+TASK: Fix the provided unit test so it compiles and runs successfully.
+CONSTRAINTS:
+- Fix ONLY the provided unit test. Do NOT add new test methods, new test classes, or new files.
+- Do NOT introduce additional tests beyond what already exists in the given unit test.
+- Do NOT change the focal method or production code.
+- Keep the test’s intent the same; make the smallest change necessary to fix the failure.
+- You may adjust imports, annotations, types, mocks, stubs, assertions, and setup within the given test file.
+- Use JUnit 5 and Mockito 3 if needed.
+- Adhere to Java 8 conventions.
+OUTPUT:
+- Return ONLY the complete fixed unit test file (including package and imports if present).
+- No explanation.
+
+INPUTS:
+Unit test to fix:
+
+```java
+package com.apple.spark.util;
+
+import com.codahale.metrics.Meter;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.concurrent.atomic.AtomicInteger;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import com.apple.spark.core.Constants;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.SharedMetricRegistries;
+
+public class ExceptionUtils_meterRuntimeException_5_0_Test_meterRuntimeException_marksMeter_multipleTimes {
+
+    private Field runtimeExceptionMeterField;
+
+    private Object originalRuntimeExceptionMeter;
+
+    private Field modifiersField;
+
+    @BeforeEach
+    void setUp() throws Exception {
+        // Access the private static final field
+        runtimeExceptionMeterField = ExceptionUtils.class.getDeclaredField("runtimeExceptionMeter");
+        runtimeExceptionMeterField.setAccessible(true);
+        // Keep original to restore later
+        originalRuntimeExceptionMeter = runtimeExceptionMeterField.get(null);
+        // Remove final modifier so we can set the field
+        modifiersField = Field.class.getDeclaredField("modifiers");
+        modifiersField.setAccessible(true);
+        modifiersField.setInt(runtimeExceptionMeterField, runtimeExceptionMeterField.getModifiers() & ~Modifier.FINAL);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        // Restore original value and modifiers (restore value is most important)
+        runtimeExceptionMeterField.set(null, originalRuntimeExceptionMeter);
+    }
+
+    // A simple Meter subclass that counts mark invocations
+    static class CountingMeter extends Meter {
+
+        private final AtomicInteger count = new AtomicInteger(0);
+
+        @Override
+        public void mark() {
+            count.incrementAndGet();
+        }
+
+        @Override
+        public void mark(long n) {
+            count.addAndGet((int) n);
+        }
+
+        int getCount() {
+            return count.get();
+        }
+    }
+
+
+    @Test
+    void meterRuntimeException_marksMeter_multipleTimes() throws Exception {
+        CountingMeter cm = new CountingMeter();
+        runtimeExceptionMeterField.set(null, cm);
+        ExceptionUtils.meterRuntimeException();
+        ExceptionUtils.meterRuntimeException();
+        assertEquals(2, cm.getCount(), "meterRuntimeException called twice should increment meter twice");
+    }
+
+}
+
+```
+
+Observed error:
+
+```
+src/test/java/com/apple/spark/util/ExceptionUtils_meterRuntimeException_5_0_Test_meterRuntimeException_marksMeter_multipleTimes.java:[59,13] getCount() in com.apple.spark.util.ExceptionUtils_meterRuntimeException_5_0_Test_meterRuntimeException_marksMeter_multipleTimes.CountingMeter cannot implement getCount() in com.codahale.metrics.Metered
+attempting to assign weaker access privileges; was public
+```
+
+Target under test: method `meterRuntimeException()` in class `ExceptionUtils`.
+
+Focal method source:
+
+```java
+public static void meterRuntimeException() {
+    runtimeExceptionMeter.mark();
+  }
+```
+
+Focal class skeleton (imports + fields + method signatures):
+
+```java
+import com.apple.spark.core.Constants;
+import com.codahale.metrics.Meter;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.SharedMetricRegistries;
+public class ExceptionUtils {
+private static final MetricRegistry registry;
+private static final Meter jsonProcessingExceptionMeter;
+private static final Meter ioExceptionMeter;
+private static final Meter runtimeExceptionMeter;
+private static final Meter exceptionMeter;
+public static String getExceptionNameAndMessage(Throwable ex){}
+public static boolean isTooManyRequest(Throwable ex){}
+public static void meterJsonProcessingException(){}
+public static void meterException(){}
+public static void meterIOException(){}
+public static void meterRuntimeException(){}
+}
+```
+
+
+To help you correctly fix the unit test file, we provide the brief information about the dependency
+
+The brief information of dependent class `com.codahale.metrics.Meter` is
+```[java]
+mark()
+```
+
+Return the complete fixed unit test file now.

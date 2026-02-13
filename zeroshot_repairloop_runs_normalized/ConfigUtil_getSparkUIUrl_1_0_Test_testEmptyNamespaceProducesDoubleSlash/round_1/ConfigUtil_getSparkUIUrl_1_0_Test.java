@@ -1,0 +1,29 @@
+package com.apple.spark.util;
+
+import com.apple.spark.AppConfig;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
+import java.lang.reflect.Method;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class ConfigUtil_getSparkUIUrl_1_0_Test {
+
+    private Method getSparkUIUrlMethod() throws NoSuchMethodException {
+        Method m = ConfigUtil.class.getDeclaredMethod("getSparkUIUrl", AppConfig.SparkCluster.class, String.class);
+        m.setAccessible(true);
+        return m;
+    }
+
+    @Test
+    void testEmptyNamespaceProducesDoubleSlash() throws Exception {
+        Method m = getSparkUIUrlMethod();
+        AppConfig.SparkCluster cluster = Mockito.mock(AppConfig.SparkCluster.class);
+        Mockito.when(cluster.getSparkUIUrl()).thenReturn("http://host:8080");
+        Mockito.when(cluster.getSparkApplicationNamespace()).thenReturn("");
+        String submissionId = "id";
+        String result = (String) m.invoke(null, cluster, submissionId);
+        assertEquals("http://host:8080//id", result);
+    }
+}
